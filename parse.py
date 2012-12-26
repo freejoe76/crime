@@ -49,7 +49,7 @@ def get_recent_crimes(location = None, *args, **kwargs):
         if location == None:
             crimes.append(record['OFFENSE_CATEGORY_ID'])
 
-    crime_lookup            
+    
     pass
 
 def get_rankings(location, time, crime = None):
@@ -59,6 +59,7 @@ def get_rankings(location, time, crime = None):
     # for that particular time period
     rankings = { 
         'neighborhood': defaultdict(int),
+        'type': defaultdict(int),
         'category': defaultdict(int)
     }
     for row in crime_file:
@@ -66,8 +67,9 @@ def get_rankings(location, time, crime = None):
         if crime == None:
             # Update the neighborhood counter
             rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
+            rankings['category'][record['OFFENSE_CATEGORY_ID']] += 1
             crime_type = crime_lookup[record['OFFENSE_CATEGORY_ID']]
-            rankings['category'][crime_type] += 1
+            rankings['type'][crime_type] += 1
 
         else:
             if crime == record['OFFENSE_ID'] or crime == record['OFFENSE_CATEGORY_ID']:
@@ -75,6 +77,7 @@ def get_rankings(location, time, crime = None):
 
 
     sorted_rankings = sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1))
+    sorted_rankings = sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
     sorted_rankings = sorted(rankings['category'].iteritems(), key=operator.itemgetter(1))
     print sorted_rankings
 
