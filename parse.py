@@ -7,7 +7,7 @@ from collections import defaultdict
 from optparse import OptionParser
 
 
-crime_types = ['violent', 'property', 'other']
+crime_genres = ['violent', 'property', 'other']
 crime_lookup_reverse = { 
     'violent': ['murder', 'robbery', 'aggrvated-assault', 'sexual-assault'],
     'property': ['arson', 'theft-from-motor-vehicle', 'auto-theft', 'burglary', 'larceny'],
@@ -56,11 +56,12 @@ def get_rankings(location, time, crime = None):
     # Take a crime type or category and return a list of neighborhoods 
     # ranked by frequency of that crime.
     # If no crime is passed, we just rank overall number of crimes
-    # for that particular time period
+    # for that particular time period.
     rankings = { 
         'neighborhood': defaultdict(int),
-        'type': defaultdict(int),
-        'category': defaultdict(int)
+        'genre': defaultdict(int),
+        'category': defaultdict(int),
+        'type': defaultdict(int)
     }
     for row in crime_file:
         record = dict(zip(keys, row))
@@ -68,8 +69,8 @@ def get_rankings(location, time, crime = None):
             # Update the neighborhood counter
             rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
             rankings['category'][record['OFFENSE_CATEGORY_ID']] += 1
-            crime_type = crime_lookup[record['OFFENSE_CATEGORY_ID']]
-            rankings['type'][crime_type] += 1
+            crime_genre = crime_lookup[record['OFFENSE_CATEGORY_ID']]
+            rankings['genre'][crime_genre] += 1
 
         else:
             if crime == record['OFFENSE_ID'] or crime == record['OFFENSE_CATEGORY_ID']:
@@ -77,7 +78,7 @@ def get_rankings(location, time, crime = None):
 
 
     sorted_rankings = sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1))
-    sorted_rankings = sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
+    sorted_rankings = sorted(rankings['genre'].iteritems(), key=operator.itemgetter(1))
     sorted_rankings = sorted(rankings['category'].iteritems(), key=operator.itemgetter(1))
     print sorted_rankings
 
