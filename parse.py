@@ -42,6 +42,10 @@ def convert_timestamp(ts):
     # Take a crimestamp (UHN) from the csv and turn it into a datetime object
     return datetime.strptime(ts, '%Y-%m-%d %H:%M:%S')
     
+def get_span_crimes(location = None, time_type = 'month', quantity = 'this',  *args, **kwargs):
+    # Get crimes from a particular span of time
+    pass
+
 def get_recent_crimes(location = None, time_type = 'month', quantity = 'this',  *args, **kwargs):
     crimes = []
     if quantity == 'this':
@@ -50,6 +54,8 @@ def get_recent_crimes(location = None, time_type = 'month', quantity = 'this',  
     for row in crime_file:
         record = dict(zip(keys, row))
         ts = convert_timestamp(record['FIRST_OCCURRENCE_DATE'])
+        if time_type == 'week':
+            pass
         if time_type == 'month':
             if ts.month == time.month:
                 print '1'
