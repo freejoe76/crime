@@ -48,9 +48,12 @@ def get_timespan_crimes(location = None, time_type = 'month', quantity = 'this',
 
 def get_recent_crimes(location = None, timespan = None,  *args, **kwargs):
     crimes = []
-    # timespan is either a date or tuple of dates
+    today = datetime.date(datetime.now())
+    # timespan a tuple of dates, that defaults to the past 30 days.
+    # Decided to set that here rather than in the method def for the sake of space.
     if timespan == None:
-        timespan = datetime.date(datetime.now())
+        month = today - timedelta(30)
+        timespan = (month, today)
 
     for row in crime_file:
         record = dict(zip(keys, row))
