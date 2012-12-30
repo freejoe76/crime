@@ -57,13 +57,20 @@ def get_recent_crimes(location = None, timespan = None,  *args, **kwargs):
 
     for row in crime_file:
         record = dict(zip(keys, row))
+
+        # Time queries
         ts = convert_timestamp(record['FIRST_OCCURRENCE_DATE'])
+        if not timespan[0] <= datetime.date(ts) <= timespan[1]:
+            continue
+
+        # Location queries
         if location == None:
             crimes.append(record['OFFENSE_CATEGORY_ID'])
         elif record['NEIGHBORHOOD_ID'] == location:
             crimes.append(record)
 
-    pass
+        # Crime queries
+    return crimes
 
 def get_rankings(crime=None, **kwargs):
     # Take a crime type or category and return a list of neighborhoods 
@@ -142,5 +149,7 @@ if __name__ == '__main__':
         get_rankings()
     if action == 'recent':
         #get_recent_crimes(location, {'time_type':'weeks', 'quantity':3})
-        get_recent_crimes(location, {'time_type':'months', 'quantity':'this'})
+        crimes = get_recent_crimes(location)
+
+    print crimes
     #get_recent_crimes()
