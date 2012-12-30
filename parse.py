@@ -5,7 +5,7 @@ import csv
 import operator
 from collections import defaultdict
 from optparse import OptionParser
-
+from datetime import datetime
 
 crime_genres = ['violent', 'property', 'other']
 crime_lookup_reverse = { 
@@ -38,12 +38,19 @@ def get_location_list(location_type):
 def get_location_ranking(locations, crime_type):
     pass
 
+def convert_timestamp(ts):
+    # Take a crimestamp (UHN) from the csv and turn it into a datetime object
+    return datetime.strptime(ts, '%Y-%m-%d %H:%M:%S')
+    
 def get_recent_crimes(location = None, *args, **kwargs):
     crimes = []
     for row in crime_file:
         record = dict(zip(keys, row))
+        ts = convert_timestamp(record['FIRST_OCCURRENCE_DATE'])
+
+        # We've got a few ways we're querying against time.
+        
         if record['NEIGHBORHOOD_ID'] == location:
-            #print record['OFFENSE_CATEGORY_ID']
             crimes.append(record)
 
         if location == None:
