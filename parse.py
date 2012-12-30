@@ -69,7 +69,7 @@ def get_recent_crimes(location = None, timespan = None,  *args, **kwargs):
         elif record['NEIGHBORHOOD_ID'] == location:
             crimes.append(record)
 
-        # Crime queries
+        # Crime queries (to come)
     return crimes
 
 def get_rankings(crime=None, **kwargs):
@@ -95,7 +95,7 @@ def get_rankings(crime=None, **kwargs):
             rankings['genre'][crime_genre] += 1
 
         else:
-            if crime == record['OFFENSE_ID'] or crime == record['OFFENSE_CATEGORY_ID']:
+            if crime == crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime == record['OFFENSE_CATEGORY_ID'] or crime == record['OFFENSE_TYPE_ID']:
                 rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
 
 
