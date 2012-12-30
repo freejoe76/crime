@@ -49,7 +49,6 @@ def get_recent_crimes(location = None, *args, **kwargs):
         if location == None:
             crimes.append(record['OFFENSE_CATEGORY_ID'])
 
-    
     pass
 
 def get_rankings(crime=None, **kwargs):
@@ -115,12 +114,18 @@ if __name__ == '__main__':
     # parse the arguments, pass 'em to the function
     parser = OptionParser()
     parser.add_option("-a", "--action", dest="action")
+    parser.add_option("-l", "--location", dest="location", default="capitol-hill")
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
     (options, args) = parser.parse_args()
     action = options.action
+    location = options.location
     verbose = options.verbose
 
+    location = get_neighborhood(location)
+
     crime_file = open_csv()
-    get_rankings()
-    location = get_neighborhood('capitol-hill')
+    if action == 'rankings':
+        get_rankings()
+    if action == 'recent':
+        get_recent_crimes(location)
     #get_recent_crimes()
