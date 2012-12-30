@@ -5,7 +5,7 @@ import csv
 import operator
 from collections import defaultdict
 from optparse import OptionParser
-from datetime import datetime
+from datetime import datetime, timedelta
 
 crime_genres = ['violent', 'property', 'other']
 crime_lookup_reverse = { 
@@ -46,22 +46,15 @@ def get_timespan_crimes(location = None, time_type = 'month', quantity = 'this',
     # Get crimes from a particular span of time
     pass
 
-def get_recent_crimes(location = None, time_type = 'month', quantity = 'this',  *args, **kwargs):
+def get_recent_crimes(location = None, timespan = None,  *args, **kwargs):
     crimes = []
-    if quantity == 'this':
-        time = datetime.now()
+    # timespan is either a date or tuple of dates
+    if timespan == None:
+        timespan = datetime.date(datetime.now())
 
     for row in crime_file:
         record = dict(zip(keys, row))
         ts = convert_timestamp(record['FIRST_OCCURRENCE_DATE'])
-        if time_type == 'week':
-            pass
-        if time_type == 'month':
-            if ts.month == time.month:
-                print '1'
-        elif time_type == 'year':
-            if ts.year == time.year:
-                print '2'
         if location == None:
             crimes.append(record['OFFENSE_CATEGORY_ID'])
         elif record['NEIGHBORHOOD_ID'] == location:
