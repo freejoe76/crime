@@ -115,7 +115,10 @@ if __name__ == '__main__':
     # parse the arguments, pass 'em to the function
     parser = OptionParser()
     parser.add_option("-a", "--action", dest="action")
+    parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
     (options, args) = parser.parse_args()
+    action = options.action
+    verbose = options.verbose
 
     crime_file = open_csv()
     get_rankings()
