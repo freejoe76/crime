@@ -42,7 +42,7 @@ def convert_timestamp(ts):
     # Take a crimestamp (UHN) from the csv and turn it into a datetime object
     return datetime.strptime(ts, '%Y-%m-%d %H:%M:%S')
     
-def get_span_crimes(location = None, time_type = 'month', quantity = 'this',  *args, **kwargs):
+def get_timespan_crimes(location = None, time_type = 'month', quantity = 'this',  *args, **kwargs):
     # Get crimes from a particular span of time
     pass
 
