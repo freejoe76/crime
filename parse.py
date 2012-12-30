@@ -52,11 +52,12 @@ def get_recent_crimes(location = None, *args, **kwargs):
     
     pass
 
-def get_rankings(location, time, crime = None):
+def get_rankings(crime=None, **kwargs):
     # Take a crime type or category and return a list of neighborhoods 
     # ranked by frequency of that crime.
     # If no crime is passed, we just rank overall number of crimes
     # for that particular time period.
+    # kwargs honored include location, month (should "month" be "time"? incorporate that and "year" together?)
     rankings = { 
         'neighborhood': defaultdict(int),
         'genre': defaultdict(int),
@@ -68,6 +69,7 @@ def get_rankings(location, time, crime = None):
         if crime == None:
             # Update the neighborhood counter
             rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
+            rankings['type'][record['OFFENSE_TYPE_ID']] += 1
             rankings['category'][record['OFFENSE_CATEGORY_ID']] += 1
             crime_genre = crime_lookup[record['OFFENSE_CATEGORY_ID']]
             rankings['genre'][crime_genre] += 1
@@ -80,6 +82,7 @@ def get_rankings(location, time, crime = None):
     sorted_rankings = sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1))
     sorted_rankings = sorted(rankings['genre'].iteritems(), key=operator.itemgetter(1))
     sorted_rankings = sorted(rankings['category'].iteritems(), key=operator.itemgetter(1))
+    sorted_rankings = sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
     print sorted_rankings
 
 
@@ -108,12 +111,13 @@ def open_csv(fn = '_input/crime-currentyear.csv'):
     crime_file = csv.reader(fp, delimiter = ',')
     return crime_file
 
-
 if __name__ == '__main__':
     # parse the arguments, pass 'em to the function
-    
+    parser = OptionParser()
+    parser.add_option("-a", "--action", dest="action")
+    (options, args) = parser.parse_args()
 
     crime_file = open_csv()
-    get_rankings('neighborhood', 'November')
+    get_rankings()
     location = get_neighborhood('capitol-hill')
     #get_recent_crimes()
