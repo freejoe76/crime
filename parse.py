@@ -42,19 +42,24 @@ def convert_timestamp(ts):
     # Take a crimestamp (UHN) from the csv and turn it into a datetime object
     return datetime.strptime(ts, '%Y-%m-%d %H:%M:%S')
     
-def get_recent_crimes(location = None, *args, **kwargs):
+def get_recent_crimes(location = None, time_type = 'month', quantity = 'this',  *args, **kwargs):
     crimes = []
+    if quantity == 'this':
+        time = datetime.now()
+
     for row in crime_file:
         record = dict(zip(keys, row))
         ts = convert_timestamp(record['FIRST_OCCURRENCE_DATE'])
-
-        # We've got a few ways we're querying against time.
-        
-        if record['NEIGHBORHOOD_ID'] == location:
-            crimes.append(record)
-
+        if time_type == 'month':
+            if ts.month == time.month:
+                print '1'
+        elif time_type == 'year':
+            if ts.year == time.year:
+                print '2'
         if location == None:
             crimes.append(record['OFFENSE_CATEGORY_ID'])
+        elif record['NEIGHBORHOOD_ID'] == location:
+            crimes.append(record)
 
     pass
 
@@ -134,5 +139,6 @@ if __name__ == '__main__':
     if action == 'rankings':
         get_rankings()
     if action == 'recent':
-        get_recent_crimes(location)
+        #get_recent_crimes(location, {'time_type':'weeks', 'quantity':3})
+        get_recent_crimes(location, {'time_type':'months', 'quantity':'this'})
     #get_recent_crimes()
