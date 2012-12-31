@@ -72,7 +72,7 @@ def get_recent_crimes(location = None, timespan = None,  *args, **kwargs):
         # Crime queries (to come)
     return crimes
 
-def get_rankings(crime=None, **kwargs):
+def get_rankings(crime = None, timespan = None, **kwargs):
     # Take a crime type or category and return a list of neighborhoods 
     # ranked by frequency of that crime.
     # If no crime is passed, we just rank overall number of crimes
@@ -84,8 +84,20 @@ def get_rankings(crime=None, **kwargs):
         'category': defaultdict(int),
         'type': defaultdict(int)
     }
+
+    today = datetime.date(datetime.now())
+    if timespan == None:
+        month = today - timedelta(90)
+        timespan = (month, today)
+
     for row in crime_file:
         record = dict(zip(keys, row))
+
+        # Time queries
+        ts = convert_timestamp(record['FIRST_OCCURRENCE_DATE'])
+        if not timespan[0] <= datetime.date(ts) <= timespan[1]:
+            continue
+
         if crime == None:
             # Update the neighborhood counter
             rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
@@ -96,14 +108,19 @@ def get_rankings(crime=None, **kwargs):
 
         else:
             if crime == crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime == record['OFFENSE_CATEGORY_ID'] or crime == record['OFFENSE_TYPE_ID']:
+                print crime, crime_lookup[record['OFFENSE_CATEGORY_ID']]
                 rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
+            #else:
+                #print crime, crime_lookup[record['OFFENSE_CATEGORY_ID']]
 
 
-    sorted_rankings = sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1))
-    sorted_rankings = sorted(rankings['genre'].iteritems(), key=operator.itemgetter(1))
-    sorted_rankings = sorted(rankings['category'].iteritems(), key=operator.itemgetter(1))
-    sorted_rankings = sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
-    print sorted_rankings
+    sorted_rankings = {
+        'neighborhood': sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1)),
+        'genre': sorted(rankings['genre'].iteritems(), key=operator.itemgetter(1)),
+        'category': sorted(rankings['category'].iteritems(), key=operator.itemgetter(1)),
+        'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
+    }
+    return sorted_rankings
 
 
 def get_uniques(field):
@@ -146,7 +163,8 @@ if __name__ == '__main__':
 
     crime_file = open_csv()
     if action == 'rankings':
-        get_rankings()
+        crime = None
+        crimes = get_rankings(crime)
     if action == 'recent':
         #get_recent_crimes(location, {'time_type':'weeks', 'quantity':3})
         crimes = get_recent_crimes(location)
