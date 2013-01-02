@@ -72,13 +72,12 @@ def get_recent_crimes(location = None, timespan = None,  *args, **kwargs):
         # Crime queries (to come)
     return crimes
 
-def get_rankings(crime = None, timespan = None, *args, **kwargs):
+def get_rankings(crime = None, location = None, *args, **kwargs):
     # Take a crime type or category and return a list of neighborhoods 
     # ranked by frequency of that crime.
     # If no crime is passed, we just rank overall number of crimes
     # for that particular time period.
-    # Args taken should be.... I knew this at one point
-    # kwargs honored include location, month (should "month" be "time"? incorporate that and "year" together?)
+    # Args taken should be the start of the timespan and the end.
     rankings = { 
         'neighborhood': defaultdict(int),
         'genre': defaultdict(int),
@@ -86,7 +85,8 @@ def get_rankings(crime = None, timespan = None, *args, **kwargs):
         'type': defaultdict(int)
     }
     today = datetime.date(datetime.now())
-    if timespan == None:
+    timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
+    if not args:
         month = today - timedelta(90)
         timespan = (month, today)
 
@@ -157,10 +157,16 @@ def open_csv(fn = '_input/crime-currentyear.csv'):
     return crime_file
 
 if __name__ == '__main__':
-    # parse the arguments, pass 'em to the function
+    # Parse the arguments, pass 'em to the function
+    # The three main args we use to query the crime data are
+    # location, crime and timespan. location and crime are
+    # passed as options, and timespan (start, finish) as the 
+    # first two arguments. This may not be the best way to do it.
     parser = OptionParser()
     parser.add_option("-a", "--action", dest="action")
     parser.add_option("-l", "--location", dest="location", default="capitol-hill")
+    parser.add_option("-c", "--crime", dest="crime", default="violent")
+    #parser.add_option("-t"',' "--time", dest="time", default="")
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
     (options, args) = parser.parse_args()
     action = options.action
@@ -172,8 +178,9 @@ if __name__ == '__main__':
     crime_file = open_csv()
     if action == 'rankings':
         crime = None
+        crime = 'violent'
         timespan = None
-        crimes = get_rankings(crime, timespan, args)
+        crimes = get_rankings(crime, location, args)
     if action == 'recent':
         #get_recent_crimes(location, {'time_type':'weeks', 'quantity':3})
         crimes = get_recent_crimes(location)
