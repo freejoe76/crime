@@ -72,11 +72,12 @@ def get_recent_crimes(location = None, timespan = None,  *args, **kwargs):
         # Crime queries (to come)
     return crimes
 
-def get_rankings(crime = None, timespan = None, **kwargs):
+def get_rankings(crime = None, timespan = None, *args, **kwargs):
     # Take a crime type or category and return a list of neighborhoods 
     # ranked by frequency of that crime.
     # If no crime is passed, we just rank overall number of crimes
     # for that particular time period.
+    # Args taken should be.... I knew this at one point
     # kwargs honored include location, month (should "month" be "time"? incorporate that and "year" together?)
     rankings = { 
         'neighborhood': defaultdict(int),
@@ -84,11 +85,17 @@ def get_rankings(crime = None, timespan = None, **kwargs):
         'category': defaultdict(int),
         'type': defaultdict(int)
     }
-
     today = datetime.date(datetime.now())
     if timespan == None:
         month = today - timedelta(90)
         timespan = (month, today)
+
+    # Figure out what type of crime we're querying
+    crime_type = 'type'
+    if crime in crime_genres:
+        crime_type = 'genre'
+    elif crime in crime_lookup:
+        crime_type = 'category'
 
     for row in crime_file:
         record = dict(zip(keys, row))
@@ -107,8 +114,9 @@ def get_rankings(crime = None, timespan = None, **kwargs):
             rankings['genre'][crime_genre] += 1
 
         else:
+
             if crime == crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime == record['OFFENSE_CATEGORY_ID'] or crime == record['OFFENSE_TYPE_ID']:
-                print crime, crime_lookup[record['OFFENSE_CATEGORY_ID']]
+                #print crime, crime_lookup[record['OFFENSE_CATEGORY_ID']]
                 rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
             #else:
                 #print crime, crime_lookup[record['OFFENSE_CATEGORY_ID']]
@@ -164,7 +172,8 @@ if __name__ == '__main__':
     crime_file = open_csv()
     if action == 'rankings':
         crime = None
-        crimes = get_rankings(crime)
+        timespan = None
+        crimes = get_rankings(crime, timespan, args)
     if action == 'recent':
         #get_recent_crimes(location, {'time_type':'weeks', 'quantity':3})
         crimes = get_recent_crimes(location)
