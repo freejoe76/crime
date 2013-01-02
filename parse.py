@@ -171,15 +171,13 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
     action = options.action
     location = options.location
+    crime = options.crime
     verbose = options.verbose
 
     location = get_neighborhood(location)
 
     crime_file = open_csv()
     if action == 'rankings':
-        crime = None
-        crime = 'violent'
-        timespan = None
         crimes = get_rankings(crime, location, args)
     if action == 'recent':
         #get_recent_crimes(location, {'time_type':'weeks', 'quantity':3})
