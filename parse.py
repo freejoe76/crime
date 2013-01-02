@@ -46,12 +46,17 @@ def get_timespan_crimes(location = None, time_type = 'month', quantity = 'this',
     # Get crimes from a particular span of time
     pass
 
-def get_recent_crimes(location = None, timespan = None,  *args, **kwargs):
+def get_recent_crimes(crime = None, location = None, *args, **kwargs):
+    # Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
+    # Timespan is passed as an argument (start, finish)
+
     crimes = []
     today = datetime.date(datetime.now())
     # timespan a tuple of dates, that defaults to the past 30 days.
     # Decided to set that here rather than in the method def for the sake of space.
-    if timespan == None:
+    print args
+    timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
+    if not args:
         month = today - timedelta(30)
         timespan = (month, today)
 
@@ -181,7 +186,7 @@ if __name__ == '__main__':
         crimes = get_rankings(crime, location, args)
     if action == 'recent':
         #get_recent_crimes(location, {'time_type':'weeks', 'quantity':3})
-        crimes = get_recent_crimes(location)
+        crimes = get_recent_crimes(crime, location, args)
 
     print crimes
     #get_recent_crimes()
