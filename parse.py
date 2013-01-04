@@ -54,8 +54,9 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
     today = datetime.date(datetime.now())
     # timespan a tuple of dates, that defaults to the past 30 days.
     # Decided to set that here rather than in the method def for the sake of space.
-    print args
     timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
+    if verbose:
+        print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
     if not args:
         month = today - timedelta(30)
         timespan = (month, today)
