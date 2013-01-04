@@ -96,6 +96,7 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
         month = today - timedelta(90)
         timespan = (month, today)
 
+    print "KW", args
     # Figure out what type of crime we're querying
     crime_type = 'type'
     if crime in crime_genres:
@@ -171,17 +172,22 @@ if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-a", "--action", dest="action")
     parser.add_option("-l", "--location", dest="location", default="capitol-hill")
+    parser.add_option("-t", "--limit", dest="limit", default=20)
     parser.add_option("-c", "--crime", dest="crime", default="violent")
-    parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default="")
+    parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default=False)
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
     (options, args) = parser.parse_args()
     action = options.action
     location = options.location
+    limit = options.limit
     crime = options.crime
     yearoveryear = options.yearoveryear
     verbose = options.verbose
 
     location = get_neighborhood(location)
+
+    if verbose:
+        print "Options: %s\nArgs: %s" % (options, args)
 
     crime_file = open_csv()
     if action == 'rankings':
@@ -190,7 +196,8 @@ if __name__ == '__main__':
         crimes = get_rankings(crime, location, args)
     if action == 'recent':
         #get_recent_crimes(location, {'time_type':'weeks', 'quantity':3})
-        crimes = get_recent_crimes(crime, location, args)
+        crimes = get_recent_crimes(crime, location, args, {test:options})
 
+    # How do you slice a dict?
     print crimes
     #get_recent_crimes()
