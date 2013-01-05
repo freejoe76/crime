@@ -7,6 +7,7 @@
 
 cd _input
 DATE=`date +'%F-%k'`
+touch crime-current.csv
 wget -O crime-new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv
 diff crime-new.csv crime-current.csv > crime-newdiff.csv
 DIFFCOUNT=`cat crime-newdiff.csv | wc -l`
@@ -16,5 +17,5 @@ if [[ $DIFFCOUNT -gt 0 ]]; then
 	mv crime-newdiff.csv "crime-archive-$DATE.csv"
 	mv crime-current.csv crime-old.csv
 	mv crime-new.csv crime-current.csv
-	grep '2012-' crime-current.csv > crime-currentyear.csv
+	grep '2013-' crime-current.csv > crime-currentyear.csv
 fi
