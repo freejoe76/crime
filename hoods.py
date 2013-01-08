@@ -39,6 +39,14 @@ def open_csv(fn = '_input/census_neighborhood_demographics_2010.csv'):
     crime_file = csv.reader(fp, delimiter = ',')
     return crime_file
 
+def slugify(string):
+    # Return a lower-case no-space string.
+    return None
+
+def get_stats(field, value, csv):
+    # Take a field column and a value column and return a dict
+    print field, value
+
 if __name__ == '__main__':
     # parse the arguments, pass 'em to the function
     parser = OptionParser()
@@ -51,3 +59,4 @@ if __name__ == '__main__':
          fn = '_input/census_neighborhood_demographics_2010.csv'
     crime_file = open_csv(fn)
     key = crime_file.next()
+    get_stats(key[1], key[2], crime_file)
