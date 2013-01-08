@@ -39,14 +39,16 @@ def get_stats(field, value, key, csv):
         record = dict(zip(key, row))
         stats_list.append((record[field], record[value]))
 
+    return dict(stats_list)
+
 def build_dict(csv):
     # Loop through a two-column csv. The first column should be
     # the key, the second the value. Return a dict of the csv.
-    census_list = []
+    stats_list = []
     for row in csv:
-        census_list.append((row[0], row[1]))
+        stats_list.append((row[0], row[1]))
 
-    return dict(census_list)
+    return dict(stats_list)
 
 if __name__ == '__main__':
     # parse the arguments, pass 'em to the function
