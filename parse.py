@@ -165,11 +165,9 @@ def get_uniques(field):
     print set(values)
 
 def get_neighborhood(location):
-    # If location's in the list return that location name,
-    # if not, return false
+    # If location's in the list return that location name
     if location in neighborhoods:
         return location
-
     return False
 
 def open_csv(fn = '_input/crime-currentyear.csv'):
