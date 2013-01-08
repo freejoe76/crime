@@ -83,7 +83,7 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
     # Take a crime type or category and return a list of neighborhoods 
     # ranked by frequency of that crime.
     # If no crime is passed, we just rank overall number of crimes
-    # for that particular time period.
+    # (and crimes per-capita) for that particular time period.
     # Args taken should be the start of the timespan and the end.
     rankings = { 
         'neighborhood': defaultdict(int),
@@ -91,6 +91,13 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
         'category': defaultdict(int),
         'type': defaultdict(int)
     }
+    percapita = { 
+        'neighborhood': defaultdict(int),
+        'genre': defaultdict(int),
+        'category': defaultdict(int),
+        'type': defaultdict(int)
+    }
+    #percapita = rankings.copy()
     today = datetime.date(datetime.now())
     timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
     if not args:
@@ -116,6 +123,7 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
         if crime == None:
             # Update the neighborhood counter
             rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
+            percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
             rankings['type'][record['OFFENSE_TYPE_ID']] += 1
             rankings['category'][record['OFFENSE_CATEGORY_ID']] += 1
             crime_genre = crime_lookup[record['OFFENSE_CATEGORY_ID']]
@@ -126,12 +134,19 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
             if crime == crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime == record['OFFENSE_CATEGORY_ID'] or crime == record['OFFENSE_TYPE_ID']:
                 #print crime, crime_lookup[record['OFFENSE_CATEGORY_ID']]
                 rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
+                percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
             #else:
                 #print crime, crime_lookup[record['OFFENSE_CATEGORY_ID']]
 
+    for item in percapita['neighborhood'].items():
+        #print "Item 1: %s Pop of %s: %s" % ( item[1], item[0], populations[item[0]] ), 
+        percapita['neighborhood'][item[0]] = float(float(item[1])/float(populations[item[0]]))
+        #print float(float(item[1])/float(populations[item[0]]))
+    #print dir(percapita['neighborhood'])
 
     sorted_rankings = {
         'neighborhood': sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1)),
+        'percapita': sorted(percapita['neighborhood'].iteritems(), key=operator.itemgetter(1)),
         'genre': sorted(rankings['genre'].iteritems(), key=operator.itemgetter(1)),
         'category': sorted(rankings['category'].iteritems(), key=operator.itemgetter(1)),
         'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
