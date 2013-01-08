@@ -140,7 +140,7 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
 
     for item in percapita['neighborhood'].items():
         #print "Item 1: %s Pop of %s: %s" % ( item[1], item[0], populations[item[0]] ), 
-        percapita['neighborhood'][item[0]] = float(float(item[1])/float(populations[item[0]]))
+        percapita['neighborhood'][item[0]] = round(float(item[1])/float(populations[item[0]]), 5)
         #print float(float(item[1])/float(populations[item[0]]))
     #print dir(percapita['neighborhood'])
 
