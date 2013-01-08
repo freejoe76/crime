@@ -34,7 +34,7 @@ def slugify(value):
     value = re.sub('[^\w\s-]', '', value).strip().lower()
     return re.sub('[-\s]+', '-', value)
 
-def get_stats(field, value, key, csv):
+def build_custom_dict(field, value, key, csv):
     # Take a field column and a value column and return a dict
     print field, value
     stats_list = []
@@ -72,4 +72,4 @@ if __name__ == '__main__':
     crime_file = open_csv(fn)
     key = crime_file.next()
     print build_dict(crime_file)
-    #get_stats(key[1], key[2], key, crime_file)
+    #build_custom_dict(key[1], key[2], key, crime_file)
