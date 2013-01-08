@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # Run a query against the crime CSV's
 import os
+import re
 import csv
 import operator
 from collections import defaultdict
@@ -27,9 +28,11 @@ def open_csv(fn = '_input/census_neighborhood_demographics_2010.csv'):
     crime_file = csv.reader(fp, delimiter = ',')
     return crime_file
 
-def slugify(string):
+def slugify(value):
     # Return a lower-case no-space string.
-    return None
+    # Ripped from the pages of from django.template.defaultfilters
+    value = re.sub('[^\w\s-]', '', value).strip().lower()
+    return re.sub('[-\s]+', '-', value)
 
 def get_stats(field, value, key, csv):
     # Take a field column and a value column and return a dict
@@ -37,7 +40,7 @@ def get_stats(field, value, key, csv):
     stats_list = []
     for row in csv:
         record = dict(zip(key, row))
-        if int(record[field]) != record[field] && record[field] > 0:
+        if int(record[field]) != record[field] and record[field] > 0:
             field = slugify(record[field])
         else:
             field = record[field]
@@ -51,7 +54,7 @@ def build_dict(csv):
     stats_list = []
     for row in csv:
         field = slugify(row[0])
-        stats_list.append((row[0], row[1]))
+        stats_list.append((field, row[1]))
 
     return dict(stats_list)
 
