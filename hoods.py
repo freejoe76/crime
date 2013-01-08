@@ -31,9 +31,13 @@ def slugify(string):
     # Return a lower-case no-space string.
     return None
 
-def get_stats(field, value, csv):
+def get_stats(field, value, key, csv):
     # Take a field column and a value column and return a dict
     print field, value
+    stats_list = []
+    for row in csv:
+        record = dict(zip(key, row))
+        stats_list.append((record[field], record[value]))
 
 def build_dict(csv):
     # Loop through a two-column csv. The first column should be
@@ -46,6 +50,7 @@ def build_dict(csv):
 
 if __name__ == '__main__':
     # parse the arguments, pass 'em to the function
+    # $ python hoods.py -f _input/neighborhood_to_population.csv
     parser = OptionParser()
     parser.add_option("-n", "--name", dest="action")
     parser.add_option("-f", "--fn", dest="fn")
@@ -57,4 +62,4 @@ if __name__ == '__main__':
     crime_file = open_csv(fn)
     key = crime_file.next()
     print build_dict(crime_file)
-    #get_stats(key[1], key[2], crime_file)
+    #get_stats(key[1], key[2], key, crime_file)
