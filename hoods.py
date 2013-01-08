@@ -37,7 +37,11 @@ def get_stats(field, value, key, csv):
     stats_list = []
     for row in csv:
         record = dict(zip(key, row))
-        stats_list.append((record[field], record[value]))
+        if int(record[field]) != record[field] && record[field] > 0:
+            field = slugify(record[field])
+        else:
+            field = record[field]
+        stats_list.append((field, record[value]))
 
     return dict(stats_list)
 
@@ -46,6 +50,7 @@ def build_dict(csv):
     # the key, the second the value. Return a dict of the csv.
     stats_list = []
     for row in csv:
+        field = slugify(row[0])
         stats_list.append((row[0], row[1]))
 
     return dict(stats_list)
