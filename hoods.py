@@ -44,10 +44,10 @@ if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-n", "--name", dest="action")
     parser.add_option("-f", "--fn", dest="fn")
+    (options, args) = parser.parse_args()
+    fn = options.fn
 
-    if fn == '':
-         fn = 'census_neighborhood_demographics_2010.csv'
-
+    if fn is None:
+         fn = '_input/census_neighborhood_demographics_2010.csv'
     crime_file = open_csv(fn)
-    top_row(crime_file[0])
-
+    key = crime_file.next()
