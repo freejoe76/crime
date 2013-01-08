@@ -2,6 +2,7 @@
 # Run a query against the crime CSV's
 import os
 import csv
+import csvkit
 import operator
 from collections import defaultdict
 from optparse import OptionParser
