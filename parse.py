@@ -158,6 +158,10 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
     }
     return sorted_rankings
 
+def get_median(ranking):
+    # Take a ranking dict, add up the numbers, 
+    # get the median.
+    pass
 
 def get_uniques(field):
     # Write a list of unique values from a field
