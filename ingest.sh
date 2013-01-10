@@ -27,5 +27,7 @@ if [[ $DIFFCOUNT -gt 0 ]]; then
 	mv crime-newdiff.csv "crime-archive-$DATE.csv"
 	mv crime-current.csv crime-old.csv
 	mv crime-new.csv crime-current.csv
-	grep '2013-' crime-current.csv > crime-currentyear.csv
+	grep "$THIS_YEAR-" crime-current.csv > crime-currentyear.csv
+	grep "$LAST_YEAR-" crime-current.csv > crime-lastyear.csv
+	grep "$THIS_YEAR-$THIS_MONTH" crime-current.csv > crime-currentmonth.csv
 fi
