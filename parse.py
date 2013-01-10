@@ -47,6 +47,10 @@ def get_timespan_crimes(location = None, time_type = 'month', quantity = 'this',
     # Get crimes from a particular span of time
     pass
 
+def check_date(value):
+    # Check a date to see if it's valid. If not, throw error.
+    return datetime.strptime(value, '%Y-%m-%d')
+
 def get_recent_crimes(crime = None, location = None, *args, **kwargs):
     # Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
     # Timespan is passed as an argument (start, finish)
@@ -78,6 +82,7 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
 
         # Crime queries (to come)
     return crimes
+
 
 def get_rankings(crime = None, location = None, *args, **kwargs):
     # Take a crime type or category and return a list of neighborhoods 
