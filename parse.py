@@ -102,7 +102,7 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
         'category': defaultdict(int),
         'type': defaultdict(int)
     }
-    #percapita = rankings.copy()
+    percapita_multiplier = 1000
     today = datetime.date(datetime.now())
     timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
     if not args:
@@ -145,7 +145,7 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
 
     for item in percapita['neighborhood'].items():
         #print "Item 1: %s Pop of %s: %s" % ( item[1], item[0], populations[item[0]] ), 
-        percapita['neighborhood'][item[0]] = round(float(item[1])/float(populations[item[0]]), 5)
+        percapita['neighborhood'][item[0]] = round( float(item[1])/float(populations[item[0]]) * 1000, 2)
         #print float(float(item[1])/float(populations[item[0]]))
     #print dir(percapita['neighborhood'])
 
