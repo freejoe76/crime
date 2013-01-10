@@ -4,6 +4,7 @@
 #     1. Save a copy of those differences with a timestamp
 #     2. Save that copy of those differences to latestdiff.csv
 #     3. Update the current-year csv with the results, currentyear.csv
+# ***TODO: Incorporate a means of testing this script
 
 cd _input
 DATE=`date +'%F-%k'`
