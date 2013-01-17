@@ -110,6 +110,7 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
         timespan = (month, today)
 
     print "KW", args
+    print "KW", kwargs
     # Figure out what type of crime we're querying
     crime_type = 'type'
     if crime in crime_genres:
@@ -221,6 +222,10 @@ if __name__ == '__main__':
         #get_recent_crimes(location, {'time_type':'weeks', 'quantity':3})
         crimes = get_recent_crimes(crime, location, args, {test:options})
 
-    # How do you slice a dict?
-    print crimes
+    print dir(crimes)
+    # Let's try slicing this list.
+    if crimes['neighborhood']:
+        print dir(crimes['neighborhood'])
+        crimes['neighborhood'].reverse()
+        print crimes['neighborhood'][:5]
     #get_recent_crimes()
