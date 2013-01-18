@@ -220,12 +220,15 @@ if __name__ == '__main__':
         crimes = get_rankings(crime, location, args)
     if action == 'recent':
         #get_recent_crimes(location, {'time_type':'weeks', 'quantity':3})
-        crimes = get_recent_crimes(crime, location, args, {test:options})
+        crimes = get_recent_crimes(crime, location, args, {'test':options})
 
     print dir(crimes)
     # Let's try slicing this list.
-    if crimes['neighborhood']:
+    if type(crimes) != 'list':
+        # and crimes['neighborhood']:
         print dir(crimes['neighborhood'])
         crimes['neighborhood'].reverse()
         print crimes['neighborhood'][:5]
+    else:
+        print crimes
     #get_recent_crimes()
