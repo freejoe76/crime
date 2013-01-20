@@ -18,17 +18,17 @@ THIS_YEAR=`date +'%Y'`
 LAST_YEAR=`expr $THIS_YEAR - 1`
 LAST_LAST_YEAR=`expr $THIS_YEAR - 2`
 
-touch crime-current.csv
-wget -O crime-new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv
-diff crime-new.csv crime-current.csv > crime-newdiff.csv
-DIFFCOUNT=`cat crime-newdiff.csv | wc -l`
+touch current.csv
+wget -O new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv
+diff new.csv current.csv > newdiff.csv
+DIFFCOUNT=`cat newdiff.csv | wc -l`
 
 if [[ $DIFFCOUNT -gt 0 ]]; then
-	cp crime-newdiff.csv crime-latestdiff.csv
-	mv crime-newdiff.csv "crime-archive-$DATE.csv"
-	mv crime-current.csv crime-old.csv
-	mv crime-new.csv crime-current.csv
-	grep "$THIS_YEAR-" crime-current.csv > crime-currentyear.csv
-	grep "$LAST_YEAR-" crime-current.csv > crime-lastyear.csv
-	grep "$THIS_YEAR-$THIS_MONTH" crime-current.csv > crime-currentmonth.csv
+	cp newdiff.csv latestdiff.csv
+	mv newdiff.csv "archive-$DATE.csv"
+	mv current.csv old.csv
+	mv new.csv current.csv
+	grep "$THIS_YEAR-" current.csv > currentyear.csv
+	grep "$LAST_YEAR-" current.csv > lastyear.csv
+	grep "$THIS_YEAR-$THIS_MONTH" current.csv > currentmonth.csv
 fi

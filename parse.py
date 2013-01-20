@@ -180,7 +180,7 @@ def get_neighborhood(location):
         return location
     return False
 
-def open_csv(fn = '_input/crime-currentyear.csv'):
+def open_csv(fn = '_input/currentyear.csv'):
     # Open the crime file for parsing.
     # It defaults to the current year's file.
     fp = open(fn, 'rb')
