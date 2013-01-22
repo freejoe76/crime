@@ -17,10 +17,7 @@ THIS_MONTH=`date + '%m'`
 THIS_MONTH_FULL=`date +'%Y-%m'`
 LAST_MONTH=`expr $THIS_MONTH - 1`
 LAST_MONTH_FULL=$THIS_YEAR-`expr $THIS_MONTH - 1`
-LAST_LAST_MONTH=`expr $THIS_MONTH - 2`
-LAST_LAST_MONTH_FULL=$THIS_YEAR-`expr $THIS_MONTH - 2`
 if [[ $LAST_MONTH -lt 1 ]]; then $LAST_MONTH = `expr $LAST_MONTH + 12`; fi
-if [[ $LAST_LAST_MONTH -lt 1 ]]; then $LAST_LAST_MONTH = `expr $LAST_LAST_MONTH + 12`; fi
 
 touch current.csv
 wget -O new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv
