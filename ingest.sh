@@ -8,6 +8,7 @@
 
 cd _input
 DATE=`date +'%F-%k'`
+LOGFILE='logs/ingest'
 
 THIS_YEAR=`date +'%Y'`
 LAST_YEAR=`expr $THIS_YEAR - 1`
@@ -33,3 +34,7 @@ if [[ $DIFFCOUNT -gt 0 ]]; then
 	grep "$LAST_YEAR-" current.csv > lastyear.csv
 	grep "$THIS_MONTH" current.csv > currentmonth.csv
 fi
+
+echo "[$DATE] $DIFFCOUNT new entries" >> $LOGFILE
+
+
