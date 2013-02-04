@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # Run a query against the crime CSV's
 import os
 import csv
