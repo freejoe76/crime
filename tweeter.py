@@ -8,19 +8,19 @@ import os, string
 def write_file(content, filename):
     try:
         fn = open(filename, 'w')
-    except Exception as inst:
+        fn.write(content.encode('utf-8'))
+    except IOError as inst:
         print type(inst), inst.args
-        return false
-    fn.write(content.encode('utf-8'))
+        return False
     fn.close
 
 def read_file(filename):
     try:
         fn = open(filename, 'w')
-    except Exception as inst:
+        content = fn.read()
+    except IOError as inst:
         print type(inst), inst.args
-        return false
-    content = fn.read()
+        return False
     fn.close
     return content
 
