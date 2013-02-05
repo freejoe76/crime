@@ -16,12 +16,12 @@ def write_file(content, filename):
 
 def read_file(filename):
     try:
-        fn = open(filename, 'w')
+        fn = open(filename, 'r')
         content = fn.read()
+        fn.close
     except IOError as inst:
         print type(inst), inst.args
         return False
-    fn.close
     return content
 
 
