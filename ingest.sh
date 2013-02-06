@@ -31,6 +31,7 @@ fi
 cd _input
 DATE=`date +'%F-%k'`
 LOGFILE='logs/ingest'
+touch $LOGFILE
 
 THIS_YEAR=`date +'%Y'`
 LAST_YEAR=`expr $THIS_YEAR - 1`
