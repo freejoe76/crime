@@ -109,8 +109,8 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
         month = today - timedelta(90)
         timespan = (month, today)
 
-    print "KW", args
-    print "KW", kwargs
+    #print "Args", args
+    #print "KeyWordArgs", kwargs
     # Figure out what type of crime we're querying
     crime_type = 'type'
     if crime in crime_genres:
@@ -216,7 +216,7 @@ if __name__ == '__main__':
     crime_file = open_csv()
     if action == 'rankings':
         # Example:
-        # $ python parse.py -a rankings -c violent '2012-09-01' '2012-11-01'
+        # $ ./parse.py -a rankings -c violent '2013-01-01' '2013-02-01'
         crimes = get_rankings(crime, location, args)
     if action == 'recent':
         #get_recent_crimes(location, {'time_type':'weeks', 'quantity':3})
@@ -228,7 +228,10 @@ if __name__ == '__main__':
         # and crimes['neighborhood']:
         print dir(crimes['neighborhood'])
         crimes['neighborhood'].reverse()
-        print crimes['neighborhood'][:5]
+        crimes['percapita'].reverse()
+        print crimes['neighborhood'][:10]
+        print crimes['percapita'][:25]
+	#print crimes
     else:
         print crimes
     #get_recent_crimes()
