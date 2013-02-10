@@ -187,18 +187,29 @@ def open_csv(fn = '_input/currentyear.csv'):
     crime_file = csv.reader(fp, delimiter = ',')
     return crime_file
 
+def print_crimes_list(crimes, limit):
+    # The method for outputting crime lists
+    output = ''
+    i = 0
+    for crime in crimes:
+        if i > limit:
+            continue
+        i = i + 1
+        output += '%i. %s' % (i, crime)
+    return output
+
+def print_crimes_dict(crimes, limit):
+    # The method for outputting crime dicts 
+    pass
+
 def print_crimes(crimes, limit):
     # How do we want to display the crimes?
     # Right now we're publishing them to be read in terminal.
-    output = ''
     if type(crimes) == 'list':
-        i = 0
-        for crime in crimes:
-            if i > limit:
-                continue
-            i = i + 1
-            output += '%i. %s' % (i, crime)
-    return output
+        return print_crimes_list(crimes, limit)
+    elif type(crimes) == 'dict':
+        pass
+    return False
 
 if __name__ == '__main__':
     # Parse the arguments, pass 'em to the function
@@ -242,10 +253,10 @@ if __name__ == '__main__':
         print dir(crimes['neighborhood'])
         crimes['neighborhood'].reverse()
         crimes['percapita'].reverse()
-        print crimes['neighborhood'][:10]
-        print crimes['percapita'][:25]
+        #print crimes['neighborhood'][:10]
+        #print crimes['percapita'][:25]
         #print crimes
         print type(crimes), type(crimes['neighborhood'])
-    else:
-        print crimes
+
+    print print_crimes(crimes, 15)
     #get_recent_crimes()
