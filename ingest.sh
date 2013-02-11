@@ -29,7 +29,7 @@ if [[ $TEST -eq 1 ]]; then
 fi
 
 cd _input
-DATE=`date +'%F-%k'`
+DATE=`date +'%F-%H'`
 LOGFILE='logs/ingest'
 
 THIS_YEAR=`date +'%Y'`
