@@ -200,7 +200,9 @@ def print_crimes_list(crimes, limit):
 
 def print_crimes_dict(crimes, limit):
     # The method for outputting crime dicts 
-    pass
+    output = ''
+    for crime_list in crimes:
+        print crime_list
 
 def print_crimes(crimes, limit):
     # How do we want to display the crimes?
@@ -208,7 +210,7 @@ def print_crimes(crimes, limit):
     if type(crimes) == 'list':
         return print_crimes_list(crimes, limit)
     elif type(crimes) == 'dict':
-        pass
+        return print_crimes_dict(crimes, limit)
     return False
 
 if __name__ == '__main__':
@@ -256,7 +258,6 @@ if __name__ == '__main__':
         #print crimes['neighborhood'][:10]
         #print crimes['percapita'][:25]
         #print crimes
-        print type(crimes), type(crimes['neighborhood'])
 
     print print_crimes(crimes, 15)
     #get_recent_crimes()
