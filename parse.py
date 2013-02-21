@@ -51,6 +51,11 @@ def check_date(value):
     # Check a date to see if it's valid. If not, throw error.
     return datetime.strptime(value, '%Y-%m-%d')
 
+def get_top_crimes(crime = None, location = None):
+    # Index frequency of crimes by type.
+    # Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
+    pass
+
 def get_recent_crimes(crime = None, location = None, *args, **kwargs):
     # Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
     # Timespan is passed as an argument (start, finish)
@@ -141,14 +146,10 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
                 #print crime, crime_lookup[record['OFFENSE_CATEGORY_ID']]
                 rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
                 percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
-            #else:
-                #print crime, crime_lookup[record['OFFENSE_CATEGORY_ID']]
 
     for item in percapita['neighborhood'].items():
         #print "Item 1: %s Pop of %s: %s" % ( item[1], item[0], populations[item[0]] ), 
         percapita['neighborhood'][item[0]] = round( float(item[1])/float(populations[item[0]]) * 1000, 2)
-        #print float(float(item[1])/float(populations[item[0]]))
-    #print dir(percapita['neighborhood'])
 
     sorted_rankings = {
         'neighborhood': sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1)),
@@ -260,4 +261,3 @@ if __name__ == '__main__':
         #print crimes
 
     print print_crimes(crimes, 15)
-    #get_recent_crimes()
