@@ -39,9 +39,8 @@ LAST_LAST_YEAR=`expr $THIS_YEAR - 2`
 
 THIS_MONTH=`date +'%m'`
 THIS_MONTH_FULL=`date +'%Y-%m'`
-LAST_MONTH=`expr $THIS_MONTH - 1`
-LAST_MONTH_FULL=$THIS_YEAR-`expr $THIS_MONTH - 1`
-if [[ $LAST_MONTH -lt 1 ]]; then $LAST_MONTH=`expr $LAST_MONTH + 12`; fi
+LAST_MONTH=`date +'%m' --date='month ago'`
+LAST_MONTH_FULL=`date +'%Y-%m' --date='month ago'`
 
 touch current.csv
 
