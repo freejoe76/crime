@@ -39,14 +39,13 @@ LAST_LAST_YEAR=`expr $THIS_YEAR - 2`
 
 THIS_MONTH=`date +'%m'`
 THIS_MONTH_FULL=`date +'%Y-%m'`
-LAST_MONTH=`expr $THIS_MONTH - 1`
-LAST_MONTH_FULL=$THIS_YEAR-`expr $THIS_MONTH - 1`
-if [[ $LAST_MONTH -lt 1 ]]; then $LAST_MONTH=`expr $LAST_MONTH + 12`; fi
+LAST_MONTH=`date +'%m' --date='month ago'`
+LAST_MONTH_FULL=`date +'%Y-%m' --date='month ago'`
 
 touch current.csv
 
 # If we're testing, it's possible we won't want to download the csv.
-if [[ $NODOWNLOAD -eq 0 ]]; then wget -O new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv; fi
+if [[ $NODOWNLOAD -eq 1 ]]; then wget -O new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv; fi
 
 diff new.csv current.csv > newdiff.csv
 DIFFCOUNT=`cat newdiff.csv | wc -l`
@@ -70,6 +69,13 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
 	grep "$THIS_YEAR-" current.csv > currentyear.csv
 	grep "$LAST_YEAR-" current.csv > lastyear.csv
 	grep "$THIS_MONTH" current.csv > currentmonth.csv
+
+    # Build a csv of the crimes for the last 12 months
+    > last12months.csv
+    for NUM in 0 1 2 3 4 5 6 7 8 9 10 11; 
+    do
+        grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> last12months.csv
+    done
 fi
 
 if [[ $TEST -eq 0 ]]; then echo "[$DATE] $DIFFCOUNT new entries" >> $LOGFILE; fi
