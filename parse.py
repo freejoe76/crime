@@ -63,8 +63,8 @@ def get_specific_crime(crime, location = None):
     crimes = get_recent_crimes(crime, location)
     count = len(crimes)
     last_crime = crimes[count-1]['LAST_OCCURRENCE_DATE']
-    #last = check_datetime(last_crime['FIRST_OCCURRENCE_DATE'])
-    #print datetime.now() - last
+    #for crime in crimes:
+    #    print crime['OFFENSE_TYPE_ID']
     return { 'count': count, 'last_crime': last_crime }
 
 def get_recent_crimes(crime = None, location = None, *args, **kwargs):
