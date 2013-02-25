@@ -45,7 +45,7 @@ LAST_MONTH_FULL=`date +'%Y-%m' --date='month ago'`
 touch current.csv
 
 # If we're testing, it's possible we won't want to download the csv.
-if [[ $NODOWNLOAD -eq 1 ]]; then wget -O new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv; fi
+if [[ $NODOWNLOAD -eq 0 ]]; then wget -O new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv; fi
 
 diff new.csv current.csv > newdiff.csv
 DIFFCOUNT=`cat newdiff.csv | wc -l`

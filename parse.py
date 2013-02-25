@@ -54,6 +54,9 @@ def check_date(value):
 def get_top_crimes(crime = None, location = None):
     # Index frequency of crimes by type.
     # Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
+    # Returns frequency for entire csv specified.
+    # Also returns the # of days since the last crime.
+
     pass
 
 def get_recent_crimes(crime = None, location = None, *args, **kwargs):
@@ -88,6 +91,15 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
         # Crime queries (to come)
     return crimes
 
+def get_crime_type(crime):
+    # Figure out what type of crime we're querying
+    crime_type = 'type'
+    if crime in crime_genres:
+        crime_type = 'genre'
+    elif crime in crime_lookup:
+        crime_type = 'category'
+
+    return crime_type
 
 def get_rankings(crime = None, location = None, *args, **kwargs):
     # Take a crime type or category and return a list of neighborhoods 
@@ -116,12 +128,7 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
 
     #print "Args", args
     #print "KeyWordArgs", kwargs
-    # Figure out what type of crime we're querying
-    crime_type = 'type'
-    if crime in crime_genres:
-        crime_type = 'genre'
-    elif crime in crime_lookup:
-        crime_type = 'category'
+    crime_type = get_crime_type(crime)
 
     for row in crime_file:
         record = dict(zip(keys, row))
