@@ -66,7 +66,7 @@ def get_specific_crime(crime, location = None):
     '''
     crimes = get_recent_crimes(crime, location)
     count = len(crimes)
-    print crimes[count], crimes[0]
+    print crimes[count-1], crimes[0]
     pass
 
 def get_recent_crimes(crime = None, location = None, *args, **kwargs):
@@ -74,14 +74,15 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
     # Timespan is passed as an argument (start, finish)
 
     crimes = []
-    today = datetime.date(datetime.now())
-    # timespan a tuple of dates, that defaults to everything.
-    # Decided to set that here rather than in the method def for the sake of space.
-    timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
-    if verbose:
-        print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
+
     if not args:
         timespan = None
+    else:
+        # timespan a tuple of dates, that defaults to everything.
+        # Decided to set that here rather than in the method def for the sake of space.
+        timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
+        if verbose:
+            print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
 
     for row in crime_file:
         record = dict(zip(keys, row))
@@ -267,13 +268,15 @@ if __name__ == '__main__':
     if action == 'recent':
         crimes = get_recent_crimes(crime, location, args, {'test':options})
     if action == 'specific':
+        # $ ./parse.py -a specific -crime drug-alcohol
         crimes = get_specific_crime(crime, location)
 
     print dir(crimes)
     # Let's try slicing this list.
-    if type(crimes) != 'list':
+    if type(crimes) != 'list' and crimes:
         # and crimes['neighborhood']:
-        print dir(crimes['neighborhood'])
+        print type(crimes)
+        #print dir(crimes['neighborhood'])
         crimes['neighborhood'].reverse()
         crimes['percapita'].reverse()
         #print crimes['neighborhood'][:10]
