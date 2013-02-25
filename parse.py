@@ -73,6 +73,7 @@ def get_specific_crime(crime, location = None):
     last_crime = crimes[count-1]
     #print last_crime.viewkeys()
     print last_crime['FIRST_OCCURRENCE_DATE']
+    print datetime.now()
     #print dir(last_crime)
     #print crimes[count-1]['LAST_OCCURENCE_DATE']
     pass
