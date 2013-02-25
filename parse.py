@@ -56,13 +56,15 @@ def get_top_crimes(crime, location = None):
     # Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
     # Returns frequency for entire csv specified.
     # Also returns the # of days since the last crime.
+    '''
     crime_type = get_crime_type(crime)
     for row in crime_file:
         record = dict(zip(keys, row))
 
         if crime == crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime == record['OFFENSE_CATEGORY_ID'] or crime == record['OFFENSE_TYPE_ID']:
             print crime, crime_lookup[record['OFFENSE_CATEGORY_ID']]
-    
+    '''
+    crimes = get_recent_crimes(crime, location)
     pass
 
 def get_recent_crimes(crime = None, location = None, *args, **kwargs):
@@ -71,7 +73,7 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
 
     crimes = []
     today = datetime.date(datetime.now())
-    # timespan a tuple of dates, that defaults to the past 30 days.
+    # timespan a tuple of dates, that defaults to the past 30 days. ** WHAT IF WE DON'T CARE
     # Decided to set that here rather than in the method def for the sake of space.
     timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
     if verbose:
@@ -261,7 +263,8 @@ if __name__ == '__main__':
         # $ ./parse.py -a rankings -c violent '2013-01-01' '2013-02-01'
         crimes = get_rankings(crime, location, args)
     if action == 'recent':
-        #get_recent_crimes(location, {'time_type':'weeks', 'quantity':3})
+        crimes = get_recent_crimes(crime, location, args, {'test':options})
+    if action == 'top':
         crimes = get_recent_crimes(crime, location, args, {'test':options})
 
     print dir(crimes)
