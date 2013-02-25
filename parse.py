@@ -51,6 +51,10 @@ def check_date(value):
     # Check a date to see if it's valid. If not, throw error.
     return datetime.strptime(value, '%Y-%m-%d')
 
+def check_datetime(value):
+    # Check a datetime to see if it's valid. If not, throw error.
+    return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+
 def get_specific_crime(crime, location = None):
     # Indexes specific crime.
     # Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
@@ -66,7 +70,11 @@ def get_specific_crime(crime, location = None):
     '''
     crimes = get_recent_crimes(crime, location)
     count = len(crimes)
-    print crimes[count-1], crimes[0]
+    last_crime = crimes[count-1]
+    #print last_crime.viewkeys()
+    print last_crime['FIRST_OCCURRENCE_DATE']
+    #print dir(last_crime)
+    #print crimes[count-1]['LAST_OCCURENCE_DATE']
     pass
 
 def get_recent_crimes(crime = None, location = None, *args, **kwargs):
