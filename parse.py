@@ -73,22 +73,22 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
 
     crimes = []
     today = datetime.date(datetime.now())
-    # timespan a tuple of dates, that defaults to the past 30 days. ** WHAT IF WE DON'T CARE
+    # timespan a tuple of dates, that defaults to everything.
     # Decided to set that here rather than in the method def for the sake of space.
     timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
     if verbose:
         print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
     if not args:
-        month = today - timedelta(30)
-        timespan = (month, today)
+        timespan = None
 
     for row in crime_file:
         record = dict(zip(keys, row))
 
         # Time queries
-        ts = convert_timestamp(record['FIRST_OCCURRENCE_DATE'])
-        if not timespan[0] <= datetime.date(ts) <= timespan[1]:
-            continue
+        if timespan:
+            ts = convert_timestamp(record['FIRST_OCCURRENCE_DATE'])
+            if not timespan[0] <= datetime.date(ts) <= timespan[1]:
+                continue
 
         # Location queries
         if location == None:
