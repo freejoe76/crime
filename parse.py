@@ -206,20 +206,6 @@ def open_csv(fn = '_input/currentyear.csv'):
     crime_file = csv.reader(fp, delimiter = ',')
     return crime_file
 
-def print_crimes_list(crimes, limit):
-    # The method for outputting crime lists
-    output = ''
-    i = 0
-    for crime in crimes[:limit]:
-        i = i + 1
-        output += '%i. %s' % (i, crime)
-    return output
-
-def print_crimes_dict(crimes, limit):
-    # The method for outputting crime dicts 
-    output = ''
-    for key, crime in crimes:
-        print key, crime
 
 def print_crimes(crimes, limit):
     # How do we want to display the crimes?
