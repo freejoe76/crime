@@ -219,8 +219,8 @@ def print_crimes(crimes, limit):
             output += '%i. %s' % (i, crime)
     except:
         # Dicts
-        for key, crime in crimes:
-            output += "%s, %s" % (key, crime)
+        for key in crimes:
+            output += "%s, %s\n" % (key, crimes[key])
 
     return output
 
