@@ -51,8 +51,8 @@ def check_date(value):
     # Check a date to see if it's valid. If not, throw error.
     return datetime.strptime(value, '%Y-%m-%d')
 
-def get_top_crimes(crime, location = None):
-    # Index frequency of crimes by type.
+def get_specific_crime(crime, location = None):
+    # Indexes specific crime.
     # Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
     # Returns frequency for entire csv specified.
     # Also returns the # of days since the last crime.
@@ -65,6 +65,8 @@ def get_top_crimes(crime, location = None):
             print crime, crime_lookup[record['OFFENSE_CATEGORY_ID']]
     '''
     crimes = get_recent_crimes(crime, location)
+    count = len(crimes)
+    print crimes[count], crimes[0]
     pass
 
 def get_recent_crimes(crime = None, location = None, *args, **kwargs):
@@ -264,8 +266,8 @@ if __name__ == '__main__':
         crimes = get_rankings(crime, location, args)
     if action == 'recent':
         crimes = get_recent_crimes(crime, location, args, {'test':options})
-    if action == 'top':
-        crimes = get_recent_crimes(crime, location, args, {'test':options})
+    if action == 'specific':
+        crimes = get_specific_crime(crime, location)
 
     print dir(crimes)
     # Let's try slicing this list.
