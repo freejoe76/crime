@@ -210,9 +210,7 @@ def print_crimes_list(crimes, limit):
     # The method for outputting crime lists
     output = ''
     i = 0
-    for crime in crimes:
-        if i > limit:
-            continue
+    for crime in crimes[:limit]:
         i = i + 1
         output += '%i. %s' % (i, crime)
     return output
@@ -220,17 +218,25 @@ def print_crimes_list(crimes, limit):
 def print_crimes_dict(crimes, limit):
     # The method for outputting crime dicts 
     output = ''
-    for crime_list in crimes:
-        print crime_list
+    for key, crime in crimes:
+        print key, crime
 
 def print_crimes(crimes, limit):
     # How do we want to display the crimes?
     # Right now we're publishing them to be read in terminal.
-    if type(crimes) == 'list':
-        return print_crimes_list(crimes, limit)
-    elif type(crimes) == 'dict':
-        return print_crimes_dict(crimes, limit)
-    return False
+    output = ''
+    try:
+        # Lists
+        i = 0
+        for crime in crimes[:limit]:
+            i = i + 1
+            output += '%i. %s' % (i, crime)
+    except:
+        # Dicts
+        for key, crime in crimes:
+            output += "%s, %s" % (key, crime)
+
+    return output
 
 if __name__ == '__main__':
     # Parse the arguments, pass 'em to the function
@@ -270,5 +276,5 @@ if __name__ == '__main__':
     if action == 'specific':
         # $ ./parse.py -a specific -crime drug-alcohol
         crimes = get_specific_crime(crime, location)
-
+    print crimes
     print print_crimes(crimes, 15)
