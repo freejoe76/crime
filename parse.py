@@ -51,12 +51,18 @@ def check_date(value):
     # Check a date to see if it's valid. If not, throw error.
     return datetime.strptime(value, '%Y-%m-%d')
 
-def get_top_crimes(crime = None, location = None):
+def get_top_crimes(crime, location = None):
     # Index frequency of crimes by type.
     # Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
     # Returns frequency for entire csv specified.
     # Also returns the # of days since the last crime.
+    crime_type = get_crime_type(crime)
+    for row in crime_file:
+        record = dict(zip(keys, row))
 
+        if crime == crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime == record['OFFENSE_CATEGORY_ID'] or crime == record['OFFENSE_TYPE_ID']:
+            print crime, crime_lookup[record['OFFENSE_CATEGORY_ID']]
+    
     pass
 
 def get_recent_crimes(crime = None, location = None, *args, **kwargs):
@@ -91,6 +97,7 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
         # Crime queries (to come)
     return crimes
 
+
 def get_crime_type(crime):
     # Figure out what type of crime we're querying
     crime_type = 'type'
@@ -100,6 +107,7 @@ def get_crime_type(crime):
         crime_type = 'category'
 
     return crime_type
+
 
 def get_rankings(crime = None, location = None, *args, **kwargs):
     # Take a crime type or category and return a list of neighborhoods 
