@@ -64,7 +64,6 @@ def get_specific_crime(crime, location = None):
     crimes = get_recent_crimes(crime, location)
     count = len(crimes)
     last_crime = None
-    print crimes
     if count > 0:
         last_crime = crimes[count-1]['FIRST_OCCURRENCE_DATE']
     #for crime in crimes:
