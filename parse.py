@@ -28,6 +28,7 @@ crime_lookup = {
     'white-collar-crime': 'other',
     'public-disorder': 'other'
 }
+crime_types = {}
 keys = ['INCIDENT_ID','OFFENSE_ID','OFFENSE_CODE','OFFENSE_CODE_EXTENSION','OFFENSE_TYPE_ID','OFFENSE_CATEGORY_ID','FIRST_OCCURRENCE_DATE','LAST_OCCURRENCE_DATE','REPORTED_DATE','INCIDENT_ADDRESS','GEO_X','GEO_Y','GEO_LON','GEO_LAT','DISTRICT_ID','PRECINCT_ID','NEIGHBORHOOD_ID']
 neighborhoods = ['wellshire', 'bear-valley', 'hilltop', 'cbd', 'university-hills', 'overland', 'speer', 'union-station', 'washington-virginia-vale', 'marston', 'north-capitol-hill', 'city-park', 'sloan-lake', 'five-points', 'sun-valley', 'westwood', 'cole', 'windsor', 'platt-park', 'jefferson-park', 'harvey-park', 'skyland', 'sunnyside', 'southmoor-park', 'ruby-hill', 'capitol-hill', 'barnum-west', 'harvey-park-south', 'dia', 'athmar-park', 'elyria-swansea', 'lowry-field', 'goldsmith', 'stapleton', 'chaffee-park', 'berkeley', 'washington-park', 'indian-creek', 'barnum', 'montbello', 'civic-center', 'hampden-south', 'globeville', 'city-park-west', 'clayton', 'northeast-park-hill', 'country-club', 'hale', 'mar-lee', 'lincoln-park', 'gateway-green-valley-ranch', 'west-highland', 'congress-park', 'regis', 'east-colfax', 'whittier', 'belcaro', 'hampden', 'fort-logan', 'college-view-south-platte', 'montclair', 'baker', 'kennedy', 'cherry-creek', 'cheesman-park', 'west-colfax', 'south-park-hill', 'cory-merrill', 'rosedale', 'valverde', 'university-park', 'auraria', 'north-park-hill', 'highland', 'villa-park', 'university', 'virginia-village', 'washington-park-west']
 populations = {'wellshire': '3133', 'cbd': '3648', 'university-hills': '5327', 'overland': '2218', 'speer': '10954', 'gateway-green-valley-ranch': '29201', 'ruby-hill': '9820', 'marston': '11132', 'north-capitol-hill': '5823', 'city-park': '2907', 'indian-creek': '3096', 'five-points': '12712', 'sun-valley': '1448', 'westwood': '15486', 'cole': '4651', 'washington-park-west': '6393', 'platt-park': '5393', 'harvey-park-south': '8393', 'villa-park': '8758', 'athmar-park': '8898', 'skyland': '3106', 'north-park-hill': '9382', 'sunnyside': '9726', 'southmoor-park': '3826', 'jefferson-park': '2552', 'capitol-hill': '14708', 'windsor': '12589', 'barnum-west': '5376', 'virginia-village': '12844', 'montbello': '30348', 'bear-valley': '8889', 'goldsmith': '5808', 'stapleton': '13948', 'chaffee-park': '3874', 'cory-merrill': '3892', 'northeast-park-hill': '7822', 'union-station': '4348', 'washington-park': '6905', 'barnum': '6111', 'elyria-swansea': '6401', 'civic-center': '1577', 'hampden-south': '14370', 'globeville': '3687', 'city-park-west': '4844', 'clayton': '4336', 'cheesman-park': '7971', 'country-club': '3001', 'hale': '6936', 'mar-lee': '12452', 'lincoln-park': '6119', 'berkeley': '8112', 'west-highland': '8540', 'harvey-park': '11525', 'regis': '3934', 'east-colfax': '10191', 'whittier': '4831', 'belcaro': '4172', 'hampden': '17547', 'fort-logan': '8532', 'college-view-south-platte': '6498', 'west-colfax': '9740', 'baker': '4879', 'kennedy': '4464', 'cherry-creek': '5589', 'dia': '1165', 'congress-park': '10235', 'south-park-hill': '8590', 'rosedale': '2553', 'valverde': '3941', 'lowry-field': '8067', 'washington-virginia-vale': '13030', 'auraria': '705', 'hilltop': '8190', 'highland': '8429', 'montclair': '5456', 'university': '9375', 'university-park': '7491', 'sloan-lake': '7238'}
@@ -115,9 +116,16 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
             if crime_type == 'parent_category':
                 if record['OFFENSE_CATEGORY_ID'] in crime_lookup_reverse[crime]:
                     crimes.append(record)
-            elif record[crime_type] == crime:
-                crimes.append(record)
-
+            else:
+                if record[crime_type] == crime:
+                    crimes.append(record)
+                elif grep == True:
+                    # Loop through the types of crimes, 
+                    # looking for a partial string match.
+                    for crime_item in crime_types:
+                        if crime in crime_item:
+                            crimes.append(record)
+                            # terminate the for loop ###
     return crimes
 
 
