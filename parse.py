@@ -64,8 +64,9 @@ def get_specific_crime(crime, location = None):
     crimes = get_recent_crimes(crime, location)
     count = len(crimes)
     last_crime = None
+    print crimes
     if count > 0:
-        last_crime = crimes[count-1]['LAST_OCCURRENCE_DATE']
+        last_crime = crimes[count-1]['FIRST_OCCURRENCE_DATE']
     #for crime in crimes:
     #    print crime['OFFENSE_TYPE_ID']
     return { 'count': count, 'last_crime': last_crime }
@@ -87,6 +88,9 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
 
     crime_type = get_crime_type(crime)
 
+    if verbose:
+        print timespan, location, crime
+
     for row in crime_file:
         record = dict(zip(keys, row))
         
@@ -101,11 +105,22 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
         if location == None:
             if crime == None:
                 crimes.append(record['OFFENSE_CATEGORY_ID'])
+            else:
+                if crime_type == 'parent_category':
+                    # This is handled differently.
+                    pass
+                elif record[crime_type] == crime:
+                    crimes.append(record)
         elif record['NEIGHBORHOOD_ID'] == location:
             if crime == None:
                 crimes.append(record)
+            else:
+                if crime_type == 'parent_category':
+                    # This is handled differently.
+                    pass
+                elif record[crime_type] == crime:
+                    crimes.append(record)
 
-        # Crime queries (to come)
     return crimes
 
 
@@ -114,13 +129,13 @@ def get_crime_type(crime):
     # parent_category doesn't correspond to a CSV field,
     # which is why it looks different. So that's obvious.
     # type OFFENSE_TYPE_ID
-    # genre OFFENSE_CATEGORY_ID
-    # category violent / property / other
+    # genre violent / property / other 
+    # category OFFENSE_CATEGORY_ID
     crime_type = 'OFFENSE_TYPE_ID'
     if crime in crime_genres:
-        crime_type = 'OFFENSE_CATEGORY_ID'
-    elif crime in crime_lookup:
         crime_type = 'parent_category'
+    elif crime in crime_lookup:
+        crime_type = 'OFFENSE_CATEGORY_ID'
 
     return crime_type
 
