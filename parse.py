@@ -63,7 +63,9 @@ def get_specific_crime(crime, location = None):
     # Also returns the # of days since the last crime.
     crimes = get_recent_crimes(crime, location)
     count = len(crimes)
-    last_crime = crimes[count-1]['LAST_OCCURRENCE_DATE']
+    last_crime = None
+    if count > 0:
+        last_crime = crimes[count-1]['LAST_OCCURRENCE_DATE']
     #for crime in crimes:
     #    print crime['OFFENSE_TYPE_ID']
     return { 'count': count, 'last_crime': last_crime }
@@ -87,7 +89,6 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
 
     for row in crime_file:
         record = dict(zip(keys, row))
-        print record
         
 
         # Time queries
@@ -98,9 +99,11 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
 
         # Location queries
         if location == None:
-            crimes.append(record['OFFENSE_CATEGORY_ID'])
+            if crime == None:
+                crimes.append(record['OFFENSE_CATEGORY_ID'])
         elif record['NEIGHBORHOOD_ID'] == location:
-            crimes.append(record)
+            if crime == None:
+                crimes.append(record)
 
         # Crime queries (to come)
     return crimes
