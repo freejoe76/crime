@@ -258,6 +258,7 @@ if __name__ == '__main__':
     parser.add_option("-l", "--location", dest="location", default="capitol-hill")
     parser.add_option("-t", "--limit", dest="limit", default=20)
     parser.add_option("-c", "--crime", dest="crime", default="violent")
+    parser.add_option("-g", "--grep", dest="grep", default=False)
     parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default=False)
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
     (options, args) = parser.parse_args()
@@ -265,6 +266,7 @@ if __name__ == '__main__':
     location = options.location
     limit = options.limit
     crime = options.crime
+    grep = options.grep
     yearoveryear = options.yearoveryear
     verbose = options.verbose
 
