@@ -39,10 +39,6 @@ def get_location_list(location_type):
 def get_location_ranking(locations, crime_type):
     pass
 
-def convert_timestamp(ts):
-    # Take a crimestamp (UHN) from the csv and turn it into a datetime object
-    return datetime.strptime(ts, '%Y-%m-%d %H:%M:%S')
-    
 def get_timespan_crimes(location = None, time_type = 'month', quantity = 'this',  *args, **kwargs):
     # Get crimes from a particular span of time
     pass
@@ -87,7 +83,7 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
 
         # Time queries
         if timespan:
-            ts = convert_timestamp(record['FIRST_OCCURRENCE_DATE'])
+            ts = check_datetime(record['FIRST_OCCURRENCE_DATE'])
             if not timespan[0] <= datetime.date(ts) <= timespan[1]:
                 continue
 
@@ -145,7 +141,7 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
         record = dict(zip(keys, row))
 
         # Time queries
-        ts = convert_timestamp(record['FIRST_OCCURRENCE_DATE'])
+        ts = check_datetime(record['FIRST_OCCURRENCE_DATE'])
         if not timespan[0] <= datetime.date(ts) <= timespan[1]:
             continue
 
