@@ -78,8 +78,12 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
         if verbose:
             print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
 
+    crime_type = get_crime_type(crime)
+
     for row in crime_file:
         record = dict(zip(keys, row))
+        print record
+        
 
         # Time queries
         if timespan:
@@ -99,11 +103,16 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
 
 def get_crime_type(crime):
     # Figure out what type of crime we're querying
-    crime_type = 'type'
+    # parent_category doesn't correspond to a CSV field,
+    # which is why it looks different. So that's obvious.
+    # type OFFENSE_TYPE_ID
+    # genre OFFENSE_CATEGORY_ID
+    # category violent / property / other
+    crime_type = 'OFFENSE_TYPE_ID'
     if crime in crime_genres:
-        crime_type = 'genre'
+        crime_type = 'OFFENSE_CATEGORY_ID'
     elif crime in crime_lookup:
-        crime_type = 'category'
+        crime_type = 'parent_category'
 
     return crime_type
 
@@ -175,13 +184,11 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
     return sorted_rankings
 
 def get_median(ranking):
-    # Take a ranking dict, add up the numbers, 
-    # get the median.
+    # Take a ranking dict, add up the numbers, get the median.
     pass
 
 def get_uniques(field):
-    # Write a list of unique values from a field
-    # in the CSV
+    # Write a list of unique values from a field in the CSV
     values = []
     for row in crime_file:
         record = dict(zip(keys, row))
