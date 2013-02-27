@@ -101,20 +101,23 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
             if not timespan[0] <= datetime.date(ts) <= timespan[1]:
                 continue
 
-        # Location queries
-        if location == None:
-            if crime == None:
+        # Location and crime queries
+        if location == None and crime == None:
+            crimes.append(record['OFFENSE_CATEGORY_ID'])
+
+        if location != None and crime == None:
+            if record['NEIGHBORHOOD_ID'] == location:
                 crimes.append(record['OFFENSE_CATEGORY_ID'])
-            else:
-                if crime_type == 'parent_category':
-                    if record['OFFENSE_CATEGORY_ID'] in crime_lookup_reverse[crime]:
-                        crimes.append(record)
-                elif record[crime_type] == crime:
+
+        if location == None and crime != None:
+            if crime_type == 'parent_category':
+                if record['OFFENSE_CATEGORY_ID'] in crime_lookup_reverse[crime]:
                     crimes.append(record)
-        elif record['NEIGHBORHOOD_ID'] == location:
-            if crime == None:
+            elif record[crime_type] == crime:
                 crimes.append(record)
-            else:
+
+        if location != None and crime != None:
+            if record['NEIGHBORHOOD_ID'] == location:
                 if crime_type == 'parent_category':
                     if record['OFFENSE_CATEGORY_ID'] in crime_lookup_reverse[crime]:
                         crimes.append(record)
