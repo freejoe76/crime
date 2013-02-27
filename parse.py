@@ -107,8 +107,8 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
                 crimes.append(record['OFFENSE_CATEGORY_ID'])
             else:
                 if crime_type == 'parent_category':
-                    # This is handled differently.
-                    pass
+                    if record['OFFENSE_CATEGORY_ID'] in crime_lookup_reverse[crime]:
+                        crimes.append(record)
                 elif record[crime_type] == crime:
                     crimes.append(record)
         elif record['NEIGHBORHOOD_ID'] == location:
@@ -116,8 +116,8 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
                 crimes.append(record)
             else:
                 if crime_type == 'parent_category':
-                    # This is handled differently.
-                    pass
+                    if record['OFFENSE_CATEGORY_ID'] in crime_lookup_reverse[crime]:
+                        crimes.append(record)
                 elif record[crime_type] == crime:
                     crimes.append(record)
 
