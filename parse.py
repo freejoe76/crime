@@ -85,7 +85,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
         if verbose:
             print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
 
-    crime_type = get_crime_type(crime, grep)
+    crime_type = get_crime_type(crime)
 
     if verbose:
         print timespan, location, crime
@@ -121,7 +121,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
     return crimes
 
 
-def get_crime_type(crime, grep = False):
+def get_crime_type(crime):
     # Figure out what type of crime we're querying
     # parent_category doesn't correspond to a CSV field,
     # which is why it looks different. So that's obvious.
