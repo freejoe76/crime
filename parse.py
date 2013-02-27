@@ -56,12 +56,12 @@ def check_datetime(value):
     # Check a datetime to see if it's valid. If not, throw error.
     return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
 
-def get_specific_crime(crime, location = None):
+def get_specific_crime(crime, grep, location = None):
     # Indexes specific crime.
     # Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
     # Returns frequency for entire csv specified.
     # Also returns the # of days since the last crime.
-    crimes = get_recent_crimes(crime, location)
+    crimes = get_recent_crimes(crime, grep, location)
     count = len(crimes)
     last_crime = None
     if count > 0:
@@ -70,7 +70,7 @@ def get_specific_crime(crime, location = None):
     #    print crime['OFFENSE_TYPE_ID']
     return { 'count': count, 'last_crime': last_crime }
 
-def get_recent_crimes(crime = None, location = None, *args, **kwargs):
+def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwargs):
     # Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
     # Timespan is passed as an argument (start, finish)
 
@@ -85,7 +85,7 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
         if verbose:
             print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
 
-    crime_type = get_crime_type(crime)
+    crime_type = get_crime_type(crime, grep)
 
     if verbose:
         print timespan, location, crime
@@ -100,7 +100,7 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
             if not timespan[0] <= datetime.date(ts) <= timespan[1]:
                 continue
 
-        # Location and crime queries
+        # Location, then crime queries
         if location == None and crime == None:
             crimes.append(record['OFFENSE_CATEGORY_ID'])
 
@@ -121,7 +121,7 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
     return crimes
 
 
-def get_crime_type(crime):
+def get_crime_type(crime, grep = False):
     # Figure out what type of crime we're querying
     # parent_category doesn't correspond to a CSV field,
     # which is why it looks different. So that's obvious.
@@ -215,6 +215,7 @@ def get_uniques(field):
         values.append(record[field])
 
     print set(values)
+    return set(values)
 
 def get_neighborhood(location):
     # If location's in the list return that location name
@@ -276,6 +277,7 @@ if __name__ == '__main__':
         print "Options: %s\nArgs: %s" % (options, args)
 
     crime_file = open_csv()
+    #get_uniques('OFFENSE_TYPE_ID')
     if action == 'rankings':
         # Example:
         # $ ./parse.py -a rankings -c violent '2013-01-01' '2013-02-01'
@@ -283,9 +285,9 @@ if __name__ == '__main__':
         crimes['neighborhood'].reverse()
         crimes['percapita'].reverse()
     if action == 'recent':
-        crimes = get_recent_crimes(crime, location, args, {'test':options})
+        crimes = get_recent_crimes(crime, grep, location, args, {'test':options})
     if action == 'specific':
         # $ ./parse.py -a specific -crime drug-alcohol
-        crimes = get_specific_crime(crime, location)
+        crimes = get_specific_crime(crime, grep, location)
     print crimes
     print print_crimes(crimes, 15)
