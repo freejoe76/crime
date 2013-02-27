@@ -105,14 +105,14 @@ def get_recent_crimes(crime = None, location = None, *args, **kwargs):
         if location == None and crime == None:
             crimes.append(record['OFFENSE_CATEGORY_ID'])
 
-        elif location != None:
+        if location != None:
             if record['NEIGHBORHOOD_ID'] != location:
                 continue
 
-        elif crime == None:
+        if crime == None:
             crimes.append(record['OFFENSE_CATEGORY_ID'])
 
-        elif crime != None:
+        if crime != None:
             if crime_type == 'parent_category':
                 if record['OFFENSE_CATEGORY_ID'] in crime_lookup_reverse[crime]:
                     crimes.append(record)
