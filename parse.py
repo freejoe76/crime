@@ -125,7 +125,8 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
                 if record[crime_type] == crime:
                     crimes.append(record)
                 elif grep == True:
-                    # Loop through the types of crimes, 
+                    # Loop through the types of crimes 
+                    # (the lowest-level crime taxonomy), 
                     # looking for a partial string match.
                     for crime_item in crime_types:
                         if crime in crime_item:
@@ -175,8 +176,6 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
         month = today - timedelta(90)
         timespan = (month, today)
 
-    #print "Args", args
-    #print "KeyWordArgs", kwargs
     crime_type = get_crime_type(crime)
 
     for row in crime_file:
@@ -292,7 +291,6 @@ if __name__ == '__main__':
         print "Options: %s\nArgs: %s" % (options, args)
 
     crime_file = open_csv()
-    #get_uniques('OFFENSE_TYPE_ID')
     if action == 'rankings':
         # Example:
         # $ ./parse.py -a rankings -c violent '2013-01-01' '2013-02-01'
@@ -302,6 +300,7 @@ if __name__ == '__main__':
     if action == 'recent':
         crimes = get_recent_crimes(crime, grep, location, args, {'test':options})
     if action == 'specific':
+        # Example:
         # $ ./parse.py -a specific -crime drug-alcohol
         crimes = get_specific_crime(crime, grep, location)
     print crimes
