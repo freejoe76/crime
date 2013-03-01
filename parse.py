@@ -302,7 +302,8 @@ if __name__ == '__main__':
         crimes = get_recent_crimes(crime, grep, location, args, {'test':options})
     if action == 'specific':
         # Example:
-        # $ ./parse.py -a specific -crime drug-alcohol
+        # $ ./parse.py --verbose --action specific --crime drug-alcohol
+        # $ ./parse.py --verbose --action specific --crime meth --grep True 
         crimes = get_specific_crime(crime, grep, location)
     print crimes
     print print_crimes(crimes, 15)
