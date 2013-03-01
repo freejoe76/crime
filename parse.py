@@ -268,6 +268,7 @@ if __name__ == '__main__':
     # passed as options, and timespan (start, finish) as the 
     # first two arguments. This may not be the best way to do it.
     parser = OptionParser()
+    parser.add_option("-f", "--filename", dest="filename", default="currentyear.csv")
     parser.add_option("-a", "--action", dest="action")
     parser.add_option("-l", "--location", dest="location", default=None)
     parser.add_option("-t", "--limit", dest="limit", default=20)
@@ -276,6 +277,7 @@ if __name__ == '__main__':
     parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default=False)
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
     (options, args) = parser.parse_args()
+    filename = options.filename
     action = options.action
     location = options.location
     limit = options.limit
@@ -291,7 +293,7 @@ if __name__ == '__main__':
     if verbose:
         print "Options: %s\nArgs: %s" % (options, args)
 
-    crime_file = open_csv()
+    crime_file = open_csv("_input/%s" % filename)
     if action == 'rankings':
         # Example:
         # $ ./parse.py -a rankings -c violent '2013-01-01' '2013-02-01'
