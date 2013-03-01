@@ -38,16 +38,17 @@ def check_datetime(value):
 def get_specific_crime(crime, grep, location = None):
     # Indexes specific crime.
     # Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
+    # $ ./parse.py --verbose --action specific --crime meth --grep True
+    # $ ./parse.py --verbose --action specific --crime cocaine --grep True
+    # 
     # Returns frequency for entire csv specified.
     # Also returns the # of days since the last crime.
     crimes = get_recent_crimes(crime, grep, location)
     count = len(crimes)
-    #print crimes[0], crimes[count-1]
     last_crime = None
     if count > 0:
         last_crime = crimes[count-1]['FIRST_OCCURRENCE_DATE']
-    #for crime in crimes:
-    #    print crime['OFFENSE_TYPE_ID']
+
     return { 'count': count, 'last_crime': last_crime }
 
 def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwargs):
