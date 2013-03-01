@@ -213,7 +213,7 @@ def get_neighborhood(location):
     # If location's in the list return that location name
     if location in neighborhoods:
         return location
-    return False
+    return None
 
 def open_csv(fn = '_input/currentyear.csv'):
     # Open the crime file for parsing.
