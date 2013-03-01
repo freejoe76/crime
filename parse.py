@@ -91,7 +91,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
             crimes.append(record['OFFENSE_CATEGORY_ID'])
             continue
 
-        if location != None and location != False:
+        if location != None:
             if record['NEIGHBORHOOD_ID'] != location:
                 continue
 
