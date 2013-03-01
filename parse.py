@@ -126,16 +126,12 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
                     crimes.append(record)
             else:
                 if record[crime_type] == crime:
-                    #print record[crime_type], crime, record[crime_type] == crime
                     crimes.append(record)
                 elif grep == True:
                     # Loop through the types of crimes 
                     # (the lowest-level crime taxonomy), 
                     # looking for a partial string match.
                     if crime in record['OFFENSE_TYPE_ID']:
-                        #print crime, crime_item, crime in crime_item
-                        print crime, record['OFFENSE_TYPE_ID']
-                        #print len(crimes)
                         crimes.append(record)
     return crimes
 
