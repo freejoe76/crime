@@ -64,6 +64,7 @@ def get_specific_crime(crime, grep, location = None):
     # Also returns the # of days since the last crime.
     crimes = get_recent_crimes(crime, grep, location)
     count = len(crimes)
+    #print crimes[0], crimes[count-1]
     last_crime = None
     if count > 0:
         last_crime = crimes[count-1]['FIRST_OCCURRENCE_DATE']
@@ -89,7 +90,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
     crime_type = get_crime_type(crime)
 
     if verbose:
-        print timespan, location, crime
+        print "Timespan: %s, loc: %s, crime: %s" % (timespan, location, crime)
 
     for row in crime_file:
         record = dict(zip(keys, row))
@@ -109,13 +110,16 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
         # 4. Yes crime, no location 
         if location == None and crime == None:
             crimes.append(record['OFFENSE_CATEGORY_ID'])
+            continue
+        print len(crimes)
 
-        if location != None:
+        if location != None and location != False:
             if record['NEIGHBORHOOD_ID'] != location:
                 continue
 
         if crime == None:
             crimes.append(record['OFFENSE_CATEGORY_ID'])
+            continue
 
         if crime != None:
             if crime_type == 'parent_category':
@@ -123,6 +127,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
                     crimes.append(record)
             else:
                 if record[crime_type] == crime:
+                    #print record[crime_type], crime, record[crime_type] == crime
                     crimes.append(record)
                 elif grep == True:
                     # Loop through the types of crimes 
@@ -130,6 +135,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
                     # looking for a partial string match.
                     for crime_item in crime_types:
                         if crime in crime_item:
+                            #print crime, crime_item, crime in crime_item
                             crimes.append(record)
                             break
     return crimes
@@ -268,7 +274,7 @@ if __name__ == '__main__':
     # first two arguments. This may not be the best way to do it.
     parser = OptionParser()
     parser.add_option("-a", "--action", dest="action")
-    parser.add_option("-l", "--location", dest="location", default="capitol-hill")
+    parser.add_option("-l", "--location", dest="location", default=None)
     parser.add_option("-t", "--limit", dest="limit", default=20)
     parser.add_option("-c", "--crime", dest="crime", default="violent")
     parser.add_option("-g", "--grep", dest="grep", default=False)
