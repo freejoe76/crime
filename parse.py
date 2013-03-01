@@ -274,7 +274,7 @@ if __name__ == '__main__':
     parser.add_option("-t", "--limit", dest="limit", default=20)
     parser.add_option("-c", "--crime", dest="crime", default="violent")
     parser.add_option("-g", "--grep", dest="grep", default=False, action="store_true")
-    parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default=False)
+    parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default=False, action="store_true")
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
     (options, args) = parser.parse_args()
     filename = options.filename
