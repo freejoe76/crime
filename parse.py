@@ -111,7 +111,6 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
         if location == None and crime == None:
             crimes.append(record['OFFENSE_CATEGORY_ID'])
             continue
-        print len(crimes)
 
         if location != None and location != False:
             if record['NEIGHBORHOOD_ID'] != location:
@@ -133,11 +132,11 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
                     # Loop through the types of crimes 
                     # (the lowest-level crime taxonomy), 
                     # looking for a partial string match.
-                    for crime_item in crime_types:
-                        if crime in crime_item:
-                            #print crime, crime_item, crime in crime_item
-                            crimes.append(record)
-                            break
+                    if crime in record['OFFENSE_TYPE_ID']:
+                        #print crime, crime_item, crime in crime_item
+                        print crime, record['OFFENSE_TYPE_ID']
+                        #print len(crimes)
+                        crimes.append(record)
     return crimes
 
 
