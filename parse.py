@@ -56,6 +56,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
     # Timespan is passed as an argument (start, finish)
 
     crimes = []
+    crime_type = get_crime_type(crime)
 
     if not args:
         timespan = None
@@ -66,10 +67,8 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
         if verbose:
             print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
 
-    crime_type = get_crime_type(crime)
-
     if verbose:
-        print "Timespan: %s, loc: %s, crime: %s" % (timespan, location, crime)
+        print "Timespan: %s, location: %s, crime: %s" % (timespan, location, crime)
 
     for row in crime_file:
         record = dict(zip(keys, row))
