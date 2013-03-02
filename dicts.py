@@ -3,6 +3,17 @@
 crime_genres = ['violent', 'property', 'other']
 
 # These dicts are property-specific
+keymap = {
+    'id': 'INCIDENT_ID',
+    'type': 'OFFENSE_TYPE_ID',
+    'category': 'OFFENSE_CATEGORY_ID',
+    'date': 'FIRST_OCCURENCE_DATE',
+    'date_reported': 'REPORTED_DATE',
+    'lat': 'GEO_LAT',
+    'lon': 'GEO_LON',
+    'address': 'INCIDENT_ADDRESS',
+    'location_neighborhood': 'NEIGHBORHOOD_ID',
+}
 keys = ['INCIDENT_ID','OFFENSE_ID','OFFENSE_CODE','OFFENSE_CODE_EXTENSION','OFFENSE_TYPE_ID','OFFENSE_CATEGORY_ID','FIRST_OCCURRENCE_DATE','LAST_OCCURRENCE_DATE','REPORTED_DATE','INCIDENT_ADDRESS','GEO_X','GEO_Y','GEO_LON','GEO_LAT','DISTRICT_ID','PRECINCT_ID','NEIGHBORHOOD_ID']
 crime_lookup_reverse = { 
     'violent': ['murder', 'robbery', 'aggrvated-assault', 'sexual-assault'],
