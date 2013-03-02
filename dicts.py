@@ -14,6 +14,8 @@ keymap = {
     'address': 'INCIDENT_ADDRESS',
     'location_neighborhood': 'NEIGHBORHOOD_ID',
 }
+typemap = {}
+catmap = {}
 keys = ['INCIDENT_ID','OFFENSE_ID','OFFENSE_CODE','OFFENSE_CODE_EXTENSION','OFFENSE_TYPE_ID','OFFENSE_CATEGORY_ID','FIRST_OCCURRENCE_DATE','LAST_OCCURRENCE_DATE','REPORTED_DATE','INCIDENT_ADDRESS','GEO_X','GEO_Y','GEO_LON','GEO_LAT','DISTRICT_ID','PRECINCT_ID','NEIGHBORHOOD_ID']
 crime_lookup_reverse = { 
     'violent': ['murder', 'robbery', 'aggrvated-assault', 'sexual-assault'],
