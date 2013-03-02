@@ -234,8 +234,12 @@ def print_crimes(crimes, limit):
             output += '%i. %s' % (i, crime)
     except:
         # Dicts
-        for key in crimes:
-            output += "%s, %s\n" % (key, crimes[key])
+        try:
+            for key in crimes:
+                output += "%s, %s\n" % (key, crimes[key])
+        except:
+            print "We did not have any crimes to handle"
+            raise 
 
     return output
 
@@ -270,6 +274,7 @@ if __name__ == '__main__':
         print "Options: %s\nArgs: %s" % (options, args)
 
     crime_file = open_csv("_input/%s" % filename)
+    crimes = None
     if action == 'rankings':
         # Example:
         # $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
