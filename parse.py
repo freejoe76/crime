@@ -276,9 +276,9 @@ if __name__ == '__main__':
         crimes = get_rankings(crime, location, args)
         crimes['neighborhood'].reverse()
         crimes['percapita'].reverse()
-    if action == 'recent':
+    elif action == 'recent':
         crimes = get_recent_crimes(crime, grep, location, args, {'test':options})
-    if action == 'specific':
+    elif action == 'specific':
         # Example:
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep True 
