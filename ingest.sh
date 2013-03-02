@@ -30,7 +30,7 @@ fi
 
 cd _input
 DATE=`date +'%F-%H'`
-LOGFILE='logs/ingest'
+LOGFILE='../logs/ingest'
 touch $LOGFILE
 
 THIS_YEAR=`date +'%Y'`
