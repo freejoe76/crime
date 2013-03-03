@@ -243,6 +243,7 @@ def print_crimes(crimes, limit):
 
     return output
 
+
 if __name__ == '__main__':
     # Parse the arguments, pass 'em to the function
     # The three main args we use to query the crime data are
@@ -256,6 +257,7 @@ if __name__ == '__main__':
     parser.add_option("-t", "--limit", dest="limit", default=20)
     parser.add_option("-c", "--crime", dest="crime", default="violent")
     parser.add_option("-g", "--grep", dest="grep", default=False, action="store_true")
+    parser.add_option("-d", "--diff", dest="diff", default=False, action="store_true")
     parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default=False, action="store_true")
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
     (options, args) = parser.parse_args()
@@ -265,6 +267,7 @@ if __name__ == '__main__':
     limit = options.limit
     crime = options.crime
     grep = options.grep
+    diff = options.diff
     yearoveryear = options.yearoveryear
     verbose = options.verbose
 
@@ -272,6 +275,9 @@ if __name__ == '__main__':
 
     if verbose:
         print "Options: %s\nArgs: %s" % (options, args)
+
+    if diff == True:
+        filename = 'latestdiff.csv'
 
     crime_file = open_csv("_input/%s" % filename)
     crimes = None
