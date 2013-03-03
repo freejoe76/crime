@@ -58,7 +58,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
     crimes = []
     crime_type = get_crime_type(crime)
 
-    if not args:
+    if not args or args[0] == []:
         timespan = None
     else:
         # timespan a tuple of dates, that defaults to everything.
@@ -288,7 +288,10 @@ if __name__ == '__main__':
         crimes['neighborhood'].reverse()
         crimes['percapita'].reverse()
     elif action == 'recent':
-        crimes = get_recent_crimes(crime, grep, location, args, {'test':options})
+        # Example:
+        # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill --diff
+        # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill
+        crimes = get_recent_crimes(crime, grep, location, args)
     elif action == 'specific':
         # Example:
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
