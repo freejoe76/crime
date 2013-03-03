@@ -72,7 +72,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
 
     for row in crime_file:
         record = dict(zip(keys, row))
-        
+        print record   
 
         # Time queries
         if timespan:
