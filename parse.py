@@ -71,8 +71,14 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
         print "Timespan: %s, location: %s, crime: %s" % (timespan, location, crime)
 
     for row in crime_file:
+        if len(row) < 5:
+            continue
         record = dict(zip(keys, row))
-        print record   
+        #print record
+
+        # Address diffs, if we've got 'em.
+        if diff == True:
+            record['add'] = True
 
         # Time queries
         if timespan:
