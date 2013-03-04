@@ -78,7 +78,14 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
 
         # Address diffs, if we've got 'em.
         if diff == True:
-            record['add'] = True
+            #print record['INCIDENT_ID'][0]
+            if record['INCIDENT_ID'][0] == '>':
+                record['diff'] = 'add'
+            elif record['INCIDENT_ID'][0] == '<': 
+                record['diff'] = 'remove'
+
+            # Strip the "< " at the start, and the ".0" at the end
+            record['INCIDENT_ID'] = record['INCIDENT_ID'][2:-2]
 
         # Time queries
         if timespan:
