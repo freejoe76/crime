@@ -70,6 +70,10 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
     if verbose:
         print "Timespan: %s, location: %s, crime: %s" % (timespan, location, crime)
 
+    if diff == True:
+        adds = 0
+        removes = 0
+
     for row in crime_file:
         if len(row) < 5:
             continue
@@ -81,8 +85,10 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
             #print record['INCIDENT_ID'][0]
             if record['INCIDENT_ID'][0] == '>':
                 record['diff'] = 'add'
+                adds += 1
             elif record['INCIDENT_ID'][0] == '<': 
                 record['diff'] = 'remove'
+                removes += 1
 
             # Strip the "< " at the start, and the ".0" at the end
             record['INCIDENT_ID'] = record['INCIDENT_ID'][2:-2]
