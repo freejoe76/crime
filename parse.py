@@ -213,7 +213,7 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
         'category': sorted(rankings['category'].iteritems(), key=operator.itemgetter(1)),
         'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
     }
-    return sorted_rankings
+    return { 'crimes': sorted_rankings }
 
 def get_median(ranking):
     # Take a ranking dict, add up the numbers, get the median.
