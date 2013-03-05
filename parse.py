@@ -55,6 +55,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
     # Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
     # Timespan is passed as an argument (start, finish)
 
+    diffs = None
     crimes = []
     crime_type = get_crime_type(crime)
 
@@ -130,7 +131,8 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
                     # looking for a partial string match.
                     if crime in record['OFFENSE_TYPE_ID']:
                         crimes.append(record)
-    return crimes
+    diffs = { 'adds': adds, 'removes': removes }
+    return { 'crimes': crimes, 'diffs': diffs }
 
 
 def get_crime_type(crime):
