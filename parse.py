@@ -250,13 +250,13 @@ def print_crimes(crimes, limit):
     try:
         # Lists
         i = 0
-        for crime in crimes[:limit]:
+        for crime in crimes['crimes'][:limit]:
             i = i + 1
             output += '%i. %s' % (i, crime)
     except:
         # Dicts
         try:
-            for key in crimes:
+            for key in crimes['crimes']:
                 output += "%s, %s\n" % (key, crimes[key])
         except:
             print "We did not have any crimes to handle"
