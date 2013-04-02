@@ -10,7 +10,6 @@ from datetime import datetime, timedelta
 # The location-specific data
 from dicts import *
 
-
 def abstract_keys(key):
     # Take a key, return its CSV equivalent.
     # Used so we can use this for more than just Denver crime csv.
@@ -306,8 +305,10 @@ if __name__ == '__main__':
         # Example:
         # $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
         crimes = get_rankings(crime, location, args)
-        crimes['neighborhood'].reverse()
-        crimes['percapita'].reverse()
+        if verbose:
+            print crimes
+        crimes['crimes']['neighborhood'].reverse()
+        crimes['crimes']['percapita'].reverse()
     elif action == 'recent':
         # Example:
         # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill --diff
