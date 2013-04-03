@@ -255,8 +255,17 @@ def print_crimes(crimes, limit):
     except:
         # Dicts
         try:
-            for key in crimes['crimes']:
-                output += "%s, %s\n" % (key, crimes[key])
+            output += "Denver crimes, per-capita:\n"
+            i = 0
+            for item in crimes['crimes']['percapita']:
+                i = i + 1
+                output += "%i. %s, %s\n" % (i, item[0], item[1])
+
+            output += "Denver crimes, raw:\n"
+            i = 0
+            for item in crimes['crimes']['neighborhood']:
+                i = i + 1
+                output += "%i. %s, %s\n" % (i, item[0], item[1])
         except:
             print "We did not have any crimes to handle"
             raise 
@@ -319,5 +328,5 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep True 
         crimes = get_specific_crime(crime, grep, location)
-    print crimes
+    #print crimes
     print print_crimes(crimes, 15)
