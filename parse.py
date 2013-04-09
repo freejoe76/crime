@@ -10,7 +10,6 @@ from datetime import datetime, timedelta
 # The location-specific data
 from dicts import *
 
-
 def abstract_keys(key):
     # Take a key, return its CSV equivalent.
     # Used so we can use this for more than just Denver crime csv.
@@ -55,6 +54,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
     # Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
     # Timespan is passed as an argument (start, finish)
 
+    diffs = None
     crimes = []
     crime_type = get_crime_type(crime)
 
@@ -70,6 +70,10 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
     if verbose:
         print "Timespan: %s, location: %s, crime: %s" % (timespan, location, crime)
 
+    if diff == True:
+        adds = 0
+        removes = 0
+
     for row in crime_file:
         if len(row) < 5:
             continue
@@ -81,8 +85,10 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
             #print record['INCIDENT_ID'][0]
             if record['INCIDENT_ID'][0] == '>':
                 record['diff'] = 'add'
+                adds += 1
             elif record['INCIDENT_ID'][0] == '<': 
                 record['diff'] = 'remove'
+                removes += 1
 
             # Strip the "< " at the start, and the ".0" at the end
             record['INCIDENT_ID'] = record['INCIDENT_ID'][2:-2]
@@ -124,7 +130,8 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
                     # looking for a partial string match.
                     if crime in record['OFFENSE_TYPE_ID']:
                         crimes.append(record)
-    return crimes
+    diffs = { 'adds': adds, 'removes': removes }
+    return { 'crimes': crimes, 'diffs': diffs }
 
 
 def get_crime_type(crime):
@@ -205,7 +212,7 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
         'category': sorted(rankings['category'].iteritems(), key=operator.itemgetter(1)),
         'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
     }
-    return sorted_rankings
+    return { 'crimes': sorted_rankings }
 
 def get_median(ranking):
     # Take a ranking dict, add up the numbers, get the median.
@@ -242,14 +249,23 @@ def print_crimes(crimes, limit):
     try:
         # Lists
         i = 0
-        for crime in crimes[:limit]:
+        for crime in crimes['crimes'][:limit]:
             i = i + 1
             output += '%i. %s' % (i, crime)
     except:
         # Dicts
         try:
-            for key in crimes:
-                output += "%s, %s\n" % (key, crimes[key])
+            output += "Denver crimes, per-capita:\n"
+            i = 0
+            for item in crimes['crimes']['percapita']:
+                i = i + 1
+                output += "%i. %s, %s\n" % (i, item[0], item[1])
+
+            output += "Denver crimes, raw:\n"
+            i = 0
+            for item in crimes['crimes']['neighborhood']:
+                i = i + 1
+                output += "%i. %s, %s\n" % (i, item[0], item[1])
         except:
             print "We did not have any crimes to handle"
             raise 
@@ -298,8 +314,10 @@ if __name__ == '__main__':
         # Example:
         # $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
         crimes = get_rankings(crime, location, args)
-        crimes['neighborhood'].reverse()
-        crimes['percapita'].reverse()
+        if verbose:
+            print crimes
+        crimes['crimes']['neighborhood'].reverse()
+        crimes['crimes']['percapita'].reverse()
     elif action == 'recent':
         # Example:
         # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill --diff
@@ -310,5 +328,5 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep True 
         crimes = get_specific_crime(crime, grep, location)
-    print crimes
+    #print crimes
     print print_crimes(crimes, 15)
