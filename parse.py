@@ -251,7 +251,7 @@ def print_crimes(crimes, limit):
         i = 0
         for crime in crimes['crimes'][:limit]:
             i = i + 1
-            output += '%i. %s' % (i, crime)
+            output += '%i. %s\n' % (i, crime)
     except:
         # Dicts
         try:
