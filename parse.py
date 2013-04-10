@@ -130,7 +130,9 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
                     # looking for a partial string match.
                     if crime in record['OFFENSE_TYPE_ID']:
                         crimes.append(record)
-    diffs = { 'adds': adds, 'removes': removes }
+    diffs = None
+    if diffs == True:
+        diffs = { 'adds': adds, 'removes': removes }
     return { 'crimes': crimes, 'diffs': diffs }
 
 
@@ -251,7 +253,10 @@ def print_crimes(crimes, limit):
         i = 0
         for crime in crimes['crimes'][:limit]:
             i = i + 1
-            output += '%i. %s: %s\n Occured: %s\n Reported: %s\n %s\n\n' % (i, crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
+            output += '''%i. %s: %s
+    Occurred: %s - %s
+    Reported: %s
+    %s\n\n''' % (i, crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
     except:
         # Dicts
         try:
