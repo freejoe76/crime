@@ -106,7 +106,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
         # 3. No crime, yes location
         # 4. Yes crime, no location 
         if location == None and crime == None:
-            crimes.append(record['OFFENSE_CATEGORY_ID'])
+            crimes.append(record)
             continue
 
         if location != None:
@@ -114,7 +114,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
                 continue
 
         if crime == None:
-            crimes.append(record['OFFENSE_CATEGORY_ID'])
+            crimes.append(record)
             continue
 
         if crime != None:
@@ -328,5 +328,5 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep True 
         crimes = get_specific_crime(crime, grep, location)
-    #print crimes
+    print crimes
     print print_crimes(crimes, 15)
