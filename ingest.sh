@@ -69,6 +69,7 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
 	grep "$THIS_YEAR-" current.csv > currentyear.csv
 	grep "$LAST_YEAR-" current.csv > lastyear.csv
 	grep "$THIS_MONTH" current.csv > currentmonth.csv
+    echo $DATE > ../latest
 
     # Build a csv of the crimes for the last 12 months
     > last12months.csv
