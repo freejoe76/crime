@@ -247,11 +247,11 @@ def print_crimes(crimes, limit):
     # Right now we're publishing them to be read in terminal.
     output = ''
     try:
-        # Lists
+        # Lists, probably recents, with full crime record dicts
         i = 0
         for crime in crimes['crimes'][:limit]:
             i = i + 1
-            output += '%i. %s\n' % (i, crime)
+            output += '%i. %s: %s\n Occured: %s\n Reported: %s\n %s\n\n' % (i, crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
     except:
         # Dicts
         try:
