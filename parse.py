@@ -40,15 +40,15 @@ def get_specific_crime(crime, grep, location = None):
     # $ ./parse.py --verbose --action specific --crime meth --grep True
     # $ ./parse.py --verbose --action specific --crime cocaine --grep True
     # 
-    # Returns frequency for entire csv specified.
+    # Returns frequency for csv specified.
     # Also returns the # of days since the last crime.
     crimes = get_recent_crimes(crime, grep, location)
-    count = len(crimes)
+    count = len(crimes['crimes'])
     last_crime = None
     if count > 0:
-        last_crime = crimes[count-1]['FIRST_OCCURRENCE_DATE']
+        last_crime = crimes['crimes'][count-1]['FIRST_OCCURRENCE_DATE']
 
-    return { 'count': count, 'last_crime': last_crime }
+    return { 'count': count, 'last_crime': last_crime, 'crime': crime }
 
 def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwargs):
     # Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
@@ -244,7 +244,7 @@ def open_csv(fn = '_input/currentyear.csv'):
     return crime_file
 
 
-def print_crimes(crimes, limit):
+def print_crimes(crimes, limit, *args):
     # How do we want to display the crimes?
     # Right now we're publishing them to be read in terminal.
     outputs = ''
@@ -277,8 +277,12 @@ def print_crimes(crimes, limit):
                 i = i + 1
                 outputs += "%i. %s, %s\n" % (i, item[0], item[1])
         except:
-            print "We did not have any crimes to handle"
-            raise 
+            # Specific
+            try:
+                outputs = '%i %s crimes, last one at %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
+            except:
+                print "We did not have any crimes to handle"
+                raise 
 
     return outputs
 
