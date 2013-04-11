@@ -248,15 +248,17 @@ def print_crimes(crimes, limit, *args):
     # How do we want to display the crimes?
     # Right now we're publishing them to be read in terminal.
     outputs = ''
-    crimes_to_print = crimes['crimes'][:limit]
-    if limit == 0:
-        crimes_to_print = crimes['crimes']
 
     try:
         # Lists, probably recents, with full crime record dicts
         i = 0
         if output == 'csv':
             outputs += 'category, type, date_reported, address, lat, lon\n'
+
+        crimes_to_print = crimes['crimes'][:limit]
+        if limit == 0:
+            crimes_to_print = crimes['crimes']
+
         for crime in crimes_to_print:
             i = i + 1
             if output == 'csv':
