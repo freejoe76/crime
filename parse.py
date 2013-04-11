@@ -332,6 +332,7 @@ if __name__ == '__main__':
         crimes['crimes']['percapita'].reverse()
     elif action == 'recent':
         # Example:
+        # $ ./parse.py --action recent --crime violent --location capitol-hill --output csv
         # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill --diff
         # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill
         crimes = get_recent_crimes(crime, grep, location, args)
