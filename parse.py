@@ -46,13 +46,14 @@ def get_specific_crime(crime, grep, location = None):
     count = len(crimes['crimes'])
     last_crime = None
     if count > 0:
-        last_crime = crimes['crimes'][count-1]['FIRST_OCCURRENCE_DATE']
+        last_crime = crimes['crimes'][0]['FIRST_OCCURRENCE_DATE']
 
     return { 'count': count, 'last_crime': last_crime, 'crime': crime }
 
 def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwargs):
     # Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
     # Timespan is passed as an argument (start, finish)
+    # !!! the input files aren't listed in order of occurence, so we need to sort.
 
     diffs = None
     crimes = []
@@ -239,8 +240,13 @@ def get_neighborhood(location):
 def open_csv(fn = '_input/currentyear.csv'):
     # Open the crime file for parsing.
     # It defaults to the current year's file.
-    fp = open(fn, 'rb')
-    crime_file = csv.reader(fp, delimiter = ',')
+    crime_file_raw = csv.reader(open(fn, 'rb'), delimiter = ',')
+
+    # Sort the csv by the reported date (the 7th field, 6 on a 0-index,
+    # because that's the only one that's guaranteed to be in the record.
+    # Newest items go on top. It's possible we won't hard-code
+    # this forever.
+    crime_file = sorted(crime_file_raw, key=operator.itemgetter(6), reverse=True)
     return crime_file
 
 
