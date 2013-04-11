@@ -248,12 +248,16 @@ def print_crimes(crimes, limit, *args):
     # How do we want to display the crimes?
     # Right now we're publishing them to be read in terminal.
     outputs = ''
+    crimes_to_print = crimes['crimes'][:limit]
+    if limit == 0:
+        crimes_to_print = crimes['crimes']
+
     try:
         # Lists, probably recents, with full crime record dicts
         i = 0
         if output == 'csv':
             outputs += 'category, type, date_reported, address, lat, lon\n'
-        for crime in crimes['crimes'][:limit]:
+        for crime in crimes_to_print:
             i = i + 1
             if output == 'csv':
                 outputs += '%s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
@@ -346,4 +350,4 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime meth --grep True 
         crimes = get_specific_crime(crime, grep, location)
     #print crimes
-    print print_crimes(crimes, 15)
+    print print_crimes(crimes, limit)
