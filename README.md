@@ -1,22 +1,21 @@
-crime
+Crime
 =====
-
-A parser and logger for the City of Denver's crime csv.
+A parser and logger for the City of Denver's crime CSV. Currently outputs to terminal. No database on the backend.
 
 Taxonomy
 ========
 There are three levels of crimes: 
+
 1. Genre (violent / property / other)
 2. Category (i.e. Drug & Alcohol)
 3. Type (i.e. Drug: Cocaine Possession)
 
 Usage
 =====
-Three main views exist:
+Three major views exist:
 Specifc
 -------
 This publishes frequency and last-occurence info about a particular type of crime in a particular neighborhood (optional).
-
 ### Example usage
     # Publish information about drug and alcohol crimes in the whole city:
     $ ./parse.py --action specific --crime drug-alcohol
@@ -28,7 +27,6 @@ This publishes frequency and last-occurence info about a particular type of crim
 Recent
 ------
 Publish a list of recent crimes of a particular type and/or category, or genre. Can filter crimes by location and date.
-
 ### Example usage
     # Publish a list of drug and alcohol crimes in Capitol Hill
     $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill
