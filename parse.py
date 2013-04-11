@@ -247,35 +247,40 @@ def open_csv(fn = '_input/currentyear.csv'):
 def print_crimes(crimes, limit):
     # How do we want to display the crimes?
     # Right now we're publishing them to be read in terminal.
-    output = ''
+    outputs = ''
     try:
         # Lists, probably recents, with full crime record dicts
         i = 0
+        if output == 'csv':
+            outputs += 'category, type, date_reported, address, lat, lon\n'
         for crime in crimes['crimes'][:limit]:
             i = i + 1
-            output += '''%i. %s: %s
+            if output == 'csv':
+                outputs += '%s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
+                continue
+            outputs += '''%i. %s: %s
     Occurred: %s - %s
     Reported: %s
     %s\n\n''' % (i, crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
     except:
         # Dicts
         try:
-            output += "Denver crimes, per-capita:\n"
+            outputs += "Denver crimes, per-capita:\n"
             i = 0
             for item in crimes['crimes']['percapita']:
                 i = i + 1
-                output += "%i. %s, %s\n" % (i, item[0], item[1])
+                outputs += "%i. %s, %s\n" % (i, item[0], item[1])
 
-            output += "Denver crimes, raw:\n"
+            outputs += "Denver crimes, raw:\n"
             i = 0
             for item in crimes['crimes']['neighborhood']:
                 i = i + 1
-                output += "%i. %s, %s\n" % (i, item[0], item[1])
+                outputs += "%i. %s, %s\n" % (i, item[0], item[1])
         except:
             print "We did not have any crimes to handle"
             raise 
 
-    return output
+    return outputs
 
 
 if __name__ == '__main__':
@@ -292,6 +297,7 @@ if __name__ == '__main__':
     parser.add_option("-c", "--crime", dest="crime", default=None)
     parser.add_option("-g", "--grep", dest="grep", default=False, action="store_true")
     parser.add_option("-d", "--diff", dest="diff", default=False, action="store_true")
+    parser.add_option("-o", "--output", dest="output", default=None)
     parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default=False, action="store_true")
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
     (options, args) = parser.parse_args()
@@ -302,6 +308,7 @@ if __name__ == '__main__':
     crime = options.crime
     grep = options.grep
     diff = options.diff
+    output = options.output
     yearoveryear = options.yearoveryear
     verbose = options.verbose
 
@@ -333,5 +340,5 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep True 
         crimes = get_specific_crime(crime, grep, location)
-    print crimes
+    #print crimes
     print print_crimes(crimes, 15)
