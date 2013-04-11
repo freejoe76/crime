@@ -37,10 +37,8 @@ THIS_YEAR=`date +'%Y'`
 LAST_YEAR=`expr $THIS_YEAR - 1`
 LAST_LAST_YEAR=`expr $THIS_YEAR - 2`
 
-THIS_MONTH=`date +'%m'`
-THIS_MONTH_FULL=`date +'%Y-%m'`
-LAST_MONTH=`date +'%m' --date='month ago'`
-LAST_MONTH_FULL=`date +'%Y-%m' --date='month ago'`
+THIS_MONTH=`date +'%Y-%m'`
+LAST_MONTH=`date +'%Y-%m' --date='month ago'`
 
 touch current.csv
 
