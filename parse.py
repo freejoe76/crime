@@ -10,6 +10,40 @@ from datetime import datetime, timedelta
 # The location-specific data
 from dicts import *
 
+def timeago(time=False):
+    # Get a datetime object or a int() Epoch timestamp and return a
+    # pretty string like 'an hour ago', 'Yesterday', '3 months ago',
+    # 'just now', etc
+    now = datetime.now()
+    if type(time) is int:
+        diff = now - datetime.fromtimestamp(time)
+    elif isinstance(time,datetime):
+        diff = now - time 
+    elif not time:
+        diff = now - now
+    second_diff = diff.seconds
+    day_diff = diff.days
+
+    if day_diff < 0:
+        return ''
+
+    if day_diff == 0:
+        if second_diff < 10:
+            return "just now"
+        if second_diff < 60:
+            return str(second_diff) + " seconds ago"
+        if second_diff < 120:
+            return  "a minute ago"
+        if second_diff < 3600:
+            return str( second_diff / 60 ) + " minutes ago"
+        if second_diff < 7200:
+            return "an hour ago"
+        if second_diff < 86400:
+            return str( second_diff / 3600 ) + " hours ago"
+    if day_diff == 1:
+        return "Yesterday"
+    return str(day_diff) + " days ago"
+
 def abstract_keys(key):
     # Take a key, return its CSV equivalent.
     # Used so we can use this for more than just Denver crime csv.
@@ -17,7 +51,6 @@ def abstract_keys(key):
 
 def get_location_list(location_type):
     pass
-    return locations
 
 def get_location_ranking(locations, crime_type):
     pass
@@ -46,9 +79,9 @@ def get_specific_crime(crime, grep, location = None):
     count = len(crimes['crimes'])
     last_crime = None
     if count > 0:
-        last_crime = crimes['crimes'][0]['FIRST_OCCURRENCE_DATE']
+        last_crime = check_datetime(crimes['crimes'][0]['FIRST_OCCURRENCE_DATE'])
 
-    return { 'count': count, 'last_crime': last_crime, 'crime': crime }
+    return { 'count': count, 'last_crime': timeago(last_crime), 'crime': crime }
 
 def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwargs):
     # Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
@@ -292,7 +325,7 @@ def print_crimes(crimes, limit, *args):
         except:
             # Specific
             try:
-                outputs = '%i %s crimes, last one at %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
+                outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
             except:
                 print "We did not have any crimes to handle"
                 raise 
