@@ -173,10 +173,11 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
     }
     percapita_multiplier = 1000
     today = datetime.date(datetime.now())
-    timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
-    if not args:
+    if args[0] == []:
         month = today - timedelta(90)
         timespan = (month, today)
+    else:
+        timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
 
     crime_type = get_crime_type(crime)
 
@@ -236,11 +237,11 @@ def get_neighborhood(location):
     if location in neighborhoods:
         return location
     return None
-
-def open_csv(fn = '_input/currentyear.csv'):
+    
+def open_csv(fn = '_input/currentyear'):
     # Open the crime file for parsing.
     # It defaults to the current year's file.
-    crime_file_raw = csv.reader(open(fn, 'rb'), delimiter = ',')
+    crime_file_raw = csv.reader(open('%s.csv' % fn, 'rb'), delimiter = ',')
 
     # Sort the csv by the reported date (the 7th field, 6 on a 0-index,
     # because that's the only one that's guaranteed to be in the record.
@@ -306,7 +307,7 @@ if __name__ == '__main__':
     # passed as options, and timespan (start, finish) as the 
     # first two arguments. This may not be the best way to do it.
     parser = OptionParser()
-    parser.add_option("-f", "--filename", dest="filename", default="currentyear.csv")
+    parser.add_option("-f", "--filename", dest="filename", default="currentyear")
     parser.add_option("-a", "--action", dest="action")
     parser.add_option("-l", "--location", dest="location", default=None)
     parser.add_option("-t", "--limit", dest="limit", default=0)
@@ -334,7 +335,7 @@ if __name__ == '__main__':
         print "Options: %s\nArgs: %s" % (options, args)
 
     if diff == True:
-        filename = 'latestdiff.csv'
+        filename = 'latestdiff'
 
     crime_file = open_csv("_input/%s" % filename)
     crimes = None
