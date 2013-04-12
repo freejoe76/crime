@@ -320,7 +320,7 @@ if __name__ == '__main__':
     filename = options.filename
     action = options.action
     location = options.location
-    limit = options.limit
+    limit = int(options.limit)
     crime = options.crime
     grep = options.grep
     diff = options.diff
