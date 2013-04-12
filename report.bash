@@ -13,4 +13,4 @@ done
 
 > crimereport
 echo "Recent Crimes in $location"
-python parse.py --limit 20 --action recent --location capitol-hill --verbose
+python parse.py --limit 20 --action recent --location $1
