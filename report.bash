@@ -10,26 +10,27 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
+divider='\n=============================================================\n'
 
 > crimereport
-echo "The last murder in $location"
+echo -e $divider"The last murder in $location"$divider
 python parse.py --action specific --crime murder --grep --location $location
 
-echo "Recent Crimes in $location"
+echo -e $divider"Recent crimes in $location"$divider
 python parse.py --limit 20 --action recent --location $location
 
-echo "Recent Violent Crimes in $location"
+echo -e $divider"Recent Violent Crimes in $location"$divider
 python parse.py --limit 20 --crime violent --action recent --location $location
 
-echo "Violent-crime rankings this year in $location"
+echo -e $divider"Violent-crime rankings this year in $location"$divider
 python parse.py --action rankings --crime violent --location $location
 
-echo "Violent-crime rankings this month in $location"
+echo -e $divider"Violent-crime rankings this month in $location"$divider
 python parse.py --action rankings --crime violent --location $location --filename currentmonth
 
-echo "Property-crime rankings this year in $location"
+echo -e $divider"Property-crime rankings this year in $location"$divider
 python parse.py --action rankings --crime property --location $location
 
-echo "Property-crime rankings this month in $location"
+echo -e $divider"Property-crime rankings this month in $location"$divider
 python parse.py --action rankings --crime property --location $location --filename currentmonth
 
