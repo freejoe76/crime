@@ -2,6 +2,10 @@ Crime
 =====
 A parser and logger for the City of Denver's crime CSV. Currently outputs to terminal. No database on the backend.
 
+To get started with the first download and a view on a variety of reports:
+    $ ./ingest.bash
+    $ ./report.bash --location capitol-hill
+
 Taxonomy
 ========
 There are three levels of crimes: 
