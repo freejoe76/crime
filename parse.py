@@ -118,10 +118,10 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
         if diff == True:
             #print record['INCIDENT_ID'][0]
             if record['INCIDENT_ID'][0] == '>':
-                record['diff'] = 'add'
+                record['diff'] = 'ADD'
                 adds += 1
             elif record['INCIDENT_ID'][0] == '<': 
-                record['diff'] = 'remove'
+                record['diff'] = 'REMOVED'
                 removes += 1
 
             # Strip the "< " at the start, and the ".0" at the end
@@ -271,7 +271,7 @@ def get_neighborhood(location):
         return location
     return None
     
-def open_csv(fn = '_input/currentyear'):
+def open_csv(fn = '_input/currentyear', diff = False):
     # Open the crime file for parsing.
     # It defaults to the current year's file.
     crime_file_raw = csv.reader(open('%s.csv' % fn, 'rb'), delimiter = ',')
@@ -280,7 +280,10 @@ def open_csv(fn = '_input/currentyear'):
     # because that's the only one that's guaranteed to be in the record.
     # Newest items go on top. It's possible we won't hard-code
     # this forever.
-    crime_file = sorted(crime_file_raw, key=operator.itemgetter(6), reverse=True)
+    if diff == False:
+        crime_file = sorted(crime_file_raw, key=operator.itemgetter(6), reverse=True)
+    else:
+        crime_file = crime_file_raw
     return crime_file
 
 
@@ -304,10 +307,14 @@ def print_crimes(crimes, limit, *args):
             if output == 'csv':
                 outputs += '%s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
                 continue
-            outputs += '''%i. %s: %s
+
+            if 'diff' not in crime:
+                crime['diff'] = ''
+
+            outputs += '''%i. %s %s: %s
     Occurred: %s - %s
     Reported: %s
-    %s\n\n''' % (i, crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
+    %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
     except:
         # Dicts
         try:
@@ -370,7 +377,7 @@ if __name__ == '__main__':
     if diff == True:
         filename = 'latestdiff'
 
-    crime_file = open_csv("_input/%s" % filename)
+    crime_file = open_csv("_input/%s" % filename, diff)
     crimes = None
     if action == 'rankings':
         # Example:
