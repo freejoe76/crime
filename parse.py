@@ -10,6 +10,8 @@ from datetime import datetime, timedelta
 # The location-specific data
 from dicts import *
 
+divider='\n=============================================================\n'
+
 def timeago(time=False):
     # Get a datetime object or a int() Epoch timestamp and return a
     # pretty string like 'an hour ago', 'Yesterday', '3 months ago',
@@ -286,6 +288,15 @@ def open_csv(fn = '_input/currentyear', diff = False):
         crime_file = crime_file_raw
     return crime_file
 
+def clean_location(location):
+    # Take the location string, replace the -'s, capitalize what we can.
+    location = location.replace('-', ' ')
+
+    # Locations 3 letters or fewer are probably acronyms, and should be capital.
+    if len(location) <= 3:
+        return location.upper()
+
+    return location.title()
 
 def print_crimes(crimes, limit, *args):
     # How do we want to display the crimes?
@@ -318,17 +329,17 @@ def print_crimes(crimes, limit, *args):
     except:
         # Dicts
         try:
-            outputs += "Denver crimes, per-capita:\n"
+            outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
             i = 0
             for item in crimes['crimes']['percapita']:
                 i = i + 1
-                outputs += "%i. %s, %s\n" % (i, item[0], item[1])
+                outputs += "%i. %s, %s\n" % (i, clean_location(item[0]), item[1])
 
-            outputs += "Denver crimes, raw:\n"
+            outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
             i = 0
             for item in crimes['crimes']['neighborhood']:
                 i = i + 1
-                outputs += "%i. %s, %s\n" % (i, item[0], item[1])
+                outputs += "%i. %s, %s\n" % (i, clean_location(item[0]), item[1])
         except:
             # Specific
             try:
