@@ -415,7 +415,7 @@ if __name__ == '__main__':
             print crimes
         crimes['crimes']['neighborhood'].reverse()
         crimes['crimes']['percapita'].reverse()
-        print print_neighborhoods(crimes)
+        #print print_neighborhoods(crimes)
     elif action == 'recent':
         # Example:
         # $ ./parse.py --action recent --crime violent --location capitol-hill --output csv
@@ -427,4 +427,4 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep True 
         crimes = get_specific_crime(crime, grep, location)
-    #print print_crimes(crimes, limit, location)
+    print print_crimes(crimes, limit, location)
