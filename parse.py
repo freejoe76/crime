@@ -298,7 +298,7 @@ def clean_location(location):
 
     return location.title()
 
-def print_crimes(crimes, limit, *args):
+def print_crimes(crimes, limit, loc=None, *args):
     # How do we want to display the crimes?
     # Right now we're publishing them to be read in terminal.
     outputs = ''
@@ -333,13 +333,21 @@ def print_crimes(crimes, limit, *args):
             i = 0
             for item in crimes['crimes']['percapita']:
                 i = i + 1
+                if loc == item[0]:
+                    location = '***%s***' % clean_location(item[0])
+                else:
+                    location = clean_location(item[0])
                 outputs += "%i. %s, %s\n" % (i, clean_location(item[0]), item[1])
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
             i = 0
             for item in crimes['crimes']['neighborhood']:
                 i = i + 1
-                outputs += "%i. %s, %s\n" % (i, clean_location(item[0]), item[1])
+                if loc == item[0]:
+                    location = '***%s***' % clean_location(item[0])
+                else:
+                    location = clean_location(item[0])
+                outputs += "%i. %s, %s\n" % (i, location, item[1])
         except:
             # Specific
             try:
@@ -410,4 +418,4 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime meth --grep True 
         crimes = get_specific_crime(crime, grep, location)
     #print crimes
-    print print_crimes(crimes, limit)
+    print print_crimes(crimes, limit, location)
