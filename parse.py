@@ -8,7 +8,7 @@ from optparse import OptionParser
 from datetime import datetime, timedelta
 
 # The location-specific data
-from dicts import *
+import dicts
 
 divider='\n=============================================================\n'
 
@@ -113,7 +113,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
     for row in crime_file:
         if len(row) < 5:
             continue
-        record = dict(zip(keys, row))
+        record = dict(zip(dicts.keys, row))
         #print record
 
         # Address diffs, if we've got 'em.
@@ -155,7 +155,7 @@ def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwar
 
         if crime != None:
             if crime_type == 'parent_category':
-                if record['OFFENSE_CATEGORY_ID'] in crime_lookup_reverse[crime]:
+                if record['OFFENSE_CATEGORY_ID'] in dicts.crime_lookup_reverse[crime]:
                     crimes.append(record)
             else:
                 if record[crime_type] == crime:
@@ -180,9 +180,9 @@ def get_crime_type(crime):
     # genre violent / property / other 
     # category OFFENSE_CATEGORY_ID
     crime_type = 'OFFENSE_TYPE_ID'
-    if crime in crime_genres:
+    if crime in dicts.crime_genres:
         crime_type = 'parent_category'
-    elif crime in crime_lookup:
+    elif crime in dicts.crime_lookup:
         crime_type = 'OFFENSE_CATEGORY_ID'
 
     return crime_type
@@ -217,7 +217,7 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
     crime_type = get_crime_type(crime)
 
     for row in crime_file:
-        record = dict(zip(keys, row))
+        record = dict(zip(dicts.keys, row))
 
         # Time queries
         ts = check_datetime(record['FIRST_OCCURRENCE_DATE'])
@@ -230,19 +230,19 @@ def get_rankings(crime = None, location = None, *args, **kwargs):
             percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
             rankings['type'][record['OFFENSE_TYPE_ID']] += 1
             rankings['category'][record['OFFENSE_CATEGORY_ID']] += 1
-            crime_genre = crime_lookup[record['OFFENSE_CATEGORY_ID']]
+            crime_genre = dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']]
             rankings['genre'][crime_genre] += 1
 
         else:
 
-            if crime == crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime == record['OFFENSE_CATEGORY_ID'] or crime == record['OFFENSE_TYPE_ID']:
-                #print crime, crime_lookup[record['OFFENSE_CATEGORY_ID']]
+            if crime == dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime == record['OFFENSE_CATEGORY_ID'] or crime == record['OFFENSE_TYPE_ID']:
+                #print crime, dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']]
                 rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
                 percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
 
     for item in percapita['neighborhood'].items():
-        #print "Item 1: %s Pop of %s: %s" % ( item[1], item[0], populations[item[0]] ), 
-        percapita['neighborhood'][item[0]] = round( float(item[1])/float(populations[item[0]]) * 1000, 2)
+        #print "Item 1: %s Pop of %s: %s" % ( item[1], item[0], dicts.populations[item[0]] ), 
+        percapita['neighborhood'][item[0]] = round( float(item[1])/float(dicts.populations[item[0]]) * 1000, 2)
 
     sorted_rankings = {
         'neighborhood': sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1)),
@@ -261,7 +261,7 @@ def get_uniques(field):
     # Write a list of unique values from a field in the CSV
     values = []
     for row in crime_file:
-        record = dict(zip(keys, row))
+        record = dict(zip(dicts.keys, row))
         values.append(record[field])
 
     print set(values)
@@ -269,7 +269,7 @@ def get_uniques(field):
 
 def get_neighborhood(location):
     # If location's in the list return that location name
-    if location in neighborhoods:
+    if location in dicts.neighborhoods:
         return location
     return None
     
