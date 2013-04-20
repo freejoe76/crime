@@ -6,10 +6,11 @@ def index():
     return 'Hello World!'
 
 @app.route('/neighborhood/')
-def neighborhood_index():
-    return 'hi'
+@app.route('/neighborhood/<neighborhood>/')
+def neighborhood(neighborhood=None):
+    return render_template('neighborhood.html', neighborhood=neighborhood)
 
-url_for('static', filename='css/style.css')
+#url_for('static', filename='css/style.css')
 
 if __name__ == '__main__':
     app.debug = True
