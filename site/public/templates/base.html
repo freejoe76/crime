@@ -1,9 +1,3 @@
-<?php 
-if ( $_SERVER['HTTP_HOST'] == 'onfireusa.com' )
-{
-	header('Location: http://onwildfire.com', 301);
-}
-?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -11,7 +5,7 @@ if ( $_SERVER['HTTP_HOST'] == 'onfireusa.com' )
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
 	<title>{% block title %}{% endblock %} Denver Crimes</title>
-	<meta name="description" content="{% block description %}{% endblock %}Denver Crimes, a daily crime publication about crime in Denver.">
+	<meta name="description" content="{% block description %}Denver Crimes, a daily crime publication about crime in Denver.{% endblock %}">
 	<meta name="viewport" content="width=device-width">
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -25,7 +19,7 @@ if ( $_SERVER['HTTP_HOST'] == 'onfireusa.com' )
 -->
 	<link rel="stylesheet" href="/static/css/style.css" type="text/css" />
     <link href='http://fonts.googleapis.com/css?family=Signika+Negative:300,400,600,700|Cousine:400,700,400italic,700italic|Squada+One' rel='stylesheet' type='text/css'>
-	<script src="/scripts/modernizr-2.6.1.min.js"></script>
+	<script src="/static/scripts/modernizr-2.6.1.min.js"></script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -73,19 +67,24 @@ footer p
 {
 margin: 10px 0;
 }
+{% block style %}{% endblock style %}
     </style>
 </head>
 <body>
 
 	<h1>Denver Crimes</h1>
-	<h2>Right now we're just crime in Capitol Hill, Denver, Colorado</h2>
+	<h2>{% block breadcrumbs %}Right now we're just crime in Capitol Hill, Denver, Colorado{% endblock %}</h2>
 
+{% block content %}
+{% endblock content %}
 	<footer>
 		<p>
 			<a href="https://twitter.com/caphillcrime" class="twitter-follow-button" data-show-count="true">Follow @caphillcrime</a>
 			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 		</p>
 		<p>Questions? <a href="mailto:joe.murphy@gmail.com">Email Joe</a>, or <a href="http://twitter.com/joemurph">@ Joe on twitter</a>.
+        </p>
+        <p>Copyright &copy; 2013 Joe Murphy</p>
 	</footer>
 </body>
 </html>
