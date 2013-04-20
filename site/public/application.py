@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, redirect, abort
 import dicts
 app = Flask(__name__)
 
@@ -13,7 +13,10 @@ def neighborhood(neighborhood=None):
 
 @app.route('/<shortcut>/')
 def shortcut(shortcut):
-    return render_template('neighborhood.html', neighborhood=neighborhood)
+    if shortcut in dicts.neighborhood_shortcut_lookup.keys():
+        neighborhood = dicts.neighborhood_shortcut_lookup[shortcut]
+        return redirect(url_for('neighborhood', neighborhood=neighborhood))
+    abort(404)
 
 #url_for('static', filename='css/style.css')
 
