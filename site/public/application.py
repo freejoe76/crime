@@ -7,8 +7,13 @@ def index():
     return render_template('home.html')
 
 @app.route('/neighborhood/')
+def neighborhood_index():
+    return render_template('neighborhood.html', neighborhood=neighborhood)
 @app.route('/neighborhood/<neighborhood>/')
-def neighborhood(neighborhood=None):
+def neighborhood(neighborhood):
+    if neighborhood not in dicts.neighborhood_lookup.keys():
+        abort(404)
+    neighborhood = dicts.neighborhood_lookup[neighborhood]
     return render_template('neighborhood.html', neighborhood=neighborhood)
 
 @app.route('/<shortcut>/')

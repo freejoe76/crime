@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% block title %}Neighborhood: {% endblock title %}
+{% block title %}{{ neighborhood.full }} Neighborhood Crimes: {% endblock title %}
 {% block description %}Neighborhood{% endblock description %}
-{% block breadcrumbs %}{% endblock breadcrumbs %}
+{% block breadcrumbs %}{{ neighborhood.full }}{% endblock breadcrumbs %}
 {% block style %}
 body { margin-top:5px; }
 {% endblock style %}
