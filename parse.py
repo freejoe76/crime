@@ -298,6 +298,15 @@ def clean_location(location):
 
     return location.title()
 
+def print_neighborhoods(crimes):
+    # Output a dict of neighborhoods to fancy-names.
+    # $ ./parse.py --action rankings --crime violent
+    outputs = ''
+    for item in crimes['crimes']['percapita']:
+        #outputs += "    '%s': {'full': '%s'},\n" % (item[0], clean_location(item[0]))
+        outputs += "    '%s': '%s',\n" % (item[0], item[0])
+    return outputs
+
 def print_crimes(crimes, limit, loc=None, *args):
     # How do we want to display the crimes?
     # Right now we're publishing them to be read in terminal.
@@ -406,6 +415,7 @@ if __name__ == '__main__':
             print crimes
         crimes['crimes']['neighborhood'].reverse()
         crimes['crimes']['percapita'].reverse()
+        print print_neighborhoods(crimes)
     elif action == 'recent':
         # Example:
         # $ ./parse.py --action recent --crime violent --location capitol-hill --output csv
@@ -417,5 +427,4 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep True 
         crimes = get_specific_crime(crime, grep, location)
-    #print crimes
-    print print_crimes(crimes, limit, location)
+    #print print_crimes(crimes, limit, location)
