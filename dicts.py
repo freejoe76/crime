@@ -94,6 +94,8 @@ neighborhood_lookup = {
     'hilltop': {'full': 'Hilltop'},
     'marston': {'full': 'Marston'}
 }
+# Here so we can reference URLS such as http://denvercrimes.com/caphill 
+# and redirect requests to an actual page.
 neighborhood_shortcut_lookup = {
     'athmar-park': 'athmar-park',
     'auraria': 'auraria',
@@ -136,7 +138,7 @@ neighborhood_shortcut_lookup = {
     'lincoln-park': 'lincoln-park',
     'lowry-field': 'lowry-field',
     'mar-lee': 'mar-lee',
-    'marston': 'marston'
+    'marston': 'marston',
     'montbello': 'montbello',
     'montclair': 'montclair',
     'north-capitol-hill': 'north-capitol-hill',
