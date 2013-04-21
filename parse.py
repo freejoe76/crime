@@ -219,13 +219,13 @@ class Parse:
         else:
             timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
 
-        crime_type = get_crime_type(crime)
+        crime_type = self.get_crime_type(crime)
 
         for row in crime_file:
             record = dict(zip(dicts.keys, row))
 
             # Time queries
-            ts = check_datetime(record['FIRST_OCCURRENCE_DATE'])
+            ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
             if not timespan[0] <= datetime.date(ts) <= timespan[1]:
                 continue
 
@@ -368,7 +368,8 @@ class Parse:
                     outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
                 except:
                     print "We did not have any crimes to handle"
-                    raise 
+                    outputs = ''
+                    #raise 
 
         return outputs
 
