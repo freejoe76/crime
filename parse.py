@@ -48,8 +48,9 @@ def timeago(time=False):
 
 class Parse:
 
-    def __init__(self):
-        pass
+    def __init__(self, crime_filename, diff):
+        self.crime_file = self.open_csv(crime_filename, diff)
+        self.diff = diff
 
     def abstract_keys(self, key):
         # Take a key, return its CSV equivalent.
@@ -115,7 +116,7 @@ class Parse:
             adds = 0
             removes = 0
 
-        for row in crime_file:
+        for row in self.crime_file:
             if len(row) < 5:
                 continue
             record = dict(zip(dicts.keys, row))
@@ -221,7 +222,7 @@ class Parse:
 
         crime_type = self.get_crime_type(crime)
 
-        for row in crime_file:
+        for row in self.crime_file:
             record = dict(zip(dicts.keys, row))
 
             # Time queries
@@ -265,7 +266,7 @@ class Parse:
     def get_uniques(self, field):
         # Write a list of unique values from a field in the CSV
         values = []
-        for row in crime_file:
+        for row in self.crime_file:
             record = dict(zip(dicts.keys, row))
             values.append(record[field])
 
@@ -403,7 +404,6 @@ if __name__ == '__main__':
     yearoveryear = options.yearoveryear
     verbose = options.verbose
 
-    parse = Parse()
     
     location = parse.get_neighborhood(location)
 
@@ -413,7 +413,8 @@ if __name__ == '__main__':
     if diff == True:
         filename = 'latestdiff'
 
-    crime_file = parse.open_csv("_input/%s" % filename, diff)
+    parse = Parse("_input/%s" % filename, diff)
+
     crimes = None
     if action == 'rankings':
         # Example:

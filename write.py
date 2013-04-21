@@ -7,9 +7,16 @@ import pymongo
 from pymongo import MongoClient
 client = MongoClient()
 
-import parse
+from parse import Parse
 # The location-specific data
 import dicts
+
+
+class Write:
+
+    def __init__(self):
+        pass
+
 
 if __name__ == '__main__':
     parser = OptionParser()
@@ -41,7 +48,7 @@ if __name__ == '__main__':
     if diff == True:
         filename = 'latestdiff'
 
-    crime_file = parse.open_csv("_input/%s" % filename, diff)
+    parse = Parse("_input/%s" % filename, diff)
 
     if action == 'ticker':
         # Example:
