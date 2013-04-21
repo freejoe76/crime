@@ -82,11 +82,11 @@ class Parse:
         # 
         # Returns frequency for csv specified.
         # Also returns the # of days since the last crime.
-        crimes = get_recent_crimes(crime, grep, location)
+        crimes = self.get_recent_crimes(crime, grep, location)
         count = len(crimes['crimes'])
         last_crime = None
         if count > 0:
-            last_crime = check_datetime(crimes['crimes'][0]['FIRST_OCCURRENCE_DATE'])
+            last_crime = self.check_datetime(crimes['crimes'][0]['FIRST_OCCURRENCE_DATE'])
 
         return { 'count': count, 'last_crime': timeago(last_crime), 'crime': crime }
 
@@ -97,7 +97,7 @@ class Parse:
 
         diffs = None
         crimes = []
-        crime_type = get_crime_type(crime)
+        crime_type = self.get_crime_type(crime)
 
         if not args or args[0] == []:
             timespan = None
@@ -136,7 +136,7 @@ class Parse:
 
             # Time queries
             if timespan:
-                ts = check_datetime(record['FIRST_OCCURRENCE_DATE'])
+                ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
                 if not timespan[0] <= datetime.date(ts) <= timespan[1]:
                     continue
 
