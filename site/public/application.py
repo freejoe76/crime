@@ -1,6 +1,10 @@
 from flask import Flask, render_template, url_for, redirect, abort
+import pymongo
+from pymongo import MongoClient
 import dicts
 app = Flask(__name__)
+client = MongoClient()
+
 
 @app.route('/')
 def index():

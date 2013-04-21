@@ -49,3 +49,8 @@ Dependencies
 * CSVkit http://csvkit.readthedocs.org/en/latest/
 ## Flask http://flask.pocoo.org/
     $ pip install flask
+## MongoDB http://api.mongodb.org/python/current/
+    $ sudo apt-get install build-essential python-dev
+    $ pip install pymongo
+    $ sudo apt-get install mongodb-server
+
