@@ -85,7 +85,7 @@ def get_specific_crime(crime, grep, location = None):
 
     return { 'count': count, 'last_crime': timeago(last_crime), 'crime': crime }
 
-def get_recent_crimes(crime = None, grep = False, location = None, *args, **kwargs):
+def get_recent_crimes(crime = None, grep = False, location = None, verbose = False, diff = False, *args, **kwargs):
     # Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
     # Timespan is passed as an argument (start, finish)
     # !!! the input files aren't listed in order of occurence, so we need to sort.

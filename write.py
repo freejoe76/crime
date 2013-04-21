@@ -7,10 +7,9 @@ import pymongo
 from pymongo import MongoClient
 client = MongoClient()
 
+import parse
 # The location-specific data
 import dicts
-
-divider='\n=============================================================\n'
 
 if __name__ == '__main__':
     parser = OptionParser()
@@ -21,7 +20,7 @@ if __name__ == '__main__':
     parser.add_option("-c", "--crime", dest="crime", default=None)
     parser.add_option("-g", "--grep", dest="grep", default=False, action="store_true")
     parser.add_option("-d", "--diff", dest="diff", default=False, action="store_true")
-    parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
+    parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
     (options, args) = parser.parse_args()
     filename = options.filename
     action = options.action
@@ -45,7 +44,8 @@ if __name__ == '__main__':
     if action == 'ticker':
         # Example:
         # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'
-        pass
+        ticker = parse.get_recent_crimes('murder', None, location, args)
+        print 'HI %s' % ticker
     if action == 'rankings':
         # Example:
         # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'
