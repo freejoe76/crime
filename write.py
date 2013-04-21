@@ -1,8 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # Run a query against the crime CSV's
 import os
 from optparse import OptionParser
 from datetime import datetime, timedelta
+import pymongo
+from pymongo import MongoClient
+client = MongoClient()
 
 # The location-specific data
 import dicts
@@ -30,6 +33,8 @@ if __name__ == '__main__':
     verbose = options.verbose
 
     #location = get_neighborhood(location)
+    db = client['crimedenver']
+    collection = db[location]
 
     if verbose:
         print "Options: %s\nArgs: %s" % (options, args)
@@ -40,6 +45,7 @@ if __name__ == '__main__':
     if action == 'ticker':
         # Example:
         # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'
+        pass
     if action == 'rankings':
         # Example:
         # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'
