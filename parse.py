@@ -46,6 +46,11 @@ def timeago(time=False):
         return "Yesterday"
     return str(day_diff) + " days ago"
 
+class Parse:
+
+    def __init__(self):
+        pass
+
 def abstract_keys(key):
     # Take a key, return its CSV equivalent.
     # Used so we can use this for more than just Denver crime csv.

@@ -41,6 +41,8 @@ if __name__ == '__main__':
     if diff == True:
         filename = 'latestdiff'
 
+    crime_file = parse.open_csv("_input/%s" % filename, diff)
+
     if action == 'ticker':
         # Example:
         # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'
