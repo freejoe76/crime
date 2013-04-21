@@ -348,19 +348,19 @@ class Parse:
                 for item in crimes['crimes']['percapita']:
                     i = i + 1
                     if loc == item[0]:
-                        location = '***%s***' % clean_location(item[0])
+                        location = '***%s***' % self.clean_location(item[0])
                     else:
-                        location = clean_location(item[0])
-                    outputs += "%i. %s, %s\n" % (i, clean_location(item[0]), item[1])
+                        location = self.clean_location(item[0])
+                    outputs += "%i. %s, %s\n" % (i, self.clean_location(item[0]), item[1])
 
                 outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
                 i = 0
                 for item in crimes['crimes']['neighborhood']:
                     i = i + 1
                     if loc == item[0]:
-                        location = '***%s***' % clean_location(item[0])
+                        location = '***%s***' % self.clean_location(item[0])
                     else:
-                        location = clean_location(item[0])
+                        location = self.clean_location(item[0])
                     outputs += "%i. %s, %s\n" % (i, location, item[1])
             except:
                 # Specific
