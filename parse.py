@@ -51,326 +51,326 @@ class Parse:
     def __init__(self):
         pass
 
-def abstract_keys(key):
-    # Take a key, return its CSV equivalent.
-    # Used so we can use this for more than just Denver crime csv.
-    pass
+    def abstract_keys(self, key):
+        # Take a key, return its CSV equivalent.
+        # Used so we can use this for more than just Denver crime csv.
+        pass
 
-def get_location_list(location_type):
-    pass
+    def get_location_list(self, location_type):
+        pass
 
-def get_location_ranking(locations, crime_type):
-    pass
+    def get_location_ranking(self, locations, crime_type):
+        pass
 
-def get_timespan_crimes(location = None, time_type = 'month', quantity = 'this',  *args, **kwargs):
-    # Get crimes from a particular span of time
-    pass
+    def get_timespan_crimes(self, location = None, time_type = 'month', quantity = 'this',  *args, **kwargs):
+        # Get crimes from a particular span of time
+        pass
 
-def check_date(value):
-    # Check a date to see if it's valid. If not, throw error.
-    return datetime.strptime(value, '%Y-%m-%d')
+    def check_date(self, value):
+        # Check a date to see if it's valid. If not, throw error.
+        return datetime.strptime(value, '%Y-%m-%d')
 
-def check_datetime(value):
-    # Check a datetime to see if it's valid. If not, throw error.
-    return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+    def check_datetime(self, value):
+        # Check a datetime to see if it's valid. If not, throw error.
+        return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
 
-def get_specific_crime(crime, grep, location = None):
-    # Indexes specific crime.
-    # Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
-    # $ ./parse.py --verbose --action specific --crime meth --grep True
-    # $ ./parse.py --verbose --action specific --crime cocaine --grep True
-    # 
-    # Returns frequency for csv specified.
-    # Also returns the # of days since the last crime.
-    crimes = get_recent_crimes(crime, grep, location)
-    count = len(crimes['crimes'])
-    last_crime = None
-    if count > 0:
-        last_crime = check_datetime(crimes['crimes'][0]['FIRST_OCCURRENCE_DATE'])
+    def get_specific_crime(self, crime, grep, location = None):
+        # Indexes specific crime.
+        # Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
+        # $ ./parse.py --verbose --action specific --crime meth --grep True
+        # $ ./parse.py --verbose --action specific --crime cocaine --grep True
+        # 
+        # Returns frequency for csv specified.
+        # Also returns the # of days since the last crime.
+        crimes = get_recent_crimes(crime, grep, location)
+        count = len(crimes['crimes'])
+        last_crime = None
+        if count > 0:
+            last_crime = check_datetime(crimes['crimes'][0]['FIRST_OCCURRENCE_DATE'])
 
-    return { 'count': count, 'last_crime': timeago(last_crime), 'crime': crime }
+        return { 'count': count, 'last_crime': timeago(last_crime), 'crime': crime }
 
-def get_recent_crimes(crime = None, grep = False, location = None, verbose = False, diff = False, *args, **kwargs):
-    # Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
-    # Timespan is passed as an argument (start, finish)
-    # !!! the input files aren't listed in order of occurence, so we need to sort.
+    def get_recent_crimes(self, crime = None, grep = False, location = None, verbose = False, diff = False, *args, **kwargs):
+        # Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
+        # Timespan is passed as an argument (start, finish)
+        # !!! the input files aren't listed in order of occurence, so we need to sort.
 
-    diffs = None
-    crimes = []
-    crime_type = get_crime_type(crime)
+        diffs = None
+        crimes = []
+        crime_type = get_crime_type(crime)
 
-    if not args or args[0] == []:
-        timespan = None
-    else:
-        # timespan a tuple of dates, that defaults to everything.
-        # Decided to set that here rather than in the method def for the sake of space.
-        timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
+        if not args or args[0] == []:
+            timespan = None
+        else:
+            # timespan a tuple of dates, that defaults to everything.
+            # Decided to set that here rather than in the method def for the sake of space.
+            timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
+            if verbose:
+                print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
+
         if verbose:
-            print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
+            print "Timespan: %s, location: %s, crime: %s" % (timespan, location, crime)
 
-    if verbose:
-        print "Timespan: %s, location: %s, crime: %s" % (timespan, location, crime)
-
-    if diff == True:
-        adds = 0
-        removes = 0
-
-    for row in crime_file:
-        if len(row) < 5:
-            continue
-        record = dict(zip(dicts.keys, row))
-        #print record
-
-        # Address diffs, if we've got 'em.
         if diff == True:
-            #print record['INCIDENT_ID'][0]
-            if record['INCIDENT_ID'][0] == '>':
-                record['diff'] = 'ADD'
-                adds += 1
-            elif record['INCIDENT_ID'][0] == '<': 
-                record['diff'] = 'REMOVED'
-                removes += 1
+            adds = 0
+            removes = 0
 
-            # Strip the "< " at the start, and the ".0" at the end
-            record['INCIDENT_ID'] = record['INCIDENT_ID'][2:-2]
+        for row in crime_file:
+            if len(row) < 5:
+                continue
+            record = dict(zip(dicts.keys, row))
+            #print record
 
-        # Time queries
-        if timespan:
+            # Address diffs, if we've got 'em.
+            if diff == True:
+                #print record['INCIDENT_ID'][0]
+                if record['INCIDENT_ID'][0] == '>':
+                    record['diff'] = 'ADD'
+                    adds += 1
+                elif record['INCIDENT_ID'][0] == '<': 
+                    record['diff'] = 'REMOVED'
+                    removes += 1
+
+                # Strip the "< " at the start, and the ".0" at the end
+                record['INCIDENT_ID'] = record['INCIDENT_ID'][2:-2]
+
+            # Time queries
+            if timespan:
+                ts = check_datetime(record['FIRST_OCCURRENCE_DATE'])
+                if not timespan[0] <= datetime.date(ts) <= timespan[1]:
+                    continue
+
+            # Location, then crime queries
+            # This logic tree is more like four shrubs next to each other:
+            # 1. No crime and no location parameters,
+            # 2. Maybe crime, but yes location,
+            # 3. No crime, yes location
+            # 4. Yes crime, no location 
+            if location == None and crime == None:
+                crimes.append(record)
+                continue
+
+            if location != None:
+                if record['NEIGHBORHOOD_ID'] != location:
+                    continue
+
+            if crime == None:
+                crimes.append(record)
+                continue
+
+            if crime != None:
+                if crime_type == 'parent_category':
+                    if record['OFFENSE_CATEGORY_ID'] in dicts.crime_lookup_reverse[crime]:
+                        crimes.append(record)
+                else:
+                    if record[crime_type] == crime:
+                        crimes.append(record)
+                    elif grep == True:
+                        # Loop through the types of crimes 
+                        # (the lowest-level crime taxonomy), 
+                        # looking for a partial string match.
+                        if crime in record['OFFENSE_TYPE_ID']:
+                            crimes.append(record)
+        diffs = None
+        if diffs == True:
+            diffs = { 'adds': adds, 'removes': removes }
+        return { 'crimes': crimes, 'diffs': diffs }
+
+
+    def get_crime_type(self, crime):
+        # Figure out what type of crime we're querying
+        # parent_category doesn't correspond to a CSV field,
+        # which is why it looks different. So that's obvious.
+        # type OFFENSE_TYPE_ID
+        # genre violent / property / other 
+        # category OFFENSE_CATEGORY_ID
+        crime_type = 'OFFENSE_TYPE_ID'
+        if crime in dicts.crime_genres:
+            crime_type = 'parent_category'
+        elif crime in dicts.crime_lookup:
+            crime_type = 'OFFENSE_CATEGORY_ID'
+
+        return crime_type
+
+
+    def get_rankings(self, crime = None, location = None, *args, **kwargs):
+        # Take a crime type or category and return a list of neighborhoods 
+        # ranked by frequency of that crime.
+        # If no crime is passed, we just rank overall number of crimes
+        # (and crimes per-capita) for that particular time period.
+        # Args taken should be the start of the timespan and the end.
+        rankings = { 
+            'neighborhood': defaultdict(int),
+            'genre': defaultdict(int),
+            'category': defaultdict(int),
+            'type': defaultdict(int)
+        }
+        percapita = { 
+            'neighborhood': defaultdict(int),
+            'genre': defaultdict(int),
+            'category': defaultdict(int),
+            'type': defaultdict(int)
+        }
+        percapita_multiplier = 1000
+        today = datetime.date(datetime.now())
+        if args[0] == []:
+            month = today - timedelta(90)
+            timespan = (month, today)
+        else:
+            timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
+
+        crime_type = get_crime_type(crime)
+
+        for row in crime_file:
+            record = dict(zip(dicts.keys, row))
+
+            # Time queries
             ts = check_datetime(record['FIRST_OCCURRENCE_DATE'])
             if not timespan[0] <= datetime.date(ts) <= timespan[1]:
                 continue
 
-        # Location, then crime queries
-        # This logic tree is more like four shrubs next to each other:
-        # 1. No crime and no location parameters,
-        # 2. Maybe crime, but yes location,
-        # 3. No crime, yes location
-        # 4. Yes crime, no location 
-        if location == None and crime == None:
-            crimes.append(record)
-            continue
-
-        if location != None:
-            if record['NEIGHBORHOOD_ID'] != location:
-                continue
-
-        if crime == None:
-            crimes.append(record)
-            continue
-
-        if crime != None:
-            if crime_type == 'parent_category':
-                if record['OFFENSE_CATEGORY_ID'] in dicts.crime_lookup_reverse[crime]:
-                    crimes.append(record)
-            else:
-                if record[crime_type] == crime:
-                    crimes.append(record)
-                elif grep == True:
-                    # Loop through the types of crimes 
-                    # (the lowest-level crime taxonomy), 
-                    # looking for a partial string match.
-                    if crime in record['OFFENSE_TYPE_ID']:
-                        crimes.append(record)
-    diffs = None
-    if diffs == True:
-        diffs = { 'adds': adds, 'removes': removes }
-    return { 'crimes': crimes, 'diffs': diffs }
-
-
-def get_crime_type(crime):
-    # Figure out what type of crime we're querying
-    # parent_category doesn't correspond to a CSV field,
-    # which is why it looks different. So that's obvious.
-    # type OFFENSE_TYPE_ID
-    # genre violent / property / other 
-    # category OFFENSE_CATEGORY_ID
-    crime_type = 'OFFENSE_TYPE_ID'
-    if crime in dicts.crime_genres:
-        crime_type = 'parent_category'
-    elif crime in dicts.crime_lookup:
-        crime_type = 'OFFENSE_CATEGORY_ID'
-
-    return crime_type
-
-
-def get_rankings(crime = None, location = None, *args, **kwargs):
-    # Take a crime type or category and return a list of neighborhoods 
-    # ranked by frequency of that crime.
-    # If no crime is passed, we just rank overall number of crimes
-    # (and crimes per-capita) for that particular time period.
-    # Args taken should be the start of the timespan and the end.
-    rankings = { 
-        'neighborhood': defaultdict(int),
-        'genre': defaultdict(int),
-        'category': defaultdict(int),
-        'type': defaultdict(int)
-    }
-    percapita = { 
-        'neighborhood': defaultdict(int),
-        'genre': defaultdict(int),
-        'category': defaultdict(int),
-        'type': defaultdict(int)
-    }
-    percapita_multiplier = 1000
-    today = datetime.date(datetime.now())
-    if args[0] == []:
-        month = today - timedelta(90)
-        timespan = (month, today)
-    else:
-        timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
-
-    crime_type = get_crime_type(crime)
-
-    for row in crime_file:
-        record = dict(zip(dicts.keys, row))
-
-        # Time queries
-        ts = check_datetime(record['FIRST_OCCURRENCE_DATE'])
-        if not timespan[0] <= datetime.date(ts) <= timespan[1]:
-            continue
-
-        if crime == None:
-            # Update the neighborhood counter
-            rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
-            percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
-            rankings['type'][record['OFFENSE_TYPE_ID']] += 1
-            rankings['category'][record['OFFENSE_CATEGORY_ID']] += 1
-            crime_genre = dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']]
-            rankings['genre'][crime_genre] += 1
-
-        else:
-
-            if crime == dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime == record['OFFENSE_CATEGORY_ID'] or crime == record['OFFENSE_TYPE_ID']:
-                #print crime, dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']]
+            if crime == None:
+                # Update the neighborhood counter
                 rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
                 percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
+                rankings['type'][record['OFFENSE_TYPE_ID']] += 1
+                rankings['category'][record['OFFENSE_CATEGORY_ID']] += 1
+                crime_genre = dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']]
+                rankings['genre'][crime_genre] += 1
 
-    for item in percapita['neighborhood'].items():
-        #print "Item 1: %s Pop of %s: %s" % ( item[1], item[0], dicts.populations[item[0]] ), 
-        percapita['neighborhood'][item[0]] = round( float(item[1])/float(dicts.populations[item[0]]) * 1000, 2)
+            else:
 
-    sorted_rankings = {
-        'neighborhood': sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1)),
-        'percapita': sorted(percapita['neighborhood'].iteritems(), key=operator.itemgetter(1)),
-        'genre': sorted(rankings['genre'].iteritems(), key=operator.itemgetter(1)),
-        'category': sorted(rankings['category'].iteritems(), key=operator.itemgetter(1)),
-        'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
-    }
-    return { 'crimes': sorted_rankings }
+                if crime == dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime == record['OFFENSE_CATEGORY_ID'] or crime == record['OFFENSE_TYPE_ID']:
+                    #print crime, dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']]
+                    rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
+                    percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
 
-def get_median(ranking):
-    # Take a ranking dict, add up the numbers, get the median.
-    pass
+        for item in percapita['neighborhood'].items():
+            #print "Item 1: %s Pop of %s: %s" % ( item[1], item[0], dicts.populations[item[0]] ), 
+            percapita['neighborhood'][item[0]] = round( float(item[1])/float(dicts.populations[item[0]]) * 1000, 2)
 
-def get_uniques(field):
-    # Write a list of unique values from a field in the CSV
-    values = []
-    for row in crime_file:
-        record = dict(zip(dicts.keys, row))
-        values.append(record[field])
+        sorted_rankings = {
+            'neighborhood': sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1)),
+            'percapita': sorted(percapita['neighborhood'].iteritems(), key=operator.itemgetter(1)),
+            'genre': sorted(rankings['genre'].iteritems(), key=operator.itemgetter(1)),
+            'category': sorted(rankings['category'].iteritems(), key=operator.itemgetter(1)),
+            'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
+        }
+        return { 'crimes': sorted_rankings }
 
-    print set(values)
-    return set(values)
+    def get_median(self, ranking):
+        # Take a ranking dict, add up the numbers, get the median.
+        pass
 
-def get_neighborhood(location):
-    # If location's in the list return that location name
-    if location in dicts.neighborhoods:
-        return location
-    return None
-    
-def open_csv(fn = '_input/currentyear', diff = False):
-    # Open the crime file for parsing.
-    # It defaults to the current year's file.
-    crime_file_raw = csv.reader(open('%s.csv' % fn, 'rb'), delimiter = ',')
+    def get_uniques(self, field):
+        # Write a list of unique values from a field in the CSV
+        values = []
+        for row in crime_file:
+            record = dict(zip(dicts.keys, row))
+            values.append(record[field])
 
-    # Sort the csv by the reported date (the 7th field, 6 on a 0-index,
-    # because that's the only one that's guaranteed to be in the record.
-    # Newest items go on top. It's possible we won't hard-code
-    # this forever.
-    if diff == False:
-        crime_file = sorted(crime_file_raw, key=operator.itemgetter(6), reverse=True)
-    else:
-        crime_file = crime_file_raw
-    return crime_file
+        print set(values)
+        return set(values)
 
-def clean_location(location):
-    # Take the location string, replace the -'s, capitalize what we can.
-    location = location.replace('-', ' ')
+    def get_neighborhood(self, location):
+        # If location's in the list return that location name
+        if location in dicts.neighborhoods:
+            return location
+        return None
+        
+    def open_csv(self, fn = '_input/currentyear', diff = False):
+        # Open the crime file for parsing.
+        # It defaults to the current year's file.
+        crime_file_raw = csv.reader(open('%s.csv' % fn, 'rb'), delimiter = ',')
 
-    # Locations 3 letters or fewer are probably acronyms, and should be capital.
-    if len(location) <= 3:
-        return location.upper()
+        # Sort the csv by the reported date (the 7th field, 6 on a 0-index,
+        # because that's the only one that's guaranteed to be in the record.
+        # Newest items go on top. It's possible we won't hard-code
+        # this forever.
+        if diff == False:
+            crime_file = sorted(crime_file_raw, key=operator.itemgetter(6), reverse=True)
+        else:
+            crime_file = crime_file_raw
+        return crime_file
 
-    return location.title()
+    def clean_location(self, location):
+        # Take the location string, replace the -'s, capitalize what we can.
+        location = location.replace('-', ' ')
 
-def print_neighborhoods(crimes):
-    # Output a dict of neighborhoods to fancy-names.
-    # $ ./parse.py --action rankings --crime violent
-    outputs = ''
-    for item in crimes['crimes']['percapita']:
-        #outputs += "    '%s': {'full': '%s'},\n" % (item[0], clean_location(item[0]))
-        outputs += "    '%s': '%s',\n" % (item[0], item[0])
-    return outputs
+        # Locations 3 letters or fewer are probably acronyms, and should be capital.
+        if len(location) <= 3:
+            return location.upper()
 
-def print_crimes(crimes, limit, loc=None, *args):
-    # How do we want to display the crimes?
-    # Right now we're publishing them to be read in terminal.
-    outputs = ''
+        return location.title()
 
-    try:
-        # Lists, probably recents, with full crime record dicts
-        i = 0
-        if output == 'csv':
-            outputs += 'category, type, date_reported, address, lat, lon\n'
+    def print_neighborhoods(self, crimes):
+        # Output a dict of neighborhoods to fancy-names.
+        # $ ./parse.py --action rankings --crime violent
+        outputs = ''
+        for item in crimes['crimes']['percapita']:
+            #outputs += "    '%s': {'full': '%s'},\n" % (item[0], clean_location(item[0]))
+            outputs += "    '%s': '%s',\n" % (item[0], item[0])
+        return outputs
 
-        crimes_to_print = crimes['crimes'][:limit]
-        if limit == 0:
-            crimes_to_print = crimes['crimes']
+    def print_crimes(self, crimes, limit, loc=None, *args):
+        # How do we want to display the crimes?
+        # Right now we're publishing them to be read in terminal.
+        outputs = ''
 
-        for crime in crimes_to_print:
-            i = i + 1
-            if output == 'csv':
-                outputs += '%s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
-                continue
-
-            if 'diff' not in crime:
-                crime['diff'] = ''
-
-            outputs += '''%i. %s %s: %s
-    Occurred: %s - %s
-    Reported: %s
-    %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
-    except:
-        # Dicts
         try:
-            outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
+            # Lists, probably recents, with full crime record dicts
             i = 0
-            for item in crimes['crimes']['percapita']:
-                i = i + 1
-                if loc == item[0]:
-                    location = '***%s***' % clean_location(item[0])
-                else:
-                    location = clean_location(item[0])
-                outputs += "%i. %s, %s\n" % (i, clean_location(item[0]), item[1])
+            if output == 'csv':
+                outputs += 'category, type, date_reported, address, lat, lon\n'
 
-            outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
-            i = 0
-            for item in crimes['crimes']['neighborhood']:
+            crimes_to_print = crimes['crimes'][:limit]
+            if limit == 0:
+                crimes_to_print = crimes['crimes']
+
+            for crime in crimes_to_print:
                 i = i + 1
-                if loc == item[0]:
-                    location = '***%s***' % clean_location(item[0])
-                else:
-                    location = clean_location(item[0])
-                outputs += "%i. %s, %s\n" % (i, location, item[1])
+                if output == 'csv':
+                    outputs += '%s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
+                    continue
+
+                if 'diff' not in crime:
+                    crime['diff'] = ''
+
+                outputs += '''%i. %s %s: %s
+        Occurred: %s - %s
+        Reported: %s
+        %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
         except:
-            # Specific
+            # Dicts
             try:
-                outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
-            except:
-                print "We did not have any crimes to handle"
-                raise 
+                outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
+                i = 0
+                for item in crimes['crimes']['percapita']:
+                    i = i + 1
+                    if loc == item[0]:
+                        location = '***%s***' % clean_location(item[0])
+                    else:
+                        location = clean_location(item[0])
+                    outputs += "%i. %s, %s\n" % (i, clean_location(item[0]), item[1])
 
-    return outputs
+                outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
+                i = 0
+                for item in crimes['crimes']['neighborhood']:
+                    i = i + 1
+                    if loc == item[0]:
+                        location = '***%s***' % clean_location(item[0])
+                    else:
+                        location = clean_location(item[0])
+                    outputs += "%i. %s, %s\n" % (i, location, item[1])
+            except:
+                # Specific
+                try:
+                    outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
+                except:
+                    print "We did not have any crimes to handle"
+                    raise 
+
+        return outputs
 
 
 if __name__ == '__main__':
@@ -402,7 +402,9 @@ if __name__ == '__main__':
     yearoveryear = options.yearoveryear
     verbose = options.verbose
 
-    location = get_neighborhood(location)
+    parse = Parse()
+    
+    location = parse.get_neighborhood(location)
 
     if verbose:
         print "Options: %s\nArgs: %s" % (options, args)
@@ -410,12 +412,12 @@ if __name__ == '__main__':
     if diff == True:
         filename = 'latestdiff'
 
-    crime_file = open_csv("_input/%s" % filename, diff)
+    crime_file = parse.open_csv("_input/%s" % filename, diff)
     crimes = None
     if action == 'rankings':
         # Example:
         # $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
-        crimes = get_rankings(crime, location, args)
+        crimes = parse.get_rankings(crime, location, args)
         if verbose:
             print crimes
         crimes['crimes']['neighborhood'].reverse()
@@ -426,10 +428,10 @@ if __name__ == '__main__':
         # $ ./parse.py --action recent --crime violent --location capitol-hill --output csv
         # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill --diff
         # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill
-        crimes = get_recent_crimes(crime, grep, location, args)
+        crimes = parse.get_recent_crimes(crime, grep, location, args)
     elif action == 'specific':
         # Example:
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep True 
-        crimes = get_specific_crime(crime, grep, location)
-    print print_crimes(crimes, limit, location)
+        crimes = parse.get_specific_crime(crime, grep, location)
+    print parse.print_crimes(crimes, limit, location)
