@@ -14,7 +14,10 @@ def neighborhood(neighborhood):
     if neighborhood not in dicts.neighborhood_lookup.keys():
         abort(404)
     neighborhood = dicts.neighborhood_lookup[neighborhood]
-    return render_template('neighborhood.html', neighborhood=neighborhood)
+    response = {
+       'ticker':'hi'
+    }
+    return render_template('neighborhood.html', neighborhood=neighborhood, response=response)
 
 @app.route('/<shortcut>/')
 def shortcut(shortcut):

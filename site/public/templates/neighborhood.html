@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% block title %}{{ neighborhood.full }} Neighborhood Crimes: {% endblock title %}
 {% block description %}Neighborhood{% endblock description %}
+{% block subhead %}{{ neighborhood.full }}{% endblock subhead %}
 {% block breadcrumbs %}{{ neighborhood.full }}{% endblock breadcrumbs %}
+{% block timestamp %}{% endblock timestamp %}
 {% block style %}
 body { margin-top:5px; }
 {% endblock style %}
 
 {% block content %}
-{% endblock content %}
 
+{% endblock content %}

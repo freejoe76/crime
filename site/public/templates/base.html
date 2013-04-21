@@ -51,6 +51,11 @@ border-bottom:3px solid #ccc;
 width:300px;
 margin:auto;
 }
+h1 a
+{
+color:#006;
+text-decoration:none;
+}
 h2
 {
 font-size:30px;
@@ -71,12 +76,17 @@ margin: 10px 0;
     </style>
 </head>
 <body>
+    <section id="head">
+	    <h1><a href="/">Denver Crimes</a></h1>
+	    <h2>{% block subhead %}Right now we're just crime in <a href="/neighborhoods/capitol-hill/">Capitol Hill, Denver, Colorado</a>{% endblock %}</h2>
+        <p>{% block timestamp %}{% endblock timestamp %}</p>
+    </section>
 
-	<h1>Denver Crimes</h1>
-	<h2>{% block breadcrumbs %}Right now we're just crime in <a href="/neighborhoods/capitol-hill/">Capitol Hill, Denver, Colorado</a>{% endblock %}</h2>
-
+    <section id="content">
 {% block content %}
 {% endblock content %}
+    </section>
+
 	<footer>
 		<p>
 			<a href="https://twitter.com/caphillcrime" class="twitter-follow-button" data-show-count="true">Follow @caphillcrime</a>
