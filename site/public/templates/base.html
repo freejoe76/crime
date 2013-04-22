@@ -118,12 +118,18 @@ margin:20px auto;
 padding:15px;
 border-top:1px solid #ccc;
 border-bottom:3px solid #ccc;
+clear:both;
 }
 footer p
 {
 margin: 10px 0;
 }
-section#content .col:first-child { height:100%; float:left; margin-right:10%; }
+section#content .col
+{ 
+width:40%;
+float:right;
+}
+section#content .col:first-child { float:left; margin-right:10%; }
 .hide { display:none; }
 .show { display:list-item; }
 {% block style %}{% endblock style %}

@@ -26,7 +26,6 @@ body { margin-top:5px; }
     {% for crime in response.recent[0:20] %}
         <dt>{{ crime.OFFENSE_TYPE_ID|offense }}:</dt>
             <dd>{{ crime.FIRST_OCCURRENCE_DATE|datetime_raw|datetime('full') }}, at {{ crime.INCIDENT_ADDRESS|address }}</dd>
-    <!-- {{ crime.FIRST_OCCURRENCE_DATE }} -->
     {% endfor %}
     </dl>
 </div>
