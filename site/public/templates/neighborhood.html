@@ -8,7 +8,7 @@ body { margin-top:5px; }
 {% endblock style %}
 
 {% block timestamp %}Last updated {{ response.timestamp.timestamp|datetime }}{% endblock timestamp %}
-{% block ticker %}{{ response.ticker.last_crime }} since the last murder{% endblock ticker %}
+{% block ticker %}{{ response.ticker.last_crime }} since the last homicide{% endblock ticker %}
 
 {% block content %}
 <div class="col">
