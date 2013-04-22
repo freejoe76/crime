@@ -17,11 +17,14 @@ def neighborhood_index():
 def neighborhood(neighborhood):
     if neighborhood not in dicts.neighborhood_lookup.keys():
         abort(404)
-    neighborhood = dicts.neighborhood_lookup[neighborhood]
+    neighborhood_long = dicts.neighborhood_lookup[neighborhood]
+    db = client['crimedenver']
+    collection_name = '%s-%s' % (neighborhood, 'ticker')
+    collection = db[collection_name]
     response = {
-       'ticker':'hi'
+       'ticker':collection.find_one()
     }
-    return render_template('neighborhood.html', neighborhood=neighborhood, response=response)
+    return render_template('neighborhood.html', neighborhood=neighborhood_long, response=response)
 
 @app.route('/<shortcut>/')
 def shortcut(shortcut):
