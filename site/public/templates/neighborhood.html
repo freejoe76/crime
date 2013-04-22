@@ -15,7 +15,7 @@ body { margin-top:5px; }
     <h3>Recent Crimes in {{ neighborhood.full }}</h3>
     <ul>
     {% for crime in response.recent[0:20] %}
-    <li>{{ crime.OFFENSE_TYPE_ID }}, at {{ crime.FIRST_OCCURRENCE_DATE }}, at {{ crime.INCIDENT_ADDRESS }}</li>
+    <li>{{ crime.OFFENSE_TYPE_ID|offense }}, {{ crime.FIRST_OCCURRENCE_DATE|datetime_raw|datetime('full') }}, at {{ crime.INCIDENT_ADDRESS|address }}</li>
     <!-- {{ crime.FIRST_OCCURRENCE_DATE }} -->
     {% endfor %}
     </ul>

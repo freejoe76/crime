@@ -44,11 +44,27 @@ def shortcut(shortcut):
 
 
 # Custom filters
+@app.template_filter(name='offense')
+def offense_filter(value):
+    return value.replace('-', ' ').title()
+app.add_template_filter(offense_filter)
+
+@app.template_filter(name='address')
+def address_filter(value):
+    return value.title()
+app.add_template_filter(address_filter)
+
+@app.template_filter(name='datetime_raw')
+def datetime_raw_filter(value):
+    return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+app.add_template_filter(datetime_raw_filter)
+
+
 @app.template_filter(name='datetime')
 def datetime_filter(value, format='medium'):
     print value
     if format == 'full':
-        format = ""
+        format = "%A %B %d, %I:%M %p"
     elif format == 'medium':
         format = "%A, %I:%M %p"
     return value.strftime(format)
