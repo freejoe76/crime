@@ -26,7 +26,7 @@ def neighborhood(neighborhood):
     ticker = db[collection_name]
     collection_name = '%s-%s' % (neighborhood, 'recent')
     recent = db[collection_name]
-    collection_name = '%s-%s' % (neighborhood, 'rankings')
+    collection_name = '%s-violent' % ('rankings')
     rankings = db[collection_name]
     response = {
        'timestamp':timestamp.find_one(),

@@ -58,7 +58,12 @@ if __name__ == '__main__':
     record = { 'timestamp': datetime.now() }
     collection.insert(record)
 
-    collection_name = '%s-%s' % (location, action)
+    # Rankings data doesn't vary by location -- it includes all locations.
+    if action == 'rankings':
+        collection_name = '%s-%s' % (action, crime)
+    else:
+        collection_name = '%s-%s' % (location, action)
+
     collection = db[collection_name]
     if kill == True:
         collection.remove()
