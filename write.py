@@ -46,9 +46,10 @@ if __name__ == '__main__':
 
     parse = Parse("_input/%s" % filename, diff)
 
-    #location = get_neighborhood(location)
+    location = parse.get_neighborhood(location)
     db = client['crimedenver']
-    collection = db['%s-%s'] % (location, action)
+    collection_name = '%s-%s' % (location, action)
+    collection = db[collection_name]
 
     if action == 'ticker':
         # Example:
@@ -64,6 +65,8 @@ if __name__ == '__main__':
             print crimes
         crimes['crimes']['neighborhood'].reverse()
         crimes['crimes']['percapita'].reverse()
+        collection.insert({'neighborhood': crimes['crimes']['neighborhood']})
+        collection.insert({'percapita': crimes['crimes']['percapita']})
         #print print_neighborhoods(crimes)
     elif action == 'recent':
         # Example:
@@ -71,11 +74,12 @@ if __name__ == '__main__':
         # $ ./write.py --verbose --action recent --crime drug-alcohol --location capitol-hill --diff
         # $ ./write.py --verbose --action recent --crime drug-alcohol --location capitol-hill
         crimes = parse.get_recent_crimes(crime, grep, location, args)
-        print ticker['crimes'][0]
-        collection.insert(crimes['crimes'][0])
+        collection.insert(crimes['crimes'])
     elif action == 'specific':
         # Example:
         # $ ./write.py --verbose --action specific --crime drug-alcohol
         # $ ./write.py --verbose --action specific --crime meth --grep True 
+        # Should return something like
+        # {'count': 382, 'last_crime': '3 days ago', 'crime': None}
         crimes = parse.get_specific_crime(crime, grep, location)
-        collection.insert(crimes['crimes'][0])
+        collection.insert(crimes)
