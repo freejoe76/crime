@@ -13,7 +13,7 @@ import dicts
 
 
 class Write:
-
+    """ Handle writing data to MongoDB."""
     def __init__(self):
         pass
 
@@ -38,10 +38,6 @@ if __name__ == '__main__':
     diff = options.diff
     verbose = options.verbose
 
-    #location = get_neighborhood(location)
-    db = client['crimedenver']
-    collection = db[location]
-
     if verbose:
         print "Options: %s\nArgs: %s" % (options, args)
 
@@ -49,6 +45,10 @@ if __name__ == '__main__':
         filename = 'latestdiff'
 
     parse = Parse("_input/%s" % filename, diff)
+
+    #location = get_neighborhood(location)
+    db = client['crimedenver']
+    collection = db[location]
 
     if action == 'ticker':
         # Example:
