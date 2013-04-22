@@ -13,11 +13,12 @@ body { margin-top:5px; }
 {% block content %}
 <div class="col">
     <h3>Recent Crimes in {{ neighborhood.full }}</h3>
-    <ul>
+    <dl>
     {% for crime in response.recent[0:20] %}
-    <li>{{ crime.OFFENSE_TYPE_ID|offense }}, {{ crime.FIRST_OCCURRENCE_DATE|datetime_raw|datetime('full') }}, at {{ crime.INCIDENT_ADDRESS|address }}</li>
+        <dt>{{ crime.OFFENSE_TYPE_ID|offense }}:</dt>
+            <dd>{{ crime.FIRST_OCCURRENCE_DATE|datetime_raw|datetime('full') }}, at {{ crime.INCIDENT_ADDRESS|address }}</dd>
     <!-- {{ crime.FIRST_OCCURRENCE_DATE }} -->
     {% endfor %}
-    </ul>
+    </dl>
 </div>
 {% endblock content %}
