@@ -28,6 +28,7 @@ if __name__ == '__main__':
     parser.add_option("-g", "--grep", dest="grep", default=False, action="store_true")
     parser.add_option("-d", "--diff", dest="diff", default=False, action="store_true")
     parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
+    parser.add_option("-k", "--kill", dest="kill", default=False, action="store_true")
     (options, args) = parser.parse_args()
     filename = options.filename
     action = options.action
@@ -37,6 +38,7 @@ if __name__ == '__main__':
     grep = options.grep
     diff = options.diff
     verbose = options.verbose
+    kill = options.kill
 
     if verbose:
         print "Options: %s\nArgs: %s" % (options, args)
@@ -50,12 +52,13 @@ if __name__ == '__main__':
     db = client['crimedenver']
     collection_name = '%s-%s' % (location, action)
     collection = db[collection_name]
+    if kill == True:
+        collection.remove()
 
     if action == 'ticker':
         # Example:
         # $ ./write.py --action ticker --location capitol-hill
         crimes = parse.get_specific_crime('murder', None, location)
-        print crimes
         collection.insert(crimes)
     elif action == 'rankings':
         # Example:
