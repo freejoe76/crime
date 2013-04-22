@@ -13,9 +13,11 @@ body { margin-top:5px; }
 {% block content %}
 <div class="col">
     <h3>Recent Crimes in {{ neighborhood.full }}</h3>
-    {% for crime in response.recent %}
-    <li>{{ crime }}</li>
-    {{ crime.FIRST_OCCURRENCE_DATE }}
+    <ul>
+    {% for crime in response.recent[0:20] %}
+    <li>{{ crime.OFFENSE_TYPE_ID }}, at {{ crime.FIRST_OCCURRENCE_DATE }}, at {{ crime.INCIDENT_ADDRESS }}</li>
+    <!-- {{ crime.FIRST_OCCURRENCE_DATE }} -->
     {% endfor %}
+    </ul>
 </div>
 {% endblock content %}
