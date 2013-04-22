@@ -405,8 +405,6 @@ if __name__ == '__main__':
     verbose = options.verbose
 
     
-    location = parse.get_neighborhood(location)
-
     if verbose:
         print "Options: %s\nArgs: %s" % (options, args)
 
@@ -414,6 +412,8 @@ if __name__ == '__main__':
         filename = 'latestdiff'
 
     parse = Parse("_input/%s" % filename, diff)
+    location = parse.get_neighborhood(location)
+
 
     crimes = None
     if action == 'rankings':
