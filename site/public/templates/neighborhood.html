@@ -8,7 +8,14 @@
 body { margin-top:5px; }
 {% endblock style %}
 
-{% block ticker %}The last murder in {{ neighborhood.full }}: {{ response.ticker.last_crime }}{% endblock ticker %}
+{% block ticker %}{{ response.ticker.last_crime }} since the last murder{% endblock ticker %}
 
 {% block content %}
+<div class="col">
+    <h3>Recent Crimes in {{ neighborhood.full }}</h3>
+    {% for crime in response.recent %}
+    <li>{{ crime }}</li>
+    {{ crime.FIRST_OCCURRENCE_DATE }}
+    {% endfor %}
+</div>
 {% endblock content %}

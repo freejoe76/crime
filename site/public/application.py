@@ -20,9 +20,12 @@ def neighborhood(neighborhood):
     neighborhood_long = dicts.neighborhood_lookup[neighborhood]
     db = client['crimedenver']
     collection_name = '%s-%s' % (neighborhood, 'ticker')
-    collection = db[collection_name]
+    ticker = db[collection_name]
+    collection_name = '%s-%s' % (neighborhood, 'recent')
+    recent = db[collection_name]
     response = {
-       'ticker':collection.find_one()
+       'ticker':ticker.find_one(),
+       'recent':recent.find()
     }
     return render_template('neighborhood.html', neighborhood=neighborhood_long, response=response)
 
