@@ -8,6 +8,7 @@
 body { margin-top:5px; }
 {% endblock style %}
 
+{% block ticker %}The last murder in {{ neighborhood.full }}: {{ response.ticker.last_crime }}{% endblock ticker %}
+
 {% block content %}
-{{ response }}
 {% endblock content %}

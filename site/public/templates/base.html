@@ -83,8 +83,9 @@ margin: 10px 0;
     </section>
 
     <section id="content">
-{% block content %}
-{% endblock content %}
+<div id="ticker">{% block ticker %}{% endblock ticker %}</div>
+
+{% block content %}{% endblock content %}
     </section>
 
 	<footer>
