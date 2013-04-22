@@ -48,18 +48,18 @@ if __name__ == '__main__':
 
     #location = get_neighborhood(location)
     db = client['crimedenver']
-    collection = db[location]
+    collection = db['%s-%s'] % (location, action)
 
     if action == 'ticker':
         # Example:
-        # $ ./write.py --action ticker --location capitol-hills
-        ticker = parse.get_recent_crimes('murder', None, location, args)
-        print ticker['crimes'][0]
-        collection.insert(ticker['crimes'][0])
+        # $ ./write.py --action ticker --location capitol-hill
+        crimes = parse.get_specific_crime('murder', None, location)
+        print crimes['crimes'][0]
+        collection.insert(crimes['crimes'][0])
     if action == 'rankings':
         # Example:
         # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'
-        crimes = get_rankings(crime, location, args)
+        crimes = parse.get_rankings(crime, location, args)
         if verbose:
             print crimes
         crimes['crimes']['neighborhood'].reverse()
@@ -70,9 +70,12 @@ if __name__ == '__main__':
         # $ ./write.py --action recent --crime violent --location capitol-hill --output csv
         # $ ./write.py --verbose --action recent --crime drug-alcohol --location capitol-hill --diff
         # $ ./write.py --verbose --action recent --crime drug-alcohol --location capitol-hill
-        crimes = get_recent_crimes(crime, grep, location, args)
+        crimes = parse.get_recent_crimes(crime, grep, location, args)
+        print ticker['crimes'][0]
+        collection.insert(crimes['crimes'][0])
     elif action == 'specific':
         # Example:
         # $ ./write.py --verbose --action specific --crime drug-alcohol
         # $ ./write.py --verbose --action specific --crime meth --grep True 
-        crimes = get_specific_crime(crime, grep, location)
+        crimes = parse.get_specific_crime(crime, grep, location)
+        collection.insert(crimes['crimes'][0])
