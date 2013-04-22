@@ -12,12 +12,23 @@ body { margin-top:5px; }
 
 {% block content %}
 <div class="col">
-    <h3>Denver violent crimes per 1,000 residents, 2013</h3>
-    <ol>
-    {% for item in response.rankings[1].percapita %}
-        <li{% if loop.index > 36 %} class="hide"{% endif %}>{{ item.0|offense }}: {{ item.1 }}</li>
-    {% endfor %}
-    </ol>
+    <h3>Denver Per-Capita Crimes</h3>
+    <div class="col">
+        <h4>Property crimes per 1,000 residents, 2013</h4>
+        <ol>
+        {% for item in response.rankings.property[1].percapita %}
+            <li{% if loop.index > 36 %} class="hide"{% endif %}>{{ item.0|offense }}: {{ item.1 }}</li>
+        {% endfor %}
+        </ol>
+    </div>
+    <div class="col">
+        <h4>Violent crimes per 1,000 residents, 2013</h4>
+        <ol>
+        {% for item in response.rankings.violent[1].percapita %}
+            <li{% if loop.index > 36 %} class="hide"{% endif %}>{{ item.0|offense }}: {{ item.1 }}</li>
+        {% endfor %}
+        </ol>
+    </div>
 </div>
 
 <div class="col">

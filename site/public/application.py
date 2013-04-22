@@ -28,11 +28,16 @@ def neighborhood(neighborhood):
     recent = db[collection_name]
     collection_name = '%s-violent' % ('rankings')
     rankings = db[collection_name]
+    collection_name = '%s-property' % ('rankings')
+    rankings_property = db[collection_name]
     response = {
        'timestamp':timestamp.find_one(),
        'ticker':ticker.find_one(),
        'recent':recent.find(),
-       'rankings':rankings.find()
+       'rankings': {
+            'violent': rankings.find(),
+            'property': rankings_property.find()
+        }
     }
     return render_template('neighborhood.html', neighborhood=neighborhood_long, response=response)
 
