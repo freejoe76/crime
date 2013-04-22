@@ -50,6 +50,14 @@ if __name__ == '__main__':
 
     location = parse.get_neighborhood(location)
     db = client['crimedenver']
+
+    # Update the neighborhood timestamp. Yes, this will need to be modified.
+    collection_name = '%s-timestamp' % location
+    collection = db[collection_name]
+    collection.remove()
+    record = { 'timestamp': datetime.now() }
+    collection.insert(record)
+
     collection_name = '%s-%s' % (location, action)
     collection = db[collection_name]
     if kill == True:

@@ -3,11 +3,11 @@
 {% block description %}Neighborhood{% endblock description %}
 {% block subhead %}{{ neighborhood.full }}{% endblock subhead %}
 {% block breadcrumbs %}{{ neighborhood.full }}{% endblock breadcrumbs %}
-{% block timestamp %}{% endblock timestamp %}
 {% block style %}
 body { margin-top:5px; }
 {% endblock style %}
 
+{% block timestamp %}Last updated {{ response.timestamp.timestamp|datetime }}{% endblock timestamp %}
 {% block ticker %}{{ response.ticker.last_crime }} since the last murder{% endblock ticker %}
 
 {% block content %}

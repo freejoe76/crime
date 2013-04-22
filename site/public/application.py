@@ -1,4 +1,5 @@
 from flask import Flask, render_template, url_for, redirect, abort
+from datetime import datetime
 import pymongo
 from pymongo import MongoClient
 import dicts
@@ -19,11 +20,14 @@ def neighborhood(neighborhood):
         abort(404)
     neighborhood_long = dicts.neighborhood_lookup[neighborhood]
     db = client['crimedenver']
+    collection_name = '%s-%s' % (neighborhood, 'timestamp')
+    timestamp = db[collection_name]
     collection_name = '%s-%s' % (neighborhood, 'ticker')
     ticker = db[collection_name]
     collection_name = '%s-%s' % (neighborhood, 'recent')
     recent = db[collection_name]
     response = {
+       'timestamp':timestamp.find_one(),
        'ticker':ticker.find_one(),
        'recent':recent.find()
     }
@@ -37,6 +41,18 @@ def shortcut(shortcut):
     abort(404)
 
 #url_for('static', filename='css/style.css')
+
+
+# Custom filters
+@app.template_filter(name='datetime')
+def datetime_filter(value, format='medium'):
+    print value
+    if format == 'full':
+        format = ""
+    elif format == 'medium':
+        format = "%A, %I:%M %p"
+    return value.strftime(format)
+app.add_template_filter(datetime_filter)
 
 if __name__ == '__main__':
     app.debug = True
