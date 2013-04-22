@@ -60,6 +60,23 @@ h2
 {
 font-size:30px;
 }
+#timestamp, #ticker 
+{ 
+font-size: 12px; 
+line-height:20px;
+}
+section#content 
+{
+margin:auto;
+width:80%;
+text-align:left;
+}
+
+section#content ul li
+{
+font-size:13px;
+line-height:15px;
+}
 footer
 {
 width:50%;
@@ -79,11 +96,11 @@ margin: 10px 0;
     <section id="head">
 	    <h1><a href="/">Denver Crimes</a></h1>
 	    <h2>{% block subhead %}Right now we're just crime in <a href="/neighborhoods/capitol-hill/">Capitol Hill, Denver, Colorado</a>{% endblock %}</h2>
-        <p>{% block timestamp %}{% endblock timestamp %}</p>
+        <p id="timestamp">{% block timestamp %}{% endblock timestamp %}</p>
+        <div id="ticker">{% block ticker %}{% endblock ticker %}</div>
     </section>
 
     <section id="content">
-<div id="ticker">{% block ticker %}{% endblock ticker %}</div>
 
 {% block content %}{% endblock content %}
     </section>
