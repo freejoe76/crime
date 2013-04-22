@@ -12,6 +12,15 @@ body { margin-top:5px; }
 
 {% block content %}
 <div class="col">
+    <h3>Denver crimes per 1,000 residents</h3>
+    <ol>
+    {% for item in response.rankings[1].percapita %}
+        <li>{{ item.0|offense }}: {{ item.1 }}</li>
+    {% endfor %}
+    </ol>
+</div>
+
+<div class="col">
     <h3>Recent Crimes in {{ neighborhood.full }}</h3>
     <dl>
     {% for crime in response.recent[0:20] %}

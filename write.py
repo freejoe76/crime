@@ -71,6 +71,7 @@ if __name__ == '__main__':
     elif action == 'rankings':
         # Example:
         # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'
+        # $ ./write.py --action rankings --crime violent --kill
         crimes = parse.get_rankings(crime, location, args)
         if verbose:
             print crimes

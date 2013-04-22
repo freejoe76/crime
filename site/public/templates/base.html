@@ -64,16 +64,26 @@ h3
 {
 font-size:24px;
 }
+#timestamp
+{
+text-transform:uppercase;
+}
 #timestamp, #ticker 
 { 
 font-size: 12px; 
 line-height:20px;
 }
+#ticker
+{
+font-style:italic;
+}
 section#content 
 {
 margin:auto;
 width:80%;
+height:auto;
 text-align:left;
+clear:both;
 }
 
 section#content ul li,
@@ -91,6 +101,16 @@ section#content dl dd
 {
 text-indent:50px;
 }
+section#content ol
+{
+display:block;
+}
+section#content ol li
+{
+list-style:decimal none inside;
+font-size:13px;
+padding-left:10px;
+}
 footer
 {
 width:50%;
@@ -103,19 +123,19 @@ footer p
 {
 margin: 10px 0;
 }
+section#content .col:first-child { float:left; margin-right:10%; }
 {% block style %}{% endblock style %}
     </style>
 </head>
 <body>
     <section id="head">
 	    <h1><a href="/">Denver Crimes</a></h1>
-	    <h2>{% block subhead %}Right now we're just crime in <a href="/neighborhoods/capitol-hill/">Capitol Hill, Denver, Colorado</a>{% endblock %}</h2>
+	    <h2>{% block subhead %}Right now we're just crime in <a href="/neighborhood/capitol-hill/">Capitol Hill, Denver, Colorado</a>{% endblock %}</h2>
         <p id="timestamp">{% block timestamp %}{% endblock timestamp %}</p>
         <div id="ticker">{% block ticker %}{% endblock ticker %}</div>
     </section>
 
     <section id="content">
-
 {% block content %}{% endblock content %}
     </section>
 
