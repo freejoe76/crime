@@ -52,9 +52,10 @@ if __name__ == '__main__':
 
     if action == 'ticker':
         # Example:
-        # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'
+        # $ ./write.py --action ticker --location capitol-hills
         ticker = parse.get_recent_crimes('murder', None, location, args)
-        print 'HI %s' % ticker
+        print ticker['crimes'][0]
+        collection.insert(ticker['crimes'][0])
     if action == 'rankings':
         # Example:
         # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'
