@@ -73,6 +73,9 @@ if __name__ == '__main__':
         # $ ./write.py --action ticker --location capitol-hill
         crimes = parse.get_specific_crime('murder', None, location)
         collection.insert(crimes)
+        crimes = parse.get_specific_crime('rape', None, location)
+        collection.insert(crimes)
+        print crimes
     elif action == 'rankings':
         # Example:
         # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'

@@ -16,6 +16,9 @@ def timeago(time=False):
     # Get a datetime object or a int() Epoch timestamp and return a
     # pretty string like 'an hour ago', 'Yesterday', '3 months ago',
     # 'just now', etc
+    if time == None:
+        return "never"
+    
     now = datetime.now()
     if type(time) is int:
         diff = now - datetime.fromtimestamp(time)
