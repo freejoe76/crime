@@ -224,10 +224,8 @@ class Parse:
         percapita_multiplier = 1000
         today = datetime.date(datetime.now())
 
-        # If no timespan's defined do we really want to default to the last 90 days?
         if args[0] == []:
-            month = today - timedelta(90)
-            timespan = (month, today)
+            timespan = False
         else:
             timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
 
@@ -238,13 +236,11 @@ class Parse:
 
             # Sometimes this happens.
             if record['FIRST_OCCURRENCE_DATE'] == 'FIRST_OCCURRENCE_DATE':
-                print record
                 continue
 
             # Time queries
             ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
-            if not timespan[0] <= datetime.date(ts) <= timespan[1]:
-                print 'failed timespan check'
+            if timespan != False and not timespan[0] <= datetime.date(ts) <= timespan[1]:
                 continue
 
             if crime == None:
