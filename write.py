@@ -93,7 +93,6 @@ if __name__ == '__main__':
         crimes['crimes']['neighborhood'].reverse()
         crimes['crimes']['percapita'].reverse()
         collection.insert({ filename: {'neighborhood': crimes['crimes']['neighborhood'], 'percapita': crimes['crimes']['percapita']} })
-        print { filename: {'neighborhood': crimes['crimes']['neighborhood'], 'percapita': crimes['crimes']['percapita']} }
         #collection.insert()
         #print print_neighborhoods(crimes)
     elif action == 'recent':
