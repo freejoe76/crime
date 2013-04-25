@@ -20,17 +20,17 @@ def neighborhood(neighborhood):
         abort(404)
     neighborhood_long = dicts.neighborhood_lookup[neighborhood]
     db = client['crimedenver']
-    filename = 'currentyear'
     collection_name = '%s-%s' % (neighborhood, 'timestamp')
     timestamp = db[collection_name]
     collection_name = '%s-%s' % (neighborhood, 'ticker')
     ticker = db[collection_name]
     collection_name = '%s-%s' % (neighborhood, 'recent')
     recent = db[collection_name]
-    collection_name = '%s-violent-%s' % ('rankings', filename)
+    collection_name = '%s-violent' % ('rankings')
     rankings = db[collection_name]
-    collection_name = '%s-property-%s' % ('rankings', filename)
+    collection_name = '%s-property' % ('rankings')
     rankings_property = db[collection_name]
+    print rankings.find()
     response = {
        'timestamp':timestamp.find_one(),
        'ticker':ticker.find_one(),
