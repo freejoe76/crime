@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+    {% extends "base.html" %}
 {% block title %}{{ neighborhood.full }} Neighborhood Crimes: {% endblock title %}
 {% block description %}Neighborhood{% endblock description %}
 {% block subhead %}{{ neighborhood.full }}{% endblock subhead %}
@@ -11,7 +11,6 @@ body { margin-top:5px; }
 {% block ticker %}{{ response.ticker.last_crime }} since the last homicide{% endblock ticker %}
 
 {% block content %}
-{{ response }}
 <div class="col">
     <h3>Denver Per-Capita Crimes</h3>
     <div class="col">
