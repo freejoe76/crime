@@ -54,6 +54,7 @@ class Parse:
     def __init__(self, crime_filename, diff):
         self.crime_file = self.open_csv(crime_filename, diff)
         self.diff = diff
+        self.crime_filename = crime_filename
 
     def abstract_keys(self, key):
         # Take a key, return its CSV equivalent.

@@ -97,8 +97,8 @@ neighborhood_lookup = {
 # Human-readable crime names.
 crime_name_lookup = {'criminal-mischief-mtr-veh': '',
      'agg-aslt-police-weapon': '',
-     'aggravated-assault': '',
-     'aggravated-assault-dv': '',
+     'aggravated-assault': 'serious assault',
+     'aggravated-assault-dv': 'domestic violence - serious assault',
      'animal-cruelty-to': '',
      'arson-other': '',
      'arson-residence': '',
@@ -234,7 +234,7 @@ crime_name_lookup = {'criminal-mischief-mtr-veh': '',
      'weapon-other-viol': '',
      'weapon-poss-illegal-dangerous': '',
      'weapon-unlawful-discharge-of': '',
-     'window-peeping': ''
+     'window-peeping': 'window peeping'
 }
 # Here so we can reference URLS such as http://denvercrimes.com/caphill 
 # and redirect requests to an actual page.

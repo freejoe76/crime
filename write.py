@@ -47,6 +47,8 @@ if __name__ == '__main__':
         filename = 'latestdiff'
 
     parse = Parse("_input/%s" % filename, diff)
+    # *** We need a way, should we be using one Parse object for multiple
+    # queries, to change which file
 
     location = parse.get_neighborhood(location)
     db = client['crimedenver']
@@ -73,9 +75,16 @@ if __name__ == '__main__':
         # $ ./write.py --action ticker --location capitol-hill
         crimes = parse.get_specific_crime('murder', None, location)
         collection.insert(crimes)
-        crimes = parse.get_specific_crime('sex-aslt-rape', True, location)
+        crimes = parse.get_specific_crime('sex-aslt-rape', None, location)
         collection.insert(crimes)
-        # *** Need a lookup
+        crimes = parse.get_specific_crime('aggravated-assault', None, location)
+        collection.insert(crimes)
+        crimes = parse.get_specific_crime('aggravated-assault-dv', None, location)
+        collection.insert(crimes)
+        # For peeping toms we need to look in the last 12 months of crimes.
+        crimes = parse.__init__("_input/last12months", False)
+        crimes = parse.get_specific_crime('window-peeping', None, location)
+        collection.insert(crimes)
         print crimes
     elif action == 'rankings':
         # Example:
