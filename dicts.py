@@ -1,6 +1,6 @@
 crime_genres = ['violent', 'property', 'other']
 crime_lookup_reverse = { 
-    'violent': ['murder', 'robbery', 'aggrvated-assault', 'sexual-assault'],
+    'violent': ['murder', 'robbery', 'aggravated-assault', 'sexual-assault'],
     'property': ['arson', 'theft-from-motor-vehicle', 'auto-theft', 'burglary', 'larceny'],
     'other': ['all-other-crimes', 'drug-alcohol', 'other-crimes-against-persons', 'white-collar-crime', 'public-disorder'] }
 crime_lookup = {
