@@ -77,7 +77,12 @@ class Parse:
 
     def check_datetime(self, value):
         # Check a datetime to see if it's valid. If not, throw error.
-        return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+        try:
+            return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+        except:
+            print value
+            return False
+
 
     def get_specific_crime(self, crime, grep, location = None):
         # Indexes specific crime.
@@ -218,6 +223,8 @@ class Parse:
         }
         percapita_multiplier = 1000
         today = datetime.date(datetime.now())
+
+        # If no timespan's defined do we really want to default to the last 90 days?
         if args[0] == []:
             month = today - timedelta(90)
             timespan = (month, today)
@@ -229,9 +236,15 @@ class Parse:
         for row in self.crime_file:
             record = dict(zip(dicts.keys, row))
 
+            # Sometimes this happens.
+            if record['FIRST_OCCURRENCE_DATE'] == 'FIRST_OCCURRENCE_DATE':
+                print record
+                continue
+
             # Time queries
             ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
             if not timespan[0] <= datetime.date(ts) <= timespan[1]:
+                print 'failed timespan check'
                 continue
 
             if crime == None:
