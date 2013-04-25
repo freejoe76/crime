@@ -73,8 +73,9 @@ if __name__ == '__main__':
         # $ ./write.py --action ticker --location capitol-hill
         crimes = parse.get_specific_crime('murder', None, location)
         collection.insert(crimes)
-        crimes = parse.get_specific_crime('rape', None, location)
+        crimes = parse.get_specific_crime('sex-aslt-rape', True, location)
         collection.insert(crimes)
+        # *** Need a lookup
         print crimes
     elif action == 'rankings':
         # Example:
