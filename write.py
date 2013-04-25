@@ -47,8 +47,6 @@ if __name__ == '__main__':
         filename = 'latestdiff'
 
     parse = Parse("_input/%s" % filename, diff)
-    # *** We need a way, should we be using one Parse object for multiple
-    # queries, to change which file
 
     location = parse.get_neighborhood(location)
     db = client['crimedenver']
@@ -62,7 +60,7 @@ if __name__ == '__main__':
 
     # Rankings data doesn't vary by location -- it includes all locations.
     if action == 'rankings':
-        collection_name = '%s-%s' % (action, crime)
+        collection_name = '%s-%s-%s' % (action, crime, filename)
     else:
         collection_name = '%s-%s' % (location, action)
 
@@ -110,6 +108,6 @@ if __name__ == '__main__':
         # $ ./write.py --verbose --action specific --crime drug-alcohol
         # $ ./write.py --verbose --action specific --crime meth --grep True 
         # Should return something like
-        # {'count': 382, 'last_crime': '3 days ago', 'crime': None}
+        # {'count': 382, 'last_crime': '3 days', 'crime': None}
         crimes = parse.get_specific_crime(crime, grep, location)
         collection.insert(crimes)
