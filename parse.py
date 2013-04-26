@@ -209,6 +209,9 @@ class Parse:
         # If no crime is passed, we just rank overall number of crimes
         # (and crimes per-capita) for that particular time period.
         # Args taken should be the start of the timespan and the end.
+        # We return raw numbers and per-capita numbers.
+        # If a location is given, we also return that location's rank
+        # within each list.
         rankings = { 
             'neighborhood': defaultdict(int),
             'genre': defaultdict(int),
