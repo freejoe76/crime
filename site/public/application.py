@@ -12,7 +12,7 @@ def index():
     return render_template('home.html')
 
 @app.route('/about/')
-def neighborhood_index():
+def about():
     return render_template('flatpage.html', page='about')
 
 @app.route('/neighborhood/')
