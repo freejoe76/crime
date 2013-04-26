@@ -75,6 +75,13 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
     do
         grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> last12months.csv
     done
+
+    # Build neighborhood-specific csvs of the crimes for the last 24 months
+    for NUM in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23; 
+    do
+        grep `date +'%Y-%m' --date="$NUM months ago"` current.csv | grep capitol-hill >> 'location_capitol-hill'$NUM'months.csv'
+    done
+
 fi
 
 if [[ $TEST -eq 0 ]]; then echo "[$DATE] $DIFFCOUNT new entries" >> $LOGFILE; fi
