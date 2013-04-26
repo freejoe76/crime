@@ -273,6 +273,10 @@ class Parse:
             'category': sorted(rankings['category'].iteritems(), key=operator.itemgetter(1)),
             'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
         }
+
+        if location:
+            pass
+
         return { 'crimes': sorted_rankings }
 
     def get_median(self, ranking):
