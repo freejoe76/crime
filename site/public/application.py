@@ -11,6 +11,10 @@ client = MongoClient()
 def index():
     return render_template('home.html')
 
+@app.route('/about/')
+def neighborhood_index():
+    return render_template('flatpage.html', page='about')
+
 @app.route('/neighborhood/')
 def neighborhood_index():
     return render_template('neighborhood.html', neighborhood=neighborhood)
