@@ -30,6 +30,7 @@ def neighborhood(neighborhood):
     rankings = db[collection_name]
     collection_name = '%s-property' % ('rankings')
     rankings_property = db[collection_name]
+    print rankings.find()
     response = {
        'timestamp':timestamp.find_one(),
        'ticker':ticker.find_one(),
