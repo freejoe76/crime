@@ -17,7 +17,7 @@ def about():
 
 @app.route('/neighborhood/')
 def neighborhood_index():
-    return render_template('neighborhood.html', neighborhood=neighborhood, response=None)
+    return render_template('neighborhood_index.html', neighborhood=neighborhood, response=None)
 @app.route('/neighborhood/<neighborhood>/')
 def neighborhood(neighborhood):
     if neighborhood not in dicts.neighborhood_lookup.keys():
