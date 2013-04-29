@@ -16,6 +16,9 @@ def timeago(time=False):
     # Get a datetime object or a int() Epoch timestamp and return a
     # pretty string like 'an hour ago', 'Yesterday', '3 months ago',
     # 'just now', etc
+    if time == None:
+        return "never"
+    
     now = datetime.now()
     if type(time) is int:
         diff = now - datetime.fromtimestamp(time)
@@ -51,6 +54,7 @@ class Parse:
     def __init__(self, crime_filename, diff):
         self.crime_file = self.open_csv(crime_filename, diff)
         self.diff = diff
+        self.crime_filename = crime_filename
 
     def abstract_keys(self, key):
         # Take a key, return its CSV equivalent.
@@ -73,7 +77,12 @@ class Parse:
 
     def check_datetime(self, value):
         # Check a datetime to see if it's valid. If not, throw error.
-        return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+        try:
+            return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+        except:
+            print value
+            return False
+
 
     def get_specific_crime(self, crime, grep, location = None):
         # Indexes specific crime.
@@ -214,9 +223,9 @@ class Parse:
         }
         percapita_multiplier = 1000
         today = datetime.date(datetime.now())
+
         if args[0] == []:
-            month = today - timedelta(90)
-            timespan = (month, today)
+            timespan = False
         else:
             timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
 
@@ -225,9 +234,13 @@ class Parse:
         for row in self.crime_file:
             record = dict(zip(dicts.keys, row))
 
+            # Sometimes this happens.
+            if record['FIRST_OCCURRENCE_DATE'] == 'FIRST_OCCURRENCE_DATE':
+                continue
+
             # Time queries
             ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
-            if not timespan[0] <= datetime.date(ts) <= timespan[1]:
+            if timespan != False and not timespan[0] <= datetime.date(ts) <= timespan[1]:
                 continue
 
             if crime == None:
@@ -352,7 +365,7 @@ class Parse:
                         location = '***%s***' % self.clean_location(item[0])
                     else:
                         location = self.clean_location(item[0])
-                    outputs += "%i. %s, %s\n" % (i, self.clean_location(item[0]), item[1])
+                    outputs += "%i. %s, %s\n" % (i, location, item[1])
 
                 outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
                 i = 0

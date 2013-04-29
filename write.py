@@ -73,6 +73,16 @@ if __name__ == '__main__':
         # $ ./write.py --action ticker --location capitol-hill
         crimes = parse.get_specific_crime('murder', None, location)
         collection.insert(crimes)
+        crimes = parse.get_specific_crime('sex-aslt-rape', None, location)
+        collection.insert(crimes)
+        crimes = parse.get_specific_crime('aggravated-assault', None, location)
+        collection.insert(crimes)
+        crimes = parse.get_specific_crime('aggravated-assault-dv', None, location)
+        collection.insert(crimes)
+        # For peeping toms we need to look in the last 12 months of crimes.
+        crimes = parse.__init__("_input/last12months", False)
+        crimes = parse.get_specific_crime('window-peeping', None, location)
+        collection.insert(crimes)
     elif action == 'rankings':
         # Example:
         # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'
@@ -82,8 +92,8 @@ if __name__ == '__main__':
             print crimes
         crimes['crimes']['neighborhood'].reverse()
         crimes['crimes']['percapita'].reverse()
-        collection.insert({'neighborhood': crimes['crimes']['neighborhood']})
-        collection.insert({'percapita': crimes['crimes']['percapita']})
+        collection.insert({ filename: {'neighborhood': crimes['crimes']['neighborhood'], 'percapita': crimes['crimes']['percapita']} })
+        #collection.insert()
         #print print_neighborhoods(crimes)
     elif action == 'recent':
         # Example:
@@ -97,6 +107,6 @@ if __name__ == '__main__':
         # $ ./write.py --verbose --action specific --crime drug-alcohol
         # $ ./write.py --verbose --action specific --crime meth --grep True 
         # Should return something like
-        # {'count': 382, 'last_crime': '3 days ago', 'crime': None}
+        # {'count': 382, 'last_crime': '3 days', 'crime': None}
         crimes = parse.get_specific_crime(crime, grep, location)
         collection.insert(crimes)

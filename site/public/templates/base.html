@@ -136,8 +136,9 @@ section#content .col .col
 float:left;
 width:45%;
 }
-.hide { display:none; }
-.show { display:list-item; }
+.hide, .hidelist { display:none; }
+.show { display:block; }
+.showlist { display:list-item; }
 {% block style %}{% endblock style %}
     </style>
 </head>

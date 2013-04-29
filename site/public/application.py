@@ -11,9 +11,13 @@ client = MongoClient()
 def index():
     return render_template('home.html')
 
+@app.route('/about/')
+def about():
+    return render_template('flatpage.html', page='about')
+
 @app.route('/neighborhood/')
 def neighborhood_index():
-    return render_template('neighborhood.html', neighborhood=neighborhood)
+    return render_template('neighborhood_index.html', neighborhood=neighborhood, response=None)
 @app.route('/neighborhood/<neighborhood>/')
 def neighborhood(neighborhood):
     if neighborhood not in dicts.neighborhood_lookup.keys():
@@ -30,6 +34,7 @@ def neighborhood(neighborhood):
     rankings = db[collection_name]
     collection_name = '%s-property' % ('rankings')
     rankings_property = db[collection_name]
+    print rankings.find()
     response = {
        'timestamp':timestamp.find_one(),
        'ticker':ticker.find_one(),
