@@ -15,6 +15,15 @@ def index():
 def about():
     return render_template('flatpage.html', page='about')
 
+def rankings_filter(neighborhood, rankings):
+    # Take a neighborhood list and return a sampling of that ranking,
+    # pertinent to that neighborhood.
+    # We:
+    #   1. Figure out where the neighborhood is in the rankings
+    #   2. Make a decision about which ranking items we publish based on that.
+    #print dir(rankings[0].values()[1])
+    return rankings
+
 @app.route('/neighborhood/')
 def neighborhood_index():
     return render_template('neighborhood.html', neighborhood=neighborhood)
@@ -40,7 +49,7 @@ def neighborhood(neighborhood):
        'ticker':ticker.find_one(),
        'recent':recent.find(),
        'rankings': {
-            'violent': rankings.find(),
+            'violent': rankings_filter(neighborhood, rankings.find()),
             'property': rankings_property.find()
         }
     }
@@ -75,7 +84,7 @@ app.add_template_filter(datetime_raw_filter)
 
 @app.template_filter(name='datetime')
 def datetime_filter(value, format='medium'):
-    print value
+    #print value
     if format == 'full':
         format = "%A %B %d, %I:%M %p"
     elif format == 'medium':
