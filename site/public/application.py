@@ -81,7 +81,10 @@ def datetime_filter(value, format='medium'):
         format = "%A %B %d, %I:%M %p"
     elif format == 'medium':
         format = "%A, %I:%M %p"
-    return value.strftime(format)
+    try:
+        return value.strftime(format)
+    except:
+        return None
 app.add_template_filter(datetime_filter)
 
 if __name__ == '__main__':
