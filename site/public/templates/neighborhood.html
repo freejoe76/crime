@@ -11,14 +11,13 @@ body { margin-top:5px; }
 {% block ticker %}{{ response.ticker.last_crime }} since the last homicide{% endblock ticker %}
 
 {% block content %}
-{{ response }}
 <div class="col">
     <h3>Denver Per-Capita Crimes</h3>
     <div class="col">
         <h4>Property crimes per 1,000 residents, 2013</h4>
         <ol>
         {% for item in response.rankings.property[0].currentyear.percapita %}
-            <li{% if loop.index > 36 %} class="hide"{% endif %}>{{ item.0|offense }}: {{ item.1 }}</li>
+            <li{% if loop.index > 36 %} class="hidelist"{% endif %}>{{ item.0|offense }}: {{ item.1 }}</li>
         {% endfor %}
         </ol>
     </div>
@@ -26,7 +25,7 @@ body { margin-top:5px; }
         <h4>Violent crimes per 1,000 residents, 2013</h4>
         <ol>
         {% for item in response.rankings.violent[0].currentyear.percapita %}
-            <li{% if loop.index > 36 %} class="hide"{% endif %}>{{ item.0|offense }}: {{ item.1 }}</li>
+            <li{% if loop.index > 36 %} class="hidelist"{% endif %}>{{ item.0|offense }}: {{ item.1 }}</li>
         {% endfor %}
         </ol>
     </div>
