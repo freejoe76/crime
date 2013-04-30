@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% block title %}Neighborhoods: {% endblock title %}
-{% block description %}Neighborhood{% endblock description %}
-{% block subhead %}{% endblock subhead %}
+{% block title %}List of Denver Neighborhoods: {% endblock title %}
+{% block description %}Here's a list of the Denver neighborhood: we cover on Denver Crimes{% endblock description %}
+{% block subhead %}Right now we're just crime in <a href="/neighborhood/capitol-hill/">Capitol Hill, Denver, Colorado</a>, but soon we'll publish crimes for the neighborhoods below.{% endblock %}
 {% block style %}
 body { margin-top:5px; }
 {% endblock style %}
@@ -9,4 +9,9 @@ body { margin-top:5px; }
 {% block ticker %}{% endblock ticker %}
 
 {% block content %}
+<ul>
+{% for key, value in neighborhoods.iteritems() %}
+    <li><a href="/neighborhood/{{ key }}/">{{ value.full }}</a></li>
+{% endfor %}
+</ul>
 {% endblock content %}
