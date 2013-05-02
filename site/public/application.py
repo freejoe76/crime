@@ -4,6 +4,7 @@ import pymongo
 from pymongo import MongoClient
 import dicts
 app = Flask(__name__)
+app.config.from_envvar('DENVERCRIME_SETTINGS')
 client = MongoClient()
 
 
