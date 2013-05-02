@@ -4,5 +4,5 @@
 # $ source source.sh
 alias gpa='git pull -a'
 
-alias setlocal='PYTHONENV=local; echo "Python Environment: $PYTHONENV"'
-alias setprod='PYTHONENV=prod; echo "Python Environment: $PYTHONENV"'
+alias setlocal='export DENVERCRIME_SETTINGS=/home/joe/crime/site/public/settings.cfg; echo "Python Environment: $DENVERCRIME_SETTINGS"'
+alias setprod='export DENVERCRIME_SETTINGS=/path/to/settings.cfg; echo "Python Environment: $DENVERCRIME_SETTINGS"'
