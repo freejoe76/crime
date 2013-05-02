@@ -17,7 +17,8 @@ def about():
 
 @app.route('/neighborhood/')
 def neighborhood_index():
-    return render_template('neighborhood_index.html', neighborhood=neighborhood, response=None)
+    neighborhoods = dicts.neighborhood_lookup
+    return render_template('neighborhood_index.html', neighborhoods=neighborhoods, response=None)
 @app.route('/neighborhood/<neighborhood>/')
 def neighborhood(neighborhood):
     if neighborhood not in dicts.neighborhood_lookup.keys():
@@ -80,7 +81,10 @@ def datetime_filter(value, format='medium'):
         format = "%A %B %d, %I:%M %p"
     elif format == 'medium':
         format = "%A, %I:%M %p"
-    return value.strftime(format)
+    try:
+        return value.strftime(format)
+    except:
+        return None
 app.add_template_filter(datetime_filter)
 
 if __name__ == '__main__':
