@@ -90,5 +90,4 @@ def datetime_filter(value, format='medium'):
 app.add_template_filter(datetime_filter)
 
 if __name__ == '__main__':
-    app.debug = True
     app.run()
