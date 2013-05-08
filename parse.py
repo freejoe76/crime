@@ -202,6 +202,12 @@ class Parse:
 
         return crime_type
 
+    def get_monthbymonth(self, crime = None, grep = False, location = None):
+        # Loop through the monthly crime files, return frequency.
+        # Can filter by crime, location or both. 
+        # Have some gymnastics to do her in jumping across files.
+        # Return a dict of months and # of occurrences.
+        pass
 
     def get_rankings(self, crime = None, location = None, *args, **kwargs):
         # Take a crime type or category and return a list of neighborhoods 
@@ -234,7 +240,7 @@ class Parse:
         for row in self.crime_file:
             record = dict(zip(dicts.keys, row))
 
-            # Sometimes this happens.
+            # Sometimes this happens. *** What is "this"?
             if record['FIRST_OCCURRENCE_DATE'] == 'FIRST_OCCURRENCE_DATE':
                 continue
 

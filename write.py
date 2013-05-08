@@ -85,7 +85,7 @@ if __name__ == '__main__':
         collection.insert(crimes)
     elif action == 'sparkline':
         if location:
-            pass
+            crimes = parse.get_monthbymonth(crime, grep, location)
         else:
             pass
         collection.insert(crimes)
