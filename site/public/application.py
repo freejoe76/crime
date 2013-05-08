@@ -4,6 +4,7 @@ import pymongo
 from pymongo import MongoClient
 import dicts
 app = Flask(__name__)
+app.config.from_envvar('DENVERCRIME_SETTINGS')
 client = MongoClient()
 
 
@@ -19,6 +20,7 @@ def about():
 def neighborhood_index():
     neighborhoods = dicts.neighborhood_lookup
     return render_template('neighborhood_index.html', neighborhoods=neighborhoods, response=None)
+
 @app.route('/neighborhood/<neighborhood>/')
 def neighborhood(neighborhood):
     if neighborhood not in dicts.neighborhood_lookup.keys():
@@ -88,5 +90,4 @@ def datetime_filter(value, format='medium'):
 app.add_template_filter(datetime_filter)
 
 if __name__ == '__main__':
-    app.debug = True
     app.run()
