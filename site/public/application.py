@@ -62,7 +62,10 @@ def shortcut(shortcut):
 # Custom filters
 @app.template_filter(name='offense')
 def offense_filter(value):
-    return value.replace('-', ' ').title()
+    try:
+        return dicts.crime_name_lookup[value].title()
+    except:
+        return value.replace('-', ' ').title()
 app.add_template_filter(offense_filter)
 
 @app.template_filter(name='address')
