@@ -51,6 +51,10 @@ Dependencies
 ## Flask http://flask.pocoo.org/
     $ pip install flask
 
+### Flask Extensions:
+    # Flask-FlatPages 0.5 http://pythonhosted.org/Flask-FlatPages/
+    $ pip install Flask-FlatPages
+
 ## MongoDB http://api.mongodb.org/python/current/
     $ sudo apt-get install build-essential python-dev
     $ pip install pymongo
