@@ -52,6 +52,13 @@ def neighborhood(neighborhood):
     }
     return render_template('neighborhood.html', neighborhood=neighborhood_long, response=response)
 
+@app.route('/neighborhood/<neighborhood>/about/')
+def neighborhood(neighborhood):
+    if neighborhood not in dicts.neighborhood_lookup.keys():
+        abort(404)
+    neighborhood_long = dicts.neighborhood_lookup[neighborhood]
+    return render_template('neighborhood_about.html', neighborhood=neighborhood_long)
+
 @app.route('/<shortcut>/')
 def shortcut(shortcut):
     if shortcut in dicts.neighborhood_shortcut_lookup.keys():
