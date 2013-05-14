@@ -1,4 +1,5 @@
 from flask import Flask, render_template, url_for, redirect, abort
+from flask_flatpages import FlatPages
 from datetime import datetime
 import pymongo
 from pymongo import MongoClient
@@ -6,7 +7,7 @@ import dicts
 app = Flask(__name__)
 app.config.from_envvar('DENVERCRIME_SETTINGS')
 client = MongoClient()
-
+pages = FlatPages(app)
 
 @app.route('/')
 def index():
@@ -14,7 +15,9 @@ def index():
 
 @app.route('/about/')
 def about():
-    return render_template('flatpage.html', page='about')
+    page = pages.get_or_404('about')
+    template = page.meta.get('template', 'flatpage.html')
+    return render_template(template, page=page)
 
 @app.route('/neighborhood/')
 def neighborhood_index():
