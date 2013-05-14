@@ -36,17 +36,22 @@
 </head>
 <body>
     <section id="head">
+        <div class="container">
 	    <h1><a href="/">Denver Crimes</a></h1>
 	    <h2>{% block subhead %}Right now we're just crime in <a href="/neighborhood/capitol-hill/">Capitol Hill, Denver, Colorado</a>{% endblock %}</h2>
         <p id="timestamp">{% block timestamp %}{% endblock timestamp %}</p>
         <div id="ticker">{% block ticker %}{% endblock ticker %}</div>
+        </div>
     </section>
 
     <section id="content">
+        <div class="container">
 {% block content %}{% endblock content %}
+        </div>
     </section>
 {% block sidebar %}<section id="sidebar"></section>{% endblock sidebar %}
 	<footer>
+        <div class="container">
 		<p>
 			<a href="https://twitter.com/caphillcrime" class="twitter-follow-button" data-show-count="true">Follow @caphillcrime</a>
 			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -54,6 +59,7 @@
 		<p>Questions? <a href="mailto:joe.murphy@gmail.com">Email Joe</a>, or <a href="http://twitter.com/joemurph">@ Joe on twitter</a>.
         </p>
         <p>Copyright &copy; 2013 Joe Murphy</p>
+        </div>
 	</footer>
 </body>
 </html>
