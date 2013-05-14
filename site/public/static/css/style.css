@@ -153,7 +153,9 @@ input[type="submit"] {
 min-width: 320px;
 max-width: 997px;
 border: 2px solid red;
+margin: auto;
 }
+
 .container-content { overflow:hidden; }
 
 @media only screen and (min-width: 320px) and (max-width: 600px)
@@ -197,8 +199,9 @@ border:5px solid yellow;
 .container
 {
 width: 990px;
-border:5px solid white;
+border: none;
 }
+footer .container { width:100%; }
 .container-content { width:790px; }
 }
 
