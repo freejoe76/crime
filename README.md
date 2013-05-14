@@ -54,6 +54,8 @@ Dependencies
 ### Flask Extensions:
     # Flask-FlatPages 0.5 http://pythonhosted.org/Flask-FlatPages/
     $ pip install Flask-FlatPages
+    # Flask-Testing 0.4 http://pythonhosted.org/Flask-Testing/
+    $ pip install Flask-Testing
 
 ## MongoDB http://api.mongodb.org/python/current/
     $ sudo apt-get install build-essential python-dev
