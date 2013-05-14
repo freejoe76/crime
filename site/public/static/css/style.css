@@ -1,3 +1,112 @@
+/* Eric Meyer's Reset CSS v2.0 - http://cssreset.com */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
+
+body { margin:100px 10px 10px; }
+h1, h2, h3, h4, h5, h6
+{
+font-family: 'Signika Negative', sans-serif;
+line-height: 1.2;
+text-rendering: optimizelegibility;
+color:#555;
+}
+h1
+{
+font-size:40px;
+font-weight:bold;
+border-top:1px solid #ccc;
+border-bottom:3px solid #ccc;
+width:300px;
+margin:auto;
+}
+h1 a
+{
+color:#006;
+text-decoration:none;
+}
+h2
+{
+font-size:30px;
+}
+h3
+{
+font-size:24px;
+}
+#timestamp
+{
+text-transform:uppercase;
+}
+#timestamp, #ticker 
+{ 
+font-size: 12px; 
+line-height:20px;
+}
+#ticker
+{
+font-style:italic;
+}
+section#content 
+{
+margin:auto;
+width:80%;
+height:auto;
+text-align:left;
+clear:both;
+}
+
+section#content ul li,
+section#content dl dt,
+section#content dl dd
+{
+font-size:13px;
+line-height:15px;
+}
+section#content dl dt
+{
+margin-top:5px;
+}
+section#content dl dd
+{
+text-indent:50px;
+}
+section#content ol
+{
+display:block;
+}
+section#content ol li
+{
+list-style:decimal none inside;
+font-size:13px;
+padding-left:10px;
+}
+footer
+{
+width:50%;
+margin:20px auto;
+padding:15px;
+border-top:1px solid #ccc;
+border-bottom:3px solid #ccc;
+clear:both;
+}
+footer p
+{
+margin: 10px 0;
+}
+section#content .col
+{ 
+width:45%;
+float:right;
+}
+section#content .col:first-child
+{ float:left; margin-right:10%; }
+section#content .col .col
+{
+float:left;
+width:45%;
+}
+.hide, .hidelist { display:none; }
+.show { display:block; }
+.showlist { display:list-item; }
+
 html {
   font-size: 100%;
   -webkit-text-size-adjust: 100%;
@@ -6,7 +115,6 @@ html {
 }
 
 body {
-  margin: auto;
   text-align: center;
   color: #333;
 }
@@ -40,22 +148,24 @@ input[type="submit"] {
   -webkit-appearance: button;
 }
 
-#container
+.container
 {
 min-width: 320px;
 max-width: 997px;
 border: 2px solid red;
+margin: auto;
 }
+
 .container-content { overflow:hidden; }
 
 @media only screen and (min-width: 320px) and (max-width: 600px)
 {
-#container
+.container
 {
 width: 320px!important;
 border: 5px solid blue;
 }
-#container-nav
+.container-nav
 {
 width: 100%;
 }
@@ -65,7 +175,7 @@ ul#nav { margin-bottom: 0; }
 
 @media only screen and (min-width: 481px)
 {
-#container
+.container
 {
 width: 481px;
 border: 5px solid green;
@@ -75,7 +185,7 @@ border: 5px solid green;
 
 @media only screen and (min-width: 768px)
 {
-#container
+.container
 {
 width: 768px;
 border:5px solid yellow;
@@ -86,14 +196,16 @@ border:5px solid yellow;
 
 @media only screen and (min-width: 990px)
 {
-#container
+.container
 {
 width: 990px;
-border:5px solid white;
+border: none;
 }
+footer .container { width:100%; }
 .container-content { width:790px; }
 }
 
 
 .error { color:red; }
 .thanks { color:green; font-weight:bold; }
+
