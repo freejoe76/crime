@@ -99,11 +99,11 @@ section {
 
 /* = = = = = = FONTS */
 h1 {
-  font-family: {font:Title};
-  font-size:  {block:IfHeaderSize}{text:Header Size}{/block:IfHeaderSize}px;
+  font-family: 'Merriweather', sans-serif;
+  font-size:  120px;
 
   line-height: 80px;
-  color: {color:Heading Text};
+  color: #fff;
   font-weight: 900;
   font-style: normal;
   text-align: center;
@@ -111,10 +111,10 @@ h1 {
   
 }
 h2 {
-  font-family: {font:Body};
+  font-family: 'Merriweather', sans-serif;
   font-size: 55px;
   line-height: 80px;
-  color: {color:Text Color};
+  color: #282828;
   font-weight: 700;
   font-style: normal;
 }
@@ -122,7 +122,7 @@ h5 {
   font-family: 'Montserrat', sans-serif;
   font-size: 16px;
   line-height: 24px;
-  color: {color:About Text};
+  color: ;
   font-weight: normal;
   font-style: normal;
 }
@@ -145,29 +145,29 @@ h6:hover {
 blockquote {
   font-size: 16px;
   line-height: 32px;
-  font-family: {font:Body};
+  font-family: 'Merriweather', sans-serif;
   
-    color: {color:Text Color};
+    color: #282828;
   font-weight: 400;
 }
 p {
-  font-family: {font:Body};
+  font-family: 'Merriweather', sans-serif;
   font-size: 16px;
   line-height: 32px;
-    color: {color:Text Color};
+    color: #282828;
   font-weight: 400;
   margin-bottom: 25px;
 }
 a {
   text-decoration: none;
-  color: {color:Link Color};
+  color: #808080;
   -webkit-transition: color 0.3s ease-in-out;
   -moz-transition: color 0.3s ease-in-out;
   -o-transition: color 0.3s ease-in-out;
   transition: color 0.3s ease-in-out;
 }
 a:hover {
-  color: {color:LinkHover Color};
+  color: ;
 }
 li {
  font-family: 'Merriweather', sans-serif;
@@ -181,9 +181,9 @@ li {
 /*======BASICS========== */
 
 body {
-   background-color: {color:Content Background};
+   background-color: #f8f8f8;
   overflow: hidden;
-  font-family: {font:Body};
+  font-family: 'Merriweather', sans-serif;
 }
 nav,
 section,
@@ -196,9 +196,9 @@ section {
   padding: 0;
 }
 ::selection {
-  background: {color:Selection Color};}
+  background: #3ba5ff;}
 ::-moz-selection {
-  background: {color:Selection Color};}
+  background: #3ba5ff;}
 
 /*======HEADER ========== */
 header {
@@ -212,7 +212,7 @@ header {
   height: 460px;
   position: fixed;
   width: 100%;
-  background-color: {color:Header Background};
+  background-color: #3ba5ff;
 }
 
 
@@ -301,7 +301,7 @@ header {
   font-size: 16px;
   text-align: center;
   font-weight: 400;
-   color: {color:Heading Text};
+   color: #fff;
    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   letter-spacing: 0px;
 }
@@ -379,7 +379,7 @@ header {
   margin: 0 auto;
   width: 100%;
   z-index: 1000;
-  background: {color:Navigation Color};
+  background: #f1f1f1;
 }
 .selected {
   height: 50px;
@@ -406,7 +406,7 @@ header {
   font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   line-height: 18px;
-  color: {color:Navigation Text Color};
+  color: #6b6b6b;
   letter-spacing: 1px;
   text-transform: uppercase;
   font-weight: 400;
@@ -421,17 +421,17 @@ header {
 
 
 .navigation a {
-color: {color:Navigation Text Color};
+color: #6b6b6b;
 }
 
 .navigation a:hover {
-color: {color:LinkHover Color};
+color: ;
 }
 
 
 .navigation li:hover {
 
-  color: {color:LinkHover Color};
+  color: ;
 
 }
 
@@ -469,7 +469,7 @@ color: {color:LinkHover Color};
 .mainbitperma{
 position: relative;
   top: 50px;
-  background-color: {color:Content Background};
+  background-color: #f8f8f8;
   padding-bottom: 160px;
   z-index: 10;
     
@@ -480,7 +480,7 @@ position: relative;
 .mainbit {
   position: relative;
   top: 460px;
-  background-color: {color:Content Background};
+  background-color: #f8f8f8;
   padding-bottom: 450px;
   z-index: 10;
 }
@@ -556,15 +556,15 @@ article {
   z-index: 100;
   width: 100%;
   padding: 20px 15% 0 15%;
-background: {color:Navigation Color}
+background: #f1f1f1
 
 }
 .afooter h5 {
-color: {color:Navigation Text Color};
+color: #6b6b6b;
 }
 
 .afooter a {
-color: {color:Navigation Text Color};
+color: #6b6b6b;
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
@@ -573,7 +573,7 @@ color: {color:Navigation Text Color};
 }
 
 .afooter a:hover {
-color: {color:LinkHover Color};
+color: ;
 }
 
 .ontheright {
@@ -742,7 +742,7 @@ input p {
      font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   line-height: 24px;
-   background: {color:Navigation Color};
+   background: #f1f1f1;
   font-weight: 400;
   font-style: normal;
 -webkit-transition: all 0.2s ease-in-out; 
@@ -767,7 +767,7 @@ input p {
      font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   line-height: 24px;
-   background: {color:Navigation Color};
+   background: #f1f1f1;
   font-weight: 400;
   font-style: normal;
   
@@ -1216,5 +1216,3 @@ ol.notes a {
 ol.notes a:hover {
   color: #aeaeae;
 }
-
-

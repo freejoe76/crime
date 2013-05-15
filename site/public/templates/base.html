@@ -17,6 +17,7 @@
 	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
 	<link rel="apple-touch-icon" href="https://si0.twimg.com/profile_images/2594397541/8s66ebyzjcndciin20um.png" />
 -->
+    <link rel="stylesheet" href="/static/css/tumblr_write.css" type="text/css" />
 	<link rel="stylesheet" href="/static/css/style.css" type="text/css" />
     <link href='http://fonts.googleapis.com/css?family=Signika+Negative:300,400,600,700|Cousine:400,700,400italic,700italic|Squada+One' rel='stylesheet' type='text/css'>
 	<script src="/static/scripts/modernizr-2.6.1.min.js"></script>
@@ -37,6 +38,12 @@
 <body>
     <section id="head">
         <div class="container">
+            <div class="navtop">
+                <ul class="navigation">
+                    <li class="selectedb"><a href="/blog/" class="showblog">Blog</a></li>
+                    <li class="selecteda"><a href="/about/" id="showabout">About</a></li>
+                </ul>
+            </div>
 	    <h1><a href="/">Denver Crimes</a></h1>
 	    <h2>{% block subhead %}Right now we're just crime in <a href="/neighborhood/capitol-hill/">Capitol Hill, Denver, Colorado</a>{% endblock %}</h2>
         <p id="timestamp">{% block timestamp %}{% endblock timestamp %}</p>
