@@ -16,7 +16,7 @@ font-weight:bold;
 border-top:1px solid #ccc;
 border-bottom:3px solid #ccc;
 width:300px;
-margin:auto;
+margin: auto; 
 }
 h1 a
 {
@@ -150,6 +150,7 @@ input[type="submit"] {
 
 .container
 {
+float: none;
 min-width: 320px;
 max-width: 997px;
 border: 2px solid red;

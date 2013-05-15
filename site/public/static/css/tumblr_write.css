@@ -188,7 +188,7 @@ body {
 nav,
 section,
 footer {
-  float: left;
+  /* float: left; ***/
   clear: both;
 }
 section {
@@ -375,7 +375,7 @@ header {
 
 .navtop {
   height: 50px;
-  position: fixed;
+  /* position: fixed; ***/
   margin: 0 auto;
   width: 100%;
   z-index: 1000;
