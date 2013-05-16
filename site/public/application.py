@@ -66,6 +66,7 @@ def shortcut(shortcut):
     if shortcut in sc:
         return redirect(sc[shortcut])
 
+    # Neighborhood shortcuts
     if shortcut in dicts.neighborhood_shortcut_lookup.keys():
         neighborhood = dicts.neighborhood_shortcut_lookup[shortcut]
         return redirect(url_for('neighborhood', neighborhood=neighborhood))

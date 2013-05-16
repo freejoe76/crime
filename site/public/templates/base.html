@@ -9,7 +9,7 @@
 	<meta name="viewport" content="width=device-width">
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <meta http-equiv="Content-Language" content="en-us">
+	<meta http-equiv="Content-Language" content="en-us">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="copyright" content="&copy;2013 Joe Murphy" />
 <!--
@@ -19,8 +19,8 @@
 -->
     <link rel="stylesheet" href="/static/css/tumblr_write.css" type="text/css" />
 	<link rel="stylesheet" href="/static/css/style.css" type="text/css" />
-    <link href='http://fonts.googleapis.com/css?family=Signika+Negative:300,400,600,700|Cousine:400,700,400italic,700italic|Squada+One' rel='stylesheet' type='text/css'>
-	<script src="/static/scripts/modernizr-2.6.1.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Signika+Negative:300,400,600,700|Montserrat:400,700|Merriweather:400,300,700,900|Cousine:400,700,400italic,700italic|Squada+One' rel='stylesheet' type='text/css'>
+
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -36,7 +36,7 @@
     </style>
 </head>
 <body>
-    <section id="head">
+    <header>
         <div class="container">
             <div class="navtop">
                 <ul class="navigation">
@@ -44,10 +44,12 @@
                     <li class="selecteda"><a href="/about/" id="showabout">About</a></li>
                 </ul>
             </div>
-	    <h1><a href="/">Denver Crimes</a></h1>
+        <div class="thelargeheader">
+	    <div id="blogtitle"><h1><a href="/">Denver Crimes</a></h1></div>
 	    <h2>{% block subhead %}Right now we're just crime in <a href="/neighborhood/capitol-hill/">Capitol Hill, Denver, Colorado</a>{% endblock %}</h2>
         <p id="timestamp">{% block timestamp %}{% endblock timestamp %}</p>
         <div id="ticker">{% block ticker %}{% endblock ticker %}</div>
+        </div>
         </div>
     </section>
 
