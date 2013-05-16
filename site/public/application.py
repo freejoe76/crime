@@ -61,6 +61,11 @@ def neighborhood(neighborhood):
 
 @app.route('/<shortcut>/')
 def shortcut(shortcut):
+    # Hard-coded shortcuts
+    sc = { 'blog': 'http://blog.denvercrimes.com' }
+    if shortcut in sc:
+        return redirect(sc[shortcut])
+
     if shortcut in dicts.neighborhood_shortcut_lookup.keys():
         neighborhood = dicts.neighborhood_shortcut_lookup[shortcut]
         return redirect(url_for('neighborhood', neighborhood=neighborhood))
