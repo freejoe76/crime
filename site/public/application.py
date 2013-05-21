@@ -24,19 +24,14 @@ def neighborhood_index():
     neighborhoods = dicts.neighborhood_lookup
     return render_template('neighborhood_index.html', neighborhoods=neighborhoods, response=None)
 
-@app.route('/neighborhood/<neighborhood>/about/')
-def neighborhood(neighborhood):
-    if neighborhood not in dicts.neighborhood_lookup.keys():
-        abort(404)
-    neighborhood_long = dicts.neighborhood_lookup[neighborhood]
-    print neighborhood, "about"
-    return render_template('neighborhood_about.html', neighborhood=neighborhood_long)
-
+@app.route('/neighborhood/<neighborhood>/<about>/')
 @app.route('/neighborhood/<neighborhood>/')
-def neighborhood(neighborhood):
+def neighborhood(neighborhood, about=None):
     if neighborhood not in dicts.neighborhood_lookup.keys():
         abort(404)
     neighborhood_long = dicts.neighborhood_lookup[neighborhood]
+    if about == 'about':
+        return render_template('neighborhood_about.html', neighborhood=neighborhood_long)
     db = client['crimedenver']
     collection_name = '%s-%s' % (neighborhood, 'timestamp')
     timestamp = db[collection_name]

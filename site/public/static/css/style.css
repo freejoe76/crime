@@ -52,7 +52,7 @@ font-style:italic;
 }
 section#content 
 {
-margin:auto;
+margin:auto!important;
 width:80%;
 height:auto;
 text-align:left;
