@@ -43,7 +43,7 @@ def neighborhood(neighborhood, about=None):
     rankings = db[collection_name]
     collection_name = '%s-property' % ('rankings')
     rankings_property = db[collection_name]
-    print rankings.find()
+    #print rankings.find()
     response = {
        'timestamp':timestamp.find_one(),
        'ticker':ticker.find_one(),
@@ -53,6 +53,8 @@ def neighborhood(neighborhood, about=None):
             'property': rankings_property.find()
         }
     }
+    if app.config.get('IN_DEV'):
+        return render_template('neighborhood.html', neighborhood=neighborhood_long, response=response, in_dev=True)
     return render_template('neighborhood.html', neighborhood=neighborhood_long, response=response)
 
 @app.route('/<shortcut>/')
