@@ -503,50 +503,24 @@
             <p>{Description}<p>
          </div>
       {/block:Description}
-
       {/block:Link}  
 
-
-
         <div class="post-meta">
-
-
-
-
-
-
                  {block:Date}
                  <div class="permalink metaitemleft">
-                   
                     <a class="metaitemleft" href="{Permalink}"><h6> <img class="linkicon" src="http://static.tumblr.com/negrna7/LlFmggkn3/link.png" width= "25px !important" alt="linkicon" > {TimeAgo}</h6></a>
                  </div>                
                  {/block:Date}
-                 
-                 
-                 
-                 
-                 
                                  
  <div class="post-notess metaitemright">
-
  <a class="dsq-comment-count" href="{Permalink}#disqus_thread">Comments</a>
-              
-         
-</div>             
+ </div>             
                  
                  {block:HasTags}
                  <div class="tagged metaitemleft">
                     <h6>{lang:Tagged}:</h6> {block:Tags}<a href="{TagURL}"><h6>{Tag}</h6></a> {/block:Tags}
                  </div>                
                  {/block:HasTags}
-                 
-                 
-                 
-                 
- 
-                 
-                 
-                 
               
                  {block:NoteCount}
                  <div class="note-count metaitemleft">
@@ -554,53 +528,19 @@
                  </div>
                  {/block:NoteCount}
               
-              
-              
-              
-              
-              
-              
-              
-              
-              
                  {block:RebloggedFrom}
                  <div class="reblogged metaitemleft">
                     <h6>Reblogged from </h6><a href="{ReblogParentURL}" title="{ReblogParentName}"><h6>{ReblogParentName}</h6></a>
                  </div>
                  {/block:RebloggedFrom}
-      
-         
-
-         
-
-
-
-
-
-
-
-
-        
-        
-        
-
 
         </div>
-
         </article>                 
-
-
-
-
-
      {/block:Posts}  
 
 
     <article>
-    
     {block:IfDisableDisqus}
-           
-      
     <script type="text/javascript">var disqus_url = "{Permalink}"; var disqus_title ="{block:PostTitle}{PostTitle}{/block:PostTitle}";</script>{block:Permalink}<div id="disqus_thread"></div>
 <script type="text/javascript">
   /**
@@ -627,42 +567,20 @@ var disqus_shortname = 'writingtheme';
 
 
     {block:PostNotes}
-        
               <div class="post-notess metaitemright">
-        
                  {PostNotes-16}
-        
               </div>
-        
-              {/block:PostNotes} 
-
-
+    {/block:PostNotes} 
     </article>             
 
 </section>
 {/block:PermalinkPage}
 
       
-
-
-
-      
 <footer class="afooter">
-    
-    
-    
-    
-    
-    
-    <class="copywrite" >
+    <div class="copywrite" >
         <h5 style="padding-top:30px"> &copy; {CopyrightYears} Joe Murphy</h5>
-            
         </div>             
-
-    
-
-
-
 
         <div class="ontheright">    
               <a href="http://www.tumblr.com/follow/{PlaintextName}" title="{lang:Follow on Tumblr}">
@@ -670,20 +588,12 @@ var disqus_shortname = 'writingtheme';
              
                <a href="{RSS}" title="RSS"><h5>{lang:RSS feed}</h5></a>
                 </div>
-               
-            
             
                <div class="totheright">
-               
                <a href="/archive" title="Archive"><h5>{lang:Archive}</h5></a>
             </div>
-            
-            
             </div> <!-- onth the right -->             
 </footer>
-
-
-
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://static.tumblr.com/negrna7/e9Kmgz23f/pxuphotoset.min.js"></script>
@@ -701,5 +611,6 @@ var disqus_shortname = 'writingtheme';
     <!--/////////////BUILT BY
         /////////////NEVERBLAND.COM    
         /////////////TRY OUT OUR THEMES AT THEMES.NEVERBLAND.COM
+        /////////////NOTE: THE MARKUP NEVERBLAND WROTE WAS PRETTY SLOPPY AND I DID A MEDIOCRE JOB OF CLEANING IT UP THAT'S WHAT YOU GET FOR TWENTY BUCKS.
     -->
 </html>
