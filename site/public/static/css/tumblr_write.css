@@ -210,7 +210,7 @@ header {
 .thelargeheader {
   
   height: 460px;
-  position: fixed;
+/*  position: fixed; ***/
   width: 100%;
   background-color: #3ba5ff;
 }
