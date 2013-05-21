@@ -208,7 +208,7 @@ header {
   margin: auto;
 }
 .thelargeheader {
-  
+  overflow-y: hidden;
   height: 198px; /* was 460 ***/
 /*  position: fixed; ***/
   width: 100%;
@@ -268,7 +268,7 @@ header {
 
 #blogtitle {
   position: absolute;
-  margin-top: 120px; /* was 190 ***/
+  margin-top: 100px; /* was 190 ***/
   z-index: 10;
   width: 100%;
   -webkit-transition: all 0.4s ease-in-out;
