@@ -28,7 +28,6 @@ $(document).ready(function() {
                 // callback
     });
 
-
      
     if (aboutHash === "#about") {
         $("#showabout").trigger('click');
@@ -40,6 +39,7 @@ $(document).ready(function() {
 $(window).on('scroll', function() {
     if ($(this).scrollTop() > 450)
         return false;
+    //if ($(this).scrollTop() > 57) $('h2').css('position', 'fixed');
     $('.thelargeheader').css({
         'opacity':  1-(($(this).scrollTop())/400),
         'top': -($(this).scrollTop()/3)
