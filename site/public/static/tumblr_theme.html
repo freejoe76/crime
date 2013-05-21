@@ -64,6 +64,7 @@
    {/block:Ifstyle.cssURL} -->
    
    <link rel="stylesheet" href="http://denvercrimes.com/static/css/tumblr_write.css" type="text/css" />
+   <link rel="stylesheet" href="http://denvercrimes.com/static/css/tumblr_write.css" type="text/css" />
 
 
     <style type="text/css">{CustomCSS}</style>
@@ -299,12 +300,7 @@
                  </div>
                  {/block:Date}
                                  
- <div class="post-notess metaitemright">
-
- <a class="dsq-comment-count" href="{Permalink}#disqus_thread">Comments</a>
-              
-         
-</div>
+<div class="post-notess metaitemright"><a class="dsq-comment-count" href="{Permalink}#disqus_thread">Comments</a></div>
                  
                  {block:HasTags}
                  <div class="tagged metaitemleft">
@@ -329,19 +325,10 @@
                     <h6>Reblogged from </h6><a href="{ReblogParentURL}" title="{ReblogParentName}"><h6>{ReblogParentName}</h6></a>
                  </div>
                  {/block:RebloggedFrom}
-
-
-
-
         
         
                 {block:PostNotes}
-        
-              <div class="note-count metaitemright">
-        
-                 <h6 class="note-count">{PostNotes-16} <h6>
-        
-              </div>
+              <div class="note-count metaitemright"><h6 class="note-count">{PostNotes-16}</h6></div>
         
               {/block:PostNotes}  
         </div>
@@ -357,13 +344,8 @@
 
 {block:Pagination}
             <div class="pagination">
-               {block:PreviousPage}
-               <a href="{PreviousPage}" class="prev">{lang:Previous}</a>
-               {/block:PreviousPage}
-               
-               {block:NextPage}
-               <a href="{NextPage}" class="next">{lang:Next page}</a>
-               {/block:NextPage}
+               {block:PreviousPage}<a href="{PreviousPage}" class="prev">{lang:Previous}</a>{/block:PreviousPage}
+               {block:NextPage}<a href="{NextPage}" class="next">{lang:Next page}</a>{/block:NextPage}
             </div>
 {/block:Pagination} 
 </section>
@@ -385,9 +367,7 @@
         {block:Photo}
        {LinkOpenTag}<img src="{PhotoURL-500}" alt="{PhotoAlt}" width="100%" />{LinkCloseTag}
       {block:Caption}
-         <div class="caption">
-            <p>{Caption}</p>
-         </div>
+         <div class="caption"><p>{Caption}</p></div>
       {/block:Caption}
       {/block:Photo}  
 
@@ -405,16 +385,11 @@
 
 
 
-        {block:Video}
-    <div class="js-video vimeo widescreen">
-      {Video-500}
-</div>
+      {block:Video}
+    <div class="js-video vimeo widescreen">{Video-500}</div>
       {block:Caption}
-         <div class="caption">
-            <p>{Caption}</p>
-         </div>
+         <div class="caption"><p>{Caption}</p></div>
       {/block:Caption}
-
       {/block:Video}  
 
 
@@ -576,24 +551,21 @@ var disqus_shortname = 'writingtheme';
 </section>
 {/block:PermalinkPage}
 
-      
-<footer class="afooter">
-    <div class="copywrite" >
-        <h5 style="padding-top:30px"> &copy; {CopyrightYears} Joe Murphy</h5>
-        </div>             
 
-        <div class="ontheright">    
-              <a href="http://www.tumblr.com/follow/{PlaintextName}" title="{lang:Follow on Tumblr}">
-               <div class="totheright">
-             
-               <a href="{RSS}" title="RSS"><h5>{lang:RSS feed}</h5></a>
-                </div>
-            
-               <div class="totheright">
-               <a href="/archive" title="Archive"><h5>{lang:Archive}</h5></a>
-            </div>
-            </div> <!-- onth the right -->             
-</footer>
+	<footer>
+        <div class="container">
+		<p>
+			<a href="https://twitter.com/caphillcrime" class="twitter-follow-button" data-show-count="true">Follow @caphillcrime</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+		</p>
+		<p>Questions? <a href="mailto:joe.murphy@gmail.com">Email Joe</a>, or <a href="http://twitter.com/joemurph">@ Joe on twitter</a>.
+        </p>
+        <p>Copyright &copy; 2013 Joe Murphy</p>
+        <a href="{RSS}" title="RSS"><h5>{lang:RSS feed}</h5></a>
+        <a href="http://www.tumblr.com/follow/{PlaintextName}" title="{lang:Follow on Tumblr}"><h5>Follow Denver Crimes on tumblr</h5></a>
+        <!-- <a href="/archive" title="Archive"><h5>{lang:Archive}</h5></a> -->
+        </div>
+	</footer>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://static.tumblr.com/negrna7/e9Kmgz23f/pxuphotoset.min.js"></script>
@@ -629,6 +601,6 @@ function url_exists(url)
     <!--/////////////BUILT BY
         /////////////NEVERBLAND.COM    
         /////////////TRY OUT OUR THEMES AT THEMES.NEVERBLAND.COM
-        /////////////NOTE: THE MARKUP NEVERBLAND WROTE WAS PRETTY SLOPPY AND I DID A MEDIOCRE JOB OF CLEANING IT UP THAT'S WHAT YOU GET FOR TWENTY BUCKS.
+        /////////////MARKUP CLEANED UP A BIT BY JOE @ DENVERCRIMES.
     -->
 </html>
