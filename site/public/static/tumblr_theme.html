@@ -1,27 +1,12 @@
 <!doctype html>
-
 <html class="no-js" lang="en">
-
 <head>
-    <!-- META INFO -->
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
     <title>{Title}{block:PostSummary} - {PostSummary}{/block:PostSummary}</title>
     
-    
-        
-
-    <!--/////////////BUILT BY
-        /////////////NEVERBLAND.COM    
-        /////////////TRY OUT OUR THEMES AT THEMES.NEVERBLAND.COM
-    -->
-    
     <meta name="tumblr-theme" content="37034" />
-
     <meta name="author" content="{Title}">
-
     {block:Description}
     <meta name="description" content="{MetaDescription}" />
     {/block:Description}
@@ -31,16 +16,9 @@
     <link rel="alternate" type="application/rss+xml" href="{RSS}">
 
     <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    
     <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,700,900' rel='stylesheet' type='text/css'>
 
-
-    
-
-    
     <!-- SET TUMBLR OPTIONS -->
-    
-    
     
     <!-- images -->
     <meta name="image:Header" content="http://static.tumblr.com/negrna7/55pmmhzap/holder.jpg"/>
@@ -77,7 +55,6 @@
     
 
     <!-- STYLE SETTINGS -->
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <script src="http://static.tumblr.com/negrna7/kommgd3to/modernizr.js"></script>
@@ -87,11 +64,9 @@
    {/block:Ifstyle.cssURL} -->
    
    <link rel="stylesheet" href="http://denvercrimes.com/static/css/tumblr_write.css" type="text/css" />
-   <style type="text/css">
-   </style>
 
 
- <style type="text/css">{CustomCSS}</style>
+    <style type="text/css">{CustomCSS}</style>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -115,185 +90,88 @@
                 <li class="selectedb"><a href="/" class="showblog">Blog</a></li>
                 {/block:PermalinkPage}
         {block:IndexPage}
-                    <li class="selectedb"><a href="#" class="showblog">Blog</a></li>
+                <li class="selectedb"><a href="#" class="showblog">Blog</a></li>
            {/block:IndexPage}           
-                
                 <li class="selecteda"><a href="/#about" id="showabout">About</a></li>
-
-                
-                
               {block:HasPages}  
              {block:Pages}<li><a href="{URL}" id="extrapages" title="{Label}">{Label}</li></a>{/block:Pages}
              {/block:HasPages}
-                  
-               
-                
-                
             </ul>
-    
     </div>
     {/block:IfEnableTopNavigation}
  
 
 
    <!-- BASIC DETAILS -->
-
     {block:IndexPage}
     <div class="thelargeheader">
-    
-    
-    
             <div class="aboutsection">
-            
-               
-               
-                                 
-               
-
-
                    <div class="crossit">
                    <a href="#" class="showblog">
                             <img class="avitarimg" src="http://static.tumblr.com/negrna7/dfrmggqr4/cross.png" alt="cross" /> 
                     </a>
                         </div>
-               
-                        
-               
-            
                         <div class="avitar">
                             <img class="avitarimg" src="{PortraitURL-128}" alt="{Title}"/> 
-          
                         </div>
-                        
-                        
                         <div id="descriptionblog">
-          
-    
-                           
                            <h6>{block:Description}
                            <p>{Description}</p>
                            {/block:Description}</h6>
-    
-    
                          </div>
-                         
-                         
                         <div class="socialiconlinks">
-                        
-                        
                         {block:IfTwitterUsername}
-
 <a   class="socialiconsbits" href="http://twitter.com/{text:Twitter Username}">
 <img  src="http://static.tumblr.com/negrna7/Rz3mggnkb/twitter.png" width="35px" alt="twitter"></a>
-
                         {/block:IfTwitterUsername}
                         
-                        
                         {block:IfFacebookProfile}
-
 <a   class="socialiconsbits" href="http://facebook.com/{text:Facebook Profile}">
 <img  src="http://static.tumblr.com/negrna7/ZZCmggqdn/fb.png" width="35px" alt="fb"></a>
-
                         {/block:IfFacebookProfile}
                         
                         
                          {block:IfPintrestProfile}
-
 <a   class="socialiconsbits" href="http://pintrest.com/{text:Pintrest Profile}">
 <img  src="http://static.tumblr.com/negrna7/8utmggql6/pintrest.png" width="35px" alt="fb"></a>
-
                         {/block:IfPintrestProfile}
-                        
-                        
                         </div>
-                        
-                        
-                        
-    
-        
             </div>
-    
-
             
             {block:IfHeaderImage}<img id="bgheader" src="{image:Header}"/>{/block:IfHeaderImage}
             
-        
-            
-            
             <div id="blogtitle">
-            
-            
                <h1>{Title}</h1>
                {block:IfHeaderLogoImage}<img src="{image:HeaderLogo}"/>{/block:IfHeaderLogoImage}
             </div>             
-         
-        
-            
-               
-               
-        
           
           <div id="descriptionheader">
-          
-    
-           
                   {block:IfAboutSection}
                    <h6> {text:About Section}</h6>
                    {/block:IfAboutSection}
             </div>
-    
-    
     </div>
     {/block:IndexPage}
 </header>
 
-
-
-
 {block:IndexPage}
 <section class="mainbit">
-
-
-
-
      {block:Posts}  
-
-
-
      <article class="type_{PostType}">  
-
-
-
-
         {block:Text}
-
         {block:Title}<h2 class="theposttitle">{Title}</h2>{/block:Title}
-
         <p>{Body}<p>
-
         {/block:Text}  
-
-
-
-
-
-
         {block:Photo}
-
        {LinkOpenTag}<img src="{PhotoURL-500}" alt="{PhotoAlt}" width="100%" />{LinkCloseTag}
-
       {block:Caption}
          <div class="caption">
             <p>{Caption}</p>
          </div>
       {/block:Caption}
-
       {/block:Photo}  
 
-
- 
-
-        {block:Photoset}
+       {block:Photoset}
 
 <div class="photo-slideshow" id="photoset_{PostID}" data-layout="{PhotosetLayout}">
 
@@ -314,7 +192,6 @@
 </div><!-- close SLIDESHOW -->             
 
 {block:Caption}{Caption}{/block:Caption}
-
     {/block:Photoset} 
 
 
@@ -366,7 +243,6 @@
 
 
         {block:Quote}
-
       <div class="quote-short"><p>"{Quote}"</p><br><br></div>
       
       {block:Source}
@@ -375,34 +251,25 @@
             <br><br>
          </div>                
       {/block:Source}
-
       {/block:Quote}  
 
 
 
         {block:Answer}
-
       {Question}
-
       <img src="{AskerPortraitURL-24}">
       {Asker}
-
       {Answer}
-
       {/block:Answer}  
 
 
 
  
-
         {block:Chat}
-
       {block:Title}<h2>{Title}</h2>{/block:Title}
-
       {block:Lines}
          <div class="line {Alt}">{block:Label}<strong><p>{Label}</strong>{/block:Label} {Line}<p></div>
       {/block:Lines}
-
       {/block:Chat}  
 
 
@@ -423,12 +290,6 @@
 
 
         <div class="post-meta">
-
-
-
-              
-
-
                  {block:Date}
                  <div class="permalink metaitemleft">
                     <div class="metaitemleft topspace"> {LikeButton size="16"} </div>
@@ -437,11 +298,6 @@
                     <a class="metaitemleft" href="{Permalink}"><h6> <img class="linkicon" src="http://static.tumblr.com/negrna7/LlFmggkn3/link.png" width= "25px !important" alt="linkicon" > {TimeAgo}</h6></a>
                  </div>
                  {/block:Date}
-                 
-                 
-                 
-                 
-                 
                                  
  <div class="post-notess metaitemright">
 
@@ -458,11 +314,6 @@
                  
                  
                  
-                 
- 
-                 
-                 
-                 
               
                  {block:NoteCount}
                  <div class="note-count metaitemleft">
@@ -473,25 +324,11 @@
               
               
               
-              
-              
-              
-              
-              
-              
                  {block:RebloggedFrom}
                  <div class="reblogged metaitemleft">
                     <h6>Reblogged from </h6><a href="{ReblogParentURL}" title="{ReblogParentName}"><h6>{ReblogParentName}</h6></a>
                  </div>
                  {/block:RebloggedFrom}
-      
-         
-
-         
-
-
-
-
 
 
 
@@ -507,47 +344,19 @@
               </div>
         
               {/block:PostNotes}  
-        
-        
-
-
         </div>
 
-
-
-
-
-
-
-
-
         </article>  
-
-
-
-
-
      {/block:Posts}  
 
-
     <article>
-    
-     {block:IfDisqusCode}
-   
-
+    {block:IfDisqusCode}
     {/block:IfDisqusCode}
-        
     </article>
-    
-    
-    
     
 
 {block:Pagination}
-        
-        
             <div class="pagination">
-             
                {block:PreviousPage}
                <a href="{PreviousPage}" class="prev">{lang:Previous}</a>
                {/block:PreviousPage}
@@ -555,23 +364,8 @@
                {block:NextPage}
                <a href="{NextPage}" class="next">{lang:Next page}</a>
                {/block:NextPage}
-               
             </div>
-        
-        
 {/block:Pagination} 
-
-
-    
-     
-        
-  
-
-    
-        
-    
-    
-
 </section>
 {/block:IndexPage}
 
@@ -579,73 +373,23 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {block:PermalinkPage}
 <section class="mainbitperma">
-
-
-
-
      {block:Posts}  
-
-
-
      <article class="type_{PostType}">  
 
-
-
-
         {block:Text}
-
         {block:Title}<h2 class="theposttitle">{Title}</h2>{/block:Title}
-
           <p>{Body}<p>
-
         {/block:Text}  
-
-
-
-
-
-
         {block:Photo}
-
        {LinkOpenTag}<img src="{PhotoURL-500}" alt="{PhotoAlt}" width="100%" />{LinkCloseTag}
-
       {block:Caption}
          <div class="caption">
             <p>{Caption}</p>
          </div>
       {/block:Caption}
-
       {/block:Photo}  
-
-
- 
 
         {block:Photoset}
  
@@ -954,4 +698,8 @@ var disqus_shortname = 'writingtheme';
 
     http://www.tumblr.com/terms_of_service
 -->
+    <!--/////////////BUILT BY
+        /////////////NEVERBLAND.COM    
+        /////////////TRY OUT OUR THEMES AT THEMES.NEVERBLAND.COM
+    -->
 </html>
