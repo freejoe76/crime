@@ -598,9 +598,27 @@ var disqus_shortname = 'writingtheme';
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://static.tumblr.com/negrna7/e9Kmgz23f/pxuphotoset.min.js"></script>
 <script type="text/javascript" src="http://static.tumblr.com/negrna7/Hnpmgz688/imagesloaded.js"></script>
-<script type="text/javascript" src="http://denvercrimes.com/static/js/application.js"></script>
+<!-- <script type="text/javascript" src="http://denvercrimes.com/static/js/application.js"></script> -->
+<script type="text/javascript">
+// Mostly for testing.
+function url_exists(url)
+{
+    var http = new XMLHttpRequest();
+    try
+    {
+        http.open('HEAD', url, false);
+        http.send();
+        return http.status!=404;
+    }
+    catch (e) { return false; }
+}
 
-
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'http://denvercrimes.com/static/js/application.js';
+    if ( url_exists(script.src) == false ) script.src = 'http://localhost:5000/static/js/application.js';
+    $('head')[0].appendChild(script);
+</script>
 </body>
 <!--
     This Tumblr Theme and all of its CSS, Javascript,
