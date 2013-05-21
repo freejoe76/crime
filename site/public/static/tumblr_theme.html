@@ -13,7 +13,7 @@
 
     <link rel="shortcut icon" href="{Favicon}">
     <link rel="apple-touch-icon" href="{PortraitURL-128}">
-    <link rel="alternate" type="application/rss+xml" href="{RSS}">
+    <link rel="alternate" type="application/rss+xml" href="http://feeds.feedburner.com/denvercrimes">
 
     <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,700,900' rel='stylesheet' type='text/css'>
@@ -60,7 +60,7 @@
 <script src="http://static.tumblr.com/negrna7/kommgd3to/modernizr.js"></script>
 
     <!-- {block:Ifstyle.cssURL}
-      {text:style.css URL}
+      {text:style.cssURL}
    {/block:Ifstyle.cssURL} -->
    
    <link rel="stylesheet" href="http://denvercrimes.com/static/css/style.css" type="text/css" />
@@ -82,20 +82,19 @@
 
 
 <body>    
-<!-- Tumblr Theme #37034 -->
+<!-- Tumblr Theme #37034. Cleaned up, some, by Joe. -->
 <header>
     {block:IfEnableTopNavigation}
     <div class="navtop">
-            <ul class="navigation">
-             {block:PermalinkPage}
+            <ul class="navigation">{block:PermalinkPage}
                 <li class="selectedb"><a href="/" class="showblog">Blog</a></li>
                 {/block:PermalinkPage}
-        {block:IndexPage}
-                <li class="selectedb"><a href="#" class="showblog">Blog</a></li>
-           {/block:IndexPage}           
+             {block:IndexPage}
+                <li class="selectedb"><a href="/" class="showblog">Blog</a></li>
+             {/block:IndexPage}           
                 <li class="selecteda"><a href="/#about" id="showabout">About</a></li>
-              {block:HasPages}  
-             {block:Pages}<li><a href="{URL}" id="extrapages" title="{Label}">{Label}</a></li>{/block:Pages}
+             {block:HasPages}  
+                {block:Pages}<li><a href="{URL}" id="extrapages" title="{Label}">{Label}</a></li>{/block:Pages}
              {/block:HasPages}
             </ul>
     </div>
@@ -146,9 +145,9 @@
                {block:IfHeaderLogoImage}<img src="{image:HeaderLogo}"/>{/block:IfHeaderLogoImage}
             </div>             
           
-          <div id="descriptionheader">
+            <div id="descriptionheader">
                   {block:IfAboutSection}
-                   <h6> {text:About Section}</h6>
+                   <h6>{text:About Section}</h6>
                    {/block:IfAboutSection}
             </div>
     </div>
@@ -160,8 +159,8 @@
      {block:Posts}  
      <article class="type_{PostType}">  
         {block:Text}
-        {block:Title}<h2 class="theposttitle">{Title}</h2>{/block:Title}
-        <p>{Body}</p>
+        {block:Title}<h2 class="theposttitle"><a href="{Permalink}">{Title}</a></h2>{/block:Title}
+        {Body}
         {/block:Text}  
         {block:Photo}
        {LinkOpenTag}<img src="{PhotoURL-500}" alt="{PhotoAlt}" width="100%" />{LinkCloseTag}
@@ -172,7 +171,7 @@
       {/block:Caption}
       {/block:Photo}  
 
-       {block:Photoset}
+      {block:Photoset}
 
 <div class="photo-slideshow" id="photoset_{PostID}" data-layout="{PhotosetLayout}">
 
@@ -197,23 +196,20 @@
 
 
 
-        {block:Video}
-    <div class="js-video vimeo widescreen">
-      {Video-500}
-</div>
+      {block:Video}
+      <div class="js-video vimeo widescreen">{Video-500}</div>
       {block:Caption}
          <div class="caption">
             <p>{Caption}</p>
          </div>
       {/block:Caption}
-
       {/block:Video}  
 
 
 
     
 
-        {block:Audio}
+      {block:Audio}
 
       {block:AlbumArt}
          <img src="{AlbumArtURL}" alt="{block:Artist}{Artist}{/block:Artist}{block:TrackName} - {TrackName}{/block:TrackName}"/>
@@ -293,7 +289,7 @@
                     <div class="metaitemleft topspace"> {LikeButton size="16"} </div>
                    <div class="metaitemleft topspace"> {ReblogButton size="16"}</div>
                     
-                    <a class="metaitemleft" href="{Permalink}"><h6> <img class="linkicon" src="http://static.tumblr.com/negrna7/LlFmggkn3/link.png" style="width:25px !important;" alt="linkicon" > {TimeAgo}</h6></a>
+                    <a class="metaitemleft" href="{Permalink}"><h6> <img class="linkicon" src="http://static.tumblr.com/negrna7/LlFmggkn3/link.png" style="width:25px !important;   " alt="linkicon" > {TimeAgo}</h6></a>
                  </div>
                  {/block:Date}
                                  
@@ -558,7 +554,7 @@ var disqus_shortname = 'writingtheme';
 		<p>Questions? <a href="mailto:joe.murphy@gmail.com">Email Joe</a>, or <a href="http://twitter.com/joemurph">@ Joe on twitter</a>.
         </p>
         <p>Copyright &copy; 2013 Joe Murphy</p>
-        <a href="{RSS}" title="RSS"><h5>{lang:RSS feed}</h5></a>
+        <a href="http://feeds.feedburner.com/denvercrimes" title="RSS"><h5>{lang:RSS feed}</h5></a>
         <a href="http://www.tumblr.com/follow/{PlaintextName}" title="{lang:Follow on Tumblr}"><h5>Follow Denver Crimes on tumblr</h5></a>
         <!-- <a href="/archive" title="Archive"><h5>{lang:Archive}</h5></a> -->
         </div>
