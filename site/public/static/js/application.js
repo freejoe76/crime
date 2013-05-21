@@ -37,11 +37,23 @@ $(document).ready(function() {
 });
     
 $(window).on('scroll', function() {
-    if ($(this).scrollTop() > 450)
+    // jQuery for the banner placement
+    if ($(this).scrollTop() > 300)
         return false;
-    //if ($(this).scrollTop() > 57) $('h2').css('position', 'fixed');
+    if ($(this).scrollTop() > 254)
+    {
+        $('#banner').css({'background-color': '#ddd', 'position': 'fixed', 'top': 0, 'width': '100%', 'text-align': 'center'});
+        $('#content').css('margin-top', '80px');
+    }
+    else if($(this).scrollTop() < 254)
+    {
+        $('#banner').css({'background-color': 'transparent', 'position': 'static', 'top': 'auto', 'width': '100%', 'text-align': 'center'});
+        $('#content').css('margin-top', 'auto');
+    }
+    if ($(this).scrollTop() > 190)
+        return false;
     $('.thelargeheader').css({
-        'opacity':  1-(($(this).scrollTop())/400),
+        'opacity':  1-(($(this).scrollTop())/300),
         'top': -($(this).scrollTop()/3)
     });
 });
