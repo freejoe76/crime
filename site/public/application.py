@@ -14,7 +14,7 @@ def index():
     return render_template('home.html')
 
 @app.route('/about/')
-def about():
+def flatpage():
     page = pages.get_or_404('about')
     template = page.meta.get('template', 'flatpage.html')
     return render_template(template, page=page)
@@ -23,6 +23,14 @@ def about():
 def neighborhood_index():
     neighborhoods = dicts.neighborhood_lookup
     return render_template('neighborhood_index.html', neighborhoods=neighborhoods, response=None)
+
+@app.route('/neighborhood/<neighborhood>/about/')
+def neighborhood(neighborhood):
+    if neighborhood not in dicts.neighborhood_lookup.keys():
+        abort(404)
+    neighborhood_long = dicts.neighborhood_lookup[neighborhood]
+    print neighborhood, "about"
+    return render_template('neighborhood_about.html', neighborhood=neighborhood_long)
 
 @app.route('/neighborhood/<neighborhood>/')
 def neighborhood(neighborhood):
@@ -51,13 +59,6 @@ def neighborhood(neighborhood):
         }
     }
     return render_template('neighborhood.html', neighborhood=neighborhood_long, response=response)
-
-@app.route('/neighborhood/<neighborhood>/about/')
-def neighborhood(neighborhood):
-    if neighborhood not in dicts.neighborhood_lookup.keys():
-        abort(404)
-    neighborhood_long = dicts.neighborhood_lookup[neighborhood]
-    return render_template('neighborhood_about.html', neighborhood=neighborhood_long)
 
 @app.route('/<shortcut>/')
 def shortcut(shortcut):
