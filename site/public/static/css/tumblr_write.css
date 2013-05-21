@@ -209,7 +209,7 @@ header {
 }
 .thelargeheader {
   
-  height: 460px;
+  height: 268px; /* was 460 ***/
 /*  position: fixed; ***/
   width: 100%;
   background-color: #3ba5ff;
@@ -479,9 +479,9 @@ position: relative;
 
 .mainbit {
   position: relative;
-  top: 460px;
+  top: 268px; /* was 460 ***/
   background-color: #f8f8f8;
-  padding-bottom: 450px;
+  padding-bottom: 258px; /* was 450 ***/
   z-index: 10;
 }
 article {
