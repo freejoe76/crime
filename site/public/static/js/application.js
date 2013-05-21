@@ -38,18 +38,24 @@ $(document).ready(function() {
     
 $(window).on('scroll', function() {
     // jQuery for the banner placement
-    if ($(this).scrollTop() > 300)
-        return false;
-    if ($(this).scrollTop() > 254)
+    if ( $('#banner').length )
     {
-        $('#banner').css({'background-color': '#ddd', 'position': 'fixed', 'top': 0, 'width': '100%', 'text-align': 'center'});
-        $('#content').css('margin-top', '80px');
+        if ($(this).scrollTop() > 300)
+            return false;
+        if ($(this).scrollTop() > 254)
+        {
+            $('#banner').css({'background-color': '#ddd', 'position': 'fixed', 'top': 0, 'width': '100%', 'text-align': 'center'});
+            $('h2 span').show();
+            $('#content').css({'margin-top': '110px'});
+        }
+        else if($(this).scrollTop() < 254)
+        {
+            $('#banner').css({'background-color': 'transparent', 'position': 'static', 'top': 'auto', 'width': '100%', 'text-align': 'center'});
+            $('h2 span').hide();
+            $('#content').css('margin-top', 'auto');
+        }
     }
-    else if($(this).scrollTop() < 254)
-    {
-        $('#banner').css({'background-color': 'transparent', 'position': 'static', 'top': 'auto', 'width': '100%', 'text-align': 'center'});
-        $('#content').css('margin-top', 'auto');
-    }
+
     if ($(this).scrollTop() > 190)
         return false;
     $('.thelargeheader').css({
