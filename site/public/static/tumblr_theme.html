@@ -63,7 +63,7 @@
       {text:style.css URL}
    {/block:Ifstyle.cssURL} -->
    
-   <link rel="stylesheet" href="http://denvercrimes.com/static/css/tumblr_write.css" type="text/css" />
+   <link rel="stylesheet" href="http://denvercrimes.com/static/css/style.css" type="text/css" />
    <link rel="stylesheet" href="http://denvercrimes.com/static/css/tumblr_write.css" type="text/css" />
 
 
@@ -95,7 +95,7 @@
            {/block:IndexPage}           
                 <li class="selecteda"><a href="/#about" id="showabout">About</a></li>
               {block:HasPages}  
-             {block:Pages}<li><a href="{URL}" id="extrapages" title="{Label}">{Label}</li></a>{/block:Pages}
+             {block:Pages}<li><a href="{URL}" id="extrapages" title="{Label}">{Label}</a></li>{/block:Pages}
              {/block:HasPages}
             </ul>
     </div>
@@ -161,7 +161,7 @@
      <article class="type_{PostType}">  
         {block:Text}
         {block:Title}<h2 class="theposttitle">{Title}</h2>{/block:Title}
-        <p>{Body}<p>
+        <p>{Body}</p>
         {/block:Text}  
         {block:Photo}
        {LinkOpenTag}<img src="{PhotoURL-500}" alt="{PhotoAlt}" width="100%" />{LinkCloseTag}
@@ -241,15 +241,12 @@
 
 
 
-
-
-        {block:Quote}
-      <div class="quote-short"><p>"{Quote}"</p><br><br></div>
+      {block:Quote}
+      <div class="quote-short"><p>"{Quote}"</p></div>
       
       {block:Source}
          <div class="quote-author">
-            <p>- {Source}</p>
-            <br><br>
+            <p>&mdash; {Source}</p>
          </div>                
       {/block:Source}
       {/block:Quote}  
@@ -258,7 +255,7 @@
 
         {block:Answer}
       {Question}
-      <img src="{AskerPortraitURL-24}">
+      <img src="{AskerPortraitURL-24}" alt="">
       {Asker}
       {Answer}
       {/block:Answer}  
@@ -269,7 +266,7 @@
         {block:Chat}
       {block:Title}<h2>{Title}</h2>{/block:Title}
       {block:Lines}
-         <div class="line {Alt}">{block:Label}<strong><p>{Label}</strong>{/block:Label} {Line}<p></div>
+         <div class="line {Alt}">{block:Label}<strong><p>{Label}</strong>{/block:Label} {Line}</p></div>
       {/block:Lines}
       {/block:Chat}  
 
@@ -282,7 +279,7 @@
         
       {block:Description}
          <div class="caption">
-            <p>{Description}<p>
+            <p>{Description}</p>
          </div>
       {/block:Description}
 
@@ -294,9 +291,9 @@
                  {block:Date}
                  <div class="permalink metaitemleft">
                     <div class="metaitemleft topspace"> {LikeButton size="16"} </div>
-                   <div class="metaitemleft topspace" {ReblogButton size="16"}</div>
+                   <div class="metaitemleft topspace"> {ReblogButton size="16"}</div>
                     
-                    <a class="metaitemleft" href="{Permalink}"><h6> <img class="linkicon" src="http://static.tumblr.com/negrna7/LlFmggkn3/link.png" width= "25px !important" alt="linkicon" > {TimeAgo}</h6></a>
+                    <a class="metaitemleft" href="{Permalink}"><h6> <img class="linkicon" src="http://static.tumblr.com/negrna7/LlFmggkn3/link.png" style="width:25px !important;" alt="linkicon" > {TimeAgo}</h6></a>
                  </div>
                  {/block:Date}
                                  
@@ -456,12 +453,12 @@
 
  
 
-        {block:Chat}
+      {block:Chat}
 
       {block:Title}<h2>{Title}</h2>{/block:Title}
 
       {block:Lines}
-         <div class="line {Alt}">{block:Label}<strong><p>{Label}</strong>{/block:Label} {Line}<p></div>                
+         <div class="line {Alt}">{block:Label}<strong><p>{Label}</strong>{/block:Label} {Line}</p></div>                
       {/block:Lines}
 
       {/block:Chat}  
@@ -475,7 +472,7 @@
         
       {block:Description}
          <div class="caption">
-            <p>{Description}<p>
+            <p>{Description}</p>
          </div>
       {/block:Description}
       {/block:Link}  
@@ -483,7 +480,7 @@
         <div class="post-meta">
                  {block:Date}
                  <div class="permalink metaitemleft">
-                    <a class="metaitemleft" href="{Permalink}"><h6> <img class="linkicon" src="http://static.tumblr.com/negrna7/LlFmggkn3/link.png" width= "25px !important" alt="linkicon" > {TimeAgo}</h6></a>
+                    <a class="metaitemleft" href="{Permalink}"><h6><img class="linkicon" src="http://static.tumblr.com/negrna7/LlFmggkn3/link.png" width= "25px !important" alt="linkicon" > {TimeAgo}</h6></a>
                  </div>                
                  {/block:Date}
                                  
