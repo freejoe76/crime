@@ -121,7 +121,7 @@ class Parse:
         if verbose:
             print "Timespan: %s, location: %s, crime: %s" % (timespan, location, crime)
 
-        if self.diff == True:
+        if self.diff != False:
             adds = 0
             removes = 0
 
@@ -129,11 +129,9 @@ class Parse:
             if len(row) < 5:
                 continue
             record = dict(zip(dicts.keys, row))
-            #print record
 
             # Address diffs, if we've got 'em.
-            if self.diff == True:
-                #print record['INCIDENT_ID'][0]
+            if self.diff != False:
                 if record['INCIDENT_ID'][0] == '>':
                     record['diff'] = 'ADD'
                     adds += 1
@@ -182,7 +180,7 @@ class Parse:
                         if crime in record['OFFENSE_TYPE_ID']:
                             crimes.append(record)
         #diffs = None
-        if self.diff == True:
+        if self.diff != False:
             diffs = { 'adds': adds, 'removes': removes }
         return { 'crimes': crimes, 'diffs': diffs }
 
@@ -401,7 +399,7 @@ if __name__ == '__main__':
     parser.add_option("-t", "--limit", dest="limit", default=0)
     parser.add_option("-c", "--crime", dest="crime", default=None)
     parser.add_option("-g", "--grep", dest="grep", default=False, action="store_true")
-    parser.add_option("-d", "--diff", dest="diff", default=False, action="store_true")
+    parser.add_option("-d", "--diff", dest="diff", default=False)
     parser.add_option("-o", "--output", dest="output", default=None)
     parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default=False, action="store_true")
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
@@ -421,7 +419,7 @@ if __name__ == '__main__':
     if verbose:
         print "Options: %s\nArgs: %s" % (options, args)
 
-    if diff == True:
+    if diff != False:
         filename = 'latestdiff'
 
     parse = Parse("_input/%s" % filename, diff)
