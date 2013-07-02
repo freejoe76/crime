@@ -454,9 +454,13 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action quotient
         # Builds a dict we use to compute neighborhood Crime Quotient.
         # The CQ is a calculation of violent crime rate, minor assault rate, burglary rate and drug-crime rate.
-        crimes = parse.get_rankings('violent', None)
+        cq = {
+            violent: parse.get_rankings('violent', None),
+            assault: '',
+            burglary: '',
+            drug: ''}
         if verbose:
-            print crimes
+            print cq 
         crimes['crimes']['neighborhood'].reverse()
         crimes['crimes']['percapita'].reverse()
 
