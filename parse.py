@@ -121,7 +121,7 @@ class Parse:
         if verbose:
             print "Timespan: %s, location: %s, crime: %s" % (timespan, location, crime)
 
-        if diff == True:
+        if self.diff == True:
             adds = 0
             removes = 0
 
@@ -132,7 +132,7 @@ class Parse:
             #print record
 
             # Address diffs, if we've got 'em.
-            if diff == True:
+            if self.diff == True:
                 #print record['INCIDENT_ID'][0]
                 if record['INCIDENT_ID'][0] == '>':
                     record['diff'] = 'ADD'
@@ -181,8 +181,8 @@ class Parse:
                         # looking for a partial string match.
                         if crime in record['OFFENSE_TYPE_ID']:
                             crimes.append(record)
-        diffs = None
-        if diffs == True:
+        #diffs = None
+        if self.diff == True:
             diffs = { 'adds': adds, 'removes': removes }
         return { 'crimes': crimes, 'diffs': diffs }
 
@@ -444,6 +444,8 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill --diff
         # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill
         crimes = parse.get_recent_crimes(crime, grep, location, args)
+        if verbose:
+            print crimes
     elif action == 'specific':
         # Example:
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
