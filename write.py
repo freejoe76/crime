@@ -5,7 +5,6 @@ from optparse import OptionParser
 from datetime import datetime, timedelta
 import pymongo
 from pymongo import MongoClient
-client = MongoClient()
 
 from parse import Parse
 # The location-specific data
@@ -29,6 +28,7 @@ if __name__ == '__main__':
     parser.add_option("-d", "--diff", dest="diff", default=False, action="store_true")
     parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
     parser.add_option("-k", "--kill", dest="kill", default=False, action="store_true")
+    parser.add_option("-n", "--nowrite", dest="nowrite", default=False, action="store_true")
     (options, args) = parser.parse_args()
     filename = options.filename
     action = options.action
@@ -39,6 +39,7 @@ if __name__ == '__main__':
     diff = options.diff
     verbose = options.verbose
     kill = options.kill
+    nowrite = options.nowrite
 
     if verbose:
         print "Options: %s\nArgs: %s" % (options, args)
@@ -49,14 +50,16 @@ if __name__ == '__main__':
     parse = Parse("_input/%s" % filename, diff)
 
     location = parse.get_neighborhood(location)
-    db = client['crimedenver']
+    if nowrite == False:
+        client = MongoClient()
+        db = client['crimedenver']
 
-    # Update the neighborhood timestamp. Yes, this will need to be modified.
-    collection_name = '%s-timestamp' % location
-    collection = db[collection_name]
-    collection.remove()
-    record = { 'timestamp': datetime.now() }
-    collection.insert(record)
+        # Update the neighborhood timestamp. Yes, this will need to be modified.
+        collection_name = '%s-timestamp' % location
+        collection = db[collection_name]
+        collection.remove()
+        record = { 'timestamp': datetime.now() }
+        collection.insert(record)
 
     # Rankings data doesn't vary by location -- it includes all locations.
     if action == 'rankings':
@@ -64,7 +67,8 @@ if __name__ == '__main__':
     else:
         collection_name = '%s-%s' % (location, action)
 
-    collection = db[collection_name]
+    if nowrite == False:
+        collection = db[collection_name]
     if kill == True:
         collection.remove()
 
@@ -109,4 +113,5 @@ if __name__ == '__main__':
         # Should return something like
         # {'count': 382, 'last_crime': '3 days', 'crime': None}
         crimes = parse.get_specific_crime(crime, grep, location)
-        collection.insert(crimes)
+        if nowrite == False:
+            collection.insert(crimes)
