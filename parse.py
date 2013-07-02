@@ -449,4 +449,15 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep True 
         crimes = parse.get_specific_crime(crime, grep, location)
+    elif action == 'quotient':
+        # Example:
+        # $ ./parse.py --verbose --action quotient
+        # Builds a dict we use to compute neighborhood Crime Quotient.
+        # The CQ is a calculation of violent crime rate, minor assault rate, burglary rate and drug-crime rate.
+        crimes = parse.get_rankings('violent', None)
+        if verbose:
+            print crimes
+        crimes['crimes']['neighborhood'].reverse()
+        crimes['crimes']['percapita'].reverse()
+
     print parse.print_crimes(crimes, limit, location)
