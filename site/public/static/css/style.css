@@ -83,7 +83,12 @@ h1 {
       font-size: 60px;
       line-height: 60px;
       margin-top: 21px; } }
-  @media only screen and (min-width: 768px) {
+  @media only screen and (min-width: 600px) and (orientation: landscape) {
+    h1 {
+      font-size: 90px;
+      line-height: 90px;
+      margin-top: 30px; } }
+  @media only screen and (min-width: 1024px) {
     h1 {
       font-size: 120px;
       line-height: 120px;
@@ -114,7 +119,10 @@ header {
   @media only screen and (min-width: 600px) {
     .thelargeheader {
       height: 70px; } }
-  @media only screen and (min-width: 768px) {
+  @media only screen and (min-width: 600px) and (orientation: landscape) {
+    .thelargeheader {
+      height: 103px; } }
+  @media only screen and (min-width: 1024px) {
     .thelargeheader {
       height: 198px;
       /* was 460 ***/ } }
@@ -171,7 +179,11 @@ header {
   @media only screen and (min-width: 600px) {
     .navigation li {
       font-size: 12px; } }
-  @media only screen and (min-width: 768px) {
+  @media only screen and (min-width: 600px) and (orientation: landscape) {
+    .navigation li {
+      font-size: 12px;
+      padding-top: 15px; } }
+  @media only screen and (min-width: 1024px) {
     .navigation li {
       font-size: 14px;
       padding-top: 17px; } }
@@ -186,7 +198,12 @@ h2, h2 p {
   @media only screen and (min-width: 600px) {
     h2, h2 p {
       line-height: 30px; } }
-  @media only screen and (min-width: 768px) {
+  @media only screen and (min-width: 600px) and (orientation: landscape) {
+    h2, h2 p {
+      font-size: 30px;
+      line-height: 32px;
+      margin: 10px 5%; } }
+  @media only screen and (min-width: 1024px) {
     h2, h2 p {
       font-size: 30px;
       margin: 0 10%; } }
@@ -246,7 +263,7 @@ footer {
   @media only screen and (min-width: 600px) {
     footer {
       width: 80%; } }
-  @media only screen and (min-width: 768px) {
+  @media only screen and (min-width: 600px) and (orientation: landscape) {
     footer {
       width: 50%;
       margin: 20px auto;
@@ -320,9 +337,6 @@ input[type="submit"] {
   max-width: 100%;
   width: 100%;
   margin: auto; }
-  @media only screen and (min-width: 220px) {
-    .container {
-      width: 100%; } }
 
 .container-content {
   overflow: hidden; }
