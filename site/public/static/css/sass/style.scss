@@ -299,7 +299,7 @@ h2, h2 p
 font-family: 'Signika Negative', sans-serif;
     @include respond-to(handheld) 
     {
-        font-size:28px;
+        font-size:24px;
         line-height:26px;
         margin:10px 1%;
     }
@@ -330,10 +330,9 @@ font-family: 'Signika Negative', sans-serif;
 h2 span { display:none; }
 h3
 {
-font-size:24px;
     @include respond-to(handheld) 
     {
-        
+        font-size:24px;
     }
     @include respond-to(tablet)
     {
@@ -341,7 +340,6 @@ font-size:24px;
     }
     @include respond-to(tablet-landscape)
     {
-        
     }
     @include respond-to(tablet-large)
     {
@@ -470,11 +468,61 @@ margin: 10px 0;
 }
 section#content .col
 { 
-width:45%;
-float:right;
+    @include respond-to(handheld) 
+    {
+        width:100%;
+        margin-top:20px;
+    }
+    @include respond-to(tablet)
+    {
+        
+    }
+    @include respond-to(tablet-landscape)
+    {
+        width:45%;
+        float:right;
+        margin-top:0;
+    }
+    @include respond-to(tablet-large)
+    {
+        
+    }
+    @include respond-to(desktop-small)
+    {
+        
+    }
+    @include respond-to(desktop)
+    {
+        
+    }
 }
 section#content .col:first-child
-{ float:left; margin-right:10%; }
+{ 
+    @include respond-to(handheld) 
+    {
+    }
+    @include respond-to(tablet)
+    {
+        
+    }
+    @include respond-to(tablet-landscape)
+    {
+        float:left; 
+        margin-right:10%; 
+    }
+    @include respond-to(tablet-large)
+    {
+        
+    }
+    @include respond-to(desktop-small)
+    {
+        
+    }
+    @include respond-to(desktop)
+    {
+        
+    }
+}
 section#content .col .col
 {
 float:left;

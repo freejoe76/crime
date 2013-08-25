@@ -12,7 +12,18 @@ body { margin-top:5px; }
 
 {% block content %}
 {% if in_dev %}
-<div class="col">
+
+<div class="col leftcol">
+    <h3>Recent Crimes in {{ neighborhood.full }}</h3>
+    <dl>
+    {% for crime in response.recent[0:20] %}
+        <dt>{{ crime.OFFENSE_TYPE_ID|offense }}:</dt>
+            <dd>{{ crime.FIRST_OCCURRENCE_DATE|datetime_raw|datetime('full') }}, at {{ crime.INCIDENT_ADDRESS|address }}</dd>
+    {% endfor %}
+    </dl>
+</div>
+
+<div class="col rightcol">
     <h3>Denver Per-Capita Crimes</h3>
     <div class="col">
         <h4>Property crimes per 1,000 residents, 2013</h4>
@@ -30,16 +41,6 @@ body { margin-top:5px; }
         {% endfor %}
         </ol>
     </div>
-</div>
-
-<div class="col">
-    <h3>Recent Crimes in {{ neighborhood.full }}</h3>
-    <dl>
-    {% for crime in response.recent[0:20] %}
-        <dt>{{ crime.OFFENSE_TYPE_ID|offense }}:</dt>
-            <dd>{{ crime.FIRST_OCCURRENCE_DATE|datetime_raw|datetime('full') }}, at {{ crime.INCIDENT_ADDRESS|address }}</dd>
-    {% endfor %}
-    </dl>
 </div>
 {% endif %}
 {% endblock content %}

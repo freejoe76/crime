@@ -190,7 +190,7 @@ h2, h2 p {
   font-family: 'Signika Negative', sans-serif; }
   @media only screen and (min-width: 220px) {
     h2, h2 p {
-      font-size: 28px;
+      font-size: 24px;
       line-height: 26px;
       margin: 10px 1%; } }
   @media only screen and (min-width: 600px) {
@@ -209,8 +209,9 @@ h2, h2 p {
 h2 span {
   display: none; }
 
-h3 {
-  font-size: 24px; }
+@media only screen and (min-width: 220px) {
+  h3 {
+    font-size: 24px; } }
 
 #timestamp {
   text-transform: uppercase; }
@@ -273,13 +274,20 @@ p {
 footer p {
   margin: 10px 0; }
 
-section#content .col {
-  width: 45%;
-  float: right; }
+@media only screen and (min-width: 220px) {
+  section#content .col {
+    width: 100%;
+    margin-top: 20px; } }
+@media only screen and (min-width: 600px) and (orientation: landscape) {
+  section#content .col {
+    width: 45%;
+    float: right;
+    margin-top: 0; } }
 
-section#content .col:first-child {
-  float: left;
-  margin-right: 10%; }
+@media only screen and (min-width: 600px) and (orientation: landscape) {
+  section#content .col:first-child {
+    float: left;
+    margin-right: 10%; } }
 
 section#content .col .col {
   float: left;
