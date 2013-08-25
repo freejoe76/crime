@@ -96,8 +96,6 @@ h1
 {
 margin: 0 auto; 
 font-family: 'Merriweather', sans-serif;
-font-size:  120px;
-line-height: 120px;
 color: #fff;
 font-weight: 900;
 font-style: normal;
@@ -105,7 +103,6 @@ text-align: center;
 text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 vertical-align: 10em;
   position: absolute;
-  margin-top: 100px; /* was 190 ***/
   z-index: 10;
   width: 100%;
   -webkit-transition: all 0.4s ease-in-out;
@@ -121,7 +118,9 @@ vertical-align: 10em;
     }
     @include respond-to(tablet)
     {
-        
+        font-size:60px;
+        line-height:60px;
+        margin-top:21px;
     }
     @include respond-to(tablet-landscape)
     {
@@ -131,7 +130,7 @@ vertical-align: 10em;
     {
         font-size:120px;
         line-height:120px;
-        
+        margin-top: 100px; /* was 190 ***/
     }
     @include respond-to(desktop-small)
     {
@@ -191,7 +190,7 @@ header {
     }
     @include respond-to(tablet)
     {
-        
+        height:70px;
     }
     @include respond-to(tablet-landscape)
     {
@@ -222,7 +221,7 @@ header {
     }
     @include respond-to(tablet)
     {
-        
+        height:40px;
     }
     @include respond-to(tablet-landscape)
     {
@@ -231,7 +230,6 @@ header {
     @include respond-to(tablet-large)
     {
         height:50px;
-        
     }
     @include respond-to(desktop-small)
     {
@@ -244,11 +242,9 @@ header {
 }
 .selected {
   height: 50px;
-
 }
 .selectedb {
   height: 50px;
-
 }
 .navigation {
   height: 100%;
@@ -280,7 +276,7 @@ header {
     }
     @include respond-to(tablet)
     {
-        
+        font-size:12px;
     }
     @include respond-to(tablet-landscape)
     {
@@ -311,7 +307,7 @@ font-family: 'Signika Negative', sans-serif;
     }
     @include respond-to(tablet)
     {
-        
+        line-height:30px;
     }
     @include respond-to(tablet-landscape)
     {
@@ -603,10 +599,6 @@ ul#nav { margin-bottom: 0; }
 
 @media only screen and (min-width: 481px)
 {
-.container
-{
-border: 5px solid green;
-}
 /*
 .container-content { width:285px; }
 */
