@@ -440,7 +440,7 @@ clear:both;
     }
     @include respond-to(tablet)
     {
-        
+        width:80%;
     }
     @include respond-to(tablet-landscape)
     {
@@ -606,10 +606,6 @@ ul#nav { margin-bottom: 0; }
 
 @media only screen and (min-width: 768px)
 {
-.container
-{
-border:5px solid yellow;
-}
 /*
 .container-content { width:570px; }
 */
@@ -617,10 +613,6 @@ border:5px solid yellow;
 
 @media only screen and (min-width: 990px)
 {
-.container
-{
-border: none;
-}
 footer .container { width:100%; }
 /* .container-content { width:790px; } */
 }
