@@ -305,8 +305,9 @@ h2
 margin: 0 10%;
     @include respond-to(handheld) 
     {
-        font-size:20px;
-        
+        font-size:28px;
+        line-height:26px;
+        margin:10px 10%;
     }
     @include respond-to(tablet)
     {
@@ -431,15 +432,14 @@ padding-left:10px;
 }
 footer
 {
-width:50%;
-margin:20px auto;
-padding:15px;
 border-top:1px solid #ccc;
 border-bottom:3px solid #ccc;
 clear:both;
     @include respond-to(handheld) 
     {
-        
+        width:100%;
+        margin:20px auto;
+        padding:5px;
     }
     @include respond-to(tablet)
     {
@@ -451,7 +451,9 @@ clear:both;
     }
     @include respond-to(tablet-large)
     {
-        
+        width:50%;
+        margin:20px auto;
+        padding:15px;
     }
     @include respond-to(desktop-small)
     {

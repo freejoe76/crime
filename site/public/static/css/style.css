@@ -168,7 +168,9 @@ h2 {
   margin: 0 10%; }
   @media only screen and (min-width: 220px) {
     h2 {
-      font-size: 20px; } }
+      font-size: 28px;
+      line-height: 26px;
+      margin: 10px 10%; } }
   @media only screen and (min-width: 768px) {
     h2 {
       font-size: 30px; } }
@@ -217,12 +219,19 @@ section#content ol li {
   padding-left: 10px; }
 
 footer {
-  width: 50%;
-  margin: 20px auto;
-  padding: 15px;
   border-top: 1px solid #ccc;
   border-bottom: 3px solid #ccc;
   clear: both; }
+  @media only screen and (min-width: 220px) {
+    footer {
+      width: 100%;
+      margin: 20px auto;
+      padding: 5px; } }
+  @media only screen and (min-width: 768px) {
+    footer {
+      width: 50%;
+      margin: 20px auto;
+      padding: 15px; } }
 
 p {
   font-family: 'Merriweather', sans-serif; }
