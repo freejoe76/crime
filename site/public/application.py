@@ -39,15 +39,17 @@ def neighborhood(neighborhood, about=None):
     ticker = db[collection_name]
     collection_name = '%s-%s' % (neighborhood, 'recent')
     recent = db[collection_name]
+    #recent.create_index('_FIRST_OCCURRENCE_DATE')
     collection_name = '%s-violent' % ('rankings')
     rankings = db[collection_name]
     collection_name = '%s-property' % ('rankings')
     rankings_property = db[collection_name]
-    #print rankings.find()
+    print recent.find().sort("_LAST_OCCURRENCE_DATE", 1)[0]
+    # { orderby: { 'OFFENSE_CODE', 1 } } )
     response = {
        'timestamp':timestamp.find_one(),
        'ticker':ticker.find_one(),
-       'recent':recent.find(),
+       'recent':recent.find().sort('_FIRST_OCCURRENCE_DATE', 1),
        'rankings': {
             'violent': rankings.find(),
             'property': rankings_property.find()

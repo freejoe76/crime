@@ -100,6 +100,7 @@ if __name__ == '__main__':
         # $ ./write.py --verbose --action recent --crime drug-alcohol --location capitol-hill
         crimes = parse.get_recent_crimes(crime, grep, location, args)
         collection.insert(crimes['crimes'])
+        collection.create_index('_FIRST_OCCURRENCE_DATE')
     elif action == 'specific':
         # Example:
         # $ ./write.py --verbose --action specific --crime drug-alcohol
