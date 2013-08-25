@@ -225,7 +225,7 @@ h2 span {
 
 section#content {
   margin: auto !important;
-  width: 80%;
+  width: 100%;
   height: auto;
   text-align: left;
   clear: both; }
@@ -285,12 +285,11 @@ footer p {
   section#content .col {
     width: 45%;
     float: right;
-    margin-top: 0; } }
+    margin: 20px 2%; } }
 
 @media only screen and (min-width: 600px) and (orientation: landscape) {
   section#content .col:first-child {
-    float: left;
-    margin-right: 10%; } }
+    float: left; } }
 
 section#content .col .col {
   float: left;

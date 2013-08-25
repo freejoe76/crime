@@ -370,7 +370,7 @@ font-style:italic;
 section#content 
 {
 margin:auto!important;
-width:80%;
+width:100%;
 height:auto;
 text-align:left;
 clear:both;
@@ -481,7 +481,7 @@ section#content .col
     {
         width:45%;
         float:right;
-        margin-top:0;
+        margin: 20px 2%;
     }
     @include respond-to(tablet-large)
     {
@@ -507,7 +507,6 @@ section#content .col:first-child
     @include respond-to(tablet-landscape)
     {
         float:left; 
-        margin-right:10%; 
     }
     @include respond-to(tablet-large)
     {
