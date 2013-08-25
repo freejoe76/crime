@@ -11,7 +11,7 @@ body { margin-top:5px; }
 {% block ticker %}{{ response.ticker.last_crime }} since the last homicide{% endblock ticker %}
 
 {% block content %}
-{% if not in_dev %}
+{% if in_dev %}
 <div class="col">
     <h3>Denver Per-Capita Crimes</h3>
     <div class="col">
