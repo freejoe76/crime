@@ -5,7 +5,7 @@
 
   @if $device == handheld
   {
-    @media only screen and (min-width : 320px) { @content }
+    @media only screen and (min-width : 220px) { @content }
   }
   @if $device == handheld-landscape
   {
@@ -104,11 +104,20 @@ font-style: normal;
 text-align: center;
 text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 vertical-align: 10em;
+  position: absolute;
+  margin-top: 100px; /* was 190 ***/
+  z-index: 10;
+  width: 100%;
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
     @include respond-to(handheld) 
     {
-        font-size:20px;
-        line-height:20px;
-        
+        font-size:36px;
+        line-height:36px;
+        margin-top:10px;
     }
     @include respond-to(tablet)
     {
@@ -165,12 +174,138 @@ display:block;
         
     }
 }
+header {
+  float: left;
+  clear: both;
+  width: 100%;
+  margin: auto;
+}
+.thelargeheader {
+  overflow-y: hidden;
+/*  position: fixed; ***/
+  width: 100%;
+  background-color: #3ba5ff;
+    @include respond-to(handheld) 
+    {
+        height:40px;
+    }
+    @include respond-to(tablet)
+    {
+        
+    }
+    @include respond-to(tablet-landscape)
+    {
+        
+    }
+    @include respond-to(tablet-large)
+    {
+        height: 198px; /* was 460 ***/
+    }
+    @include respond-to(desktop-small)
+    {
+        
+    }
+    @include respond-to(desktop)
+    {
+        
+    }
+}
+.navtop {
+  /* position: fixed; ***/
+  margin: 0 auto;
+  width: 100%;
+  z-index: 1000;
+  background: #f1f1f1;
+    @include respond-to(handheld) 
+    {
+        height:30px;
+    }
+    @include respond-to(tablet)
+    {
+        
+    }
+    @include respond-to(tablet-landscape)
+    {
+        
+    }
+    @include respond-to(tablet-large)
+    {
+        height:50px;
+        
+    }
+    @include respond-to(desktop-small)
+    {
+        
+    }
+    @include respond-to(desktop)
+    {
+        
+    }
+}
+.selected {
+  height: 50px;
+
+}
+.selectedb {
+  height: 50px;
+
+}
+.navigation {
+  height: 100%;
+  padding-top: 0px;
+  width: 98%;
+  margin: 0px 2% 0 2%;
+  text-align: center;
+}
+.navigation li {
+  display: inline-block;
+  list-style: none;
+  padding: 3px 40px 0 40px;
+  font-family: 'Montserrat', sans-serif;
+  color: #6b6b6b;
+  line-height: 18px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-style: normal;
+  position: relative;
+  -webkit-transition: color 0.3s ease-in-out;
+  -moz-transition: color 0.3s ease-in-out;
+  -o-transition: color 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out;
+    @include respond-to(handheld) 
+    {
+        font-size:10px;
+        padding-top:12px;
+    }
+    @include respond-to(tablet)
+    {
+        
+    }
+    @include respond-to(tablet-landscape)
+    {
+        
+    }
+    @include respond-to(tablet-large)
+    {
+        font-size: 14px;
+        padding-top: 17px;
+    }
+    @include respond-to(desktop-small)
+    {
+        
+    }
+    @include respond-to(desktop)
+    {
+        
+    }
+}
 h2
 {
-font-size:30px;
 margin: 0 10%;
     @include respond-to(handheld) 
     {
+        font-size:20px;
         
     }
     @include respond-to(tablet)
@@ -183,7 +318,7 @@ margin: 0 10%;
     }
     @include respond-to(tablet-large)
     {
-        
+        font-size:30px;
     }
     @include respond-to(desktop-small)
     {
@@ -398,12 +533,10 @@ float: none;
 min-width: 320px;
 max-width: 100%;
 width: 100%;
-border: 2px solid red;
 margin: auto;
     @include respond-to(handheld) 
     {
         width: 100%;
-        border: 10px solid black;
     }
     @include respond-to(tablet)
     {
@@ -469,32 +602,32 @@ ul#nav { margin-bottom: 0; }
 {
 .container
 {
-width: 481px;
 border: 5px solid green;
 }
+/*
 .container-content { width:285px; }
+*/
 }
 
 @media only screen and (min-width: 768px)
 {
 .container
 {
-width: 768px;
 border:5px solid yellow;
 }
+/*
 .container-content { width:570px; }
-
+*/
 }
 
 @media only screen and (min-width: 990px)
 {
 .container
 {
-width: 100%;
 border: none;
 }
 footer .container { width:100%; }
-.container-content { width:790px; }
+/* .container-content { width:790px; } */
 }
 #banner
 {

@@ -1,6 +1,6 @@
 body:after {
   display: none; }
-  @media only screen and (min-width: 320px) {
+  @media only screen and (min-width: 220px) {
     body:after {
       content: "handheld"; } }
   @media only screen and (min-width: 600px) {
@@ -66,11 +66,22 @@ h1 {
   font-style: normal;
   text-align: center;
   text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  vertical-align: 10em; }
-  @media only screen and (min-width: 320px) {
+  vertical-align: 10em;
+  position: absolute;
+  margin-top: 100px;
+  /* was 190 ***/
+  z-index: 10;
+  width: 100%;
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out; }
+  @media only screen and (min-width: 220px) {
     h1 {
-      font-size: 20px;
-      line-height: 20px; } }
+      font-size: 36px;
+      line-height: 36px;
+      margin-top: 10px; } }
   @media only screen and (min-width: 768px) {
     h1 {
       font-size: 120px;
@@ -83,9 +94,84 @@ h1 a {
   height: 100px;
   display: block; }
 
+header {
+  float: left;
+  clear: both;
+  width: 100%;
+  margin: auto; }
+
+.thelargeheader {
+  overflow-y: hidden;
+  /*  position: fixed; ***/
+  width: 100%;
+  background-color: #3ba5ff; }
+  @media only screen and (min-width: 220px) {
+    .thelargeheader {
+      height: 40px; } }
+  @media only screen and (min-width: 768px) {
+    .thelargeheader {
+      height: 198px;
+      /* was 460 ***/ } }
+
+.navtop {
+  /* position: fixed; ***/
+  margin: 0 auto;
+  width: 100%;
+  z-index: 1000;
+  background: #f1f1f1; }
+  @media only screen and (min-width: 220px) {
+    .navtop {
+      height: 30px; } }
+  @media only screen and (min-width: 768px) {
+    .navtop {
+      height: 50px; } }
+
+.selected {
+  height: 50px; }
+
+.selectedb {
+  height: 50px; }
+
+.navigation {
+  height: 100%;
+  padding-top: 0px;
+  width: 98%;
+  margin: 0px 2% 0 2%;
+  text-align: center; }
+
+.navigation li {
+  display: inline-block;
+  list-style: none;
+  padding: 3px 40px 0 40px;
+  font-family: 'Montserrat', sans-serif;
+  color: #6b6b6b;
+  line-height: 18px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-style: normal;
+  position: relative;
+  -webkit-transition: color 0.3s ease-in-out;
+  -moz-transition: color 0.3s ease-in-out;
+  -o-transition: color 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out; }
+  @media only screen and (min-width: 220px) {
+    .navigation li {
+      font-size: 10px;
+      padding-top: 12px; } }
+  @media only screen and (min-width: 768px) {
+    .navigation li {
+      font-size: 14px;
+      padding-top: 17px; } }
+
 h2 {
-  font-size: 30px;
   margin: 0 10%; }
+  @media only screen and (min-width: 220px) {
+    h2 {
+      font-size: 20px; } }
+  @media only screen and (min-width: 768px) {
+    h2 {
+      font-size: 30px; } }
 
 h2 span {
   display: none; }
@@ -205,16 +291,14 @@ input[type="submit"] {
   min-width: 320px;
   max-width: 100%;
   width: 100%;
-  border: 2px solid red;
   margin: auto; }
-  @media only screen and (min-width: 320px) {
+  @media only screen and (min-width: 220px) {
     .container {
-      width: 100%;
-      border: 10px solid black; } }
+      width: 100%; } }
 
 .container-content {
   overflow: hidden; }
-  @media only screen and (min-width: 320px) {
+  @media only screen and (min-width: 220px) {
     .container-content {
       width: 285px; } }
 
@@ -226,27 +310,25 @@ input[type="submit"] {
     margin-bottom: 0; } }
 @media only screen and (min-width: 481px) {
   .container {
-    width: 481px;
     border: 5px solid green; }
 
-  .container-content {
-    width: 285px; } }
+  /*
+  .container-content { width:285px; }
+  */ }
 @media only screen and (min-width: 768px) {
   .container {
-    width: 768px;
     border: 5px solid yellow; }
 
-  .container-content {
-    width: 570px; } }
+  /*
+  .container-content { width:570px; }
+  */ }
 @media only screen and (min-width: 990px) {
   .container {
-    width: 100%;
     border: none; }
 
   footer .container {
     width: 100%; }
 
-  .container-content {
-    width: 790px; } }
+  /* .container-content { width:790px; } */ }
 #banner {
   z-index: 50; }
