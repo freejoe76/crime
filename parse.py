@@ -441,6 +441,7 @@ if __name__ == '__main__':
     elif action == 'recent':
         # Example:
         # $ ./parse.py --action recent --crime violent --location capitol-hill --output csv
+        # $ ./parse.py --action recent --location capitol-hill
         # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill --diff
         # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill
         crimes = parse.get_recent_crimes(crime, grep, location, args)

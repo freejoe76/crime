@@ -57,8 +57,10 @@ if __name__ == '__main__':
         elif action == 'recent':
             #collection.create_index('_FIRST_OCCURRENCE_DATE')
             #print dir(collection.find())
-            print collection.find().sort('_FIRST_OCCURRENCE_DATE')[0]
-            print collection.find()[1]
+            items = collection.find().sort('FIRST_OCCURRENCE_DATE')[:30]
+            items = collection.find()[:30]
+            for item in items:
+                print item['FIRST_OCCURRENCE_DATE']
         elif action == 'specific':
             collection_name = '%s-%s' % (location, action)
             collection = db[collection_name]

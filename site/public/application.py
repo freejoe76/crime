@@ -50,6 +50,7 @@ def neighborhood(neighborhood, about=None):
        'timestamp':timestamp.find_one(),
        'ticker':ticker.find_one(),
        'recent':recent.find().sort('_FIRST_OCCURRENCE_DATE', 1),
+       'recent':recent.find(),
        'rankings': {
             'violent': rankings.find(),
             'property': rankings_property.find()
