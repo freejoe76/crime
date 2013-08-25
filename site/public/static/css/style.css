@@ -164,16 +164,17 @@ header {
       font-size: 14px;
       padding-top: 17px; } }
 
-h2 {
-  margin: 0 10%; }
+h2, h2 p {
+  font-family: 'Signika Negative', sans-serif; }
   @media only screen and (min-width: 220px) {
-    h2 {
+    h2, h2 p {
       font-size: 28px;
       line-height: 26px;
-      margin: 10px 10%; } }
+      margin: 10px 1%; } }
   @media only screen and (min-width: 768px) {
-    h2 {
-      font-size: 30px; } }
+    h2, h2 p {
+      font-size: 30px;
+      margin: 0 10%; } }
 
 h2 span {
   display: none; }

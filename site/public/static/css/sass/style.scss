@@ -300,14 +300,14 @@ header {
         
     }
 }
-h2
+h2, h2 p
 {
-margin: 0 10%;
+font-family: 'Signika Negative', sans-serif;
     @include respond-to(handheld) 
     {
         font-size:28px;
         line-height:26px;
-        margin:10px 10%;
+        margin:10px 1%;
     }
     @include respond-to(tablet)
     {
@@ -320,6 +320,7 @@ margin: 0 10%;
     @include respond-to(tablet-large)
     {
         font-size:30px;
+        margin: 0 10%;
     }
     @include respond-to(desktop-small)
     {
