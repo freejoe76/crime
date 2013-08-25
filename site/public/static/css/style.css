@@ -278,6 +278,9 @@ footer p {
   section#content .col {
     width: 100%;
     margin-top: 20px; } }
+@media only screen and (min-width: 600px) {
+  section#content .col {
+    margin: 20px 5%; } }
 @media only screen and (min-width: 600px) and (orientation: landscape) {
   section#content .col {
     width: 45%;
@@ -291,7 +294,8 @@ footer p {
 
 section#content .col .col {
   float: left;
-  width: 45%; }
+  width: 45%;
+  margin: 10px 0; }
 
 .hide, .hidelist {
   display: none; }
