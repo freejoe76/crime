@@ -47,6 +47,11 @@
     @media only screen and (min-width : 768px) and (orientation : portrait) { @content }
   }
 
+  @if $device == desktop-small
+  {
+    @media only screen and (min-width : 1024px) { @content }
+  }
+
   @if $device == desktop
   {
     @media only screen and (min-width : 1224px) { @content }
@@ -71,6 +76,7 @@ body
     @include respond-to(handheld) { content: 'handheld' }
     @include respond-to(tablet) { content: 'tablet' }
     @include respond-to(tablet-large) { content: 'tablet-large'}
+    @include respond-to(desktop-small) { content: 'desktop-small' }
     @include respond-to(desktop) { content: 'desktop' }
     @include respond-to(desktop-large) { content: 'desktop-large' }
     }
@@ -98,6 +104,34 @@ font-style: normal;
 text-align: center;
 text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 vertical-align: 10em;
+    @include respond-to(handheld) 
+    {
+        font-size:20px;
+        line-height:20px;
+        
+    }
+    @include respond-to(tablet)
+    {
+        
+    }
+    @include respond-to(tablet-landscape)
+    {
+        
+    }
+    @include respond-to(tablet-large)
+    {
+        font-size:120px;
+        line-height:120px;
+        
+    }
+    @include respond-to(desktop-small)
+    {
+        
+    }
+    @include respond-to(desktop)
+    {
+        
+    }
 }
 h1 a
 {
@@ -106,16 +140,88 @@ color:#fff;
 text-decoration:none;
 height:100px;
 display:block;
+    @include respond-to(handheld) 
+    {
+        
+    }
+    @include respond-to(tablet)
+    {
+        
+    }
+    @include respond-to(tablet-landscape)
+    {
+        
+    }
+    @include respond-to(tablet-large)
+    {
+        
+    }
+    @include respond-to(desktop-small)
+    {
+        
+    }
+    @include respond-to(desktop)
+    {
+        
+    }
 }
 h2
 {
 font-size:30px;
 margin: 0 10%;
+    @include respond-to(handheld) 
+    {
+        
+    }
+    @include respond-to(tablet)
+    {
+        
+    }
+    @include respond-to(tablet-landscape)
+    {
+        
+    }
+    @include respond-to(tablet-large)
+    {
+        
+    }
+    @include respond-to(desktop-small)
+    {
+        
+    }
+    @include respond-to(desktop)
+    {
+        
+    }
 }
 h2 span { display:none; }
 h3
 {
 font-size:24px;
+    @include respond-to(handheld) 
+    {
+        
+    }
+    @include respond-to(tablet)
+    {
+        
+    }
+    @include respond-to(tablet-landscape)
+    {
+        
+    }
+    @include respond-to(tablet-large)
+    {
+        
+    }
+    @include respond-to(desktop-small)
+    {
+        
+    }
+    @include respond-to(desktop)
+    {
+        
+    }
 }
 #timestamp
 {
@@ -137,6 +243,30 @@ width:80%;
 height:auto;
 text-align:left;
 clear:both;
+    @include respond-to(handheld) 
+    {
+        
+    }
+    @include respond-to(tablet)
+    {
+        
+    }
+    @include respond-to(tablet-landscape)
+    {
+        
+    }
+    @include respond-to(tablet-large)
+    {
+        
+    }
+    @include respond-to(desktop-small)
+    {
+        
+    }
+    @include respond-to(desktop)
+    {
+        
+    }
 }
 
 section#content ul li,
@@ -172,6 +302,30 @@ padding:15px;
 border-top:1px solid #ccc;
 border-bottom:3px solid #ccc;
 clear:both;
+    @include respond-to(handheld) 
+    {
+        
+    }
+    @include respond-to(tablet)
+    {
+        
+    }
+    @include respond-to(tablet-landscape)
+    {
+        
+    }
+    @include respond-to(tablet-large)
+    {
+        
+    }
+    @include respond-to(desktop-small)
+    {
+        
+    }
+    @include respond-to(desktop)
+    {
+        
+    }
 }
 p
 {
@@ -243,15 +397,64 @@ input[type="submit"] {
 float: none;
 min-width: 320px;
 max-width: 100%;
+width: 100%;
 border: 2px solid red;
 margin: auto;
-    @include respond-to(handheld) {
-        width: 320px!important;
-        border: 5px solid blue;
+    @include respond-to(handheld) 
+    {
+        width: 100%;
+        border: 10px solid black;
+    }
+    @include respond-to(tablet)
+    {
+        
+    }
+    @include respond-to(tablet-landscape)
+    {
+        
+    }
+    @include respond-to(tablet-large)
+    {
+        
+    }
+    @include respond-to(desktop-small)
+    {
+        
+    }
+    @include respond-to(desktop)
+    {
+        
     }
 }
 
-.container-content { overflow:hidden; }
+.container-content 
+{ 
+overflow:hidden; 
+    @include respond-to(handheld) 
+    {
+        width:285px;
+    }
+    @include respond-to(tablet)
+    {
+        
+    }
+    @include respond-to(tablet-landscape)
+    {
+        
+    }
+    @include respond-to(tablet-large)
+    {
+        
+    }
+    @include respond-to(desktop-small)
+    {
+        
+    }
+    @include respond-to(desktop)
+    {
+        
+    }
+}
 
 @media only screen and (min-width: 320px) and (max-width: 600px)
 {
@@ -259,7 +462,6 @@ margin: auto;
 {
 width: 100%;
 }
-.container-content { width:285px; }
 ul#nav { margin-bottom: 0; }
 }
 
