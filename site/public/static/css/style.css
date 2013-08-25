@@ -229,6 +229,9 @@ section#content {
   height: auto;
   text-align: left;
   clear: both; }
+  @media only screen and (min-width: 1024px) {
+    section#content {
+      width: 80%; } }
 
 section#content ul li,
 section#content dl dt,
