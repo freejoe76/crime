@@ -48,22 +48,23 @@ if __name__ == '__main__':
         collection_name = '%s-%s' % (location, action)
         collection = db[collection_name]
         if action == 'ticker':
-            print collection.find()
+            pass
         elif action == 'rankings':
             crimes = parse.get_rankings(crime, location, args)
             crimes['crimes']['neighborhood'].reverse()
             crimes['crimes']['percapita'].reverse()
-            collection.insert({ filename: {'neighborhood': crimes['crimes']['neighborhood'], 'percapita': crimes['crimes']['percapita']} })
+            pass
         elif action == 'recent':
             #collection.create_index('_FIRST_OCCURRENCE_DATE')
             #print dir(collection.find())
-            items = collection.find().sort('FIRST_OCCURRENCE_DATE')[:30]
-            items = collection.find()[:30]
-            for item in items:
-                print item['FIRST_OCCURRENCE_DATE']
+            #items = collection.find().sort('FIRST_OCCURRENCE_DATE')[:30]
+            pass
         elif action == 'specific':
-            collection_name = '%s-%s' % (location, action)
-            collection = db[collection_name]
+            pass
+        items = collection.find()[:30]
+        for item in items:
+            #print item['FIRST_OCCURRENCE_DATE'], item['OFFENSE_TYPE_ID'], item['REPORTED_DATE']
+            print item
     if verbose:
         print crimes
 
