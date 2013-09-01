@@ -201,22 +201,6 @@ section {
   background: #3ba5ff;}
 
 /*======HEADER ========== */
-header {
-  float: left;
-  clear: both;
-  width: 100%;
-  margin: auto;
-}
-.thelargeheader {
-  overflow-y: hidden;
-  height: 198px; /* was 460 ***/
-/*  position: fixed; ***/
-  width: 100%;
-  background-color: #3ba5ff;
-}
-
-
-
 #tumblr_controls {
      z-index:2000;
      position: fixed !important;
@@ -267,15 +251,6 @@ header {
 
 
 #blogtitle {
-  position: absolute;
-  margin-top: 100px; /* was 190 ***/
-  z-index: 10;
-  width: 100%;
-  -webkit-transition: all 0.4s ease-in-out;
-  -moz-transition: all 0.4s ease-in-out;
-  -o-transition: all 0.4s ease-in-out;
-  -ms-transition: all 0.4s ease-in-out;
-  transition: all 0.4s ease-in-out;
 }
 
 #blogtitle img{
@@ -373,51 +348,6 @@ header {
     right: 30px
 }
 
-.navtop {
-  height: 50px;
-  /* position: fixed; ***/
-  margin: 0 auto;
-  width: 100%;
-  z-index: 1000;
-  background: #f1f1f1;
-}
-.selected {
-  height: 50px;
-
-}
-.selectedb {
-  height: 50px;
-
-}
-.navigation {
-  height: 50px;
-  padding-top: 0px;
-  width: 98%;
-  margin: 0px 2% 0 2%;
-  text-align: center;
-  
-}
-
-
-.navigation li {
-  display: inline-block;
-  list-style: none;
-  padding: 3px 40px 0 40px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
-  line-height: 18px;
-  color: #6b6b6b;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-style: normal;
-  position: relative;
-  padding-top: 17px;
-    -webkit-transition: color 0.3s ease-in-out;
-  -moz-transition: color 0.3s ease-in-out;
-  -o-transition: color 0.3s ease-in-out;
-  transition: color 0.3s ease-in-out;
-}
 
 
 .navigation a {
