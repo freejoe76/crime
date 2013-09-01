@@ -227,7 +227,7 @@ class Parse:
         percapita_multiplier = 1000
         today = datetime.date(datetime.now())
 
-        if args[0] == []:
+        if not args or args[0] == []:
             timespan = False
         else:
             timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
