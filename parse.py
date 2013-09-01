@@ -202,11 +202,19 @@ class Parse:
 
         return crime_type
 
-    def get_monthbymonth(self, crime = None, grep = False, location = None):
+    def get_monthly(self, crime = None, grep = False, location = '', limit = 23):
         # Loop through the monthly crime files, return frequency.
         # Can filter by crime, location or both. 
         # Have some gymnastics to do her in jumping across files.
         # Return a dict of months and # of occurrences.
+        i = 0
+        crime_type = self.get_crime_type(crime)
+        while i < limit:
+            # Open the file we want
+            crime_file = self.open_csv('_input/location_%s-%d-month' % location, i)
+
+            for row in crime_file:
+                record = dict(zip(dicts.keys, row))
         pass
 
     def get_rankings(self, crime = None, grep = False, location = None, *args, **kwargs):
@@ -444,6 +452,12 @@ if __name__ == '__main__':
 
 
     crimes = None
+    if action == 'monthly':
+        # Example:
+        # $ ./parse.py --action monthly --location capitol-hill --crime violent
+        crimes = parse.get_monthly(crime, grep, location, args)
+        if verbose or if not verbose:
+            print crimes
     if action == 'rankings':
         # Example:
         # $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
