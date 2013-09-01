@@ -203,7 +203,7 @@ class Parse:
         return crime_type
 
 
-    def get_rankings(self, crime = None, location = None, *args, **kwargs):
+    def get_rankings(self, crime = None, grep = False, location = None, *args, **kwargs):
         # Take a crime type or category and return a list of neighborhoods 
         # ranked by frequency of that crime.
         # If no crime is passed, we just rank overall number of crimes
@@ -258,7 +258,9 @@ class Parse:
             else:
 
                 if crime == dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime == record['OFFENSE_CATEGORY_ID'] or crime == record['OFFENSE_TYPE_ID']:
-                    #print crime, dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']]
+                    rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
+                    percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
+                elif grep == True and crime in dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime in record['OFFENSE_CATEGORY_ID'] or crime in record['OFFENSE_TYPE_ID']:
                     rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
                     percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
 
@@ -439,7 +441,8 @@ if __name__ == '__main__':
     if action == 'rankings':
         # Example:
         # $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
-        crimes = parse.get_rankings(crime, location, args)
+        # $ ./parse.py --action rankings --crime dv --grep '2013-01-01' '2013-08-01'
+        crimes = parse.get_rankings(crime, grep, location, args)
         if verbose:
             print crimes
         crimes['crimes']['neighborhood'].reverse()
@@ -455,6 +458,6 @@ if __name__ == '__main__':
     elif action == 'specific':
         # Example:
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
-        # $ ./parse.py --verbose --action specific --crime meth --grep True 
+        # $ ./parse.py --verbose --action specific --crime meth --grep
         crimes = parse.get_specific_crime(crime, grep, location)
     print parse.print_crimes(crimes, limit, location)
