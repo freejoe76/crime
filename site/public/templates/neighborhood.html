@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ neighborhood.full }} Neighborhood Crimes: {% endblock title %}
 {% block description %}Neighborhood{% endblock description %}
-{% block subhead %}{{ neighborhood.full }}{% endblock subhead %}
+{% block subhead %}<a href="about/">{{ neighborhood.full }}</a>{% endblock subhead %}
 {% block breadcrumbs %}{{ neighborhood.full }}{% endblock breadcrumbs %}
 {% block style %}
 body { margin-top:5px; }
@@ -11,7 +11,19 @@ body { margin-top:5px; }
 {% block ticker %}{{ response.ticker.last_crime }} since the last homicide{% endblock ticker %}
 
 {% block content %}
-<div class="col">
+{% if in_dev %}
+
+<div class="col leftcol">
+    <h3>Recent Crimes in {{ neighborhood.full }}</h3>
+    <dl>
+    {% for crime in response.recent[0:20] %}
+        <dt>{{ crime.OFFENSE_TYPE_ID|offense }}:</dt>
+            <dd>{{ crime.FIRST_OCCURRENCE_DATE|datetime_raw|datetime('full') }}, at {{ crime.INCIDENT_ADDRESS|address }}</dd>
+    {% endfor %}
+    </dl>
+</div>
+
+<div class="col rightcol">
     <h3>Denver Per-Capita Crimes</h3>
     <div class="col">
         <h4>Property crimes per 1,000 residents, 2013</h4>
@@ -30,14 +42,5 @@ body { margin-top:5px; }
         </ol>
     </div>
 </div>
-
-<div class="col">
-    <h3>Recent Crimes in {{ neighborhood.full }}</h3>
-    <dl>
-    {% for crime in response.recent[0:20] %}
-        <dt>{{ crime.OFFENSE_TYPE_ID|offense }}:</dt>
-            <dd>{{ crime.FIRST_OCCURRENCE_DATE|datetime_raw|datetime('full') }}, at {{ crime.INCIDENT_ADDRESS|address }}</dd>
-    {% endfor %}
-    </dl>
-</div>
+{% endif %}
 {% endblock content %}

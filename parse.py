@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # Run a query against the crime CSV's
 import os
 import csv
@@ -209,12 +209,15 @@ class Parse:
         # Return a dict of months and # of occurrences.
         pass
 
-    def get_rankings(self, crime = None, location = None, *args, **kwargs):
+    def get_rankings(self, crime = None, grep = False, location = None, *args, **kwargs):
         # Take a crime type or category and return a list of neighborhoods 
         # ranked by frequency of that crime.
         # If no crime is passed, we just rank overall number of crimes
         # (and crimes per-capita) for that particular time period.
         # Args taken should be the start of the timespan and the end.
+        # We return raw numbers and per-capita numbers.
+        # If a location is given, we also return that location's rank
+        # within each list.
         rankings = { 
             'neighborhood': defaultdict(int),
             'genre': defaultdict(int),
@@ -230,7 +233,7 @@ class Parse:
         percapita_multiplier = 1000
         today = datetime.date(datetime.now())
 
-        if args[0] == []:
+        if not args or args[0] == []:
             timespan = False
         else:
             timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
@@ -261,7 +264,9 @@ class Parse:
             else:
 
                 if crime == dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime == record['OFFENSE_CATEGORY_ID'] or crime == record['OFFENSE_TYPE_ID']:
-                    #print crime, dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']]
+                    rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
+                    percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
+                elif grep == True and crime in dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime in record['OFFENSE_CATEGORY_ID'] or crime in record['OFFENSE_TYPE_ID']:
                     rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
                     percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
 
@@ -276,6 +281,10 @@ class Parse:
             'category': sorted(rankings['category'].iteritems(), key=operator.itemgetter(1)),
             'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
         }
+
+        if location:
+            pass
+
         return { 'crimes': sorted_rankings }
 
     def get_median(self, ranking):
@@ -438,7 +447,8 @@ if __name__ == '__main__':
     if action == 'rankings':
         # Example:
         # $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
-        crimes = parse.get_rankings(crime, location, args)
+        # $ ./parse.py --action rankings --crime dv --grep '2013-01-01' '2013-08-01'
+        crimes = parse.get_rankings(crime, grep, location, args)
         if verbose:
             print crimes
         crimes['crimes']['neighborhood'].reverse()
@@ -447,12 +457,13 @@ if __name__ == '__main__':
     elif action == 'recent':
         # Example:
         # $ ./parse.py --action recent --crime violent --location capitol-hill --output csv
+        # $ ./parse.py --action recent --location capitol-hill
         # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill --diff
         # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill
         crimes = parse.get_recent_crimes(crime, grep, location, args)
     elif action == 'specific':
         # Example:
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
-        # $ ./parse.py --verbose --action specific --crime meth --grep True 
+        # $ ./parse.py --verbose --action specific --crime meth --grep
         crimes = parse.get_specific_crime(crime, grep, location)
     print parse.print_crimes(crimes, limit, location)

@@ -1,0 +1,599 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{Title}{block:PostSummary} - {PostSummary}{/block:PostSummary}</title>
+    
+    <meta name="tumblr-theme" content="37034" />
+    <meta name="author" content="{Title}">
+    {block:Description}
+    <meta name="description" content="{MetaDescription}" />
+    {/block:Description}
+
+    <link rel="shortcut icon" href="{Favicon}">
+    <link rel="apple-touch-icon" href="{PortraitURL-128}">
+    <link rel="alternate" type="application/rss+xml" href="http://feeds.feedburner.com/denvercrimes">
+
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,700,900' rel='stylesheet' type='text/css'>
+
+    <!-- SET TUMBLR OPTIONS -->
+    
+    <!-- images -->
+    <meta name="image:Header" content="http://static.tumblr.com/negrna7/55pmmhzap/holder.jpg"/>
+    <meta name="image:Header Logo" content=""/>
+    
+    <!-- colors -->
+    <meta name="color:Content Background" content="#f8f8f8"/>
+    <meta name="color:Heading Text" content="#fff"/>
+    <meta name="color:Text Color" content="#282828"/>
+    <meta name="color:Link Color" content="#808080"/>
+    <meta name="color:Link Hover Color" content="#282828"/>
+    <meta name="color:Navigation Color" content="#f1f1f1"/>
+    <meta name="color:Navigation Text Color" content="#6b6b6b"/>
+    <meta name="color:Selection Color" content="#3ba5ff"/>
+    <meta name="color:Header Background" content="#3ba5ff"/>
+    
+    
+    <!-- text -->
+    <meta name="text:Header Size" content="130"/>
+    <meta name="text:About Section" content="second heading"/>
+    <meta name="text:Twitter Username" content=""/>
+    <meta name="text:Facebook Profile" content=""/>
+    <meta name="text:Pintrest Profile" content=""/>
+    <meta name="text:Disqus Code" content=""/>
+    
+    
+    <!-- fonts -->
+    <meta name="font:Title" content="'Merriweather', sans-serif"/>
+    <meta name="font:Body" content="'Merriweather', sans-serif"/>
+    
+    <!-- booleans -->
+     <meta name="if:Disable Disqus" content="0"/>
+     <meta name="if:Enable Top Navigation" content="1"/>
+    
+
+    <!-- STYLE SETTINGS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="http://static.tumblr.com/negrna7/kommgd3to/modernizr.js"></script>
+
+    <!-- {block:Ifstyle.cssURL}
+      {text:style.cssURL}
+   {/block:Ifstyle.cssURL} -->
+   
+   <link rel="stylesheet" href="http://denvercrimes.com/static/css/style.css" type="text/css" />
+   <link rel="stylesheet" href="http://denvercrimes.com/static/css/tumblr_write.css" type="text/css" />
+
+
+    <style type="text/css">{CustomCSS}</style>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-64733-21', 'denvercrimes.com');
+  ga('send', 'pageview');
+
+</script>
+</head>
+
+
+<body>    
+<!-- Tumblr Theme #37034. Cleaned up, some, by Joe. -->
+<header>
+    {block:IfEnableTopNavigation}
+    <div class="navtop">
+            <ul class="navigation">{block:PermalinkPage}
+                <li class="selectedb"><a href="/" class="showblog">Blog</a></li>
+                {/block:PermalinkPage}
+             {block:IndexPage}
+                <li class="selectedb"><a href="/" class="showblog">Blog</a></li>
+             {/block:IndexPage}           
+                <li class="selecteda"><a href="/#about" id="showabout">About</a></li>
+             {block:HasPages}  
+                {block:Pages}<li><a href="{URL}" id="extrapages" title="{Label}">{Label}</a></li>{/block:Pages}
+             {/block:HasPages}
+            </ul>
+    </div>
+    {/block:IfEnableTopNavigation}
+ 
+
+
+   <!-- BASIC DETAILS -->
+    {block:IndexPage}
+    <div class="thelargeheader">
+            <div class="aboutsection">
+                   <div class="crossit">
+                   <a href="#" class="showblog">
+                            <img class="avitarimg" src="http://static.tumblr.com/negrna7/dfrmggqr4/cross.png" alt="cross" /> 
+                    </a>
+                        </div>
+                        <div class="avitar">
+                            <img class="avitarimg" src="{PortraitURL-128}" alt="{Title}"/> 
+                        </div>
+                        <div id="descriptionblog">
+                           <h6>{block:Description}
+                           <p>{Description}</p>
+                           {/block:Description}</h6>
+                         </div>
+                        <div class="socialiconlinks">
+                        {block:IfTwitterUsername}
+<a   class="socialiconsbits" href="http://twitter.com/{text:Twitter Username}">
+<img  src="http://static.tumblr.com/negrna7/Rz3mggnkb/twitter.png" width="35px" alt="twitter"></a>
+                        {/block:IfTwitterUsername}
+                        
+                        {block:IfFacebookProfile}
+<a   class="socialiconsbits" href="http://facebook.com/{text:Facebook Profile}">
+<img  src="http://static.tumblr.com/negrna7/ZZCmggqdn/fb.png" width="35px" alt="fb"></a>
+                        {/block:IfFacebookProfile}
+                        
+                        
+                         {block:IfPintrestProfile}
+<a   class="socialiconsbits" href="http://pintrest.com/{text:Pintrest Profile}">
+<img  src="http://static.tumblr.com/negrna7/8utmggql6/pintrest.png" width="35px" alt="fb"></a>
+                        {/block:IfPintrestProfile}
+                        </div>
+            </div>
+            
+            {block:IfHeaderImage}<img id="bgheader" src="{image:Header}"/>{/block:IfHeaderImage}
+            
+            <div id="blogtitle">
+               <h1>{Title}</h1>
+               {block:IfHeaderLogoImage}<img src="{image:HeaderLogo}"/>{/block:IfHeaderLogoImage}
+            </div>             
+          
+            <div id="descriptionheader">
+                  {block:IfAboutSection}
+                   <h6>{text:About Section}</h6>
+                   {/block:IfAboutSection}
+            </div>
+    </div>
+    {/block:IndexPage}
+</header>
+
+{block:IndexPage}
+<section class="mainbit">
+     {block:Posts}  
+     <article class="type_{PostType}">  
+        {block:Text}
+        {block:Title}<h2 class="theposttitle"><a href="{Permalink}">{Title}</a></h2>{/block:Title}
+        {Body}
+        {/block:Text}  
+        {block:Photo}
+       {LinkOpenTag}<img src="{PhotoURL-500}" alt="{PhotoAlt}" width="100%" />{LinkCloseTag}
+      {block:Caption}
+         <div class="caption">
+            <p>{Caption}</p>
+         </div>
+      {/block:Caption}
+      {/block:Photo}  
+
+      {block:Photoset}
+
+<div class="photo-slideshow" id="photoset_{PostID}" data-layout="{PhotosetLayout}">
+
+  {block:Photos}
+    <div class="photo-data">
+      <div class="pxu-photo">
+        <img alt="{PhotoAlt}" src="{PhotoURL-500}" data-highres="{PhotoURL-HighRes}" data-width="{PhotoWidth-HighRes}" data-height="{PhotoHeight-HighRes}" class="{block:Exif}exif-yes {/block:Exif}{block:Caption}caption-yes{/block:Caption}" {block:Exif}data-camera="{block:Camera}{Camera}{/block:Camera}" data-iso="{block:ISO}{ISO}{/block:ISO}" data-aperture="{block:Aperture}{Aperture}{/block:Aperture}" data-exposure="{block:Exposure}{Exposure}{/block:Exposure}" data-focal="{block:FocalLength}{FocalLength}{/block:FocalLength}"{/block:Exif} {block:Caption}data-caption="{Caption}"{/block:Caption}>
+      </div>
+      <div class="icons">
+        <a class="tumblr-box" rel="post-{PostID}" href="{PhotoURL-HighRes}">
+          <span class="zoom">Zoom</span>
+        </a>
+        <span class="info">Info</span>
+      </div>
+    </div>
+  {/block:Photos}
+
+</div><!-- close SLIDESHOW -->             
+
+{block:Caption}{Caption}{/block:Caption}
+    {/block:Photoset} 
+
+
+
+      {block:Video}
+      <div class="js-video vimeo widescreen">{Video-500}</div>
+      {block:Caption}
+         <div class="caption">
+            <p>{Caption}</p>
+         </div>
+      {/block:Caption}
+      {/block:Video}  
+
+
+
+    
+
+      {block:Audio}
+
+      {block:AlbumArt}
+         <img src="{AlbumArtURL}" alt="{block:Artist}{Artist}{/block:Artist}{block:TrackName} - {TrackName}{/block:TrackName}"/>
+      {/block:AlbumArt}
+
+      {block:AudioEmbed}
+         {AudioEmbed}
+      {/block:AudioEmbed}
+
+      {block:AudioPlayer}
+         {AudioPlayerWhite}
+      {/block:AudioPlayer}
+
+      {block:ExternalAudio}
+         <a href="{ExternalAudioURL}">{lang:Download}</a>
+      {/block:ExternalAudio}
+
+      {block:Caption}
+         <div class="caption">
+            <p>{Caption}</p>
+         </div>
+      {/block:Caption}
+
+      {/block:Audio}  
+
+
+
+      {block:Quote}
+      <div class="quote-short"><p>"{Quote}"</p></div>
+      
+      {block:Source}
+         <div class="quote-author">
+            <p>&mdash; {Source}</p>
+         </div>                
+      {/block:Source}
+      {/block:Quote}  
+
+
+
+        {block:Answer}
+      {Question}
+      <img src="{AskerPortraitURL-24}" alt="">
+      {Asker}
+      {Answer}
+      {/block:Answer}  
+
+
+
+ 
+        {block:Chat}
+      {block:Title}<h2>{Title}</h2>{/block:Title}
+      {block:Lines}
+         <div class="line {Alt}">{block:Label}<strong><p>{Label}</strong>{/block:Label} {Line}</p></div>
+      {/block:Lines}
+      {/block:Chat}  
+
+
+        {block:Link}
+        <div class="thelink">
+            <a href="{URL}" {Target}>{Name}</a>
+        </div>
+        
+        
+      {block:Description}
+         <div class="caption">
+            <p>{Description}</p>
+         </div>
+      {/block:Description}
+
+      {/block:Link}  
+
+
+
+        <div class="post-meta">
+                 {block:Date}
+                 <div class="permalink metaitemleft">
+                    <div class="metaitemleft topspace"> {LikeButton size="16"} </div>
+                   <div class="metaitemleft topspace"> {ReblogButton size="16"}</div>
+                    
+                    <a class="metaitemleft" href="{Permalink}"><h6> <img class="linkicon" src="http://static.tumblr.com/negrna7/LlFmggkn3/link.png" style="width:25px !important;   " alt="linkicon" > {TimeAgo}</h6></a>
+                 </div>
+                 {/block:Date}
+                                 
+<div class="post-notess metaitemright"><a class="dsq-comment-count" href="{Permalink}#disqus_thread">Comments</a></div>
+                 
+                 {block:HasTags}
+                 <div class="tagged metaitemleft">
+                    <h6>{lang:Tagged}:</h6> {block:Tags}<a href="{TagURL}"><h6>{Tag}</h6></a> {/block:Tags}
+                 </div>
+                 {/block:HasTags}
+                 
+                 
+                 
+              
+                 {block:NoteCount}
+                 <div class="note-count metaitemleft">
+                   <h6 > {NoteCountWithLabel}</h6>
+                 </div>
+                 {/block:NoteCount}
+              
+              
+              
+              
+                 {block:RebloggedFrom}
+                 <div class="reblogged metaitemleft">
+                    <h6>Reblogged from </h6><a href="{ReblogParentURL}" title="{ReblogParentName}"><h6>{ReblogParentName}</h6></a>
+                 </div>
+                 {/block:RebloggedFrom}
+        
+        
+                {block:PostNotes}
+              <div class="note-count metaitemright"><h6 class="note-count">{PostNotes-16}</h6></div>
+        
+              {/block:PostNotes}  
+        </div>
+
+        </article>  
+     {/block:Posts}  
+
+    <article>
+    {block:IfDisqusCode}
+    {/block:IfDisqusCode}
+    </article>
+    
+
+{block:Pagination}
+            <div class="pagination">
+               {block:PreviousPage}<a href="{PreviousPage}" class="prev">{lang:Previous}</a>{/block:PreviousPage}
+               {block:NextPage}<a href="{NextPage}" class="next">{lang:Next page}</a>{/block:NextPage}
+            </div>
+{/block:Pagination} 
+</section>
+{/block:IndexPage}
+
+
+
+
+
+{block:PermalinkPage}
+<section class="mainbitperma">
+     {block:Posts}  
+     <article class="type_{PostType}">  
+
+        {block:Text}
+        {block:Title}<h2 class="theposttitle">{Title}</h2>{/block:Title}
+          <p>{Body}<p>
+        {/block:Text}  
+        {block:Photo}
+       {LinkOpenTag}<img src="{PhotoURL-500}" alt="{PhotoAlt}" width="100%" />{LinkCloseTag}
+      {block:Caption}
+         <div class="caption"><p>{Caption}</p></div>
+      {/block:Caption}
+      {/block:Photo}  
+
+        {block:Photoset}
+ 
+      {Photoset-500}
+
+     {block:Caption}
+         <div class="caption">
+             <p>{Caption}</p>
+         </div>
+      {/block:Caption}
+
+      {/block:Photoset}  
+
+
+
+      {block:Video}
+    <div class="js-video vimeo widescreen">{Video-500}</div>
+      {block:Caption}
+         <div class="caption"><p>{Caption}</p></div>
+      {/block:Caption}
+      {/block:Video}  
+
+
+
+    
+
+        {block:Audio}
+
+      {block:AlbumArt}
+         <img src="{AlbumArtURL}" alt="{block:Artist}{Artist}{/block:Artist}{block:TrackName} - {TrackName}{/block:TrackName}"/>
+      {/block:AlbumArt}
+
+      {block:AudioEmbed}
+         {AudioEmbed}
+      {/block:AudioEmbed}
+
+      {block:AudioPlayer}
+         {AudioPlayerWhite}
+      {/block:AudioPlayer}
+
+      {block:ExternalAudio}
+         <a href="{ExternalAudioURL}">{lang:Download}</a>
+      {/block:ExternalAudio}
+
+      {block:Caption}
+         <div class="caption">
+            <p>{Caption}</p>
+         </div>
+      {/block:Caption}
+
+      {/block:Audio}  
+
+
+
+
+
+        {block:Quote}
+
+      <div class="quote-short"><p>"{Quote}"</p><br><br></div>
+      
+      {block:Source}
+         <div class="quote-author">
+            <p>- {Source}</p>
+            <br><br>
+         </div>                
+      {/block:Source}
+
+      {/block:Quote}  
+
+
+
+        {block:Answer}
+
+      {Question}
+
+      <img src="{AskerPortraitURL-24}">
+      {Asker}
+
+      {Answer}
+
+      {/block:Answer}  
+
+
+
+ 
+
+      {block:Chat}
+
+      {block:Title}<h2>{Title}</h2>{/block:Title}
+
+      {block:Lines}
+         <div class="line {Alt}">{block:Label}<strong><p>{Label}</strong>{/block:Label} {Line}</p></div>                
+      {/block:Lines}
+
+      {/block:Chat}  
+
+
+        {block:Link}
+        <div class="thelink">
+            <a href="{URL}" {Target}>{Name}</a>
+        </div>
+        
+        
+      {block:Description}
+         <div class="caption">
+            <p>{Description}</p>
+         </div>
+      {/block:Description}
+      {/block:Link}  
+
+        <div class="post-meta">
+                 {block:Date}
+                 <div class="permalink metaitemleft">
+                    <a class="metaitemleft" href="{Permalink}"><h6><img class="linkicon" src="http://static.tumblr.com/negrna7/LlFmggkn3/link.png" width= "25px !important" alt="linkicon" > {TimeAgo}</h6></a>
+                 </div>                
+                 {/block:Date}
+                                 
+ <div class="post-notess metaitemright">
+ <a class="dsq-comment-count" href="{Permalink}#disqus_thread">Comments</a>
+ </div>             
+                 
+                 {block:HasTags}
+                 <div class="tagged metaitemleft">
+                    <h6>{lang:Tagged}:</h6> {block:Tags}<a href="{TagURL}"><h6>{Tag}</h6></a> {/block:Tags}
+                 </div>                
+                 {/block:HasTags}
+              
+                 {block:NoteCount}
+                 <div class="note-count metaitemleft">
+                   <h6 > {NoteCountWithLabel}</h6>
+                 </div>
+                 {/block:NoteCount}
+              
+                 {block:RebloggedFrom}
+                 <div class="reblogged metaitemleft">
+                    <h6>Reblogged from </h6><a href="{ReblogParentURL}" title="{ReblogParentName}"><h6>{ReblogParentName}</h6></a>
+                 </div>
+                 {/block:RebloggedFrom}
+
+        </div>
+        </article>                 
+     {/block:Posts}  
+
+
+    <article>
+    {block:IfDisableDisqus}
+    <script type="text/javascript">var disqus_url = "{Permalink}"; var disqus_title ="{block:PostTitle}{PostTitle}{/block:PostTitle}";</script>{block:Permalink}<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /**
+* var disqus_identifier; [Optional but recommended: Define a unique identifier (e.g. post id or slug) for this thread]
+*/
+  (function() {
+   var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://writingtheme.disqus.com/embed.js';
+   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=writingtheme">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+{/block:Permalink}<script type="text/javascript">
+var disqus_shortname = 'writingtheme';
+(function () {
+  var s = document.createElement('script'); s.async = true;
+  s.src = 'http://writingtheme.disqus.com/count.js';
+  (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+    </script>              
+        {/block:IfDisableDisqus}
+
+
+
+    {block:PostNotes}
+              <div class="post-notess metaitemright">
+                 {PostNotes-16}
+              </div>
+    {/block:PostNotes} 
+    </article>             
+
+</section>
+{/block:PermalinkPage}
+
+
+	<footer>
+        <div class="container">
+		<p>
+			<a href="https://twitter.com/caphillcrime" class="twitter-follow-button" data-show-count="true">Follow @caphillcrime</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+		</p>
+		<p>Questions? <a href="mailto:joe.murphy@gmail.com">Email Joe</a>, or <a href="http://twitter.com/joemurph">@ Joe on twitter</a>.
+        </p>
+        <p>Copyright &copy; 2013 Joe Murphy</p>
+        <a href="http://feeds.feedburner.com/denvercrimes" title="RSS"><h5>{lang:RSS feed}</h5></a>
+        <a href="http://www.tumblr.com/follow/{PlaintextName}" title="{lang:Follow on Tumblr}"><h5>Follow Denver Crimes on tumblr</h5></a>
+        <!-- <a href="/archive" title="Archive"><h5>{lang:Archive}</h5></a> -->
+        </div>
+	</footer>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://static.tumblr.com/negrna7/e9Kmgz23f/pxuphotoset.min.js"></script>
+<script type="text/javascript" src="http://static.tumblr.com/negrna7/Hnpmgz688/imagesloaded.js"></script>
+<!-- <script type="text/javascript" src="http://denvercrimes.com/static/js/application.js"></script> -->
+<script type="text/javascript">
+// Mostly for testing.
+function url_exists(url)
+{
+    var http = new XMLHttpRequest();
+    try
+    {
+        http.open('HEAD', url, false);
+        http.send();
+        return http.status!=404;
+    }
+    catch (e) { return false; }
+}
+
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'http://denvercrimes.com/static/js/application.js';
+    if ( url_exists(script.src) == false ) script.src = 'http://localhost:5000/static/js/application.js';
+    $('head')[0].appendChild(script);
+</script>
+</body>
+<!--
+    This Tumblr Theme and all of its CSS, Javascript,
+    and media assets are subject to Tumblr's Terms of Service:
+
+    http://www.tumblr.com/terms_of_service
+-->
+    <!--/////////////BUILT BY
+        /////////////NEVERBLAND.COM    
+        /////////////TRY OUT OUR THEMES AT THEMES.NEVERBLAND.COM
+        /////////////MARKUP CLEANED UP A BIT BY JOE @ DENVERCRIMES.
+    -->
+</html>

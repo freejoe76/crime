@@ -8,6 +8,9 @@
 # It takes two arguments:
 #     -t / --test, which skips all file-writing operations except initial download
 #     -n / --nodl, which skips the csv download, and assumes an existing new.csv file is in place.
+#     -l / --location, for building archives on a particular location.
+### * Note: Should look at the diffs and see at what age the data stops changing. From there,
+### can build a more refined archiving (and, thus, querying) strategy.
 
 TEST=0
 NODOWNLOAD=0
@@ -18,6 +21,9 @@ while [ "$1" != "" ]; do
 			;;
 		-t | --test ) 
 			TEST=1
+			;;
+		-l | --location ) 
+			LOCATION=$1
 			;;
 	esac
 	shift
@@ -43,7 +49,14 @@ LAST_MONTH=`date +'%Y-%m' --date='month ago'`
 touch current.csv
 
 # If we're testing, it's possible we won't want to download the csv.
-if [[ $NODOWNLOAD -eq 0 ]]; then wget -O new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv; fi
+if [[ $NODOWNLOAD -eq 0 ]]; then 
+    FILESIZE=0
+    while [ $FILESIZE -lt 100000 ]; do
+        echo "Filesize: $FILESIZE"
+        wget -O new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv; 
+        FILESIZE=$(du -b "new.csv" | cut -f 1)
+    done
+fi
 
 diff new.csv current.csv > newdiff.csv
 DIFFCOUNT=`cat newdiff.csv | wc -l`
@@ -76,20 +89,16 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
         grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> last12months.csv
     done
 
-    # Build neighborhood-specific csvs of the crimes for the last 24 months
+    # Build a csv of the crimes for the last 24 months
+    > last24months.csv
     for NUM in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23; 
     do
-        grep `date +'%Y-%m' --date="$NUM months ago"` current.csv | grep capitol-hill >> 'location_capitol-hill'$NUM'months.csv'
-    done
-else
-    echo "No differences in the new.csv"
-    # Build neighborhood-specific csvs of the crimes for the last 24 months
-    for NUM in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23; 
-    do
-        grep `date +'%Y-%m' --date="$NUM months ago"` current.csv | grep capitol-hill >> 'location_capitol-hill'$NUM'months.csv'
+        grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> last24months.csv
+        for HOOD in capitol-hill civic-center;
+        do
+            grep `date +'%Y-%m' --date="$NUM months ago"` current.csv | grep $HOOD >> location_$HOOD-$NUM-month.csv
+        done
     done
 fi
 
 if [[ $TEST -eq 0 ]]; then echo "[$DATE] $DIFFCOUNT new entries" >> $LOGFILE; fi
-
-

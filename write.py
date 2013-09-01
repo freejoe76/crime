@@ -13,7 +13,7 @@ import dicts
 
 
 class Write:
-    """ Handle writing data to MongoDB."""
+    """ Handle writing data to the database."""
     def __init__(self):
         pass
 
@@ -94,8 +94,6 @@ if __name__ == '__main__':
         # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'
         # $ ./write.py --action rankings --crime violent --kill
         crimes = parse.get_rankings(crime, location, args)
-        if verbose:
-            print crimes
         crimes['crimes']['neighborhood'].reverse()
         crimes['crimes']['percapita'].reverse()
         collection.insert({ filename: {'neighborhood': crimes['crimes']['neighborhood'], 'percapita': crimes['crimes']['percapita']} })
@@ -108,6 +106,7 @@ if __name__ == '__main__':
         # $ ./write.py --verbose --action recent --crime drug-alcohol --location capitol-hill
         crimes = parse.get_recent_crimes(crime, grep, location, args)
         collection.insert(crimes['crimes'])
+        collection.create_index('_FIRST_OCCURRENCE_DATE')
     elif action == 'specific':
         # Example:
         # $ ./write.py --verbose --action specific --crime drug-alcohol
@@ -116,3 +115,6 @@ if __name__ == '__main__':
         # {'count': 382, 'last_crime': '3 days', 'crime': None}
         crimes = parse.get_specific_crime(crime, grep, location)
         collection.insert(crimes)
+    if verbose:
+        print crimes
+
