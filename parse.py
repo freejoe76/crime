@@ -320,8 +320,8 @@ class Parse:
             item[1]['count'] = round( float(item[1]['count'])/float(dicts.populations[item[0]]) * 1000, 2)
 
         sorted_rankings = {
-            'neighborhood': dict(sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1))),
-            'percapita': dict(sorted(percapita['neighborhood'].iteritems(), key=operator.itemgetter(1))),
+            'neighborhood': sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1)),
+            'percapita': sorted(percapita['neighborhood'].iteritems(), key=operator.itemgetter(1)),
             'genre': sorted(rankings['genre'].iteritems(), key=operator.itemgetter(1)),
             'category': sorted(rankings['category'].iteritems(), key=operator.itemgetter(1)),
             'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
@@ -425,21 +425,21 @@ class Parse:
             i = 0
             for item in crimes['crimes']['percapita']:
                 i = i + 1
-                if loc == item:
-                    location = '***%s***' % self.clean_location(item)
+                if loc == item[0]:
+                    location = '***%s***' % self.clean_location(item[0])
                 else:
-                    location = self.clean_location(item)
-                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['percapita'][item]['count'])
+                    location = self.clean_location(item[0])
+                outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
             i = 0
             for item in crimes['crimes']['neighborhood']:
                 i = i + 1
-                if loc == item:
-                    location = '***%s***' % self.clean_location(item)
+                if loc == item[0]:
+                    location = '***%s***' % self.clean_location(item[0])
                 else:
-                    location = self.clean_location(item)
-                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['neighborhood'][item]['count'])
+                    location = self.clean_location(item[0])
+                outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
 
         elif action == 'specific':
             outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
