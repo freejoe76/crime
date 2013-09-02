@@ -217,7 +217,7 @@ class Parse:
         # Return a dict of months and # of occurrences.
         i = 0
         crime_type = self.get_crime_type(crime)
-        crimes = { 'crime': crime, 'counts': dict(), 'max': 0 }
+        crimes = { 'crime': crime, 'counts': dict(), 'max': 0, 'sum': 0 }
 
         while i < limit:
             # Open the file we want
@@ -233,6 +233,8 @@ class Parse:
                 record = dict(zip(dicts.keys, row))
                 if self.does_crime_match(crime, grep, record, crime_type):
                     crimes['counts'][i]['count'] += 1
+
+            crimes['sum'] += crimes['counts'][i]['count']
 
             # Figure out if we need to update the max
             if crimes['counts'][i]['count'] > crimes['max']:
