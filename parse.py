@@ -85,7 +85,7 @@ class Parse:
 
     def does_crime_match(self, crime, grep, record, crime_type):
         # Compares the crime against the fields in the record to see if it matches.
-        # Used in get_rankings and get_monthly.
+        # Used in get_recent and get_monthly.
         if crime_type == 'parent_category':
             if record['OFFENSE_CATEGORY_ID'] in dicts.crime_lookup_reverse[crime]:
                 return True
@@ -186,18 +186,9 @@ class Parse:
                 continue
 
             if crime != None:
-                if crime_type == 'parent_category':
-                    if record['OFFENSE_CATEGORY_ID'] in dicts.crime_lookup_reverse[crime]:
-                        crimes.append(record)
-                else:
-                    if record[crime_type] == crime:
-                        crimes.append(record)
-                    elif grep == True:
-                        # Loop through the types of crimes 
-                        # (the lowest-level crime taxonomy), 
-                        # looking for a partial string match.
-                        if crime in record['OFFENSE_TYPE_ID']:
-                            crimes.append(record)
+                if self.does_crime_match(crime, grep, record, crime_type):
+                    crimes.append(record)
+
         diffs = None
         if diffs == True:
             diffs = { 'adds': adds, 'removes': removes }
@@ -219,7 +210,7 @@ class Parse:
 
         return crime_type
 
-    def get_monthly(self, crime = None, grep = False, location = '', limit = 23):
+    def get_monthly(self, crime = None, grep = False, location = '', limit = 22):
         # Loop through the monthly crime files, return frequency.
         # Can filter by crime, location or both. 
         # Have some gymnastics to do her in jumping across files.
@@ -230,17 +221,17 @@ class Parse:
         crimes = { 'crime': crime, 'counts': dict(), 'max': 0 }
 
         while i < limit:
+            print location, i, limit
             # Open the file we want
-            crime_file = self.open_csv('_input/location_%s-%d-month' % location, i)
-            crimes.counts.i = { 'count': 0, 'month_name': '' }
+            crime_file = self.open_csv('_input/location_%s-%d-month' % (location, i))
+            crimes['counts'][i] = { 'count': 0, 'month_name': '' }
             for row in crime_file:
                 record = dict(zip(dicts.keys, row))
-                if crime == None:
-                    crimes.counts.i.count += 1
-                    continue
-                if self.does_crime_match(self, crime, grep, record, crime_type):
-                    crimes.counts.i.count += 1
+                if self.does_crime_match(crime, grep, record, crime_type):
+                    crimes['counts'][i]['count'] += 1
                     
+            i += 1
+        print crimes
         pass
 
     def get_rankings(self, crime = None, grep = False, location = None, *args, **kwargs):
@@ -481,7 +472,7 @@ if __name__ == '__main__':
     if action == 'monthly':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
-        crimes = parse.get_monthly(crime, grep, location, args)
+        crimes = parse.get_monthly(crime, grep, location)
         if verbose or not verbose:
             print crimes
     if action == 'rankings':
