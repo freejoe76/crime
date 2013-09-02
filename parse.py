@@ -231,7 +231,7 @@ class Parse:
             yearmonth = yearmonths[i].strip()
             crime_file = self.open_csv('_input/location_%s-%s' % (location, yearmonth))
             i += 1
-            crimes['counts'][i] = { 'count': 0, 'month': self.check_date('%s-01' % yearmonth) }
+            crimes['counts'][i] = { 'count': 0, 'date': self.check_date('%s-01' % yearmonth) }
 
             if crime == None:
                 crimes['counts'][i]['count'] = len(crime_file)
@@ -442,11 +442,15 @@ class Parse:
                     # *** There must be a better way to differentiate what we're printing.
                     try:
                         for key in crimes['counts']:
-                            print key, '#'*int(crimes['counts'][key]['count']), crimes['counts'][key]['count']
+                            item = {
+                                'date': datetime.strftime(crimes['counts'][key]['date'], '%b %Y'),
+                                'count': crimes['counts'][key]['count'],
+                                'barchart': '#'*int(crimes['counts'][key]['count'])
+                            }
                             if crimes['max'] > 80:
-                                outputs += ""
+                                outputs += '%(date) %(count)\n' % item
                             else:
-                                outputs += '%d. %s %d\n' % (key, '#'*int(crimes['counts'][key]['count']), crimes['counts'][key]['count'])
+                                outputs += '%(date)s %(barchart)s %(count)s\n' % item
 
                     except:
                         print "We did not have any crimes to handle"
