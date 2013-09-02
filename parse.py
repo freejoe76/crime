@@ -224,13 +224,14 @@ class Parse:
         # can lag, and we want to be accurate. If the last update of the crime
         # happened two days ago, but that two days ago was a different month,
         # doing it this way keeps it correct.
-        yearmonths = open('last24months.txt').readlines()
+        yearmonths = open('_input/last24months.txt').readlines()
 
         while i < limit:
             # We need the crimes, the counter, the empty dict, and the month.
-            crime_file = self.open_csv('_input/location_%s-%d-month' % (location, yearmonths[i]))
+            yearmonth = yearmonths[i].strip()
+            crime_file = self.open_csv('_input/location_%s-%s' % (location, yearmonth))
             i += 1
-            crimes['counts'][i] = { 'count': 0, 'month': self.check_date('%s-01' % yearmonths[i]) }
+            crimes['counts'][i] = { 'count': 0, 'month': self.check_date('%s-01' % yearmonth) }
 
             if crime == None:
                 crimes['counts'][i]['count'] = len(crime_file)

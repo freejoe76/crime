@@ -99,8 +99,8 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
         for HOOD in capitol-hill civic-center;
         do
             grep $YEARMONTH current.csv | grep $HOOD >> location_$HOOD-$YEARMONTH.csv
-            echo $YEARMONTH >> last24months.txt
         done
+        echo $YEARMONTH >> last24months.txt
     done
 
     # Just because we might need it: A text file of the last yearmonth pairs for the last ten years.
