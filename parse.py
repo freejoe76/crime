@@ -322,16 +322,20 @@ class Parse:
             item[1]['count'] = round( float(item[1]['count'])/float(dicts.populations[item[0]]) * 1000, 2)
 
         sorted_rankings = {
-            'neighborhood': sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1)),
-            'percapita': sorted(percapita['neighborhood'].iteritems(), key=operator.itemgetter(1)),
+            'neighborhood': dict(sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1))),
+            'percapita': dict(sorted(percapita['neighborhood'].iteritems(), key=operator.itemgetter(1))),
             'genre': sorted(rankings['genre'].iteritems(), key=operator.itemgetter(1)),
             'category': sorted(rankings['category'].iteritems(), key=operator.itemgetter(1)),
             'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
         }
 
         if location:
-            # *** Put the part that figures out the location's ranking here.
-            pass
+            # Here is when care about populating the rankings field in the neighborhood dict.
+            for item in ['neighborhood', 'percapita']:
+                rank = 1
+                for subitem in sorted_rankings[item]:
+                    sorted_rankings[item][subitem]['rank'] = rank;
+                    rank += 1
 
         return { 'crimes': sorted_rankings }
 
@@ -526,8 +530,9 @@ if __name__ == '__main__':
         if location == 'all':
             pass
         else:
-            crimes['crimes']['neighborhood'].reverse()
-            crimes['crimes']['percapita'].reverse()
+            #crimes['crimes']['neighborhood'].reverse()
+            #crimes['crimes']['percapita'].reverse()
+            pass
         #print print_neighborhoods(crimes)
     elif action == 'recent':
         # Example:
