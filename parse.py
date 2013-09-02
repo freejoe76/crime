@@ -482,7 +482,7 @@ if __name__ == '__main__':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
         crimes = parse.get_monthly(crime, grep, location, args)
-        if verbose or if not verbose:
+        if verbose or not verbose:
             print crimes
     if action == 'rankings':
         # Example:
