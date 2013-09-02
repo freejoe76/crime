@@ -24,4 +24,6 @@ do
   #python write.py --action rankings --crime violent --location $location --filename currentmonth
   python write.py --kill --action rankings --crime property --location $location
   #python write.py --kill --action rankings --crime property --location $location --filename currentmonth
+  python write.py --kill --action monthly --crime violent --location $location
+  python write.py --kill --action monthly --crime property --location $location
 done

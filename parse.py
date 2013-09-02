@@ -231,22 +231,22 @@ class Parse:
             yearmonth = yearmonths[i].strip()
             crime_file = self.open_csv('_input/location_%s-%s' % (location, yearmonth))
             i += 1
-            crimes['counts'][i] = { 'count': 0, 'date': self.check_date('%s-01' % yearmonth) }
+            crimes['counts'][yearmonth] = { 'count': 0, 'date': self.check_date('%s-01' % yearmonth) }
 
             if crime == None:
-                crimes['counts'][i]['count'] = len(crime_file)
+                crimes['counts'][yearmonth]['count'] = len(crime_file)
                 continue
 
             for row in crime_file:
                 record = dict(zip(dicts.keys, row))
                 if self.does_crime_match(crime, grep, record, crime_type):
-                    crimes['counts'][i]['count'] += 1
+                    crimes['counts'][yearmonth]['count'] += 1
 
-            crimes['sum'] += crimes['counts'][i]['count']
+            crimes['sum'] += crimes['counts'][yearmonth]['count']
 
             # Figure out if we need to update the max
-            if crimes['counts'][i]['count'] > crimes['max']:
-                crimes['max'] = crimes['counts'][i]['count']
+            if crimes['counts'][yearmonth]['count'] > crimes['max']:
+                crimes['max'] = crimes['counts'][yearmonth]['count']
                     
         return crimes
 

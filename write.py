@@ -83,11 +83,8 @@ if __name__ == '__main__':
         crimes = parse.__init__("_input/last12months", False)
         crimes = parse.get_specific_crime('window-peeping', None, location)
         collection.insert(crimes)
-    elif action == 'sparkline':
-        if location:
-            crimes = parse.get_monthbymonth(crime, grep, location)
-        else:
-            pass
+    elif action == 'monthly':
+        crimes = parse.get_monthly(crime, grep, location)
         collection.insert(crimes)
     elif action == 'rankings':
         # Example:
