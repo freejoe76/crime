@@ -257,7 +257,7 @@ class Parse:
         # (and crimes per-capita) for that particular time period.
         # Args taken should be the start of the timespan and the end.
         # We return raw numbers and per-capita numbers.
-        # If a location is given, we ***will*** also return that location's rank
+        # If a location is given, we will also return that location's rank
         # within each list.
         rankings = { 
             'neighborhood': dict(),
@@ -327,15 +327,22 @@ class Parse:
             'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
         }
 
-        if location:
+        if location is not None:
             # Here is where we care about populating the rankings field in the neighborhood dict.
+            # There's no reason to look up locations on the command-line client, so
+            # the ordering of the dict / lack thereof doesn't matter.
+            unsorted_rankings = {
+                'neighborhood': dict(sorted_rankings['neighborhood']),
+                'percapita': dict(sorted_rankings['percapita'])
+            }
             for item in ['neighborhood', 'percapita']:
                 rank = 1
-                for subitem in sorted_rankings[item]:
-                    sorted_rankings[item][subitem]['rank'] = rank;
+                for subitem in unsorted_rankings[item]:
+                    unsorted_rankings[item][subitem]['rank'] = rank;
                     rank += 1
-
-        return { 'crimes': sorted_rankings }
+            return { 'crimes': unsorted_rankings }
+        else:
+            return { 'crimes': sorted_rankings }
 
     def get_median(self, ranking):
         # Take a ranking dict, add up the numbers, get the median.
@@ -520,12 +527,9 @@ if __name__ == '__main__':
         crimes = parse.get_rankings(crime, grep, location, args)
         if verbose:
             print crimes
-        if location == 'all':
-            pass
-        else:
-            #crimes['crimes']['neighborhood'].reverse()
-            #crimes['crimes']['percapita'].reverse()
-            pass
+        if not location:
+            crimes['crimes']['neighborhood'].reverse()
+            crimes['crimes']['percapita'].reverse()
         #print print_neighborhoods(crimes)
     elif action == 'recent':
         # Example:
