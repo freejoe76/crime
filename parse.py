@@ -71,6 +71,7 @@ class Parse:
         # Get crimes from a particular span of time
         pass
 
+
     def check_date(self, value):
         # Check a date to see if it's valid. If not, throw error.
         return datetime.strptime(value, '%Y-%m-%d')
@@ -219,11 +220,17 @@ class Parse:
         crime_type = self.get_crime_type(crime)
         crimes = { 'crime': crime, 'counts': dict(), 'max': 0, 'sum': 0 }
 
+        # We load year/month strings in like this because the crime data
+        # can lag, and we want to be accurate. If the last update of the crime
+        # happened two days ago, but that two days ago was a different month,
+        # doing it this way keeps it correct.
+        yearmonths = open('last24months.txt').readlines()
+
         while i < limit:
             # We need the crimes, the counter, the empty dict, and the month.
-            crime_file = self.open_csv('_input/location_%s-%d-month' % (location, i))
+            crime_file = self.open_csv('_input/location_%s-%d-month' % (location, yearmonths[i]))
             i += 1
-            crimes['counts'][i] = { 'count': 0, 'month_name': '' }u
+            crimes['counts'][i] = { 'count': 0, 'month': self.check_date('%s-01' % yearmonths[i]) }
 
             if crime == None:
                 crimes['counts'][i]['count'] = len(crime_file)
