@@ -220,10 +220,10 @@ class Parse:
         crimes = { 'crime': crime, 'counts': dict(), 'max': 0, 'sum': 0 }
 
         while i < limit:
-            # Open the file we want
+            # We need the crimes, the counter, the empty dict, and the month.
             crime_file = self.open_csv('_input/location_%s-%d-month' % (location, i))
             i += 1
-            crimes['counts'][i] = { 'count': 0, 'month_name': '' }
+            crimes['counts'][i] = { 'count': 0, 'month_name': '' }u
 
             if crime == None:
                 crimes['counts'][i]['count'] = len(crime_file)

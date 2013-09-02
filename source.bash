@@ -10,3 +10,7 @@ alias setprod='export DENVERCRIME_SETTINGS=/path/to/settings.cfg; echo "Python E
 alias dbs="sudo mongod --config /etc/mongodb.conf"
 alias venv='. ~/crime/crime/bin/activate'
 alias sss="source source.bash"
+
+alias ra='./parse.py --action rankings --crime property --location capitol-hill'
+alias re='./parse.py --action recent --crime violent --location capitol-hill'
+alias mo='./parse.py --action monthly --location capitol-hill --crime violent'

@@ -93,10 +93,11 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
     > last24months.csv
     for NUM in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23; 
     do
-        grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> last24months.csv
+        YEARMONTH=`date +'%Y-%m' --date="$NUM months ago"`
+        grep $YEARMONTH current.csv >> last24months.csv
         for HOOD in capitol-hill civic-center;
         do
-            grep `date +'%Y-%m' --date="$NUM months ago"` current.csv | grep $HOOD >> location_$HOOD-$NUM-month.csv
+            grep `date +'%Y-%m' --date="$NUM months ago"` current.csv | grep $HOOD >> location_$HOOD-$YEARMONTH-$NUM.csv
         done
     done
 fi
