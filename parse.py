@@ -429,6 +429,7 @@ class Parse:
                     outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
                 except:
                     # Sparklines. There must be a better way than these nested try-statements.
+                    # *** There must be a better way to differentiate what we're printing.
                     try:
                         for key in crimes['counts']:
                             print key, '#'*int(crimes['counts'][key]['count']), crimes['counts'][key]['count']
