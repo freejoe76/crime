@@ -259,8 +259,6 @@ class Parse:
         # We return raw numbers and per-capita numbers.
         # If a location is given, we ***will*** also return that location's rank
         # within each list.
-        # If the location is "all," then we output a dict with each neighborhood
-        # as the key. Organizing the data this way makes it easier to query.
         rankings = { 
             'neighborhood': dict(),
             'genre': defaultdict(int),
@@ -330,7 +328,7 @@ class Parse:
         }
 
         if location:
-            # Here is when care about populating the rankings field in the neighborhood dict.
+            # Here is where we care about populating the rankings field in the neighborhood dict.
             for item in ['neighborhood', 'percapita']:
                 rank = 1
                 for subitem in sorted_rankings[item]:
@@ -427,25 +425,26 @@ class Parse:
             i = 0
             for item in crimes['crimes']['percapita']:
                 i = i + 1
-                if loc == item[0]:
-                    location = '***%s***' % self.clean_location(item[0])
+                if loc == item:
+                    location = '***%s***' % self.clean_location(item)
                 else:
-                    location = self.clean_location(item[0])
-                outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
+                    location = self.clean_location(item)
+                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['percapita'][item]['count'])
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
             i = 0
             for item in crimes['crimes']['neighborhood']:
                 i = i + 1
-                if loc == item[0]:
-                    location = '***%s***' % self.clean_location(item[0])
+                if loc == item:
+                    location = '***%s***' % self.clean_location(item)
                 else:
-                    location = self.clean_location(item[0])
-                outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
+                    location = self.clean_location(item)
+                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['neighborhood'][item]['count'])
+
         elif action == 'specific':
             outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
+
         elif action == 'monthly':
-            # Sparklines. 
             crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
             for item in crime_dict:
                 values = {
@@ -541,4 +540,4 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime meth --grep
         crimes = parse.get_specific_crime(crime, grep, location)
     if not silent:
-        print parse.print_crimes(crimes, limit, location)
+        print parse.print_crimes(crimes, limit, action, location)
