@@ -257,8 +257,8 @@ class Parse:
         # (and crimes per-capita) for that particular time period.
         # Args taken should be the start of the timespan and the end.
         # We return raw numbers and per-capita numbers.
-        # If a location is given, we will also return that location's rank
-        # within each list.
+        # If a location is given, we will also rank all locations.
+        # This is done implicitly in the CLI report.
         rankings = { 
             'neighborhood': dict(),
             'genre': defaultdict(int),
