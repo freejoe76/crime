@@ -477,6 +477,7 @@ if __name__ == '__main__':
     parser.add_option("-o", "--output", dest="output", default=None)
     parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default=False, action="store_true")
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
+    parser.add_option("-s", "--silent", dest="silent", action="store_true")
     (options, args) = parser.parse_args()
     filename = options.filename
     action = options.action
@@ -488,6 +489,7 @@ if __name__ == '__main__':
     output = options.output
     yearoveryear = options.yearoveryear
     verbose = options.verbose
+    silent = options.silent
 
     
     if verbose:
@@ -514,8 +516,12 @@ if __name__ == '__main__':
         crimes = parse.get_rankings(crime, grep, location, args)
         if verbose:
             print crimes
-        crimes['crimes']['neighborhood'].reverse()
-        crimes['crimes']['percapita'].reverse()
+        if location == 'all':
+            pass
+            exit(1)
+        else:
+            crimes['crimes']['neighborhood'].reverse()
+            crimes['crimes']['percapita'].reverse()
         #print print_neighborhoods(crimes)
     elif action == 'recent':
         # Example:
@@ -529,4 +535,5 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep
         crimes = parse.get_specific_crime(crime, grep, location)
-    print parse.print_crimes(crimes, limit, location)
+    if not silent:
+        print parse.print_crimes(crimes, limit, location)

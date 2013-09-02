@@ -94,9 +94,12 @@ if __name__ == '__main__':
         # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'
         # $ ./write.py --action rankings --crime violent --kill
         crimes = parse.get_rankings(crime, location, args)
-        crimes['crimes']['neighborhood'].reverse()
-        crimes['crimes']['percapita'].reverse()
-        collection.insert({ filename: {'neighborhood': crimes['crimes']['neighborhood'], 'percapita': crimes['crimes']['percapita']} })
+        if location == 'all':
+            pass
+        else:
+            crimes['crimes']['neighborhood'].reverse()
+            crimes['crimes']['percapita'].reverse()
+            collection.insert({ filename: {'neighborhood': crimes['crimes']['neighborhood'], 'percapita': crimes['crimes']['percapita']} })
         #collection.insert()
         #print print_neighborhoods(crimes)
     elif action == 'recent':
