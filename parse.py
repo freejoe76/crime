@@ -441,16 +441,20 @@ class Parse:
                     # Sparklines. There must be a better way than these nested try-statements.
                     # *** There must be a better way to differentiate what we're printing.
                     try:
-                        for key in crimes['counts']:
-                            item = {
-                                'date': datetime.strftime(crimes['counts'][key]['date'], '%b %Y'),
-                                'count': crimes['counts'][key]['count'],
-                                'barchart': '#'*int(crimes['counts'][key]['count'])
+                        crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
+                        print crime_dict[0][0]
+                        print crime_dict[0][1]
+                        print dir(crime_dict)
+                        for item in crime_dict:
+                            values = {
+                                'date': datetime.strftime(item[1]['date'], '%b %Y'),
+                                'count': item[1]['count'],
+                                'barchart': '#'*int(item[1]['count'])
                             }
                             if crimes['max'] > 80:
-                                outputs += '%(date) %(count)\n' % item
+                                outputs += '%(date) %(count)\n' % values
                             else:
-                                outputs += '%(date)s %(barchart)s %(count)s\n' % item
+                                outputs += '%(date)s %(barchart)s %(count)s\n' % values
 
                     except:
                         print "We did not have any crimes to handle"

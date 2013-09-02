@@ -84,6 +84,9 @@ if __name__ == '__main__':
         crimes = parse.get_specific_crime('window-peeping', None, location)
         collection.insert(crimes)
     elif action == 'monthly':
+        # Example:
+        # $ ./write.py --kill --action monthly --crime violent --location capitol-hill
+        # $ ./write.py --kill --action monthly --crime dv --grep
         crimes = parse.get_monthly(crime, grep, location)
         collection.insert(crimes)
     elif action == 'rankings':
