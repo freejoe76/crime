@@ -375,6 +375,7 @@ class Parse:
     def print_crimes(self, crimes, limit, loc=None, *args):
         # How do we want to display the crimes?
         # Right now we're publishing them to be read in terminal.
+        # What we're parsing affects the dicts we have.
         outputs = ''
 
         try:
@@ -401,7 +402,7 @@ class Parse:
         Reported: %s
         %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
         except:
-            # Dicts
+            # Ranking dicts
             try:
                 outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
                 i = 0
@@ -427,9 +428,18 @@ class Parse:
                 try:
                     outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
                 except:
-                    print "We did not have any crimes to handle"
-                    outputs = ''
-                    #raise 
+                    # Sparklines. There must be a better way than these nested try-statements.
+                    try:
+                        for key in crimes['counts']:
+                            print key, '#'*int(crimes['counts'][key]['count']), crimes['counts'][key]['count']
+                            if crimes['max'] > 80:
+                                outputs += ""
+                            else:
+                                outputs += '%d. %s %d\n' % (key, '#'*int(crimes['counts'][key]['count']), crimes['counts'][key]['count'])
+
+                    except:
+                        print "We did not have any crimes to handle"
+                        outputs = ''
 
         return outputs
 
