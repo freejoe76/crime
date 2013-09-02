@@ -83,6 +83,23 @@ class Parse:
             print value
             return False
 
+    def does_crime_match(self, crime, grep, record, crime_type):
+        # Compares the crime against the fields in the record to see if it matches.
+        # Used in get_rankings and get_monthly.
+        if crime_type == 'parent_category':
+            if record['OFFENSE_CATEGORY_ID'] in dicts.crime_lookup_reverse[crime]:
+                return True
+        else:
+            if record[crime_type] == crime:
+                return True
+            elif grep == True:
+                # Loop through the types of crimes 
+                # (the lowest-level crime taxonomy), 
+                # looking for a partial string match.
+                if crime in record['OFFENSE_TYPE_ID']:
+                    return True
+
+        return False
 
     def get_specific_crime(self, crime, grep, location = None):
         # Indexes specific crime.
@@ -208,13 +225,22 @@ class Parse:
         # Have some gymnastics to do her in jumping across files.
         # Return a dict of months and # of occurrences.
         i = 0
+        ceiling = 0
         crime_type = self.get_crime_type(crime)
+        crimes = { 'crime': crime, 'counts': dict(), 'max': 0 }
+
         while i < limit:
             # Open the file we want
             crime_file = self.open_csv('_input/location_%s-%d-month' % location, i)
-
+            crimes.counts.i = { 'count': 0, 'month_name': '' }
             for row in crime_file:
                 record = dict(zip(dicts.keys, row))
+                if crime == None:
+                    crimes.counts.i.count += 1
+                    continue
+                if self.does_crime_match(self, crime, grep, record, crime_type):
+                    crimes.counts.i.count += 1
+                    
         pass
 
     def get_rankings(self, crime = None, grep = False, location = None, *args, **kwargs):
