@@ -84,21 +84,30 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
 
     # Build a csv of the crimes for the last 12 months
     > last12months.csv
-    for NUM in 0 1 2 3 4 5 6 7 8 9 10 11; 
+    for NUM in {0..11}; 
     do
         grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> last12months.csv
     done
 
     # Build a csv of the crimes for the last 24 months
     > last24months.csv
-    for NUM in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23; 
+    > last24months.txt
+    for NUM in {0..23}; 
     do
         YEARMONTH=`date +'%Y-%m' --date="$NUM months ago"`
         grep $YEARMONTH current.csv >> last24months.csv
         for HOOD in capitol-hill civic-center;
         do
-            grep `date +'%Y-%m' --date="$NUM months ago"` current.csv | grep $HOOD >> location_$HOOD-$YEARMONTH-$NUM.csv
+            grep $YEARMONTH current.csv | grep $HOOD >> location_$HOOD-$YEARMONTH.csv
+            echo $YEARMONTH >> last24months.txt
         done
+    done
+
+    # Just because we might need it: A text file of the last yearmonth pairs for the last ten years.
+    > last.txt
+    for NUM in {0..120}
+    do
+        date +'%Y-%m' --date="$NUM months ago" >> last.txt
     done
 fi
 
