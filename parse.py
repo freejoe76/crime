@@ -257,16 +257,18 @@ class Parse:
         # (and crimes per-capita) for that particular time period.
         # Args taken should be the start of the timespan and the end.
         # We return raw numbers and per-capita numbers.
-        # If a location is given, we also return that location's rank
+        # If a location is given, we ***will*** also return that location's rank
         # within each list.
+        # If the location is "all," then we output a dict with each neighborhood
+        # as the key. Organizing the data this way makes it easier to query.
         rankings = { 
-            'neighborhood': defaultdict(int),
+            'neighborhood': dict(),
             'genre': defaultdict(int),
             'category': defaultdict(int),
             'type': defaultdict(int)
         }
         percapita = { 
-            'neighborhood': defaultdict(int),
+            'neighborhood': dict(),
             'genre': defaultdict(int),
             'category': defaultdict(int),
             'type': defaultdict(int)
@@ -293,10 +295,15 @@ class Parse:
             if timespan != False and not timespan[0] <= datetime.date(ts) <= timespan[1]:
                 continue
 
+            # Create the neighborhood dict if we haven't yet:
+            if record['NEIGHBORHOOD_ID'] not in rankings['neighborhood']:
+                rankings['neighborhood'][record['NEIGHBORHOOD_ID']] = { 'count': 0, 'rank': 0 }
+                percapita['neighborhood'][record['NEIGHBORHOOD_ID']] = { 'count': 0, 'rank': 0 }
+
             if crime == None:
                 # Update the neighborhood counter
-                rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
-                percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
+                rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
+                percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                 rankings['type'][record['OFFENSE_TYPE_ID']] += 1
                 rankings['category'][record['OFFENSE_CATEGORY_ID']] += 1
                 crime_genre = dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']]
@@ -305,15 +312,14 @@ class Parse:
             else:
 
                 if crime == dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime == record['OFFENSE_CATEGORY_ID'] or crime == record['OFFENSE_TYPE_ID']:
-                    rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
-                    percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
+                    rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
+                    percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                 elif grep == True and crime in dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime in record['OFFENSE_CATEGORY_ID'] or crime in record['OFFENSE_TYPE_ID']:
-                    rankings['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
-                    percapita['neighborhood'][record['NEIGHBORHOOD_ID']] += 1
+                    rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
+                    percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
 
         for item in percapita['neighborhood'].items():
-            #print "Item 1: %s Pop of %s: %s" % ( item[1], item[0], dicts.populations[item[0]] ), 
-            percapita['neighborhood'][item[0]] = round( float(item[1])/float(dicts.populations[item[0]]) * 1000, 2)
+            item[1]['count'] = round( float(item[1]['count'])/float(dicts.populations[item[0]]) * 1000, 2)
 
         sorted_rankings = {
             'neighborhood': sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1)),
@@ -324,6 +330,7 @@ class Parse:
         }
 
         if location:
+            # *** Put the part that figures out the location's ranking here.
             pass
 
         return { 'crimes': sorted_rankings }
@@ -518,7 +525,6 @@ if __name__ == '__main__':
             print crimes
         if location == 'all':
             pass
-            exit(1)
         else:
             crimes['crimes']['neighborhood'].reverse()
             crimes['crimes']['percapita'].reverse()
