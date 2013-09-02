@@ -382,13 +382,13 @@ class Parse:
             outputs += "    '%s': '%s',\n" % (item[0], item[0])
         return outputs
 
-    def print_crimes(self, crimes, limit, loc=None, *args):
+    def print_crimes(self, crimes, limit, action, loc=None, *args):
         # How do we want to display the crimes?
         # Right now we're publishing them to be read in terminal.
         # What we're parsing affects the dicts we have.
         outputs = ''
 
-        try:
+        if action == 'recent' or action == 'specific':
             # Lists, probably recents, with full crime record dicts
             i = 0
             if output == 'csv':
@@ -411,51 +411,45 @@ class Parse:
         Occurred: %s - %s
         Reported: %s
         %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
-        except:
-            # Ranking dicts
-            try:
-                outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
-                i = 0
-                for item in crimes['crimes']['percapita']:
-                    i = i + 1
-                    if loc == item[0]:
-                        location = '***%s***' % self.clean_location(item[0])
-                    else:
-                        location = self.clean_location(item[0])
-                    outputs += "%i. %s, %s\n" % (i, location, item[1])
+        elif action == 'rankings':
+            outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
+            i = 0
+            for item in crimes['crimes']['percapita']:
+                i = i + 1
+                if loc == item[0]:
+                    location = '***%s***' % self.clean_location(item[0])
+                else:
+                    location = self.clean_location(item[0])
+                outputs += "%i. %s, %s\n" % (i, location, item[1])
 
-                outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
-                i = 0
-                for item in crimes['crimes']['neighborhood']:
-                    i = i + 1
-                    if loc == item[0]:
-                        location = '***%s***' % self.clean_location(item[0])
-                    else:
-                        location = self.clean_location(item[0])
-                    outputs += "%i. %s, %s\n" % (i, location, item[1])
-            except:
-                # Specific
-                try:
-                    outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
-                except:
-                    # Sparklines. There must be a better way than these nested try-statements.
-                    # *** There must be a better way to differentiate what we're printing.
-                    try:
-                        crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
-                        for item in crime_dict:
-                            values = {
-                                'date': datetime.strftime(item[1]['date'], '%b %Y'),
-                                'count': item[1]['count'],
-                                'barchart': '#'*int(item[1]['count'])
-                            }
-                            if crimes['max'] > 80:
-                                outputs += '%(date) %(count)\n' % values
-                            else:
-                                outputs += '%(date)s %(barchart)s %(count)s\n' % values
+            outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
+            i = 0
+            for item in crimes['crimes']['neighborhood']:
+                i = i + 1
+                if loc == item[0]:
+                    location = '***%s***' % self.clean_location(item[0])
+                else:
+                    location = self.clean_location(item[0])
+                outputs += "%i. %s, %s\n" % (i, location, item[1])
+        elif action == 'specific':
+            outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
+        elif action == 'monthly':
+            # Sparklines. 
+            crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
+            for item in crime_dict:
+                values = {
+                    'date': datetime.strftime(item[1]['date'], '%b %Y'),
+                    'count': item[1]['count'],
+                    'barchart': '#'*int(item[1]['count'])
+                }
+                if crimes['max'] > 80:
+                    outputs += '%(date) %(count)\n' % values
+                else:
+                    outputs += '%(date)s %(barchart)s %(count)s\n' % values
 
-                    except:
-                        print "We did not have any crimes to handle"
-                        outputs = ''
+        else:
+            print "We did not have any crimes to handle"
+            outputs = ''
 
         return outputs
 
@@ -529,4 +523,4 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep
         crimes = parse.get_specific_crime(crime, grep, location)
-    print parse.print_crimes(crimes, limit, location)
+    print parse.print_crimes(crimes, limit, action, location)
