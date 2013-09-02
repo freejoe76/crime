@@ -442,9 +442,6 @@ class Parse:
                     # *** There must be a better way to differentiate what we're printing.
                     try:
                         crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
-                        print crime_dict[0][0]
-                        print crime_dict[0][1]
-                        print dir(crime_dict)
                         for item in crime_dict:
                             values = {
                                 'date': datetime.strftime(item[1]['date'], '%b %Y'),
