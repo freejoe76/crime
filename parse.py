@@ -429,7 +429,7 @@ class Parse:
                         location = '***%s***' % self.clean_location(item[0])
                     else:
                         location = self.clean_location(item[0])
-                    outputs += "%i. %s, %s\n" % (i, location, item[1])
+                    outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
 
                 outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
                 i = 0
@@ -439,7 +439,7 @@ class Parse:
                         location = '***%s***' % self.clean_location(item[0])
                     else:
                         location = self.clean_location(item[0])
-                    outputs += "%i. %s, %s\n" % (i, location, item[1])
+                    outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
             except:
                 # Specific
                 try:
