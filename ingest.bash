@@ -93,7 +93,7 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
             # So, if we're on MONTHNUM 12, NUMs 0-11 will be fine. 
             # If we're on MONTHNUM 1, only NUM 0 will be grepped.
             TEMPNUM=$(($NUM + 1))
-            if [ $MONTHNUM -lte $TEMPNUM ]; then
+            if [ $MONTHNUM -le $TEMPNUM ]; then
                 grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> "last"$MONTHNUM"months.csv"
             fi
         done
