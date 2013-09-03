@@ -14,12 +14,12 @@ while [ "$1" != "" ]; do
 done
 
 # Some of the rankings we do for everyone, so we can build an at-a-glance view.
-#python write.py --kill --action rankings --location all
-#python write.py --kill --action rankings --crime violent --location all
-#python write.py --kill --action rankings --crime property --location all
-python write.py --kill --action rankings --crime drug --grep --location all
-#python write.py --kill --action rankings --crime poss --grep --location all
-#python write.py --kill --action rankings --crime sell --grep --location all
+#python write.py --kill --action rankings --location capitol-hill
+#python write.py --kill --action rankings --crime violent --location capitol-hill
+#python write.py --kill --action rankings --crime property --location capitol-hill
+python write.py --kill --action rankings --crime drug --grep --location capitol-hill
+#python write.py --kill --action rankings --crime poss --grep --location capitol-hill
+#python write.py --kill --action rankings --crime sell --grep --location capitol-hill
 
 LOCATIONS='capitol-hill'
 for location in $LOCATIONS; 

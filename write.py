@@ -29,6 +29,7 @@ if __name__ == '__main__':
     parser.add_option("-d", "--diff", dest="diff", default=False, action="store_true")
     parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
     parser.add_option("-k", "--kill", dest="kill", default=False, action="store_true")
+    parser.add_option("-s", "--silent", dest="silent", action="store_true")
     (options, args) = parser.parse_args()
     filename = options.filename
     action = options.action
@@ -39,6 +40,7 @@ if __name__ == '__main__':
     diff = options.diff
     verbose = options.verbose
     kill = options.kill
+    silent = options.silent
 
     if verbose:
         print "Options: %s\nArgs: %s" % (options, args)
@@ -93,13 +95,11 @@ if __name__ == '__main__':
         # Example:
         # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'
         # $ ./write.py --action rankings --crime violent --kill
-        crimes = parse.get_rankings(crime, location, args)
-        if location == 'all':
-            pass
-        else:
+        crimes = parse.get_rankings(crime, grep, location, args)
+        if not location:
             crimes['crimes']['neighborhood'].reverse()
             crimes['crimes']['percapita'].reverse()
-            collection.insert({ filename: {'neighborhood': crimes['crimes']['neighborhood'], 'percapita': crimes['crimes']['percapita']} })
+        collection.insert({ filename: {'neighborhood': crimes['crimes']['neighborhood'], 'percapita': crimes['crimes']['percapita']} })
         #collection.insert()
         #print print_neighborhoods(crimes)
     elif action == 'recent':
