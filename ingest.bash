@@ -82,13 +82,6 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
 	grep "$THIS_MONTH" current.csv > currentmonth.csv
     echo $DATE > ../latest
 
-    # Build a csv of the crimes for the last 3 months
-    > last3months.csv
-    for NUM in {0..2}; 
-    do
-        grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> last3months.csv
-    done
-
     # Build a csv of the crimes for the last 0-12 months
     for MONTHNUM in {1..12}; do > "last"$MONTHNUM"months.csv"; done
     for NUM in {0..11}; 
