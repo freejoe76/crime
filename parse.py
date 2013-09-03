@@ -13,9 +13,10 @@ import dicts
 divider='\n=============================================================\n'
 
 def timeago(time=False):
-    # Get a datetime object or a int() Epoch timestamp and return a
-    # pretty string like 'an hour ago', 'Yesterday', '3 months ago',
-    # 'just now', etc
+    """ Get a datetime object or a int() Epoch timestamp and return a
+        pretty string like 'an hour ago', 'Yesterday', '3 months ago',
+        'just now', etc
+        """
     if time == None:
         return "never"
     
@@ -58,7 +59,7 @@ class Parse:
         >>> grep = False
         >>> crimes = parse.get_specific_crime('violent', grep, 'capitol-hill')
         >>> crimes['count'], crimes['crime']
-        3 violent
+        (3, 'violent')
         """
     def __init__(self, crime_filename, diff = False):
         self.crime_file = self.open_csv(crime_filename, diff)
@@ -480,12 +481,15 @@ class Parse:
         return outputs
 
 
+
 if __name__ == '__main__':
     # Parse the arguments, pass 'em to the function
     # The three main args we use to query the crime data are
     # location, crime and timespan. location and crime are
     # passed as options, and timespan (start, finish) as the 
     # first two arguments. This may not be the best way to do it.
+    import doctest
+    doctest.testmod()
     parser = OptionParser()
     parser.add_option("-f", "--filename", dest="filename", default="currentyear")
     parser.add_option("-a", "--action", dest="action")
