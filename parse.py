@@ -50,8 +50,17 @@ def timeago(time=False):
     return str(day_diff) + " days"
 
 class Parse:
-
-    def __init__(self, crime_filename, diff):
+    """ class Parse is the lowest-level interface with the crime data CSVs.
+        Any question we have for the crime data starts with the Parse class.
+        There are two means of outputting the results Parse generates: The 
+        command-line, and a python dict. 
+        >>> parse = Parse('_input/test')
+        >>> grep = False
+        >>> crimes = parse.get_specific_crime('violent', grep, 'capitol-hill')
+        >>> crimes['count'], crimes['crime']
+        3 violent
+        """
+    def __init__(self, crime_filename, diff = False):
         self.crime_file = self.open_csv(crime_filename, diff)
         self.diff = diff
         self.crime_filename = crime_filename
