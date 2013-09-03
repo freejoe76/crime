@@ -82,11 +82,29 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
 	grep "$THIS_MONTH" current.csv > currentmonth.csv
     echo $DATE > ../latest
 
-    # Build a csv of the crimes for the last 12 months
-    > last12months.csv
+    # Build a csv of the crimes for the last 3 months
+    > last3months.csv
+    for NUM in {0..2}; 
+    do
+        grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> last3months.csv
+    done
+
+    # Build a csv of the crimes for the last 0-12 months
+    for MONTHNUM in {1..12}; do > "last"$MONTHNUM"months.csv"; done
     for NUM in {0..11}; 
     do
-        grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> last12months.csv
+        for MONTHNUM in {1..12}
+        do
+            # We only grep into a month's file if the X in lastXmonths (X being MONTHNUM)
+            # is less than or equal to the NUM+1 we're looping through.
+            # So, if we're on MONTHNUM 12, NUMs 0-11 will be fine. 
+            # If we're on MONTHNUM 1, only NUM 0 will be grepped.
+            TEMPNUM=$(($NUM + 1))
+            if [ $MONTHNUM -lte $TEMPNUM ]; then
+                grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> "last"$MONTHNUM"months.csv"
+            fi
+        done
+        #grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> last12months.csv
     done
 
     # Build a csv of the crimes for the last 24 months
