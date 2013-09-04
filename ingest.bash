@@ -51,7 +51,7 @@ touch current.csv
 # If we're testing, it's possible we won't want to download the csv.
 if [[ $NODOWNLOAD -eq 0 ]]; then 
     FILESIZE=0
-    while [ $FILESIZE -lt 100000 ]; do
+    while [ $FILESIZE -lt 46770000 ]; do
         echo "Filesize: $FILESIZE"
         wget -O new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv; 
         FILESIZE=$(du -b "new.csv" | cut -f 1)
