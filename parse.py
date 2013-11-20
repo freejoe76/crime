@@ -439,7 +439,7 @@ class Parse:
         elif action == 'rankings':
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
             i = 0
-            for item in sorted(crimes['crimes']['percapita'].iteritems(), key=operator.itemgetter(1)):
+            for item in reversed(sorted(crimes['crimes']['percapita'].iteritems(), key=operator.itemgetter(1))):
                 i = i + 1
                 if loc == item[0]:
                     location = '***%s***' % self.clean_location(item[0])
@@ -449,7 +449,7 @@ class Parse:
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
             i = 0
-            for item in sorted(crimes['crimes']['neighborhood'].iteritems(), key=operator.itemgetter(1)):
+            for item in reversed(sorted(crimes['crimes']['neighborhood'].iteritems(), key=operator.itemgetter(1))):
                 i = i + 1
                 if loc == item[0]:
                     location = '***%s***' % self.clean_location(item[0])
