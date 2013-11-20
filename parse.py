@@ -3,7 +3,7 @@
 import os
 import csv
 import operator
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 from optparse import OptionParser
 from datetime import datetime, timedelta
 
@@ -346,8 +346,8 @@ class Parse:
             }
             for item in ['neighborhood', 'percapita']:
                 rank = 1
-                for subitem in unsorted_rankings[item]:
-                    unsorted_rankings[item][subitem]['rank'] = rank;
+                for subitem in sorted_rankings[item]:
+                    unsorted_rankings[item][subitem[0]]['rank'] = rank;
                     rank += 1
             return { 'crimes': unsorted_rankings }
         else:
@@ -439,23 +439,23 @@ class Parse:
         elif action == 'rankings':
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
             i = 0
-            for item in crimes['crimes']['percapita']:
+            for item in sorted(crimes['crimes']['percapita'].iteritems(), key=operator.itemgetter(1)):
                 i = i + 1
                 if loc == item[0]:
                     location = '***%s***' % self.clean_location(item[0])
                 else:
                     location = self.clean_location(item[0])
-                outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
+                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['percapita'][item[0]]['count'])
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
             i = 0
-            for item in crimes['crimes']['neighborhood']:
+            for item in sorted(crimes['crimes']['neighborhood'].iteritems(), key=operator.itemgetter(1)):
                 i = i + 1
                 if loc == item[0]:
                     location = '***%s***' % self.clean_location(item[0])
                 else:
                     location = self.clean_location(item[0])
-                outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
+                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['neighborhood'][item[0]]['count'])
 
         elif action == 'specific':
             outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
