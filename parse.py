@@ -440,13 +440,17 @@ class Parse:
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
             #print crimes['crimes']['percapita']
             i = 0
-            for item in crimes['crimes']['percapita']:
+            if 'rankings' in crimes['crimes']['percapita']['capitol-hill']:
+                print "HEY"
+            print crimes['crimes']['percapita']
+            #for item in crimes['crimes']['percapita']:
+            for item in sorted(crimes['crimes']['percapita'].iteritems(), key=operator.itemgetter(1)):
                 i = i + 1
                 if loc == item[0]:
-                    location = '***%s***' % self.clean_location(item)
+                    location = '***%s***' % self.clean_location(item[0])
                 else:
-                    location = self.clean_location(item)
-                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['percapita'][item]['count'])
+                    location = self.clean_location(item[0])
+                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['percapita'][item[0]]['count'])
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
             i = 0
