@@ -3,6 +3,7 @@
 import os
 import csv
 import operator
+import shapely
 from collections import defaultdict
 from optparse import OptionParser
 from datetime import datetime, timedelta

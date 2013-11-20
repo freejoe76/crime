@@ -1,2 +1,4 @@
 Flask==0.9
 Shapely==1.2.18
+Fiona==1.0.2
+Six==1.4.1
