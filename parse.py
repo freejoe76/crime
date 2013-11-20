@@ -438,12 +438,7 @@ class Parse:
         %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
         elif action == 'rankings':
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
-            #print crimes['crimes']['percapita']
             i = 0
-            if 'rankings' in crimes['crimes']['percapita']['capitol-hill']:
-                print "HEY"
-            print crimes['crimes']['percapita']
-            #for item in crimes['crimes']['percapita']:
             for item in sorted(crimes['crimes']['percapita'].iteritems(), key=operator.itemgetter(1)):
                 i = i + 1
                 if loc == item[0]:
@@ -454,13 +449,13 @@ class Parse:
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
             i = 0
-            for item in crimes['crimes']['neighborhood']:
+            for item in sorted(crimes['crimes']['neighborhood'].iteritems(), key=operator.itemgetter(1)):
                 i = i + 1
                 if loc == item[0]:
-                    location = '***%s***' % self.clean_location(item)
+                    location = '***%s***' % self.clean_location(item[0])
                 else:
-                    location = self.clean_location(item)
-                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['neighborhood'][item]['count'])
+                    location = self.clean_location(item[0])
+                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['neighborhood'][item[0]]['count'])
 
         elif action == 'specific':
             outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
