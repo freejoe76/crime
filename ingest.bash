@@ -8,6 +8,9 @@
 # It takes two arguments:
 #     -t / --test, which skips all file-writing operations except initial download
 #     -n / --nodl, which skips the csv download, and assumes an existing new.csv file is in place.
+#     -l / --location, for building archives on a particular location.
+### * Note: Should look at the diffs and see at what age the data stops changing. From there,
+### can build a more refined archiving (and, thus, querying) strategy.
 
 TEST=0
 NODOWNLOAD=0
@@ -18,6 +21,9 @@ while [ "$1" != "" ]; do
 			;;
 		-t | --test ) 
 			TEST=1
+			;;
+		-l | --location ) 
+			LOCATION=$1
 			;;
 	esac
 	shift
@@ -43,7 +49,14 @@ LAST_MONTH=`date +'%Y-%m' --date='month ago'`
 touch current.csv
 
 # If we're testing, it's possible we won't want to download the csv.
-if [[ $NODOWNLOAD -eq 0 ]]; then wget -O new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv; fi
+if [[ $NODOWNLOAD -eq 0 ]]; then 
+    FILESIZE=0
+    while [ $FILESIZE -lt 46770000 ]; do
+        echo "Filesize: $FILESIZE"
+        wget -O new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv; 
+        FILESIZE=$(du -b "new.csv" | cut -f 1)
+    done
+fi
 
 diff new.csv current.csv > newdiff.csv
 DIFFCOUNT=`cat newdiff.csv | wc -l`
@@ -69,21 +82,44 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
 	grep "$THIS_MONTH" current.csv > currentmonth.csv
     echo $DATE > ../latest
 
-    # Build a csv of the crimes for the last 12 months
-    > last12months.csv
-    for NUM in 0 1 2 3 4 5 6 7 8 9 10 11; 
+    # Build a csv of the crimes for the last 0-12 months
+    for MONTHNUM in {1..12}; do > "last"$MONTHNUM"months.csv"; done
+    for NUM in {0..11}; 
     do
-        grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> last12months.csv
+        for MONTHNUM in {1..12}
+        do
+            # We only grep into a month's file if the X in lastXmonths (X being MONTHNUM)
+            # is less than or equal to the NUM+1 we're looping through.
+            # So, if we're on MONTHNUM 12, NUMs 0-11 will be fine. 
+            # If we're on MONTHNUM 1, only NUM 0 will be grepped.
+            TEMPNUM=$(($NUM + 1))
+            if [ $MONTHNUM -le $TEMPNUM ]; then
+                grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> "last"$MONTHNUM"months.csv"
+            fi
+        done
+        #grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> last12months.csv
     done
 
     # Build a csv of the crimes for the last 24 months
     > last24months.csv
-    for NUM in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23; 
+    > last24months.txt
+    for NUM in {0..23}; 
     do
-        grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> last24months.csv
+        YEARMONTH=`date +'%Y-%m' --date="$NUM months ago"`
+        grep $YEARMONTH current.csv >> last24months.csv
+        for HOOD in capitol-hill civic-center;
+        do
+            grep $YEARMONTH current.csv | grep $HOOD >> location_$HOOD-$YEARMONTH.csv
+        done
+        echo $YEARMONTH >> last24months.txt
+    done
+
+    # Just because we might need it: A text file of the last yearmonth pairs for the last ten years.
+    > last.txt
+    for NUM in {0..120}
+    do
+        date +'%Y-%m' --date="$NUM months ago" >> last.txt
     done
 fi
 
 if [[ $TEST -eq 0 ]]; then echo "[$DATE] $DIFFCOUNT new entries" >> $LOGFILE; fi
-
-

@@ -13,6 +13,14 @@ while [ "$1" != "" ]; do
     shift
 done
 
+# Some of the rankings we do for everyone, so we can build an at-a-glance view.
+python write.py --kill --action rankings --location capitol-hill
+python write.py --kill --action rankings --crime violent --location capitol-hill
+python write.py --kill --action rankings --crime property --location capitol-hill
+python write.py --kill --action rankings --crime drug --grep --location capitol-hill
+python write.py --kill --action rankings --crime poss --grep --location capitol-hill
+python write.py --kill --action rankings --crime sell --grep --location capitol-hill
+
 LOCATIONS='capitol-hill'
 for location in $LOCATIONS; 
 do 
@@ -22,6 +30,8 @@ do
   #python write.py --kill --crime violent --action recent --location $location
   python write.py --kill --action rankings --crime violent --location $location
   #python write.py --action rankings --crime violent --location $location --filename currentmonth
-  python write.py --action rankings --crime property --location $location
+  python write.py --kill --action rankings --crime property --location $location
   #python write.py --kill --action rankings --crime property --location $location --filename currentmonth
+  python write.py --kill --action monthly --crime violent --location $location
+  python write.py --kill --action monthly --crime property --location $location
 done

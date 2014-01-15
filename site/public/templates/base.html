@@ -45,11 +45,11 @@
                 </ul>
             </div>
             <div class="thelargeheader">
-	            <h1 id="blogtitle"><a href="/">Denver Crimes</a></h1></div>
+	            <h1 id="blogtitle"><a href="/">Denver Crimes</a></h1>
             </div>
             <div id="banner">
 	            <h2><span><a href="/">Denver Crimes</a> &rsaquo; </span>{% block subhead %}Right now we're just crime in <a href="/neighborhood/capitol-hill/">Capitol Hill, Denver, Colorado</a>{% endblock %}</h2>
-{% if not in_dev %}
+{% if in_dev %}
                 <p id="timestamp">{% block timestamp %}{% endblock timestamp %}</p>
                 <div id="ticker">{% block ticker %}{% endblock ticker %}</div>
 {% endif %}

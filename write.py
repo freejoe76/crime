@@ -13,7 +13,7 @@ import dicts
 
 
 class Write:
-    """ Handle writing data to MongoDB."""
+    """ Handle writing data to the database."""
     def __init__(self):
         pass
 
@@ -29,6 +29,7 @@ if __name__ == '__main__':
     parser.add_option("-d", "--diff", dest="diff", default=False, action="store_true")
     parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
     parser.add_option("-k", "--kill", dest="kill", default=False, action="store_true")
+    parser.add_option("-s", "--silent", dest="silent", action="store_true")
     (options, args) = parser.parse_args()
     filename = options.filename
     action = options.action
@@ -39,6 +40,7 @@ if __name__ == '__main__':
     diff = options.diff
     verbose = options.verbose
     kill = options.kill
+    silent = options.silent
 
     if verbose:
         print "Options: %s\nArgs: %s" % (options, args)
@@ -83,15 +85,20 @@ if __name__ == '__main__':
         crimes = parse.__init__("_input/last12months", False)
         crimes = parse.get_specific_crime('window-peeping', None, location)
         collection.insert(crimes)
+    elif action == 'monthly':
+        # Example:
+        # $ ./write.py --kill --action monthly --crime violent --location capitol-hill
+        # $ ./write.py --kill --action monthly --crime dv --grep
+        crimes = parse.get_monthly(crime, grep, location)
+        collection.insert(crimes)
     elif action == 'rankings':
         # Example:
         # $ ./write.py --action rankings --crime violent '2013-01-01' '2013-02-01'
         # $ ./write.py --action rankings --crime violent --kill
-        crimes = parse.get_rankings(crime, location, args)
-        if verbose:
-            print crimes
-        crimes['crimes']['neighborhood'].reverse()
-        crimes['crimes']['percapita'].reverse()
+        crimes = parse.get_rankings(crime, grep, location, args)
+        if not location:
+            crimes['crimes']['neighborhood'].reverse()
+            crimes['crimes']['percapita'].reverse()
         collection.insert({ filename: {'neighborhood': crimes['crimes']['neighborhood'], 'percapita': crimes['crimes']['percapita']} })
         #collection.insert()
         #print print_neighborhoods(crimes)
@@ -102,6 +109,7 @@ if __name__ == '__main__':
         # $ ./write.py --verbose --action recent --crime drug-alcohol --location capitol-hill
         crimes = parse.get_recent_crimes(crime, grep, location, args)
         collection.insert(crimes['crimes'])
+        collection.create_index('_FIRST_OCCURRENCE_DATE')
     elif action == 'specific':
         # Example:
         # $ ./write.py --verbose --action specific --crime drug-alcohol
@@ -110,3 +118,6 @@ if __name__ == '__main__':
         # {'count': 382, 'last_crime': '3 days', 'crime': None}
         crimes = parse.get_specific_crime(crime, grep, location)
         collection.insert(crimes)
+    if verbose:
+        print crimes
+
