@@ -77,10 +77,15 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
 	mv newdiff.csv "archive-$DATE.csv"
 	mv current.csv old.csv
 	mv new.csv current.csv
+    echo $DATE > ../latest
+
+fi
+
+# We run these operations if there are differences, or if we've set NODOWNLOAD.
+if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
 	grep "$THIS_YEAR-" current.csv > currentyear.csv
 	grep "$LAST_YEAR-" current.csv > lastyear.csv
 	grep "$THIS_MONTH" current.csv > currentmonth.csv
-    echo $DATE > ../latest
 
     # Build a csv of the crimes for the last 0-12 months
     for MONTHNUM in {1..12}; do > $MONTHNUM"monthsago.csv"; done
