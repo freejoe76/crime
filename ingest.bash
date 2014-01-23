@@ -103,7 +103,7 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
                 grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> "last"$MONTHNUM"months.csv"
             fi
         done
-        grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> "last"$NUM"months.csv"
+        grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> $NUM"monthsago.csv"
     done
 
     # Build a csv of the crimes for the last 24 months
