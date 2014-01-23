@@ -22,7 +22,23 @@ function section
     divider='\n=============================================================\n=============================================================\n'
     echo -e $divider$1$divider;
 }
+function subsection
+{
+    divider='\n=============================================================\n'
+    echo -e $divider$1$divider;
+}
+
 > crimereport
+section "Trends in $location"
+subsection "This month"
+python parse.py --action rankings --crime violent --location $location --filename location_$location-$THIS_MONTH
+subsection "Last month"
+python parse.py --action rankings --crime violent --location $location --filename location_$location-$LAST_MONTH
+subsection "The month prior"
+python parse.py --action rankings --crime violent --location $location --filename location_$location-$LAST_LAST_MONTH
+
+exit
+
 section "The last murder in $location"
 python parse.py --action specific --crime murder --grep --location $location
 
