@@ -31,13 +31,12 @@ function subsection
 > crimereport
 section "Trends in $location"
 subsection "This month"
-python parse.py --action rankings --crime violent --location $location --filename 0monthsago
+python parse.py --action rankings --crime violent --location $location --filename 0monthsago | grep \*
 subsection "Last month"
-python parse.py --action rankings --crime violent --location $location --filename 1monthsago
+python parse.py --action rankings --crime violent --location $location --filename 1monthsago | grep \*
 subsection "The month prior"
-python parse.py --action rankings --crime violent --location $location --filename 2monthsago
+python parse.py --action rankings --crime violent --location $location --filename 2monthsago | grep \*
 
-exit
 
 section "The last murder in $location"
 python parse.py --action specific --crime murder --grep --location $location
