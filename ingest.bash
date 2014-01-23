@@ -51,7 +51,7 @@ touch current.csv
 # If we're testing, it's possible we won't want to download the csv.
 if [[ $NODOWNLOAD -eq 0 ]]; then 
     FILESIZE=0
-    while [ $FILESIZE -lt 46770000 ]; do
+    while [ $FILESIZE -lt 40000 ]; do
         echo "Filesize: $FILESIZE"
         wget -O new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv; 
         FILESIZE=$(du -b "new.csv" | cut -f 1)
@@ -112,6 +112,12 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
             grep $YEARMONTH current.csv | grep $HOOD >> location_$HOOD-$YEARMONTH.csv
         done
         echo $YEARMONTH >> last24months.txt
+    done
+    for HOOD in capitol-hill civic-center;
+    do
+        grep $THIS_YEAR current.csv | grep $HOOD >> location_$HOOD-$THIS_YEAR.csv
+        grep $LAST_YEAR current.csv | grep $HOOD >> location_$HOOD-$LAST_YEAR.csv
+        grep $LAST_LAST_YEAR current.csv | grep $HOOD >> location_$HOOD-$LAST_LAST_YEAR.csv
     done
 
     # Just because we might need it: A text file of the last yearmonth pairs for the last ten years.

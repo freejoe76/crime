@@ -11,6 +11,10 @@ while [ "$1" != "" ]; do
     shift
 done
 divider='\n=============================================================\n=============================================================\n'
+THIS_YEAR=`date +'%Y'`
+LAST_YEAR=`expr $THIS_YEAR - 1`
+THIS_MONTH=`date +'%Y-%m'`
+LAST_MONTH=`date +'%Y-%m' --date='month ago'`
 
 > crimereport
 echo -e $divider"The last murder in $location"$divider
