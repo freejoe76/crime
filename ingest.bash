@@ -90,19 +90,17 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
     # Build a csv of the crimes for the last 0-12 months
     for MONTHNUM in {1..12}; do > $MONTHNUM"monthsago.csv"; done
     for MONTHNUM in {1..12}; do > "last"$MONTHNUM"months.csv"; done
-    for NUM in {0..11}; 
-    do
-        for MONTHNUM in {1..12}
-        do
-            # We only grep into a month's file if the X in lastXmonths (X being MONTHNUM)
-            # is less than or equal to the NUM+1 we're looping through.
-            # So, if we're on MONTHNUM 12, NUMs 0-11 will be fine. 
-            # If we're on MONTHNUM 1, only NUM 0 will be grepped.
-            # Ex:
-            # January 2014.
-            # First NUM loop: NUM = 0, TEMPNUM = 1, MONTHNUM { 0 } months ago = 0, grep 2014-01 current.csv >> 0monthsago
-            # Second NUM loop: NUM = 1, TEMPNUM = 2, MONTHNUM { 0 1 } months ago = 0 1, grep 2014-01 current.csv >> 0monthsago
-            # WAIT *** MONTHNUM should loop btw 0..11 and NUM btw 1..12 and we don't need TEMPNUM
+    for NUM in {0..11}; do
+        # We only grep into a month's file if the X in lastXmonths (X being MONTHNUM)
+        # is less than or equal to the NUM+1 we're looping through.
+        # So, if we're on MONTHNUM 12, NUMs 0-11 will be fine. 
+        # If we're on MONTHNUM 1, only NUM 0 will be grepped.
+        # Ex:
+        # January 2014.
+        # First NUM loop: NUM = 0, TEMPNUM = 1, MONTHNUM { 0 } months ago = 0, grep 2014-01 current.csv >> 0monthsago
+        # Second NUM loop: NUM = 1, TEMPNUM = 2, MONTHNUM { 0 1 } months ago = 0 1, grep 2014-01 current.csv >> 0monthsago
+        # WAIT *** MONTHNUM should loop btw 0..11 and NUM btw 1..12 and we don't need TEMPNUM
+        for MONTHNUM in {1..12}; do
             TEMPNUM=$(($NUM + 1))
             if [ $MONTHNUM -le $TEMPNUM ]; then
                 grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> "last"$MONTHNUM"months.csv"

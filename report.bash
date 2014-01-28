@@ -36,7 +36,10 @@ subsection "Last month"
 python parse.py --action rankings --crime violent --location $location --filename 1monthsago | grep \*
 subsection "The month prior"
 python parse.py --action rankings --crime violent --location $location --filename 2monthsago | grep \*
-
+subsection "Twelve months prior"
+python parse.py --action rankings --crime violent --location $location --filename 11monthsago | grep \*
+subsection "The twelve-month average"
+python parse.py --action rankings --crime violent --location $location --filename last12months | grep \*
 
 section "The last murder in $location"
 python parse.py --action specific --crime murder --grep --location $location
