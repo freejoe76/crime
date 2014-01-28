@@ -95,14 +95,15 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
         # is less than or equal to the NUM+1 we're looping through.
         # So, if we're on MONTHNUM 12, NUMs 0-11 will be fine. 
         # If we're on MONTHNUM 1, only NUM 0 will be grepped.
+        #
         # Ex:
         # January 2014.
-        # First NUM loop: NUM = 0, TEMPNUM = 1, MONTHNUM { 0 } months ago = 0, grep 2014-01 current.csv >> 0monthsago
-        # Second NUM loop: NUM = 1, TEMPNUM = 2, MONTHNUM { 0 1 } months ago = 0 1, grep 2014-01 current.csv >> 0monthsago
+        # First NUM loop: NUM = 0, TEMPNUM = 1, MONTHNUM { 0 } months ago = 0, grep 2014-01 current.csv >> last0months
+        # Second NUM loop: NUM = 1, TEMPNUM = 2, MONTHNUM { 0 1 } months ago = 0 1, grep 2014-01 + 2013-12 current.csv >> last0 + 1monthsago
         # WAIT *** MONTHNUM should loop btw 0..11 and NUM btw 1..12 and we don't need TEMPNUM
         for MONTHNUM in {1..12}; do
             TEMPNUM=$(($NUM + 1))
-            if [ $MONTHNUM -le $TEMPNUM ]; then
+            if [ $MONTHNUM -gt $TEMPNUM ]; then
                 grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> "last"$MONTHNUM"months.csv"
             fi
         done
