@@ -223,7 +223,7 @@ class Parse:
     def get_monthly(self, crime = None, grep = False, location = '', limit = 24):
         # Loop through the monthly crime files, return frequency.
         # Can filter by crime, location or both. 
-        # Have some gymnastics to do her in jumping across files.
+        # Have some gymnastics to do here in jumping across files.
         # Return a dict of months and # of occurrences.
         i = 0
         crime_type = self.get_crime_type(crime)
@@ -413,7 +413,7 @@ class Parse:
         # What we're parsing affects the dicts we have.
         outputs = ''
 
-        if 'crimes' not in crimes:
+        if 'crimes' not in crimes and action != 'monthly':
             return False
 
         if action == 'recent' or action == 'specific':
@@ -472,7 +472,7 @@ class Parse:
                     'barchart': '#'*int(item[1]['count'])
                 }
                 if crimes['max'] > 80:
-                    outputs += '%(date) %(count)\n' % values
+                    outputs += '%(date)s %(count)s\n' % values
                 else:
                     outputs += '%(date)s %(barchart)s %(count)s\n' % values
 
