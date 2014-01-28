@@ -465,16 +465,22 @@ class Parse:
 
         elif action == 'monthly':
             crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
+            divisor = 1
+            if crimes['max'] > 80:
+                divisor = 10
+            if crimes['max'] > 800:
+                divisor = 100
+            if crimes['max'] > 8000:
+                divisor = 1000
+
             for item in crime_dict:
                 values = {
                     'date': datetime.strftime(item[1]['date'], '%b %Y'),
                     'count': item[1]['count'],
-                    'barchart': '#'*int(item[1]['count'])
+                    'barchart': '#'*int(item[1]['count']/divisor)
                 }
-                if crimes['max'] > 80:
-                    outputs += '%(date)s %(count)s\n' % values
-                else:
-                    outputs += '%(date)s %(barchart)s %(count)s\n' % values
+                outputs += '%(date)s %(barchart)s %(count)s\n' % values
+                #outputs += '%(date)s %(barchart)s %(count)s\n' % values
 
         else:
             print "We did not have any crimes to handle"
