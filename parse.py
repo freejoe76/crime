@@ -413,6 +413,9 @@ class Parse:
         # What we're parsing affects the dicts we have.
         outputs = ''
 
+        if 'crimes' not in crimes:
+            return False
+
         if action == 'recent' or action == 'specific':
             # Lists, probably recents, with full crime record dicts
             i = 0
