@@ -109,21 +109,32 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
         grep `date +'%Y-%m' --date="$NUM months ago"` current.csv >> $NUM"monthsago.csv"
     done
 
-    # Build a csv of the crimes for the last 24 months
-    > last24months.csv
-    > last24months.txt
-    for NUM in {0..23}; 
-    do
+    # Build a csv of the crimes for the last 24, 48, 60, 72 months
+    for MONTH in 24 48 60 72; do
+        > last$MONTH"months.csv"
+        > last$MONTH"months.txt"
+    done
+
+    #for NUM in {0..23}; do
+    for NUM in {0..71}; do
         YEARMONTH=`date +'%Y-%m' --date="$NUM months ago"`
-        grep $YEARMONTH current.csv >> last24months.csv
+        for MONTH in 24 48 60 72; do
+            if [[ $NUM -lt $MONTH ]]; then
+                grep $YEARMONTH current.csv >> last$MONTH"months.csv"
+                echo $YEARMONTH >> last$MONTH"months.txt"
+            fi
+        done
+
+        # We don't need month-by-month neighborhood CSVs for more than the two previous years.
+        if [[ $NUM -gt 23 ]]; then continue; fi
+
         for HOOD in capitol-hill civic-center;
         do
             grep $YEARMONTH current.csv | grep $HOOD >> location_$HOOD-$YEARMONTH.csv
         done
-        echo $YEARMONTH >> last24months.txt
     done
-    for HOOD in capitol-hill civic-center;
-    do
+
+    for HOOD in capitol-hill civic-center; do
         grep $THIS_YEAR current.csv | grep $HOOD >> location_$HOOD-$THIS_YEAR.csv
         grep $LAST_YEAR current.csv | grep $HOOD >> location_$HOOD-$LAST_YEAR.csv
         grep $LAST_LAST_YEAR current.csv | grep $HOOD >> location_$HOOD-$LAST_LAST_YEAR.csv
@@ -138,3 +149,4 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
 fi
 
 if [[ $TEST -eq 0 ]]; then echo "[$DATE] $DIFFCOUNT new entries" >> $LOGFILE; fi
+date
