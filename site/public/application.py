@@ -19,6 +19,15 @@ def flatpage():
     template = page.meta.get('template', 'flatpage.html')
     return render_template(template, page=page)
 
+def rankings_filter(neighborhood, rankings):
+    # Take a neighborhood list and return a sampling of that ranking,
+    # pertinent to that neighborhood.
+    # We:
+    #   1. Figure out where the neighborhood is in the rankings
+    #   2. Make a decision about which ranking items we publish based on that.
+    #print dir(rankings[0].values()[1])
+    return rankings
+
 @app.route('/neighborhood/')
 def neighborhood_index():
     neighborhoods = dicts.neighborhood_lookup
@@ -39,17 +48,20 @@ def neighborhood(neighborhood, about=None):
     ticker = db[collection_name]
     collection_name = '%s-%s' % (neighborhood, 'recent')
     recent = db[collection_name]
+    #recent.create_index('_FIRST_OCCURRENCE_DATE')
     collection_name = '%s-violent' % ('rankings')
     rankings = db[collection_name]
     collection_name = '%s-property' % ('rankings')
     rankings_property = db[collection_name]
-    #print rankings.find()
+    print recent.find().sort("_LAST_OCCURRENCE_DATE", 1)[0]
+    # { orderby: { 'OFFENSE_CODE', 1 } } )
     response = {
        'timestamp':timestamp.find_one(),
        'ticker':ticker.find_one(),
+       'recent':recent.find().sort('_FIRST_OCCURRENCE_DATE', 1),
        'recent':recent.find(),
        'rankings': {
-            'violent': rankings.find(),
+            'violent': rankings_filter(neighborhood, rankings.find()),
             'property': rankings_property.find()
         }
     }
@@ -95,7 +107,7 @@ app.add_template_filter(datetime_raw_filter)
 
 @app.template_filter(name='datetime')
 def datetime_filter(value, format='medium'):
-    print value
+    #print value
     if format == 'full':
         format = "%A %B %d, %I:%M %p"
     elif format == 'medium':

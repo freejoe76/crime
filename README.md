@@ -1,6 +1,6 @@
 Crime
 =====
-A parser and logger for the City of Denver's crime CSV. Currently outputs to terminal. No database on the backend.
+A parser and logger for the City of Denver's crime CSV. Currently outputs to terminal. No database required.
 
 To get started with the first download and a view on a variety of reports:
     $ ./ingest.bash
