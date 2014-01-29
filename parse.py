@@ -244,23 +244,18 @@ class Parse:
 
             if crime == None:
                 crimes['counts'][yearmonth]['count'] = len(crime_file)
-                # Figure out if we need to update the max
-                if crimes['counts'][yearmonth]['count'] > crimes['max']:
-                    crimes['max'] = crimes['counts'][yearmonth]['count']
-                crimes['sum'] += crimes['counts'][yearmonth]['count']
                 continue
 
             for row in crime_file:
                 record = dict(zip(dicts.keys, row))
                 if self.does_crime_match(crime, grep, record, crime_type):
                     crimes['counts'][yearmonth]['count'] += 1
-
-            crimes['sum'] += crimes['counts'][yearmonth]['count']
-
-            # Figure out if we need to update the max
-            if crimes['counts'][yearmonth]['count'] > crimes['max']:
-                crimes['max'] = crimes['counts'][yearmonth]['count']
                     
+        # Update the max, sum and avg:
+        for item in crimes['counts']:
+            crimes['sum'] += crimes['counts'][item]['count']
+            if crimes['max'] < crimes['counts'][item]['count']:
+                crimes['max'] = crimes['counts'][item]['count']
         crimes['avg'] = crimes['sum'] / len(crimes['counts'])
         return crimes
 
