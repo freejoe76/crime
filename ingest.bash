@@ -110,7 +110,7 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
     done
 
     # Build a csv of the crimes for the last 24, 48, 60, 72 months
-    for MONTH in 24 48 60 72; do
+    for MONTH in 24 36 48 60 72; do
         > last$MONTH"months.csv"
         > last$MONTH"months.txt"
     done
@@ -126,12 +126,14 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
         done
 
         # We don't need month-by-month neighborhood CSVs for more than the two previous years.
-        if [[ $NUM -gt 23 ]]; then continue; fi
+        #if [[ $NUM -gt 23 ]]; then continue; fi
 
         for HOOD in capitol-hill civic-center;
         do
             grep $YEARMONTH current.csv | grep $HOOD >> location_$HOOD-$YEARMONTH.csv
         done
+        echo $NUM 
+        date
     done
 
     for HOOD in capitol-hill civic-center; do

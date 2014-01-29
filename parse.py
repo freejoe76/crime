@@ -535,7 +535,10 @@ if __name__ == '__main__':
     if action == 'monthly':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
-        crimes = parse.get_monthly(crime, grep, location)
+        # The limit defaults to 0, but 24 is our go-to number for this report.
+        if limit == 0:
+            limit = 24
+        crimes = parse.get_monthly(crime, grep, location, limit)
         if verbose:
             print crimes
     if action == 'rankings':
