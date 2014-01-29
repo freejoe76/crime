@@ -83,7 +83,13 @@ class Parse:
 
 
     def check_date(self, value):
-        # Check a date to see if it's valid. If not, throw error.
+        """ Check a date to see if it's valid. If not, throw error.
+        >>> parse = Parse('_input/test')
+        >>> test_date = parse.check_date('2014-01-08')
+        return-value
+        >>> test_date = parse.check_date('Elvis\' birthday')
+        error
+        """
         return datetime.strptime(value, '%Y-%m-%d')
 
     def check_datetime(self, value):
@@ -502,7 +508,7 @@ if __name__ == '__main__':
     # passed as options, and timespan (start, finish) as the 
     # first two arguments. This may not be the best way to do it.
     import doctest
-    doctest.testmod()
+    doctest.testmod(verbose=True)
     parser = OptionParser()
     parser.add_option("-f", "--filename", dest="filename", default="currentyear")
     parser.add_option("-a", "--action", dest="action")
