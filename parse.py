@@ -238,7 +238,11 @@ class Parse:
         while i < limit:
             # We need the crimes, the counter, the empty dict, and the month.
             yearmonth = yearmonths[i].strip()
-            crime_file = self.open_csv('_input/location_%s-%s' % (location, yearmonth))
+            if location:
+                filename = 'location_%s-%s' % (location, yearmonth)
+            else:
+                filename = 'last%imonths' % limit
+            crime_file = self.open_csv('_input/%s' % filename)
             i += 1
             crimes['counts'][yearmonth] = { 'count': 0, 'date': self.check_date('%s-01' % yearmonth) }
 
