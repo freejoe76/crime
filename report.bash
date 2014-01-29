@@ -10,27 +10,59 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
-divider='\n=============================================================\n=============================================================\n'
+THIS_YEAR=`date +'%Y'`
+LAST_YEAR=`expr $THIS_YEAR - 1`
+LAST_LAST_YEAR=`expr $THIS_YEAR - 2`
+THIS_MONTH=`date +'%Y-%m'`
+LAST_MONTH=`date +'%Y-%m' --date='month ago'`
+LAST_LAST_MONTH=`date +'%Y-%m' --date='2 months ago'`
+
+function section
+{
+    divider='\n=============================================================\n=============================================================\n'
+    echo -e $divider$1$divider;
+}
+function subsection
+{
+    divider='\n=============================================================\n'
+    echo -e $divider$1$divider;
+}
 
 > crimereport
-echo -e $divider"The last murder in $location"$divider
+for TYPE in violent property; do
+    section "Trends ( $TYPE crime ) in $location"
+    subsection "This month  "
+    echo "Per-capita Rank. Neighborhood: Per-capita crime rate"
+    echo "Total-number Rank. Neighborhood: Total number of crimes"
+    python parse.py --action rankings --crime $TYPE --location $location --filename 0monthsago | grep \*
+    subsection "Last month"
+    python parse.py --action rankings --crime $TYPE --location $location --filename 1monthsago | grep \*
+    subsection "The month prior"
+    python parse.py --action rankings --crime $TYPE --location $location --filename 2monthsago | grep \*
+    subsection "Twelve months prior"
+    python parse.py --action rankings --crime $TYPE --location $location --filename 11monthsago | grep \*
+    subsection "The previous twelve months"
+    python parse.py --action rankings --crime $TYPE --location $location --filename last12months | grep \*
+done
+
+section "The last murder in $location"
 python parse.py --action specific --crime murder --grep --location $location
 
-echo -e $divider"Recent crimes in $location"$divider
+section "Recent crimes in $location"
 python parse.py --limit 20 --action recent --location $location
 
-echo -e $divider"Recent Violent Crimes in $location"$divider
+section "Recent Violent Crimes in $location"
 python parse.py --limit 20 --crime violent --action recent --location $location
 
-echo -e $divider"Violent-crime rankings this year in $location"$divider
+section "Violent-crime rankings this year in $location"
 python parse.py --action rankings --crime violent --location $location
 
-echo -e $divider"Violent-crime rankings this month in $location"$divider
+section "Violent-crime rankings this month in $location"
 python parse.py --action rankings --crime violent --location $location --filename currentmonth
 
-echo -e $divider"Property-crime rankings this year in $location"$divider
+section "Property-crime rankings this year in $location"
 python parse.py --action rankings --crime property --location $location
 
-echo -e $divider"Property-crime rankings this month in $location"$divider
+section "Property-crime rankings this month in $location"
 python parse.py --action rankings --crime property --location $location --filename currentmonth
 
