@@ -116,9 +116,9 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
     done
 
     #for NUM in {0..23}; do
-    for NUM in {0..71}; do
+    for NUM in {0..59}; do
         YEARMONTH=`date +'%Y-%m' --date="$NUM months ago"`
-        for MONTH in 24 48 60 72; do
+        for MONTH in 24 48 60; do
             if [[ $NUM -lt $MONTH ]]; then
                 grep $YEARMONTH current.csv >> last$MONTH"months.csv"
                 echo $YEARMONTH >> last$MONTH"months.txt"
