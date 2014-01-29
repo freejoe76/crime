@@ -110,7 +110,7 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
     done
 
     # Build a csv of the crimes for the last 24, 48, 60, 72 months
-    for MONTH in 24 36 48 60 72; do
+    for MONTH in 24 36 48 60; do
         > last$MONTH"months.csv"
         > last$MONTH"months.txt"
     done
