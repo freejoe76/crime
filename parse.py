@@ -227,7 +227,7 @@ class Parse:
         # Return a dict of months and # of occurrences.
         i = 0
         crime_type = self.get_crime_type(crime)
-        crimes = { 'crime': crime, 'counts': dict(), 'max': 0, 'sum': 0 }
+        crimes = { 'crime': crime, 'counts': dict(), 'max': 0, 'sum': 0, 'avg': 0 }
 
         # We load year/month strings in like this because the crime data
         # can lag, and we want to be accurate. If the last update of the crime
@@ -247,6 +247,7 @@ class Parse:
                 # Figure out if we need to update the max
                 if crimes['counts'][yearmonth]['count'] > crimes['max']:
                     crimes['max'] = crimes['counts'][yearmonth]['count']
+                crimes['sum'] += crimes['counts'][yearmonth]['count']
                 continue
 
             for row in crime_file:
@@ -260,6 +261,7 @@ class Parse:
             if crimes['counts'][yearmonth]['count'] > crimes['max']:
                 crimes['max'] = crimes['counts'][yearmonth]['count']
                     
+        crimes['avg'] = crimes['sum'] / len(crimes['counts'])
         return crimes
 
     def get_rankings(self, crime = None, grep = False, location = None, *args, **kwargs):
