@@ -244,6 +244,9 @@ class Parse:
 
             if crime == None:
                 crimes['counts'][yearmonth]['count'] = len(crime_file)
+                # Figure out if we need to update the max
+                if crimes['counts'][yearmonth]['count'] > crimes['max']:
+                    crimes['max'] = crimes['counts'][yearmonth]['count']
                 continue
 
             for row in crime_file:
