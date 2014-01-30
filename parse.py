@@ -471,11 +471,11 @@ class Parse:
             crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
             divisor = 1
             if crimes['max'] > 80:
-                divisor = 10
+                divisor = 50
             if crimes['max'] > 800:
-                divisor = 100
+                divisor = 500
             if crimes['max'] > 8000:
-                divisor = 1000
+                divisor = 5000
 
             for item in crime_dict:
                 values = {
