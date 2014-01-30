@@ -223,22 +223,26 @@ class Parse:
     def get_monthly(self, crime = None, grep = False, location = '', limit = 24):
         # Loop through the monthly crime files, return frequency.
         # Can filter by crime, location or both. 
-        # Have some gymnastics to do her in jumping across files.
+        # Have some gymnastics to do here in jumping across files.
         # Return a dict of months and # of occurrences.
         i = 0
         crime_type = self.get_crime_type(crime)
-        crimes = { 'crime': crime, 'counts': dict(), 'max': 0, 'sum': 0 }
+        crimes = { 'crime': crime, 'counts': dict(), 'max': 0, 'sum': 0, 'avg': 0 }
 
         # We load year/month strings in like this because the crime data
         # can lag, and we want to be accurate. If the last update of the crime
         # happened two days ago, but that two days ago was a different month,
         # doing it this way keeps it correct.
-        yearmonths = open('_input/last24months.txt').readlines()
+        yearmonths = open('_input/last%imonths.txt' % limit).readlines()
 
         while i < limit:
             # We need the crimes, the counter, the empty dict, and the month.
             yearmonth = yearmonths[i].strip()
-            crime_file = self.open_csv('_input/location_%s-%s' % (location, yearmonth))
+            if location:
+                filename = 'location_%s-%s' % (location, yearmonth)
+            else:
+                filename = 'last%imonths' % i
+            crime_file = self.open_csv('_input/%s' % filename)
             i += 1
             crimes['counts'][yearmonth] = { 'count': 0, 'date': self.check_date('%s-01' % yearmonth) }
 
@@ -250,13 +254,13 @@ class Parse:
                 record = dict(zip(dicts.keys, row))
                 if self.does_crime_match(crime, grep, record, crime_type):
                     crimes['counts'][yearmonth]['count'] += 1
-
-            crimes['sum'] += crimes['counts'][yearmonth]['count']
-
-            # Figure out if we need to update the max
-            if crimes['counts'][yearmonth]['count'] > crimes['max']:
-                crimes['max'] = crimes['counts'][yearmonth]['count']
                     
+        # Update the max, sum and avg:
+        for item in crimes['counts']:
+            crimes['sum'] += crimes['counts'][item]['count']
+            if crimes['max'] < crimes['counts'][item]['count']:
+                crimes['max'] = crimes['counts'][item]['count']
+        crimes['avg'] = crimes['sum'] / len(crimes['counts'])
         return crimes
 
     def get_rankings(self, crime = None, grep = False, location = None, *args, **kwargs):
@@ -413,6 +417,9 @@ class Parse:
         # What we're parsing affects the dicts we have.
         outputs = ''
 
+        if 'crimes' not in crimes and action != 'monthly':
+            return False
+
         if action == 'recent' or action == 'specific':
             # Lists, probably recents, with full crime record dicts
             i = 0
@@ -462,16 +469,22 @@ class Parse:
 
         elif action == 'monthly':
             crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
+            divisor = 1
+            if crimes['max'] > 80:
+                divisor = 10
+            if crimes['max'] > 800:
+                divisor = 100
+            if crimes['max'] > 8000:
+                divisor = 1000
+
             for item in crime_dict:
                 values = {
                     'date': datetime.strftime(item[1]['date'], '%b %Y'),
                     'count': item[1]['count'],
-                    'barchart': '#'*int(item[1]['count'])
+                    'barchart': '#'*int(item[1]['count']/divisor)
                 }
-                if crimes['max'] > 80:
-                    outputs += '%(date) %(count)\n' % values
-                else:
-                    outputs += '%(date)s %(barchart)s %(count)s\n' % values
+                outputs += '%(date)s %(barchart)s %(count)s\n' % values
+                #outputs += '%(date)s %(barchart)s %(count)s\n' % values
 
         else:
             print "We did not have any crimes to handle"
@@ -526,7 +539,10 @@ if __name__ == '__main__':
     if action == 'monthly':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
-        crimes = parse.get_monthly(crime, grep, location)
+        # The limit defaults to 0, but 24 is our go-to number for this report.
+        if limit == 0:
+            limit = 24
+        crimes = parse.get_monthly(crime, grep, location, limit)
         if verbose:
             print crimes
     if action == 'rankings':
