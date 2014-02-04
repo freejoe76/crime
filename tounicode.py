@@ -46,11 +46,13 @@ class ToUnicode:
         for i in self.text:
             chrnum = ord(i)
             if i.lower() == i:
-                offset = 97
-                print self.translation[1][1]
+                offset = chrnum - 97
+                charset = 1
             elif i.upper() == i:
                 offset = chrnum - 65
-                translated += unichr(self.translation['monospace'][0][1] + offset)
+                charset = 0
+
+            translated += unichr(self.translation[font][charset][1] + offset)
 
         return translated
 
@@ -59,4 +61,4 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
     for arg in args:
         u = ToUnicode(arg)
-        print u.translate()
+        print u.translate(), 
