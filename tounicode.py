@@ -1,13 +1,19 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import os
 from optparse import OptionParser
 
 
 class ToUnicode:
-    """ Unicode-specific methods for dealing with translating Unicode characters in the shell."""
-    def __init__(self, text):
-        """ Translation matrix via Moses Moore, http://mozai.com/programming/dandytype.html
+    """ Translate ascii to Unicode characters.
+        >>> u = ToUnicode('TEST')
+        >>> print u.translate()
+        𝚃𝙴𝚂𝚃
         """
+
+    def __init__(self, text):
+        """ Translation matrix via Moses Moore (https://github.com/mozai/), http://mozai.com/programming/dandytype.html
+            """
         self.translation = {
             'ascii':[["!",33,"~"]],
             'parens':[["A",9372,"Z"],["a",9372,"z"],["1",9332,"9"]],
@@ -29,21 +35,28 @@ class ToUnicode:
         }
         self.text = text
 
-    def tomonospace(self):
+    def translate(self, font='monospace'):
         """ First draft of a method to turn letters into monospace letters.
-        What about other fonts? What about non-letter characters? That's later."""
+            What about other fonts? What about non-letter characters? That's later.
+            """
+        translated = ''
+        if font not in self.translation:
+            return False
+
         for i in self.text:
             chrnum = ord(i)
-            translate = ''
             if i.lower() == i:
                 offset = 97
                 print self.translation[1][1]
             elif i.upper() == i:
                 offset = chrnum - 65
-                translate += unichr(self.translation['monospace'][0][1] + offset)
+                translated += unichr(self.translation['monospace'][0][1] + offset)
 
-        print translate
+        return translated
 
 if __name__ == '__main__':
-    u = ToUnicode('TEST')
-    print u.tomonospace()
+    parser = OptionParser()
+    (options, args) = parser.parse_args()
+    for arg in args:
+        u = ToUnicode(arg)
+        print u.translate()
