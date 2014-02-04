@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
+from __future__ import unicode_literals
 from optparse import OptionParser
 
 
 class ToUnicode:
     """ Translate ascii to Unicode characters.
-        >>> u = ToUnicode('TEST')
-        >>> print u.translate()
+        >>> u = ToUnicode('monospace')
+        >>> print u.translate('TEST')
         𝚃𝙴𝚂𝚃
         """
 
-    def __init__(self, text):
+    def __init__(self, font):
         """ Translation matrix via Moses Moore (https://github.com/mozai/), http://mozai.com/programming/dandytype.html
             """
         self.translation = {
@@ -33,17 +33,17 @@ class ToUnicode:
             'monospace':[["A",120432,"Z"],["a",120458,"z"],["0",120822,"9"]],
             'fullwidth':[["!",65281,"~"]]
         }
-        self.text = text
+        self.font = font
 
-    def translate(self, font='monospace'):
+    def translate(self, text):
         """ First draft of a method to turn letters into monospace letters.
             What about other fonts? What about non-letter characters? That's later.
             """
         translated = ''
-        if font not in self.translation:
+        if self.font not in self.translation:
             return False
 
-        for i in self.text:
+        for i in text:
             chrnum = ord(i)
             if i.lower() == i:
                 offset = chrnum - 97
@@ -52,13 +52,14 @@ class ToUnicode:
                 offset = chrnum - 65
                 charset = 0
 
-            translated += unichr(self.translation[font][charset][1] + offset)
+            translated += unichr(self.translation[self.font][charset][1] + offset)
 
         return translated
 
 if __name__ == '__main__':
     parser = OptionParser()
+    parser.add_option("-f", "--font", dest="font", default="monospace")
     (options, args) = parser.parse_args()
+    u = ToUnicode(options.font)
     for arg in args:
-        u = ToUnicode(arg)
-        print u.translate(), 
+        print u.translate(arg), 
