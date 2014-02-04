@@ -45,7 +45,10 @@ class ToUnicode:
 
         for i in text:
             chrnum = ord(i)
-            if i.lower() == i:
+            if i.isdigit():
+                offset = chrnum - 48
+                charset = 2
+            elif i.lower() == i:
                 offset = chrnum - 97
                 charset = 1
             elif i.upper() == i:
@@ -60,6 +63,7 @@ if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-f", "--font", dest="font", default="monospace")
     (options, args) = parser.parse_args()
+
     u = ToUnicode(options.font)
     for arg in args:
         print u.translate(arg), 
