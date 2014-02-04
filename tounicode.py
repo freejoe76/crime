@@ -34,12 +34,15 @@ class ToUnicode:
         What about other fonts? What about non-letter characters? That's later."""
         for i in self.text:
             chrnum = ord(i)
+            translate = ''
             if i.lower() == i:
                 offset = 97
                 print self.translation[1][1]
             elif i.upper() == i:
                 offset = chrnum - 65
-                print unichr(self.translation['monospace'][0][1] + offset),
+                translate += unichr(self.translation['monospace'][0][1] + offset)
+
+        print translate
 
 if __name__ == '__main__':
     u = ToUnicode('TEST')
