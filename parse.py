@@ -3,6 +3,7 @@
 import os
 import csv
 import operator
+import math
 from collections import defaultdict, OrderedDict
 from optparse import OptionParser
 from datetime import datetime, timedelta
@@ -478,16 +479,39 @@ class Parse:
             if crimes['max'] > 8000:
                 divisor = 5000
 
+            # Calculate the standard deviation.
+            # If the deviation's too low, there's no point in publishing the bar part of this chart.
+            count = []
+            for item in crime_dict:
+                count.append(item[1]['count'])
+            mean = int(sum(count)/len(count))
+            #print mean
+            count = []
+            for item in crime_dict:
+                diff = item[1]['count'] - mean
+                count.append(diff*diff)
+            variance = int(sum(count)/len(count))
+            #print variance
+            deviation = int(math.sqrt(variance))
+
+            barchar = '#'
+            # If the deviation-to-mean ratio is more than 50%, that means
+            # most of the values are close to the mean and we don't really
+            # need a barchart.
+            if float(deviation)/mean > .5:
+                barchar = ''
+
             # We would like the date monospaced.
             font = FancyText()
+            # *** We should have an option to allow for the year if we want it in this month-to-month
+            date_format = '%b'
             for item in crime_dict:
                 values = {
-                    'date': font.translate(datetime.strftime(item[1]['date'], '%b %Y').upper()),
+                    'date': font.translate(datetime.strftime(item[1]['date'], date_format).upper()),
                     'count': item[1]['count'],
-                    'barchart': '#'*int(item[1]['count']/divisor)
+                    'barchart': barchar*int(item[1]['count']/divisor)
                 }
                 outputs += '%(date)s %(barchart)s %(count)s\n' % values
-                #outputs += '%(date)s %(barchart)s %(count)s\n' % values
 
         else:
             print "We did not have any crimes to handle"
