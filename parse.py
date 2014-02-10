@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Run a query against the crime CSV's
 import os
 import csv
@@ -494,6 +495,7 @@ class Parse:
             #print variance
             deviation = int(math.sqrt(variance))
 
+            # *** Possible barchars: #,■,▮
             barchar = '#'
             # If the deviation-to-mean ratio is more than 50%, that means
             # most of the values are close to the mean and we don't really
@@ -511,7 +513,7 @@ class Parse:
                     'count': item[1]['count'],
                     'barchart': barchar*int(item[1]['count']/divisor)
                 }
-                outputs += '%(date)s %(barchart)s %(count)s\n' % values
+                outputs += u'%(date)s %(barchart)s %(count)s\n' % values
 
         else:
             print "We did not have any crimes to handle"
