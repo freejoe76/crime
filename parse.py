@@ -428,7 +428,7 @@ class Parse:
             """
         pass
 
-    def get_uniques(self, field):
+    def get_uniques(self, field, print_it=False):
         """ Write a list of unique values from a field in the CSV.
             >>> parse = Parse('_input/test')
             >>> field = 'OFFENSE_CATEGORY_ID'
@@ -440,11 +440,18 @@ class Parse:
             record = dict(zip(dicts.keys, row))
             values.append(record[field])
 
-        print set(values)
+        if print_it is True:
+            print set(values)
         return set(values)
 
     def get_neighborhood(self, location):
-        # If location's in the list return that location name
+        """ If location's in the list then return that location name.
+            >>> parse = Parse('_input/test')
+            >>> parse.get_neighborhood('capitol-hill')
+            'capitol-hill'
+            >>> parse.get_neighborhood('elvis-presley')
+            
+            """
         if location in dicts.neighborhoods:
             return location
         return None
