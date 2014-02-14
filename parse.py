@@ -424,11 +424,17 @@ class Parse:
             return { 'crimes': sorted_rankings }
 
     def get_median(self, ranking):
-        # Take a ranking dict, add up the numbers, get the median.
+        """ Take a ranking dict, add up the numbers, get the median.
+            """
         pass
 
     def get_uniques(self, field):
-        # Write a list of unique values from a field in the CSV
+        """ Write a list of unique values from a field in the CSV.
+            >>> parse = Parse('_input/test')
+            >>> field = 'OFFENSE_CATEGORY_ID'
+            >>> parse.get_uniques(field)
+            set(['OFFENSE_CATEGORY_ID', 'all-other-crimes', 'murder', 'arson', 'theft-from-motor-vehicle', 'auto-theft', 'sexual-assault', 'drug-alcohol', 'larceny', 'aggravated-assault', 'other-crimes-against-persons', 'robbery', 'burglary', 'white-collar-crime', 'public-disorder'])
+            """
         values = []
         for row in self.crime_file:
             record = dict(zip(dicts.keys, row))
