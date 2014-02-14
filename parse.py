@@ -85,16 +85,18 @@ class Parse:
 
     def check_date(self, value):
         """ Check a date to see if it's valid. If not, throw error.
-        >>> parse = Parse('_input/test')
-        >>> test_date = parse.check_date('2014-01-08')
-        return-value
-        >>> test_date = parse.check_date('Elvis\' birthday')
-        error
-        """
+            >>> parse = Parse('_input/test')
+            >>> test_date = parse.check_date('2014-01-08')
+
+            """
         return datetime.strptime(value, '%Y-%m-%d')
 
     def check_datetime(self, value):
-        # Check a datetime to see if it's valid. If not, throw error.
+        """ Check a datetime to see if it's valid. If not, throw error.
+            >>> parse = Parse('_input/test')
+            >>> test_date = parse.check_datetime('2014-01-08 06:05:04')
+
+            """
         try:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         except:
