@@ -131,13 +131,19 @@ class Parse:
         return False
 
     def get_specific_crime(self, crime, grep, location = None):
-        # Indexes specific crime.
-        # Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
-        # $ ./parse.py --verbose --action specific --crime meth --grep True
-        # $ ./parse.py --verbose --action specific --crime cocaine --grep True
-        # 
-        # Returns frequency for csv specified.
-        # Also returns the # of days since the last crime.
+        """ Indexes specific crime.
+            Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
+            $ ./parse.py --verbose --action specific --crime meth --grep True
+            $ ./parse.py --verbose --action specific --crime cocaine --grep True
+            
+            Returns frequency for csv specified.
+            Also returns the # of days since the last crime.
+            >>> parse = Parse('_input/test')
+            >>> crime, grep = 'violent', False
+            >>> specific = parse.get_specific_crime(crime, grep)
+            >>> print specific['count'], specific['crime']
+            43 violent
+            """
         crimes = self.get_recent_crimes(crime, grep, location)
         count = len(crimes['crimes'])
         last_crime = None
