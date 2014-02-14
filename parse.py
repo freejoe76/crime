@@ -268,10 +268,17 @@ class Parse:
         return record
 
     def get_monthly(self, crime = None, grep = False, location = '', limit = 24):
-        # Loop through the monthly crime files, return frequency.
-        # Can filter by crime, location or both. 
-        # Have some gymnastics to do here in jumping across files.
-        # Return a dict of months and # of occurrences.
+        """ Loop through the monthly crime files, return frequency.
+            Can filter by crime, location or both. 
+            Have some gymnastics to do here in jumping across files.
+            Returns a dict of months and # of occurrences.
+            >>> parse = Parse('_input/test')
+            >>> crime = 'violent'
+
+            # >>> result = parse.get_monthly(crime)
+            # >>> print result
+            # *** Will need a more robust selection of test data for this one.
+            """
         i = 0
         crime_type = self.get_crime_type(crime)
         crimes = { 'crime': crime, 'counts': dict(), 'max': 0, 'sum': 0, 'avg': 0 }
@@ -311,14 +318,22 @@ class Parse:
         return crimes
 
     def get_rankings(self, crime = None, grep = False, location = None, *args, **kwargs):
-        # Take a crime type or category and return a list of neighborhoods 
-        # ranked by frequency of that crime.
-        # If no crime is passed, we just rank overall number of crimes
-        # (and crimes per-capita) for that particular time period.
-        # Args taken should be the start of the timespan and the end.
-        # We return raw numbers and per-capita numbers.
-        # If a location is given, we will also rank all locations.
-        # This is done implicitly in the CLI report.
+        """ Take a crime type or category and return a list of neighborhoods 
+            ranked by frequency of that crime.
+            If no crime is passed, we just rank overall number of crimes
+            (and crimes per-capita) for that particular time period.
+            Args taken should be the start of the timespan and the end.
+            We return raw numbers ('neighborhood') and per-capita ('percapita') numbers.
+            If a location is given, we will also rank all locations.
+            This is done implicitly in the CLI report.
+            >>> parse = Parse('_input/test')
+            >>> crime = 'violent'
+            >>> result = parse.get_rankings(crime)
+            >>> print result['crimes']['neighborhood'][0]
+            ('wellshire', {'count': 0, 'rank': 0})
+            >>> print result['crimes']['percapita'][50]
+            ('west-colfax', {'count': 0.1, 'rank': 0})
+            """
         rankings = { 
             'neighborhood': dict(),
             'genre': defaultdict(int),
