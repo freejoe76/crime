@@ -496,7 +496,6 @@ class Parse:
             
             This is a helper function to build some of the more
             manual dicts in dicts.py
-            $ ./parse.py --action rankings --crime violent
             >>> parse = Parse('_input/test')
             >>> crimes = parse.get_rankings('violent')
             >>> result = parse.print_neighborhoods(crimes)
@@ -509,10 +508,23 @@ class Parse:
             #outputs += ["    '%s': '%s'," % (item[0], item[0])]
         return outputs
 
-    def print_crimes(self, crimes, limit, action, loc=None, *args):
-        # How do we want to display the crimes?
-        # Right now we're publishing them to be read in terminal.
-        # What we're parsing affects the dicts we have.
+    def print_crimes(self, crimes, limit, action, loc=None, output=None, *args):
+        """ How do we want to display the crimes?
+            This method takes a dict of crimes (the type of dict depends on 
+            which method we chose to piece this together).
+            It also takes an action, which corresponds to which type of dict
+            we have.
+            Possible actions: recent, specific, rankings, monthly.
+
+            Right now we're publishing them to be read in terminal.
+            What we're parsing affects the dicts we have.
+            >>> parse = Parse('_input/test')
+            >>> crimes = parse.get_recent_crimes('violent')
+            >>> limit, action = 15, 'recent'
+            >>> report = parse.print_crimes(crimes, limit, action)
+            >>> print report.split("\\n")[0]
+            1.  aggravated-assault: aggravated-assault-dv
+            """
         outputs = ''
 
         if 'crimes' not in crimes and action != 'monthly':
@@ -672,4 +684,4 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime meth --grep
         crimes = parse.get_specific_crime(crime, grep, location)
     if not silent:
-        print parse.print_crimes(crimes, limit, action, location)
+        print parse.print_crimes(crimes, limit, action, location, output)
