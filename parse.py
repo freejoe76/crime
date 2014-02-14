@@ -477,7 +477,11 @@ class Parse:
         return crime_file
 
     def clean_location(self, location):
-        # Take the location string, replace the -'s, capitalize what we can.
+        """ Take the location string, replace the -'s, capitalize what we can.
+            >>> parse = Parse('_input/test')
+            >>> parse.clean_location('capitol-hill')
+            'Capitol Hill'
+            """
         location = location.replace('-', ' ')
 
         # Locations 3 letters or fewer are probably acronyms, and should be capital.
@@ -487,12 +491,22 @@ class Parse:
         return location.title()
 
     def print_neighborhoods(self, crimes):
-        # Output a dict of neighborhoods to fancy-names.
-        # $ ./parse.py --action rankings --crime violent
-        outputs = ''
+        """ Output a dict of neighborhoods to fancy-names.
+            Takes a dict of crimes, as returned by get_rankings.
+            
+            This is a helper function to build some of the more
+            manual dicts in dicts.py
+            $ ./parse.py --action rankings --crime violent
+            >>> parse = Parse('_input/test')
+            >>> crimes = parse.get_rankings('violent')
+            >>> result = parse.print_neighborhoods(crimes)
+            >>> print result[0]
+                'wellshire': {'full': 'Wellshire'},
+            """
+        outputs = []
         for item in crimes['crimes']['percapita']:
-            #outputs += "    '%s': {'full': '%s'},\n" % (item[0], clean_location(item[0]))
-            outputs += "    '%s': '%s',\n" % (item[0], item[0])
+            outputs += ["    '%s': {'full': '%s'}," % (item[0], self.clean_location(item[0]))]
+            #outputs += ["    '%s': '%s'," % (item[0], item[0])]
         return outputs
 
     def print_crimes(self, crimes, limit, action, loc=None, *args):
