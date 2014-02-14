@@ -88,7 +88,7 @@ class Parse:
             >>> parse = Parse('_input/test')
             >>> test_date = parse.check_date('2014-01-08')
             >>> print test_date
-
+            2014-01-08
             """
         return datetime.strptime(value, '%Y-%m-%d')
 
@@ -97,7 +97,7 @@ class Parse:
             >>> parse = Parse('_input/test')
             >>> test_date = parse.check_datetime('2014-01-08 06:05:04')
             >>> print test_date
-
+            2014-01-08 06:05:04
             """
         try:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
@@ -107,9 +107,11 @@ class Parse:
 
     def does_crime_match(self, crime, grep, record, crime_type):
         """ Compares the crime against the fields in the record to see if it matches.
+            Possible crime_type's include: parent_category, .....
             Used in get_recent and get_monthly.
             >>> parse = Parse('_input/test')
-            >>> crime, grep, record, crime_type = 'violent', False, parse.get_first(), 
+            >>> record = parse.get_row()
+            >>> crime, grep, record, crime_type = 'violent', False, record, 'parent_category'
             >>> print parse.does_crime_match(crime, grep, record, crime_type)
             """
         if crime_type == 'parent_category':
@@ -236,12 +238,13 @@ class Parse:
         return crime_type
 
     def get_row(self, row=1):
-        """ Return a row from crime_file. Defaults to the first.
+        """ Return a dict of a row from crime_file. Defaults to the first.
             >>> parse = Parse('_input/test')
             >>> print parse.get_row(1)
-            ['2008237352.0', '2008237352230500', '2305', '0', 'theft-items-from-vehicle', 'theft-from-motor-vehicle', '2008-12-22 21:59:59', '2008-12-23 06:45:00', '2008-12-23 07:51:59', '876 S GRANT ST', '3145301.0', '1680472.0', '-104.9836106', '39.7005626', '3', '311', 'washington-park-west']
+            {'OFFENSE_CATEGORY_ID': 'theft-from-motor-vehicle', 'INCIDENT_ID': '2008237352.0', 'GEO_X': '3145301.0', 'REPORTED_DATE': '2008-12-23 07:51:59', 'OFFENSE_CODE': '2305', 'FIRST_OCCURRENCE_DATE': '2008-12-22 21:59:59', 'OFFENSE_CODE_EXTENSION': '0', 'DISTRICT_ID': '3', 'GEO_LAT': '39.7005626', 'LAST_OCCURRENCE_DATE': '2008-12-23 06:45:00', 'OFFENSE_TYPE_ID': 'theft-items-from-vehicle', 'PRECINCT_ID': '311', 'GEO_Y': '1680472.0', 'INCIDENT_ADDRESS': '876 S GRANT ST', 'OFFENSE_ID': '2008237352230500', 'GEO_LON': '-104.9836106', 'NEIGHBORHOOD_ID': 'washington-park-west'}
             """
-        return self.crime_file[row]
+        record = dict(zip(dicts.keys, self.crime_file[row]))
+        return record
 
     def get_monthly(self, crime = None, grep = False, location = '', limit = 24):
         # Loop through the monthly crime files, return frequency.
