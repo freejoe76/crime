@@ -236,12 +236,20 @@ class Parse:
 
 
     def get_crime_type(self, crime):
-        # Figure out what type of crime we're querying
-        # parent_category doesn't correspond to a CSV field,
-        # which is why it looks different. So that's obvious.
-        # type OFFENSE_TYPE_ID
-        # genre violent / property / other 
-        # category OFFENSE_CATEGORY_ID
+        """ Figure out which type of crime we're querying.
+            parent_category doesn't correspond to a CSV field, which is why 
+            it looks different. So that's obvious.
+            
+            Generally speaking:
+                type => OFFENSE_TYPE_ID
+                genre => violent / property / other 
+                category => OFFENSE_CATEGORY_ID
+            >>> parse = Parse('_input/test')
+            >>> crime = 'violent'
+            >>> result = parse.get_crime_type(crime)
+            >>> print result
+            parent_category
+            """
         crime_type = 'OFFENSE_TYPE_ID'
         if crime in dicts.crime_genres:
             crime_type = 'parent_category'
