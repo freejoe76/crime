@@ -322,10 +322,14 @@ class Parse:
             ranked by frequency of that crime.
             If no crime is passed, we just rank overall number of crimes
             (and crimes per-capita) for that particular time period.
-            Args taken should be the start of the timespan and the end.
-            We return raw numbers ('neighborhood') and per-capita ('percapita') numbers.
+            Args, if they exist, should be two valid date or datetimes, and be
+            the timespan's range.
+
+            We return a dict of raw numbers (dict['crimes']['neighborhood']) 
+            and per-capita (dict['crimes']['percapita']) numbers.
             If a location is given, we will also rank all locations.
-            This is done implicitly in the CLI report.
+
+            This is done implicitly in the CLI report. <-- what does that mean?
             >>> parse = Parse('_input/test')
             >>> crime = 'violent'
             >>> result = parse.get_rankings(crime)
