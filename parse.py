@@ -87,6 +87,7 @@ class Parse:
         """ Check a date to see if it's valid. If not, throw error.
             >>> parse = Parse('_input/test')
             >>> test_date = parse.check_date('2014-01-08')
+            >>> print test_date
 
             """
         return datetime.strptime(value, '%Y-%m-%d')
@@ -95,6 +96,7 @@ class Parse:
         """ Check a datetime to see if it's valid. If not, throw error.
             >>> parse = Parse('_input/test')
             >>> test_date = parse.check_datetime('2014-01-08 06:05:04')
+            >>> print test_date
 
             """
         try:
@@ -104,8 +106,12 @@ class Parse:
             return False
 
     def does_crime_match(self, crime, grep, record, crime_type):
-        # Compares the crime against the fields in the record to see if it matches.
-        # Used in get_recent and get_monthly.
+        """ Compares the crime against the fields in the record to see if it matches.
+            Used in get_recent and get_monthly.
+            >>> parse = Parse('_input/test')
+            >>> crime, grep, record, crime_type = 'violent', False, parse.get_first(), 
+            >>> print parse.does_crime_match(crime, grep, record, crime_type)
+            """
         if crime_type == 'parent_category':
             if record['OFFENSE_CATEGORY_ID'] in dicts.crime_lookup_reverse[crime]:
                 return True
@@ -166,7 +172,6 @@ class Parse:
             if len(row) < 5:
                 continue
             record = dict(zip(dicts.keys, row))
-            #print record
 
             # Address diffs, if we've got 'em.
             if diff == True:
@@ -229,6 +234,14 @@ class Parse:
             crime_type = 'OFFENSE_CATEGORY_ID'
 
         return crime_type
+
+    def get_row(self, row=1):
+        """ Return a row from crime_file. Defaults to the first.
+            >>> parse = Parse('_input/test')
+            >>> print parse.get_row(1)
+            ['2008237352.0', '2008237352230500', '2305', '0', 'theft-items-from-vehicle', 'theft-from-motor-vehicle', '2008-12-22 21:59:59', '2008-12-23 06:45:00', '2008-12-23 07:51:59', '876 S GRANT ST', '3145301.0', '1680472.0', '-104.9836106', '39.7005626', '3', '311', 'washington-park-west']
+            """
+        return self.crime_file[row]
 
     def get_monthly(self, crime = None, grep = False, location = '', limit = 24):
         # Loop through the monthly crime files, return frequency.
