@@ -6,6 +6,7 @@ import operator
 from collections import defaultdict, OrderedDict
 from optparse import OptionParser
 from datetime import datetime, timedelta
+from fancytext.fancytext import FancyText
 
 # The location-specific data
 import dicts
@@ -478,15 +479,17 @@ class Parse:
             crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
             divisor = 1
             if crimes['max'] > 80:
-                divisor = 10
+                divisor = 50
             if crimes['max'] > 800:
-                divisor = 100
+                divisor = 500
             if crimes['max'] > 8000:
-                divisor = 1000
+                divisor = 5000
 
+            # We would like the date monospaced.
+            font = FancyText()
             for item in crime_dict:
                 values = {
-                    'date': datetime.strftime(item[1]['date'], '%b %Y'),
+                    'date': font.translate(datetime.strftime(item[1]['date'], '%b %Y').upper()),
                     'count': item[1]['count'],
                     'barchart': '#'*int(item[1]['count']/divisor)
                 }
