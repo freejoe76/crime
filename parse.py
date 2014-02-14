@@ -457,12 +457,17 @@ class Parse:
         return None
         
     def open_csv(self, fn = '_input/currentyear', diff = False):
-        # Open the crime file for parsing.
-        # It defaults to the current year's file.
+        """ Open the crime CSV for parsing.
+            It defaults to the current year's file.
+            >>> parse = Parse('_input/test')
+            >>> result = parse.open_csv('_input/test')
+            >>> print result[0][0]
+            INCIDENT_ID
+            """
         crime_file_raw = csv.reader(open('%s.csv' % fn, 'rb'), delimiter = ',')
 
         # Sort the csv by the reported date (the 7th field, 6 on a 0-index,
-        # because that's the only one that's guaranteed to be in the record.
+        # because that's the only one that's guaranteed to be in the record.)
         # Newest items go on top. It's possible we won't hard-code
         # this forever.
         if diff == False:
