@@ -88,7 +88,7 @@ class Parse:
             >>> parse = Parse('_input/test')
             >>> test_date = parse.check_date('2014-01-08')
             >>> print test_date
-            2014-01-08
+            2014-01-08 00:00:00
             """
         return datetime.strptime(value, '%Y-%m-%d')
 
@@ -111,8 +111,9 @@ class Parse:
             Used in get_recent and get_monthly.
             >>> parse = Parse('_input/test')
             >>> record = parse.get_row()
-            >>> crime, grep, record, crime_type = 'violent', False, record, 'parent_category'
+            >>> crime, grep, record, crime_type = 'property', False, record, 'parent_category'
             >>> print parse.does_crime_match(crime, grep, record, crime_type)
+            True
             """
         if crime_type == 'parent_category':
             if record['OFFENSE_CATEGORY_ID'] in dicts.crime_lookup_reverse[crime]:
