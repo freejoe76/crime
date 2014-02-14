@@ -140,8 +140,8 @@ class Parse:
             Also returns the # of days since the last crime.
             >>> parse = Parse('_input/test')
             >>> crime, grep = 'violent', False
-            >>> specific = parse.get_specific_crime(crime, grep)
-            >>> print specific['count'], specific['crime']
+            >>> result = parse.get_specific_crime(crime, grep)
+            >>> print result['count'], result['crime']
             43 violent
             """
         crimes = self.get_recent_crimes(crime, grep, location)
@@ -153,9 +153,15 @@ class Parse:
         return { 'count': count, 'last_crime': timeago(last_crime), 'crime': crime }
 
     def get_recent_crimes(self, crime = None, grep = False, location = None, verbose = False, diff = False, *args, **kwargs):
-        # Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
-        # Timespan is passed as an argument (start, finish)
-        # !!! the input files aren't listed in order of occurence, so we need to sort.
+        """ Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
+            Timespan is passed as an argument (start, finish)
+            !!! the input files aren't listed in order of occurence, so we need to sort.
+            >>> parse = Parse('_input/test')
+            >>> crime = 'violent'
+            >>> result = parse.get_recent_crimes(crime)
+            >>> print len(result['crimes'])
+            43
+            """
 
         diffs = None
         crimes = []
