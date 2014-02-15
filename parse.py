@@ -520,10 +520,18 @@ class Parse:
             What we're parsing affects the dicts we have.
             >>> parse = Parse('_input/test')
             >>> crimes = parse.get_recent_crimes('violent')
-            >>> limit, action = 15, 'recent'
+            >>> limit, action = 1, 'recent'
             >>> report = parse.print_crimes(crimes, limit, action)
             >>> print report.split("\\n")[0]
             1.  aggravated-assault: aggravated-assault-dv
+            >>> report = parse.print_crimes(crimes, limit, 'specific')
+            >>> print report.split("\\n")[0]
+            1.  aggravated-assault: aggravated-assault-dv
+            >>> crimes = parse.get_rankings('violent')
+
+            #>>> report = parse.print_crimes(crimes, 15, 'rankings')
+            #>>> print report
+            #1.  aggravated-assault: aggravated-assault-dv
             """
         outputs = ''
 
