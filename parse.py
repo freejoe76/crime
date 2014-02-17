@@ -634,7 +634,7 @@ class Parse:
                 date = font.translate(date)
             for item in crime_dict:
                 values = {
-                    'date': date
+                    'date': date,
                     'count': item[1]['count'],
                     'barchart': barchar*int(item[1]['count']/divisor)
                 }
