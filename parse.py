@@ -9,6 +9,7 @@ from collections import defaultdict, OrderedDict
 from optparse import OptionParser
 from datetime import datetime, timedelta
 from fancytext.fancytext import FancyText
+from textbarchart import TextBarchart
 
 # The location-specific data
 import dicts

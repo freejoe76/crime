@@ -3,28 +3,29 @@
 from __future__ import unicode_literals
 import os
 import math
+from optparse import OptionParser
 from fancytext.fancytext import FancyText
 from datetime import datetime
 
 class TextBarchart():
     """ Takes a dict of key-values and returns a textual barchart such as this:
-        𝙵𝙴𝙱 #### 208
-        𝙹𝙰𝙽 ##### 260
-        𝙳𝙴𝙲 #### 234
-        𝙽𝙾𝚅 ####### 396
-        𝙾𝙲𝚃 ##### 285
-        𝚂𝙴𝙿 #### 212
-        𝙰𝚄𝙶 ######## 443
-        𝙹𝚄𝙻 ###### 301
-        𝙹𝚄𝙽 ##### 293
-        𝙼𝙰𝚈 ### 197
-        𝙰𝙿𝚁 #### 240
-        𝙼𝙰𝚁 ### 196
+        𝙹𝙰𝙽 ■ 61
+        𝙳𝙴𝙲 ■■■■ 207
+        𝙽𝙾𝚅 ■■■■ 225
+        𝙾𝙲𝚃 ■■ 141
+        𝚂𝙴𝙿 ■■■ 180
+        𝙰𝚄𝙶 ■■■ 168
+        𝙹𝚄𝙻 ■■■ 168
+        𝙹𝚄𝙽 ■■■ 152
+        𝙼𝙰𝚈 ■■■■■ 260
+        𝙰𝙿𝚁 ■■■ 195
+        𝙼𝙰𝚁 ■■■■ 208
         """
-    def __init__(self, options):
+    def __init__(self, options, the_dict):
         """ Hey.
             """
         self.options = options
+        self.the_dict = the_dict
 
     def find_max(self):
         """ Hey.
@@ -104,7 +105,6 @@ if __name__ == '__main__':
     parser.add_option("-f", "--font", dest="font")
     (options, args) = parser.parse_args()
 
-    u = TextBarchart(options)
-    for arg in args:
-        print u.translate(arg), 
-
+    # Need to figure out how to pass dict input via command line
+    #bar = TextBarchart(options, args)
+    #print bar.build_chart()
