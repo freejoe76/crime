@@ -613,7 +613,7 @@ class Parse:
             deviation = int(math.sqrt(variance))
 
             # *** Possible barchars: #,■,▮
-            barchar = '#'
+            barchar = u'■'
             # If the deviation-to-mean ratio is more than 50%, that means
             # most of the values are close to the mean and we don't really
             # need a barchart.
