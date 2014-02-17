@@ -604,7 +604,6 @@ class Parse:
                     'barchart': '#'*int(item[1]['count']/divisor)
                 }
                 outputs += '%(date)s %(barchart)s %(count)s\n' % values
-                #outputs += '%(date)s %(barchart)s %(count)s\n' % values
 
         else:
             print "We did not have any crimes to handle"
@@ -620,8 +619,6 @@ if __name__ == '__main__':
     # location, crime and timespan. location and crime are
     # passed as options, and timespan (start, finish) as the 
     # first two arguments. This may not be the best way to do it.
-    import doctest
-    doctest.testmod(verbose=True)
     parser = OptionParser()
     parser.add_option("-f", "--filename", dest="filename", default="currentyear")
     parser.add_option("-a", "--action", dest="action")
@@ -647,6 +644,8 @@ if __name__ == '__main__':
     verbose = options.verbose
     silent = options.silent
 
+    import doctest
+    doctest.testmod(verbose=options.verbose)
     
     if verbose:
         print "Options: %s\nArgs: %s" % (options, args)
