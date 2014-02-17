@@ -60,8 +60,8 @@ class Parse:
         command-line, and a python dict. 
         >>> parse = Parse('_input/test')
         >>> grep = False
-        >>> crimes = parse.get_specific_crime('violent', grep, 'capitol-hill')
-        >>> crimes['count'], crimes['crime']
+        >>> result = parse.get_specific_crime('violent', grep, 'capitol-hill')
+        >>> print result['count'], result['crime']
         3 violent
         """
     def __init__(self, crime_filename, diff = False):
