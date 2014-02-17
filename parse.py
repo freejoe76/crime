@@ -543,6 +543,8 @@ class Parse:
             i = 0
             if output == 'csv':
                 outputs += 'category, type, date_reported, address, lat, lon\n'
+            elif output == 'json':
+                outputs += '{'
 
             crimes_to_print = crimes['crimes'][:limit]
             if limit == 0:
@@ -551,6 +553,9 @@ class Parse:
             for crime in crimes_to_print:
                 i = i + 1
                 if output == 'csv':
+                    outputs += '%s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
+                    continue
+                elif output == 'json':
                     outputs += '%s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
                     continue
 
