@@ -43,20 +43,20 @@ class TextBarchart():
             divisor = 5000
         return divisor
 
-    def compute_mean(self, the_dict):
+    def compute_mean(self):
         """ Hey.
             """
         count = []
-        for item in the_dict:
+        for item in self.the_dict:
             count.append(item[1])
         return int(sum(count)/len(count))
         
 
-    def compute_variance(self, the_dict):
+    def compute_variance(self):
         """ Hey.
             """
         count = []
-        for item in the_dict:
+        for item in self.the_dict:
             diff = item[1] - mean
             count.append(diff*diff)
 

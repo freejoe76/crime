@@ -590,7 +590,12 @@ class Parse:
             outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
 
         elif action == 'monthly':
+            # We use the textbarchart here.
+            options = { 'type': None, 'font': 'monospace' }
             crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
+            bar = TextBarchart(options, crime_dict)
+            outputs += bar.build_chart()
+            '''
             divisor = 1
             if crimes['max'] > 80:
                 divisor = 50
@@ -640,6 +645,7 @@ class Parse:
                     'barchart': barchar*int(item[1]['count']/divisor)
                 }
                 outputs += u'%(date)s %(barchart)s %(count)s\n' % values
+            '''
 
         else:
             print "We did not have any crimes to handle"
