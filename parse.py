@@ -16,9 +16,10 @@ import dicts
 divider='\n=============================================================\n'
 
 def timeago(time=False):
-    # Get a datetime object or a int() Epoch timestamp and return a
-    # pretty string like 'an hour ago', 'Yesterday', '3 months ago',
-    # 'just now', etc
+    """ Get a datetime object or a int() Epoch timestamp and return a
+        pretty string like 'an hour ago', 'Yesterday', '3 months ago',
+        'just now', etc
+        """
     if time == None:
         return "never"
     
@@ -85,11 +86,21 @@ class Parse:
 
 
     def check_date(self, value):
-        # Check a date to see if it's valid. If not, throw error.
+        """ Check a date to see if it's valid. If not, throw error.
+            >>> parse = Parse('_input/test')
+            >>> test_date = parse.check_date('2014-01-08')
+            >>> print test_date
+            2014-01-08 00:00:00
+            """
         return datetime.strptime(value, '%Y-%m-%d')
 
     def check_datetime(self, value):
-        # Check a datetime to see if it's valid. If not, throw error.
+        """ Check a datetime to see if it's valid. If not, throw error.
+            >>> parse = Parse('_input/test')
+            >>> test_date = parse.check_datetime('2014-01-08 06:05:04')
+            >>> print test_date
+            2014-01-08 06:05:04
+            """
         try:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         except:
@@ -97,8 +108,15 @@ class Parse:
             return False
 
     def does_crime_match(self, crime, grep, record, crime_type):
-        # Compares the crime against the fields in the record to see if it matches.
-        # Used in get_recent and get_monthly.
+        """ Compares the crime against the fields in the record to see if it matches.
+            Possible crime_type's include: parent_category, .....
+            Used in get_recent and get_monthly.
+            >>> parse = Parse('_input/test')
+            >>> record = parse.get_row()
+            >>> crime, grep, record, crime_type = 'property', False, record, 'parent_category'
+            >>> print parse.does_crime_match(crime, grep, record, crime_type)
+            True
+            """
         if crime_type == 'parent_category':
             if record['OFFENSE_CATEGORY_ID'] in dicts.crime_lookup_reverse[crime]:
                 return True
@@ -115,13 +133,19 @@ class Parse:
         return False
 
     def get_specific_crime(self, crime, grep, location = None):
-        # Indexes specific crime.
-        # Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
-        # $ ./parse.py --verbose --action specific --crime meth --grep True
-        # $ ./parse.py --verbose --action specific --crime cocaine --grep True
-        # 
-        # Returns frequency for csv specified.
-        # Also returns the # of days since the last crime.
+        """ Indexes specific crime.
+            Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
+            $ ./parse.py --verbose --action specific --crime meth --grep True
+            $ ./parse.py --verbose --action specific --crime cocaine --grep True
+            
+            Returns frequency for csv specified.
+            Also returns the # of days since the last crime.
+            >>> parse = Parse('_input/test')
+            >>> crime, grep = 'violent', False
+            >>> result = parse.get_specific_crime(crime, grep)
+            >>> print result['count'], result['crime']
+            43 violent
+            """
         crimes = self.get_recent_crimes(crime, grep, location)
         count = len(crimes['crimes'])
         last_crime = None
@@ -131,9 +155,15 @@ class Parse:
         return { 'count': count, 'last_crime': timeago(last_crime), 'crime': crime }
 
     def get_recent_crimes(self, crime = None, grep = False, location = None, verbose = False, diff = False, *args, **kwargs):
-        # Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
-        # Timespan is passed as an argument (start, finish)
-        # !!! the input files aren't listed in order of occurence, so we need to sort.
+        """ Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
+            Timespan is passed as an argument (start, finish)
+            !!! the input files aren't listed in order of occurence, so we need to sort.
+            >>> parse = Parse('_input/test')
+            >>> crime = 'violent'
+            >>> result = parse.get_recent_crimes(crime)
+            >>> print len(result['crimes'])
+            43
+            """
 
         diffs = None
         crimes = []
@@ -159,7 +189,6 @@ class Parse:
             if len(row) < 5:
                 continue
             record = dict(zip(dicts.keys, row))
-            #print record
 
             # Address diffs, if we've got 'em.
             if diff == True:
@@ -209,12 +238,20 @@ class Parse:
 
 
     def get_crime_type(self, crime):
-        # Figure out what type of crime we're querying
-        # parent_category doesn't correspond to a CSV field,
-        # which is why it looks different. So that's obvious.
-        # type OFFENSE_TYPE_ID
-        # genre violent / property / other 
-        # category OFFENSE_CATEGORY_ID
+        """ Figure out which type of crime we're querying.
+            parent_category doesn't correspond to a CSV field, which is why 
+            it looks different. So that's obvious.
+            
+            Generally speaking:
+                type => OFFENSE_TYPE_ID
+                genre => violent / property / other 
+                category => OFFENSE_CATEGORY_ID
+            >>> parse = Parse('_input/test')
+            >>> crime = 'violent'
+            >>> result = parse.get_crime_type(crime)
+            >>> print result
+            parent_category
+            """
         crime_type = 'OFFENSE_TYPE_ID'
         if crime in dicts.crime_genres:
             crime_type = 'parent_category'
@@ -223,11 +260,27 @@ class Parse:
 
         return crime_type
 
+    def get_row(self, row=1):
+        """ Return a dict of a row from crime_file. Defaults to the first.
+            >>> parse = Parse('_input/test')
+            >>> print parse.get_row(1)
+            {'OFFENSE_CATEGORY_ID': 'theft-from-motor-vehicle', 'INCIDENT_ID': '2008237352.0', 'GEO_X': '3145301.0', 'REPORTED_DATE': '2008-12-23 07:51:59', 'OFFENSE_CODE': '2305', 'FIRST_OCCURRENCE_DATE': '2008-12-22 21:59:59', 'OFFENSE_CODE_EXTENSION': '0', 'DISTRICT_ID': '3', 'GEO_LAT': '39.7005626', 'LAST_OCCURRENCE_DATE': '2008-12-23 06:45:00', 'OFFENSE_TYPE_ID': 'theft-items-from-vehicle', 'PRECINCT_ID': '311', 'GEO_Y': '1680472.0', 'INCIDENT_ADDRESS': '876 S GRANT ST', 'OFFENSE_ID': '2008237352230500', 'GEO_LON': '-104.9836106', 'NEIGHBORHOOD_ID': 'washington-park-west'}
+            """
+        record = dict(zip(dicts.keys, self.crime_file[row]))
+        return record
+
     def get_monthly(self, crime = None, grep = False, location = '', limit = 24):
-        # Loop through the monthly crime files, return frequency.
-        # Can filter by crime, location or both. 
-        # Have some gymnastics to do here in jumping across files.
-        # Return a dict of months and # of occurrences.
+        """ Loop through the monthly crime files, return frequency.
+            Can filter by crime, location or both. 
+            Have some gymnastics to do here in jumping across files.
+            Returns a dict of months and # of occurrences.
+            >>> parse = Parse('_input/test')
+            >>> crime = 'violent'
+
+            # >>> result = parse.get_monthly(crime)
+            # >>> print result
+            # *** Will need a more robust selection of test data for this one.
+            """
         i = 0
         crime_type = self.get_crime_type(crime)
         crimes = { 'crime': crime, 'counts': dict(), 'max': 0, 'sum': 0, 'avg': 0 }
@@ -267,14 +320,26 @@ class Parse:
         return crimes
 
     def get_rankings(self, crime = None, grep = False, location = None, *args, **kwargs):
-        # Take a crime type or category and return a list of neighborhoods 
-        # ranked by frequency of that crime.
-        # If no crime is passed, we just rank overall number of crimes
-        # (and crimes per-capita) for that particular time period.
-        # Args taken should be the start of the timespan and the end.
-        # We return raw numbers and per-capita numbers.
-        # If a location is given, we will also rank all locations.
-        # This is done implicitly in the CLI report.
+        """ Take a crime type or category and return a list of neighborhoods 
+            ranked by frequency of that crime.
+            If no crime is passed, we just rank overall number of crimes
+            (and crimes per-capita) for that particular time period.
+            Args, if they exist, should be two valid date or datetimes, and be
+            the timespan's range.
+
+            We return a dict of raw numbers (dict['crimes']['neighborhood']) 
+            and per-capita (dict['crimes']['percapita']) numbers.
+            If a location is given, we will also rank all locations.
+
+            This is done implicitly in the CLI report. <-- what does that mean?
+            >>> parse = Parse('_input/test')
+            >>> crime = 'violent'
+            >>> result = parse.get_rankings(crime)
+            >>> print result['crimes']['neighborhood'][0]
+            ('wellshire', {'count': 0, 'rank': 0})
+            >>> print result['crimes']['percapita'][50]
+            ('west-colfax', {'count': 0.1, 'rank': 0})
+            """
         rankings = { 
             'neighborhood': dict(),
             'genre': defaultdict(int),
@@ -361,32 +426,50 @@ class Parse:
             return { 'crimes': sorted_rankings }
 
     def get_median(self, ranking):
-        # Take a ranking dict, add up the numbers, get the median.
+        """ Take a ranking dict, add up the numbers, get the median.
+            """
         pass
 
-    def get_uniques(self, field):
-        # Write a list of unique values from a field in the CSV
+    def get_uniques(self, field, print_it=False):
+        """ Write a list of unique values from a field in the CSV.
+            >>> parse = Parse('_input/test')
+            >>> field = 'OFFENSE_CATEGORY_ID'
+            >>> parse.get_uniques(field)
+            set(['OFFENSE_CATEGORY_ID', 'all-other-crimes', 'murder', 'arson', 'theft-from-motor-vehicle', 'auto-theft', 'sexual-assault', 'drug-alcohol', 'larceny', 'aggravated-assault', 'other-crimes-against-persons', 'robbery', 'burglary', 'white-collar-crime', 'public-disorder'])
+            """
         values = []
         for row in self.crime_file:
             record = dict(zip(dicts.keys, row))
             values.append(record[field])
 
-        print set(values)
+        if print_it is True:
+            print set(values)
         return set(values)
 
     def get_neighborhood(self, location):
-        # If location's in the list return that location name
+        """ If location's in the list then return that location name.
+            >>> parse = Parse('_input/test')
+            >>> parse.get_neighborhood('capitol-hill')
+            'capitol-hill'
+            >>> parse.get_neighborhood('elvis-presley')
+            
+            """
         if location in dicts.neighborhoods:
             return location
         return None
         
     def open_csv(self, fn = '_input/currentyear', diff = False):
-        # Open the crime file for parsing.
-        # It defaults to the current year's file.
+        """ Open the crime CSV for parsing.
+            It defaults to the current year's file.
+            >>> parse = Parse('_input/test')
+            >>> result = parse.open_csv('_input/test')
+            >>> print result[0][0]
+            INCIDENT_ID
+            """
         crime_file_raw = csv.reader(open('%s.csv' % fn, 'rb'), delimiter = ',')
 
         # Sort the csv by the reported date (the 7th field, 6 on a 0-index,
-        # because that's the only one that's guaranteed to be in the record.
+        # because that's the only one that's guaranteed to be in the record.)
         # Newest items go on top. It's possible we won't hard-code
         # this forever.
         if diff == False:
@@ -396,7 +479,11 @@ class Parse:
         return crime_file
 
     def clean_location(self, location):
-        # Take the location string, replace the -'s, capitalize what we can.
+        """ Take the location string, replace the -'s, capitalize what we can.
+            >>> parse = Parse('_input/test')
+            >>> parse.clean_location('capitol-hill')
+            'Capitol Hill'
+            """
         location = location.replace('-', ' ')
 
         # Locations 3 letters or fewer are probably acronyms, and should be capital.
@@ -406,18 +493,48 @@ class Parse:
         return location.title()
 
     def print_neighborhoods(self, crimes):
-        # Output a dict of neighborhoods to fancy-names.
-        # $ ./parse.py --action rankings --crime violent
-        outputs = ''
+        """ Output a dict of neighborhoods to fancy-names.
+            Takes a dict of crimes, as returned by get_rankings.
+            
+            This is a helper function to build some of the more
+            manual dicts in dicts.py
+            >>> parse = Parse('_input/test')
+            >>> crimes = parse.get_rankings('violent')
+            >>> result = parse.print_neighborhoods(crimes)
+            >>> print result[0]
+                'wellshire': {'full': 'Wellshire'},
+            """
+        outputs = []
         for item in crimes['crimes']['percapita']:
-            #outputs += "    '%s': {'full': '%s'},\n" % (item[0], clean_location(item[0]))
-            outputs += "    '%s': '%s',\n" % (item[0], item[0])
+            outputs += ["    '%s': {'full': '%s'}," % (item[0], self.clean_location(item[0]))]
+            #outputs += ["    '%s': '%s'," % (item[0], item[0])]
         return outputs
 
-    def print_crimes(self, crimes, limit, action, loc=None, *args):
-        # How do we want to display the crimes?
-        # Right now we're publishing them to be read in terminal.
-        # What we're parsing affects the dicts we have.
+    def print_crimes(self, crimes, limit, action, loc=None, output=None, *args):
+        """ How do we want to display the crimes?
+            This method takes a dict of crimes (the type of dict depends on 
+            which method we chose to piece this together).
+            It also takes an action, which corresponds to which type of dict
+            we have.
+            Possible actions: recent, specific, rankings, monthly.
+
+            Right now we're publishing them to be read in terminal.
+            What we're parsing affects the dicts we have.
+            >>> parse = Parse('_input/test')
+            >>> crimes = parse.get_recent_crimes('violent')
+            >>> limit, action = 1, 'recent'
+            >>> report = parse.print_crimes(crimes, limit, action)
+            >>> print report.split("\\n")[0]
+            1.  aggravated-assault: aggravated-assault-dv
+            >>> report = parse.print_crimes(crimes, limit, 'specific')
+            >>> print report.split("\\n")[0]
+            1.  aggravated-assault: aggravated-assault-dv
+            >>> crimes = parse.get_rankings('violent')
+
+            #>>> report = parse.print_crimes(crimes, 15, 'rankings')
+            #>>> print report
+            #1.  aggravated-assault: aggravated-assault-dv
+            """
         outputs = ''
 
         if 'crimes' not in crimes and action != 'monthly':
@@ -522,6 +639,7 @@ class Parse:
         return outputs
 
 
+
 if __name__ == '__main__':
     # Parse the arguments, pass 'em to the function
     # The three main args we use to query the crime data are
@@ -553,6 +671,8 @@ if __name__ == '__main__':
     verbose = options.verbose
     silent = options.silent
 
+    import doctest
+    doctest.testmod(verbose=options.verbose)
     
     if verbose:
         print "Options: %s\nArgs: %s" % (options, args)
@@ -598,4 +718,4 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime meth --grep
         crimes = parse.get_specific_crime(crime, grep, location)
     if not silent:
-        print parse.print_crimes(crimes, limit, action, location)
+        print parse.print_crimes(crimes, limit, action, location, output)
