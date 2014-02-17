@@ -617,6 +617,8 @@ class Parse:
             barchar = '#'
             if self.options.unicode == True:
                 barchar = u'■'
+                # In case we want the date monospaced.
+                font = FancyText()
 
             # If the deviation-to-mean ratio is more than 50%, that means
             # most of the values are close to the mean and we don't really
@@ -627,12 +629,10 @@ class Parse:
             # *** We should have an option to allow for the year if we want it in this month-to-month
             date_format = '%b'
 
-            # If we want the date monospaced.
-            date = datetime.strftime(item[1]['date'], date_format).upper()
-            if self.options.unicode == True:
-                font = FancyText()
-                date = font.translate(date)
             for item in crime_dict:
+                date = datetime.strftime(item[1]['date'], date_format).upper()
+                if self.options.unicode == True:
+                    date = font.translate(date)
                 values = {
                     'date': date,
                     'count': item[1]['count'],
