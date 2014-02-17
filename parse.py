@@ -64,10 +64,11 @@ class Parse:
         >>> print result['count'], result['crime']
         3 violent
         """
-    def __init__(self, crime_filename, diff = False):
+    def __init__(self, crime_filename, diff = False, options = None):
         self.crime_file = self.open_csv(crime_filename, diff)
-        self.diff = diff
         self.crime_filename = crime_filename
+        self.diff = diff
+        self.options = options
 
     def abstract_keys(self, key):
         # Take a key, return its CSV equivalent.
@@ -620,13 +621,17 @@ class Parse:
             if float(deviation)/mean > .5:
                 barchar = ''
 
-            # We would like the date monospaced.
-            font = FancyText()
             # *** We should have an option to allow for the year if we want it in this month-to-month
             date_format = '%b'
+
+            # If we want the date monospaced.
+            date = datetime.strftime(item[1]['date'], date_format).upper()
+            if self.options.unicode == True:
+                font = FancyText()
+                date = font.translate(date)
             for item in crime_dict:
                 values = {
-                    'date': font.translate(datetime.strftime(item[1]['date'], date_format).upper()),
+                    'date': date
                     'count': item[1]['count'],
                     'barchart': barchar*int(item[1]['count']/divisor)
                 }
@@ -654,6 +659,7 @@ if __name__ == '__main__':
     parser.add_option("-c", "--crime", dest="crime", default=None)
     parser.add_option("-g", "--grep", dest="grep", default=False, action="store_true")
     parser.add_option("-d", "--diff", dest="diff", default=False, action="store_true")
+    parser.add_option("-u", "--unicode", dest="unicode", default=False, action="store_true")
     parser.add_option("-o", "--output", dest="output", default=None)
     parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default=False, action="store_true")
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
@@ -680,7 +686,7 @@ if __name__ == '__main__':
     if diff == True:
         filename = 'latestdiff'
 
-    parse = Parse("_input/%s" % filename, diff)
+    parse = Parse("_input/%s" % filename, diff, options)
     location = parse.get_neighborhood(location)
 
 
