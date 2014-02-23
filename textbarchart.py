@@ -43,20 +43,24 @@ class TextBarchart():
             divisor = 5000
         return divisor
 
-    def compute_mean(self):
+    def compute_mean(self, the_dict = None):
         """ Hey.
             """
+        if the_dict == None:
+            the_dict = self.the_dict
         count = []
-        for item in self.the_dict:
+        for item in the_dict:
             count.append(item[1])
         return int(sum(count)/len(count))
         
 
-    def compute_variance(self):
+    def compute_variance(self, the_dict = None):
         """ Hey.
             """
+        if the_dict == None:
+            the_dict = self.the_dict
         count = []
-        for item in self.the_dict:
+        for item in the_dict:
             diff = item[1] - mean
             count.append(diff*diff)
 
@@ -68,12 +72,15 @@ class TextBarchart():
             """
         return int(math.sqrt(self.variance))
 
-    def build_chart(self):
+    def build_chart(self, the_dict = None):
         """ Hey.
             """
+        if the_dict == None:
+            the_dict = self.the_dict
 
-        self.mean = self.compute_mean(self.the_dict)
-        self.variance = self.compute_variance(self.the_dict)
+        print the_dict
+        self.mean = self.compute_mean(the_dict)
+        self.variance = self.compute_variance(the_dict)
         self.deviation = self.compute_deviation()
 
         # *** Possible barchars: #,■,▮,O,☠
