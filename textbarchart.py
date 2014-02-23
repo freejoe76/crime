@@ -21,20 +21,24 @@ class TextBarchart():
         𝙰𝙿𝚁 ■■■ 195
         𝙼𝙰𝚁 ■■■■ 208
         """
-    def __init__(self, options, the_dict):
+    def __init__(self, options, the_dict, the_max):
         """ Hey.
             """
         self.options = options
         self.the_dict = the_dict
+        self.the_max = the_max
 
     def find_max(self):
         """ Hey.
             """
         pass
 
-    def compute_divisor(self, the_max):
+    def compute_divisor(self, the_max = None):
         """ Hey.
             """
+        if the_max == None:
+            the_max = self.the_max
+
         if the_max > 80:
             divisor = 50
         if the_max > 800:
@@ -78,13 +82,14 @@ class TextBarchart():
         if the_dict == None:
             the_dict = self.the_dict
 
-        self.divisor = self.compute_divisor(the_dict)
+        self.divisor = self.compute_divisor()
         self.mean = self.compute_mean(the_dict)
         self.variance = self.compute_variance(the_dict)
         self.deviation = self.compute_deviation()
 
         # *** Possible barchars: #,■,▮,O,☠
         barchar = u'☠'
+
         # If the deviation-to-mean ratio is more than 50%, that means
         # most of the values are close to the mean and we don't really
         # need a barchart.

@@ -593,7 +593,7 @@ class Parse:
             # We use the textbarchart here.
             options = { 'type': None, 'font': 'monospace' }
             crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
-            bar = TextBarchart(options, crime_dict)
+            bar = TextBarchart(options, crime_dict, crimes['max'])
             outputs = bar.build_chart()
             '''
             divisor = 1
