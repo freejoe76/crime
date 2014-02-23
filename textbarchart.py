@@ -8,7 +8,9 @@ from fancytext.fancytext import FancyText
 from datetime import datetime
 
 class TextBarchart():
-    """ Takes a dict of key-values and returns a textual barchart such as this:
+    """ Takes a dict of key-values, which look something like ...
+        ***WHAT THEY LOOK LIKE***
+        ... and returns a textual barchart such as this:
         𝙹𝙰𝙽 ■ 61
         𝙳𝙴𝙲 ■■■■ 207
         𝙽𝙾𝚅 ■■■■ 225
@@ -89,6 +91,8 @@ class TextBarchart():
 
         # *** Possible barchars: #,■,▮,O,☠
         barchar = u'☠'
+        if self.options['unicode'] == False:
+            barchar = '#'
 
         # If the deviation-to-mean ratio is more than 50%, that means
         # most of the values are close to the mean and we don't really
@@ -102,11 +106,14 @@ class TextBarchart():
         date_format = '%b'
         outputs = ''
         for item in the_dict:
+            the_date = datetime.strftime(item[1]['date'], date_format).upper()
             values = {
-                'date': font.translate(datetime.strftime(item[1]['date'], date_format).upper()),
+                'date': font.translate(the_date),
                 'count': item[1]['count'],
                 'barchart': barchar*int(item[1]['count']/self.divisor)
             }
+            if self.options['unicode'] == False:
+                values['date'] = the_date
             outputs += u'%(date)s %(barchart)s %(count)s\n' % values
 
         return outputs
@@ -116,6 +123,7 @@ if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-t", "--type", dest="type", default=None) # Date, String... not sure what the other types
     parser.add_option("-f", "--font", dest="font")
+    parser.add_option("-u", "--unicode", dest="unicode", default=False, action="store_true")
     (options, args) = parser.parse_args()
 
     # Need to figure out how to pass dict input via command line

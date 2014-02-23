@@ -591,7 +591,8 @@ class Parse:
 
         elif action == 'monthly':
             # We use the textbarchart here.
-            options = { 'type': None, 'font': 'monospace' }
+            print self.options.unicode
+            options = { 'type': None, 'font': 'monospace', 'unicode': self.options.unicode }
             crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
             bar = TextBarchart(options, crime_dict, crimes['max'])
             outputs = bar.build_chart()
