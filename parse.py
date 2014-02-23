@@ -594,7 +594,7 @@ class Parse:
             options = { 'type': None, 'font': 'monospace' }
             crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
             bar = TextBarchart(options, crime_dict)
-            outputs += bar.build_chart()
+            outputs = bar.build_chart()
             '''
             divisor = 1
             if crimes['max'] > 80:

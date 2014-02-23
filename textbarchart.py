@@ -50,7 +50,7 @@ class TextBarchart():
             the_dict = self.the_dict
         count = []
         for item in the_dict:
-            count.append(item[1])
+            count.append(item[1]['count'])
         return int(sum(count)/len(count))
         
 
@@ -61,7 +61,7 @@ class TextBarchart():
             the_dict = self.the_dict
         count = []
         for item in the_dict:
-            diff = item[1] - mean
+            diff = item[1]['count'] - self.mean
             count.append(diff*diff)
 
         return int(sum(count)/len(count))
@@ -78,7 +78,7 @@ class TextBarchart():
         if the_dict == None:
             the_dict = self.the_dict
 
-        print the_dict
+        self.divisor = self.compute_divisor(the_dict)
         self.mean = self.compute_mean(the_dict)
         self.variance = self.compute_variance(the_dict)
         self.deviation = self.compute_deviation()
@@ -95,11 +95,12 @@ class TextBarchart():
         font = FancyText()
         # *** We should have an option to allow for the year if we want it in this month-to-month
         date_format = '%b'
+        outputs = ''
         for item in the_dict:
             values = {
                 'date': font.translate(datetime.strftime(item[1]['date'], date_format).upper()),
                 'count': item[1]['count'],
-                'barchart': barchar*int(item[1]['count']/divisor)
+                'barchart': barchar*int(item[1]['count']/self.divisor)
             }
             outputs += u'%(date)s %(barchart)s %(count)s\n' % values
 
