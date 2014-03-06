@@ -1,3 +1,4 @@
+# Some information about how this all was put together would be useful.
 crime_genres = ['violent', 'property', 'other']
 crime_lookup_reverse = { 
     'violent': ['murder', 'robbery', 'aggravated-assault', 'sexual-assault'],
@@ -94,8 +95,8 @@ neighborhood_lookup = {
     'whittier': {'full': 'Whittier', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'windsor': {'full': 'Windsor', 'nearest_neighbors': {}, 'location': {}, 'population': 0}
 }
-# Human-readable crime names.
 
+# Human-readable crime names.
 crime_name_lookup = {
     'sovereign-treason-viol': 'Treason',
     'immigration-violations': 'Immigration violation',
@@ -390,6 +391,7 @@ crime_name_lookup = {
     'public-order-crimes-other': 'Public order offense - other',
     'accessory-conspiracy-to-crime': 'Accessory / conspiracy to crime'
 }
+
 # Here so we can reference URLS such as http://denvercrimes.com/caphill 
 # and redirect requests to an actual page.
 neighborhood_shortcut_lookup = {
