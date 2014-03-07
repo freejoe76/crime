@@ -14,4 +14,4 @@ if __name__ == '__main__':
         cells = line.split(',')
         # The seventh cell contains the date field we want to search.
         if args[1] in cells[6]:
-            print line
+            print line.rstrip()
