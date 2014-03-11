@@ -1,5 +1,5 @@
 redis
-Shapely
-six
-Fiona
+#Shapely
+#six
+#Fiona
 #sudo apt-get install libgdal1-dev
