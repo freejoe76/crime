@@ -326,6 +326,7 @@ class Parse:
             ranked by frequency of that crime.
             If no crime is passed, we just rank overall number of crimes
             (and crimes per-capita) for that particular time period.
+            The time period defaults to the _input/currentyear.csv.
             Args, if they exist, should be two valid date or datetimes, and be
             the timespan's range.
 
