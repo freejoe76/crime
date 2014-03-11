@@ -1,12 +1,15 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Run a query against the crime CSV's
 import os
 import csv
 import operator
+import math
 from collections import defaultdict, OrderedDict
 from optparse import OptionParser
 from datetime import datetime, timedelta
 from fancytext.fancytext import FancyText
+from textbarchart import TextBarchart
 
 # The location-specific data
 import dicts
@@ -58,14 +61,15 @@ class Parse:
         command-line, and a python dict. 
         >>> parse = Parse('_input/test')
         >>> grep = False
-        >>> crimes = parse.get_specific_crime('violent', grep, 'capitol-hill')
-        >>> crimes['count'], crimes['crime']
-        (3, 'violent')
+        >>> result = parse.get_specific_crime('violent', grep, 'capitol-hill')
+        >>> print result['count'], result['crime']
+        3 violent
         """
-    def __init__(self, crime_filename, diff = False):
+    def __init__(self, crime_filename, diff = False, options = None):
         self.crime_file = self.open_csv(crime_filename, diff)
-        self.diff = diff
         self.crime_filename = crime_filename
+        self.diff = diff
+        self.options = options
 
     def abstract_keys(self, key):
         # Take a key, return its CSV equivalent.
@@ -322,6 +326,7 @@ class Parse:
             ranked by frequency of that crime.
             If no crime is passed, we just rank overall number of crimes
             (and crimes per-capita) for that particular time period.
+            The time period defaults to the _input/currentyear.csv.
             Args, if they exist, should be two valid date or datetimes, and be
             the timespan's range.
 
@@ -591,7 +596,13 @@ class Parse:
             outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
 
         elif action == 'monthly':
+            # We use the textbarchart here.
+            print self.options.unicode
+            options = { 'type': None, 'font': 'monospace', 'unicode': self.options.unicode }
             crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
+            bar = TextBarchart(options, crime_dict, crimes['max'])
+            outputs = bar.build_chart()
+            '''
             divisor = 1
             if crimes['max'] > 80:
                 divisor = 50
@@ -600,15 +611,48 @@ class Parse:
             if crimes['max'] > 8000:
                 divisor = 5000
 
-            # We would like the date monospaced.
-            font = FancyText()
+            # Calculate the standard deviation.
+            # If the deviation's too low, there's no point in publishing the bar part of this chart.
+            count = []
             for item in crime_dict:
+                count.append(item[1]['count'])
+            mean = int(sum(count)/len(count))
+            #print mean
+            count = []
+            for item in crime_dict:
+                diff = item[1]['count'] - mean
+                count.append(diff*diff)
+            variance = int(sum(count)/len(count))
+            #print variance
+            deviation = int(math.sqrt(variance))
+
+            # *** Possible barchars: #,■,▮
+            barchar = '#'
+            if self.options.unicode == True:
+                barchar = u'■'
+                # In case we want the date monospaced.
+                font = FancyText()
+
+            # If the deviation-to-mean ratio is more than 50%, that means
+            # most of the values are close to the mean and we don't really
+            # need a barchart.
+            if float(deviation)/mean > .5:
+                barchar = ''
+
+            # *** We should have an option to allow for the year if we want it in this month-to-month
+            date_format = '%b'
+
+            for item in crime_dict:
+                date = datetime.strftime(item[1]['date'], date_format).upper()
+                if self.options.unicode == True:
+                    date = font.translate(date)
                 values = {
-                    'date': font.translate(datetime.strftime(item[1]['date'], '%b %Y').upper()),
+                    'date': date,
                     'count': item[1]['count'],
-                    'barchart': '#'*int(item[1]['count']/divisor)
+                    'barchart': barchar*int(item[1]['count']/divisor)
                 }
-                outputs += '%(date)s %(barchart)s %(count)s\n' % values
+                outputs += u'%(date)s %(barchart)s %(count)s\n' % values
+            '''
 
         else:
             print "We did not have any crimes to handle"
@@ -632,6 +676,7 @@ if __name__ == '__main__':
     parser.add_option("-c", "--crime", dest="crime", default=None)
     parser.add_option("-g", "--grep", dest="grep", default=False, action="store_true")
     parser.add_option("-d", "--diff", dest="diff", default=False, action="store_true")
+    parser.add_option("-u", "--unicode", dest="unicode", default=False, action="store_true")
     parser.add_option("-o", "--output", dest="output", default=None)
     parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default=False, action="store_true")
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
@@ -658,7 +703,7 @@ if __name__ == '__main__':
     if diff == True:
         filename = 'latestdiff'
 
-    parse = Parse("_input/%s" % filename, diff)
+    parse = Parse("_input/%s" % filename, diff, options)
     location = parse.get_neighborhood(location)
 
 
@@ -666,9 +711,9 @@ if __name__ == '__main__':
     if action == 'monthly':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
-        # The limit defaults to 0, but 24 is our go-to number for this report.
+        # The limit defaults to 0, but 48 is our go-to number for this report.
         if limit == 0:
-            limit = 24
+            limit = 48
         crimes = parse.get_monthly(crime, grep, location, limit)
         if verbose:
             print crimes
