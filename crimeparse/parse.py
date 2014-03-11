@@ -562,12 +562,11 @@ class Parse:
                     outputs += '%s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
                     continue
                 elif output == 'json':
-                    bracket = '{'
                     close_bracket = '},'
                     if i == length:
                         close_bracket = '}'
 
-                    outputs += """  %s
+                    outputs += """  {
     "category": "%s",
     "type": "%s",
     "date-reported": "%s",
@@ -575,7 +574,7 @@ class Parse:
     "latitude": "%s",
     "longitude": "%s"
     %s
-""" % (bracket, crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], close_bracket)
+""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], close_bracket)
                     continue
 
                 if 'diff' not in crime:
