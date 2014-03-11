@@ -2,8 +2,7 @@ Flask==0.9
 Flask-FlatPages==0.5
 Flask-Testing==0.4
 redis
-Flask
 Shapely
 six
 Fiona
-sudo apt-get install libgdal1-dev
+#sudo apt-get install libgdal1-dev
