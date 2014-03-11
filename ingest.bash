@@ -130,16 +130,18 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
 
         for HOOD in capitol-hill civic-center;
         do
-            ./matchline.py $YEARMONTH current.csv | grep $HOOD >> location_$HOOD-$YEARMONTH.csv
+            # We include the comma in the grep to distinguish btw, say,
+            # north-capitol-hill and capitol-hill. It's a CSV, the comma's the delimiter.
+            ./matchline.py $YEARMONTH current.csv | grep ,$HOOD >> location_$HOOD-$YEARMONTH.csv
         done
         echo $NUM 
         date
     done
 
     for HOOD in capitol-hill civic-center; do
-        ./matchline.py $THIS_YEAR current.csv | grep $HOOD >> location_$HOOD-$THIS_YEAR.csv
-        ./matchline.py $LAST_YEAR current.csv | grep $HOOD >> location_$HOOD-$LAST_YEAR.csv
-        ./matchline.py $LAST_LAST_YEAR current.csv | grep $HOOD >> location_$HOOD-$LAST_LAST_YEAR.csv
+        ./matchline.py $THIS_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$THIS_YEAR.csv
+        ./matchline.py $LAST_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$LAST_YEAR.csv
+        ./matchline.py $LAST_LAST_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$LAST_LAST_YEAR.csv
     done
 
     # Just because we might need it: A text file of the last yearmonth pairs for the last ten years.
