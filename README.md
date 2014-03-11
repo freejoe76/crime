@@ -43,11 +43,3 @@ Publish per-capita and raw-number rankings for a crime type and/or category, or 
 ### Example usage
     # Compare neighborhood violent crime rate in January:
     $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
-
-Dependencies
-============
-## MongoDB http://api.mongodb.org/python/current/
-    $ sudo apt-get install build-essential python-dev
-    $ pip install pymongo
-    $ sudo apt-get install mongodb-server
-
