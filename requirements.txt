@@ -1,4 +1,4 @@
-FancyText==0.2
+#FancyText==0.2
 redis
 #Shapely
 #six
