@@ -549,11 +549,12 @@ class Parse:
             if output == 'csv':
                 outputs += 'category, type, date_reported, address, lat, lon\n'
             elif output == 'json':
-                outputs += '{'
+                outputs += '{\n    "items": ['
 
             crimes_to_print = crimes['crimes'][:limit]
             if limit == 0:
                 crimes_to_print = crimes['crimes']
+            length = len(crimes_to_print)
 
             for crime in crimes_to_print:
                 i = i + 1
@@ -561,7 +562,20 @@ class Parse:
                     outputs += '%s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
                     continue
                 elif output == 'json':
-                    outputs += '%s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
+                    bracket = '{'
+                    close_bracket = '},'
+                    if i == length:
+                        close_bracket = '}'
+
+                    outputs += """  %s
+    "category": "%s",
+    "type": "%s",
+    "date-reported": "%s",
+    "address": "%s",
+    "latitude": "%s",
+    "longitude": "%s"
+    %s
+""" % (bracket, crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], close_bracket)
                     continue
 
                 if 'diff' not in crime:
@@ -592,8 +606,9 @@ class Parse:
                     location = self.clean_location(item[0])
                 outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['neighborhood'][item[0]]['count'])
 
-        elif action == 'specific':
-            outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
+        # ^ look above, this case has been taken care of.
+        #elif action == 'specific':
+        #    outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
 
         elif action == 'monthly':
             # We use the textbarchart here.
@@ -657,6 +672,12 @@ class Parse:
         else:
             print "We did not have any crimes to handle"
             outputs = ''
+
+
+        # Close up loose strings
+        if action == 'recent' or action == 'specific':
+            if output == 'json':
+                outputs += ']\n}'
 
         return outputs
 
