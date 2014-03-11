@@ -1,4 +1,4 @@
-#FancyText==0.2
+git+git://github.com/freejoe76/fancytext#egg=FancyText
 redis
 #Shapely
 #six
