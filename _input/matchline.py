@@ -9,9 +9,9 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
     print args
     # First arg is the filename, second arg is the string we're looking for.
-    lines = open(args[0]).readlines()
+    lines = open(args[1]).readlines()
     for line in lines:
         cells = line.split(',')
         # The seventh cell contains the date field we want to search.
-        if args[1] in cells[6]:
+        if args[0] in cells[6]:
             print line.rstrip()
