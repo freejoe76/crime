@@ -1,6 +1,3 @@
-Flask==0.9
-Flask-FlatPages==0.5
-Flask-Testing==0.4
 redis
 Shapely
 six
