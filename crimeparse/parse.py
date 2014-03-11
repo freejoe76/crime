@@ -584,6 +584,11 @@ class Parse:
         Occurred: %s - %s
         Reported: %s
         %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
+
+        # ^ look above, this case has been taken care of.
+        #elif action == 'specific':
+        #    outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
+
         elif action == 'rankings':
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
             i = 0
@@ -604,10 +609,6 @@ class Parse:
                 else:
                     location = self.clean_location(item[0])
                 outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['neighborhood'][item[0]]['count'])
-
-        # ^ look above, this case has been taken care of.
-        #elif action == 'specific':
-        #    outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
 
         elif action == 'monthly':
             # We use the textbarchart here.
