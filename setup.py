@@ -17,14 +17,14 @@ class PyTest(Command):
         raise SystemExit(errno)
 
 setup(
-    name='DenverCrime',
+    name='CrimeParse',
     version='0.1',
     description='A crime parser for the City of Denver crime CSV.',
     license='Apache',
     url='https://github.com/freejoe76/crime',
     author='Joe Murphy',
     author_email='joe.murphy@gmail.com',
-    packages=['denvercrime'],
+    packages=['crimeparse'],
     tests_require=['pytest'],
     cmdclass={'test': PyTest},
     )
