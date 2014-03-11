@@ -7,7 +7,7 @@ from optparse import OptionParser
 if __name__ == '__main__':
     parser = OptionParser()
     (options, args) = parser.parse_args()
-    print args
+
     # First arg is the filename, second arg is the string we're looking for.
     lines = open(args[1]).readlines()
     for line in lines:
