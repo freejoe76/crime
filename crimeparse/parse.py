@@ -554,7 +554,7 @@ class Parse:
     "last_crime": "%s"
     }]\n}""" % ( crimes['count'], crimes['crime'], self.crime_filename, crimes['last_crime'] )
             else:
-            outputs = '%i %s crimes, (in file %s) last one %s ago' % ( crimes['count'], crimes['crime'], self.crime_filename, crimes['last_crime'] )
+                outputs = '%i %s crimes, (in file %s) last one %s ago' % ( crimes['count'], crimes['crime'], self.crime_filename, crimes['last_crime'] )
 
         elif action == 'recent':
             # Lists, probably recents, with full crime record dicts
