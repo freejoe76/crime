@@ -545,6 +545,15 @@ class Parse:
             return False
 
         if action == 'specific':
+            if output == 'json':
+                outputs += """{\n    "items": ['
+    {
+    "count": "%i",
+    "crime": "%s",
+    "filename": "%s",
+    "last_crime": "%s"
+    }]\n}""" % ( crimes['count'], crimes['crime'], self.crime_filename, crimes['last_crime'] )
+            else:
             outputs = '%i %s crimes, (in file %s) last one %s ago' % ( crimes['count'], crimes['crime'], self.crime_filename, crimes['last_crime'] )
 
         elif action == 'recent':
@@ -588,6 +597,9 @@ class Parse:
         Occurred: %s - %s
         Reported: %s
         %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
+
+            #if output == 'json':
+            #    outputs += ']\n}'
 
 
         elif action == 'rankings':
@@ -676,9 +688,8 @@ class Parse:
 
 
         # Close up loose strings
-        if action == 'recent' or action == 'specific':
-            if output == 'json':
-                outputs += ']\n}'
+        if action == 'recent' and output == 'json':
+            outputs += ']\n}'
 
         return outputs
 
