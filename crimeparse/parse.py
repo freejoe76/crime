@@ -529,21 +529,25 @@ class Parse:
             >>> report = parse.print_crimes(crimes, limit, action)
             >>> print report.split("\\n")[0]
             1.  aggravated-assault: aggravated-assault-dv
+            >>> crimes = parse.get_specific_crime('violent', False)
             >>> report = parse.print_crimes(crimes, limit, 'specific')
-            >>> print report.split("\\n")[0]
-            1.  aggravated-assault: aggravated-assault-dv
-            >>> crimes = parse.get_rankings('violent')
+            >>> print report.split(",")[0]
+            43 violent crimes
 
+            #>>> crimes = parse.get_rankings('violent')
             #>>> report = parse.print_crimes(crimes, 15, 'rankings')
             #>>> print report
             #1.  aggravated-assault: aggravated-assault-dv
             """
         outputs = ''
 
-        if 'crimes' not in crimes and action != 'monthly':
+        if 'crimes' not in crimes and action != 'monthly' and action != 'specific':
             return False
 
-        if action == 'recent' or action == 'specific':
+        if action == 'specific':
+            outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
+
+        elif action == 'recent':
             # Lists, probably recents, with full crime record dicts
             i = 0
             if output == 'csv':
@@ -585,9 +589,6 @@ class Parse:
         Reported: %s
         %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
 
-        # ^ look above, this case has been taken care of.
-        #elif action == 'specific':
-        #    outputs = '%i %s crimes, last one %s' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
 
         elif action == 'rankings':
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
