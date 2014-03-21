@@ -631,6 +631,9 @@ class Parse:
                     location = '***%s***' % self.clean_location(item[0])
                 else:
                     location = self.clean_location(item[0])
+
+                if output == 'json' and loc == item[0]:
+                        json = '{ "percapita": [ "rank": "%i", "location": "%s", "count": "%s" ] ' % ( i, loc, crimes['crimes']['percapita'][item[0]]['count'] )
                 outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['percapita'][item[0]]['count'])
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
@@ -641,6 +644,9 @@ class Parse:
                     location = '***%s***' % self.clean_location(item[0])
                 else:
                     location = self.clean_location(item[0])
+
+                if output == 'json' and loc == item[0]:
+                    json += '{ "raw": [ "rank": "%i", "location": "%s", "count": "%s" ] ' % ( i, location, crimes['crimes']['neighborhood'][item[0]]['count'] )
                 outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['neighborhood'][item[0]]['count'])
 
         elif action == 'monthly':
@@ -710,6 +716,9 @@ class Parse:
         # Close up loose strings
         if action == 'recent' and output == 'json':
             outputs += ']\n}'
+
+        if json != '':
+            return json
 
         return outputs
 
