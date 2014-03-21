@@ -609,14 +609,14 @@ class Parse:
             for item in crimes['crimes']['percapita']:
                 i = i + 1
                 location = self.clean_location(item[0])
-                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['percapita'][item[0]]['count'])
+                outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
             i = 0
             for item in crimes['crimes']['neighborhood']:
                 i = i + 1
                 location = self.clean_location(item[0])
-                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['neighborhood'][item[0]]['count'])
+                outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
 
         elif action == 'rankings':
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
