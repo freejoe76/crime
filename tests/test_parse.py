@@ -11,6 +11,13 @@ def test_full():
     '''
     pass
 
+def test_specific():
+    # 
+    parse = Parse('crimeparse/_input/test')
+    crime, grep = 'violent', False
+    result = parse.get_specific_crime(crime, grep)
+    #assert result['crimes']['neighborhood'][0] == ('wellshire', {'count': 0, 'rank': 0})
+
 def test_rankings():
     # Really should write something deeper than the existing doctests.
     parse = Parse('crimeparse/_input/test')
