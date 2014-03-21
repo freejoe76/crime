@@ -368,7 +368,7 @@ class Parse:
         for row in self.crime_file:
             record = dict(zip(dicts.keys, row))
 
-            # Sometimes this happens. *** What is "this"?
+            # Sometimes this happens: A header row on the record.
             if record['FIRST_OCCURRENCE_DATE'] == 'FIRST_OCCURRENCE_DATE':
                 continue
 
@@ -411,7 +411,9 @@ class Parse:
             'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
         }
 
-        if location is not None:
+        if location is None:
+            return { 'crimes': sorted_rankings }
+        else:
             # Here is where we care about populating the rankings field in the neighborhood dict.
             # There's no reason to look up locations on the command-line client, so
             # the ordering of the dict / lack thereof doesn't matter.
@@ -425,8 +427,6 @@ class Parse:
                     unsorted_rankings[item][subitem[0]]['rank'] = rank;
                     rank += 1
             return { 'crimes': unsorted_rankings }
-        else:
-            return { 'crimes': sorted_rankings }
 
     def get_median(self, ranking):
         """ Take a ranking dict, add up the numbers, get the median.
