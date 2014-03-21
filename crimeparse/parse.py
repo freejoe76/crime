@@ -546,7 +546,7 @@ class Parse:
 
         if action == 'specific':
             if output == 'json':
-                json = """{\n    "items": ['
+                json = """{\n    "items": [
     {
     "count": "%i",
     "crime": "%s",
