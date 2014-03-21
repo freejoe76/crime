@@ -602,6 +602,9 @@ class Parse:
             #    outputs += ']\n}'
 
 
+        # No-location rankings get passed a list of neighborhoods and counts
+        # rather than a dict, which means the approach for publishing these
+        # in the terminal is different.
         elif action == 'rankings' and loc is None:
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
             i = 0
