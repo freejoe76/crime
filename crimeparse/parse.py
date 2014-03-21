@@ -71,6 +71,36 @@ class Parse:
         self.diff = diff
         self.options = options
 
+    def set_crime(self, crime):
+        """ Set the object's crime var.
+            >>> parse = Parse('_input/test')
+            >>> crime = parse.set_crime('love')
+            >>> print crime
+            love
+            """
+        self.crime = crime
+        return self.crime
+
+    def set_grep(self, grep):
+        """ Set the object's grep var.
+            >>> parse = Parse('_input/test')
+            >>> grep = parse.set_grep(False)
+            >>> print grep
+            False
+            """
+        self.grep = grep
+        return self.grep
+
+    def set_location(self, location):
+        """ Set the object's location var.
+            >>> parse = Parse('_input/test')
+            >>> location = parse.set_location('cbd')
+            >>> print location
+            cbd
+            """
+        self.location = location
+        return self.location
+
     def abstract_keys(self, key):
         # Take a key, return its CSV equivalent.
         # Used so we can use this for more than just Denver crime csv.
@@ -546,6 +576,9 @@ class Parse:
 
         if action == 'specific':
             if output == 'json':
+                print self.crime
+                #rank_add = self.get_rankings(self.crime, self.grep, loc)
+                #print rank_add
                 json = """{\n    "items": [
     {
     "count": "%i",
@@ -768,6 +801,8 @@ if __name__ == '__main__':
 
 
     crimes = None
+    if crime is not None:
+        parse.set_crime(crime)
     if action == 'monthly':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
