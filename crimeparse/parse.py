@@ -539,14 +539,14 @@ class Parse:
             #>>> print report
             #1.  aggravated-assault: aggravated-assault-dv
             """
-        outputs = ''
+        outputs, json = '', None
 
         if 'crimes' not in crimes and action != 'monthly' and action != 'specific':
             return False
 
         if action == 'specific':
             if output == 'json':
-                outputs += """{\n    "items": ['
+                json = """{\n    "items": ['
     {
     "count": "%i",
     "crime": "%s",
@@ -562,7 +562,7 @@ class Parse:
             if output == 'csv':
                 outputs += 'category, type, date_reported, address, lat, lon\n'
             elif output == 'json':
-                outputs += '{\n    "items": ['
+                json = '{\n    "items": ['
 
             crimes_to_print = crimes['crimes'][:limit]
             if limit == 0:
@@ -579,7 +579,7 @@ class Parse:
                     if i == length:
                         close_bracket = '}'
 
-                    outputs += """  {
+                    json += """  {
     "category": "%s",
     "type": "%s",
     "date-reported": "%s",
@@ -633,7 +633,7 @@ class Parse:
                     location = self.clean_location(item[0])
 
                 if output == 'json' and loc == item[0]:
-                        json = '{ "percapita": [ "rank": "%i", "location": "%s", "count": "%s" ] ' % ( i, loc, crimes['crimes']['percapita'][item[0]]['count'] )
+                        json = '{ "percapita": [ "rank": "%i", "location": "%s", "count": "%s" ], ' % ( i, loc, crimes['crimes']['percapita'][item[0]]['count'] )
                 outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['percapita'][item[0]]['count'])
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
@@ -646,7 +646,7 @@ class Parse:
                     location = self.clean_location(item[0])
 
                 if output == 'json' and loc == item[0]:
-                    json += '{ "raw": [ "rank": "%i", "location": "%s", "count": "%s" ] ' % ( i, location, crimes['crimes']['neighborhood'][item[0]]['count'] )
+                    json += '\n "raw": [ "rank": "%i", "location": "%s", "count": "%s" ] }' % ( i, loc, crimes['crimes']['neighborhood'][item[0]]['count'] )
                 outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['neighborhood'][item[0]]['count'])
 
         elif action == 'monthly':
@@ -717,10 +717,9 @@ class Parse:
         if action == 'recent' and output == 'json':
             outputs += ']\n}'
 
-        if json != '':
-            return json
-
-        return outputs
+        if json is None:
+            return outputs
+        return json
 
 
 
