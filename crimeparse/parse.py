@@ -101,6 +101,16 @@ class Parse:
         self.location = location
         return self.location
 
+    def set_limit(self, limit):
+        """ Set the object's limit var.
+            >>> parse = Parse('_input/test')
+            >>> limit = parse.set_limit(15)
+            >>> print limit
+            15
+            """
+        self.limit = limit
+        return self.limit
+
     def abstract_keys(self, key):
         # Take a key, return its CSV equivalent.
         # Used so we can use this for more than just Denver crime csv.
@@ -801,8 +811,10 @@ if __name__ == '__main__':
 
 
     crimes = None
-    if crime is not None:
-        parse.set_crime(crime)
+    parse.set_grep(grep)
+    parse.set_limit(limit)
+    parse.set_crime(crime)
+    parse.set_location(location)
     if action == 'monthly':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
