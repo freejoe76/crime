@@ -424,7 +424,7 @@ class Parse:
             for item in ['neighborhood', 'percapita']:
                 rank = 1
                 for subitem in sorted_rankings[item]:
-                    unsorted_rankings[item][subitem[0]]['rank'] = rank;
+                    unsorted_rankings[item][subitem[0]]['rank'] = rank
                     rank += 1
             return { 'crimes': unsorted_rankings }
 
@@ -602,9 +602,26 @@ class Parse:
             #    outputs += ']\n}'
 
 
+        elif action == 'rankings' and loc is None:
+            outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
+            i = 0
+            
+            for item in crimes['crimes']['percapita']:
+                i = i + 1
+                location = self.clean_location(item[0])
+                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['percapita'][item[0]]['count'])
+
+            outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
+            i = 0
+            for item in crimes['crimes']['neighborhood']:
+                i = i + 1
+                location = self.clean_location(item[0])
+                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['neighborhood'][item[0]]['count'])
+
         elif action == 'rankings':
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
             i = 0
+            
             for item in reversed(sorted(crimes['crimes']['percapita'].iteritems(), key=operator.itemgetter(1))):
                 i = i + 1
                 if loc == item[0]:
