@@ -651,7 +651,6 @@ class Parse:
 
         elif action == 'monthly':
             # We use the textbarchart here.
-            print self.options.unicode
             options = { 'type': None, 'font': 'monospace', 'unicode': self.options.unicode }
             crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
             bar = TextBarchart(options, crime_dict, crimes['max'])
@@ -715,7 +714,7 @@ class Parse:
 
         # Close up loose strings
         if action == 'recent' and output == 'json':
-            outputs += ']\n}'
+            json += ']\n}'
 
         if json is None:
             return outputs
