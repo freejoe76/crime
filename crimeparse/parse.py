@@ -60,8 +60,13 @@ class Parse:
         There are two means of outputting the results Parse generates: The 
         command-line, and a python dict. 
         >>> parse = Parse('_input/test')
-        >>> grep = False
-        >>> result = parse.get_specific_crime('violent', grep, 'capitol-hill')
+        >>> parse.set_crime('violent')
+        'violent'
+        >>> parse.set_grep(False)
+        False
+        >>> parse.set_location('capitol-hill')
+        'capitol-hill'
+        >>> result = parse.get_specific_crime()
         >>> print result['count'], result['crime']
         3 violent
         """
@@ -174,7 +179,7 @@ class Parse:
 
         return False
 
-    def get_specific_crime(self, crime, grep, location = None):
+    def get_specific_crime(self):
         """ Indexes specific crime.
             Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
             $ ./parse.py --verbose --action specific --crime meth --grep True
@@ -183,18 +188,18 @@ class Parse:
             Returns frequency for csv specified.
             Also returns the # of days since the last crime.
             >>> parse = Parse('_input/test')
-            >>> crime, grep = 'violent', False
-            >>> result = parse.get_specific_crime(crime, grep)
+            >>> crime, grep = parse.set_crime('violent'), parse.set_grep(False)
+            >>> result = parse.get_specific_crime()
             >>> print result['count'], result['crime']
             43 violent
             """
-        crimes = self.get_recent_crimes(crime, grep, location)
+        crimes = self.get_recent_crimes(self.crime, self.grep, self.location)
         count = len(crimes['crimes'])
         last_crime = None
         if count > 0:
             last_crime = self.check_datetime(crimes['crimes'][0]['FIRST_OCCURRENCE_DATE'])
 
-        return { 'count': count, 'last_crime': timeago(last_crime), 'crime': crime }
+        return { 'count': count, 'last_crime': timeago(last_crime), 'crime': self.crime }
 
     def get_recent_crimes(self, crime = None, grep = False, location = None, verbose = False, diff = False, *args, **kwargs):
         """ Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
@@ -846,6 +851,6 @@ if __name__ == '__main__':
         # Example:
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep
-        crimes = parse.get_specific_crime(crime, grep, location)
+        crimes = parse.get_specific_crime()
     if not silent:
         print parse.print_crimes(crimes, limit, action, location, output)
