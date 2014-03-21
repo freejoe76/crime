@@ -193,7 +193,7 @@ class Parse:
             >>> print result['count'], result['crime']
             43 violent
             """
-        crimes = self.get_recent_crimes(self.crime, self.grep, self.location)
+        crimes = self.get_recent_crimes()
         count = len(crimes['crimes'])
         last_crime = None
         if count > 0:
@@ -574,7 +574,8 @@ class Parse:
             >>> report = parse.print_crimes(crimes, limit, action)
             >>> print report.split("\\n")[0]
             1.  aggravated-assault: aggravated-assault-dv
-            >>> crimes = parse.get_specific_crime('violent', False)
+            >>> crime, grep = parse.set_crime('violent'), parse.set_grep(False)
+            >>> crimes = parse.get_specific_crime()
             >>> report = parse.print_crimes(crimes, limit, 'specific')
             >>> print report.split(",")[0]
             43 violent crimes
