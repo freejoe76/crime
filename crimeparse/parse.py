@@ -827,14 +827,8 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
     filename = options.filename
     action = options.action
-    location = options.location
-    limit = int(options.limit)
-    crime = options.crime
-    grep = options.grep
-    diff = options.diff
     output = options.output
     yearoveryear = options.yearoveryear
-    verbose = options.verbose
     silent = options.silent
 
     import doctest
@@ -847,16 +841,16 @@ if __name__ == '__main__':
         filename = 'latestdiff'
 
     parse = Parse("_input/%s" % filename, options)
-    location = parse.get_neighborhood(location)
+    location = parse.get_neighborhood(options.location)
 
 
     crimes = None
-    parse.set_grep(grep)
-    parse.set_limit(limit)
-    parse.set_crime(crime)
-    parse.set_location(location)
-    parse.set_verbose(verbose)
-    parse.set_diff(diff)
+    parse.set_grep(options.grep)
+    limit = parse.set_limit(int(options.limit))
+    crime = parse.set_crime(options.crime)
+    location = parse.set_location(location)
+    verbose = parse.set_verbose(options.verbose)
+    parse.set_diff(options.diff)
     if action == 'monthly':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
