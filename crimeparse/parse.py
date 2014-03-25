@@ -345,7 +345,7 @@ class Parse:
             >>> parse = Parse('_input/test')
             >>> crime = 'violent'
 
-            # >>> result = parse.get_monthly(crime)
+            # >>> result = parse.get_monthly()
             # >>> print result
             # *** Will need a more robust selection of test data for this one.
             """
@@ -852,7 +852,7 @@ if __name__ == '__main__':
         # The limit defaults to 0, but 48 is our go-to number for this report.
         if limit == 0:
             limit = 48
-        crimes = parse.get_monthly()
+        crimes = parse.get_monthly(limit)
         if verbose:
             print crimes
     if action == 'rankings':
