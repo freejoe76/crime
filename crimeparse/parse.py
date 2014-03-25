@@ -834,10 +834,7 @@ if __name__ == '__main__':
     import doctest
     doctest.testmod(verbose=options.verbose)
     
-    if verbose:
-        print "Options: %s\nArgs: %s" % (options, args)
-
-    if diff == True:
+    if options.diff == True:
         filename = 'latestdiff'
 
     parse = Parse("_input/%s" % filename, options)
