@@ -378,7 +378,8 @@ class Parse:
         crimes['avg'] = crimes['sum'] / len(crimes['counts'])
         return crimes
 
-    def get_rankings(self, crime = None, grep = False, location = None, *args, **kwargs):
+    #def get_rankings(self, crime = None, grep = False, location = None, *args, **kwargs):
+    def get_rankings(self, *args, **kwargs):
         """ Take a crime type or category and return a list of neighborhoods 
             ranked by frequency of that crime.
             If no crime is passed, we just rank overall number of crimes
@@ -393,8 +394,8 @@ class Parse:
 
             This is done implicitly in the CLI report. <-- what does that mean?
             >>> parse = Parse('_input/test')
-            >>> crime = 'violent'
-            >>> result = parse.get_rankings(crime)
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_rankings()
             >>> print result['crimes']['neighborhood'][0]
             ('wellshire', {'count': 0, 'rank': 0})
             >>> print result['crimes']['percapita'][50]
@@ -420,7 +421,7 @@ class Parse:
         else:
             timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
 
-        crime_type = self.get_crime_type(crime)
+        crime_type = self.get_crime_type(self.crime)
 
         for row in self.crime_file:
             record = dict(zip(dicts.keys, row))
@@ -450,10 +451,10 @@ class Parse:
 
             else:
 
-                if crime == dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime == record['OFFENSE_CATEGORY_ID'] or crime == record['OFFENSE_TYPE_ID']:
+                if self.crime == dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or self.crime == record['OFFENSE_CATEGORY_ID'] or self.crime == record['OFFENSE_TYPE_ID']:
                     rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                     percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
-                elif grep == True and crime in dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or crime in record['OFFENSE_CATEGORY_ID'] or crime in record['OFFENSE_TYPE_ID']:
+                elif self.grep == True and self.crime in dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or self.crime in record['OFFENSE_CATEGORY_ID'] or self.crime in record['OFFENSE_TYPE_ID']:
                     rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                     percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
 
@@ -468,7 +469,7 @@ class Parse:
             'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
         }
 
-        if location is None:
+        if self.location is None:
             return { 'crimes': sorted_rankings }
         else:
             # Here is where we care about populating the rankings field in the neighborhood dict.
@@ -559,7 +560,8 @@ class Parse:
             This is a helper function to build some of the more
             manual dicts in dicts.py
             >>> parse = Parse('_input/test')
-            >>> crimes = parse.get_rankings('violent')
+            >>> crime = parse.set_crime('violent')
+            >>> crimes = parse.get_rankings()
             >>> result = parse.print_neighborhoods(crimes)
             >>> print result[0]
                 'wellshire': {'full': 'Wellshire'},
