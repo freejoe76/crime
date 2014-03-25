@@ -327,7 +327,8 @@ class Parse:
         record = dict(zip(dicts.keys, self.crime_file[row]))
         return record
 
-    def get_monthly(self, crime = None, grep = False, location = '', limit = 24):
+    #def get_monthly(self, crime = None, grep = False, location = '', limit = 24):
+    def get_monthly(self, limit=24):
         """ Loop through the monthly crime files, return frequency.
             Can filter by crime, location or both. 
             Have some gymnastics to do here in jumping across files.
@@ -340,8 +341,8 @@ class Parse:
             # *** Will need a more robust selection of test data for this one.
             """
         i = 0
-        crime_type = self.get_crime_type(crime)
-        crimes = { 'crime': crime, 'counts': dict(), 'max': 0, 'sum': 0, 'avg': 0 }
+        crime_type = self.get_crime_type(self.crime)
+        crimes = { 'crime': self.crime, 'counts': dict(), 'max': 0, 'sum': 0, 'avg': 0 }
 
         # We load year/month strings in like this because the crime data
         # can lag, and we want to be accurate. If the last update of the crime
@@ -353,20 +354,20 @@ class Parse:
             # We need the crimes, the counter, the empty dict, and the month.
             yearmonth = yearmonths[i].strip()
             if location:
-                filename = 'location_%s-%s' % (location, yearmonth)
+                filename = 'location_%s-%s' % (self.location, yearmonth)
             else:
                 filename = 'last%imonths' % i
             crime_file = self.open_csv('_input/%s' % filename)
             i += 1
             crimes['counts'][yearmonth] = { 'count': 0, 'date': self.check_date('%s-01' % yearmonth) }
 
-            if crime == None:
+            if self.crime == None:
                 crimes['counts'][yearmonth]['count'] = len(crime_file)
                 continue
 
             for row in crime_file:
                 record = dict(zip(dicts.keys, row))
-                if self.does_crime_match(crime, grep, record, crime_type):
+                if self.does_crime_match(self.crime, self.grep, record, crime_type):
                     crimes['counts'][yearmonth]['count'] += 1
                     
         # Update the max, sum and avg:
