@@ -1,3 +1,0 @@
-# http://flask.pocoo.org/docs/config/#development-production
-DEBUG = True
-IN_DEV = False

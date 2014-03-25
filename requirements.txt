@@ -1,9 +1,6 @@
-Flask==0.9
-Flask-FlatPages==0.5
-Flask-Testing==0.4
+git+git://github.com/freejoe76/fancytext#egg=FancyText
 redis
-Flask
-Shapely
-six
-Fiona
-sudo apt-get install libgdal1-dev
+#Shapely
+#six
+#Fiona
+#sudo apt-get install libgdal1-dev
