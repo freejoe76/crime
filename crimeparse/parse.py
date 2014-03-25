@@ -70,10 +70,9 @@ class Parse:
         >>> print result['count'], result['crime']
         3 violent
         """
-    def __init__(self, crime_filename, diff = False, options = None):
+    def __init__(self, crime_filename, options = None):
         self.crime_file = self.open_csv(crime_filename, diff)
         self.crime_filename = crime_filename
-        self.diff = diff
         self.options = options
 
         # Initialize the major vars
@@ -82,6 +81,7 @@ class Parse:
         self.set_location(None)
         self.set_limit(None)
         self.set_verbose(None)
+        self.set_diff(None)
 
     def set_crime(self, value):
         """ Set the object's crime var.
@@ -132,6 +132,16 @@ class Parse:
             """
         self.verbose = value 
         return self.verbose
+
+    def set_diff(self, value):
+        """ Set the object's diff var.
+            >>> parse = Parse('_input/test')
+            >>> diff = parse.set_diff(False)
+            >>> print diff
+            False
+            """
+        self.diff = value 
+        return self.diff
 
     def abstract_keys(self, key):
         # Take a key, return its CSV equivalent.
@@ -221,7 +231,7 @@ class Parse:
 
         return { 'count': count, 'last_crime': timeago(last_crime), 'crime': self.crime }
 
-    def get_recent_crimes(self, diff = False, *args, **kwargs):
+    def get_recent_crimes(self, *args, **kwargs):
         """ Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
             Timespan is passed as an argument (start, finish)
             !!! the input files aren't listed in order of occurence, so we need to sort.
@@ -249,7 +259,7 @@ class Parse:
         if self.verbose:
             print "Timespan: %s, location: %s, crime: %s" % (timespan, location, crime)
 
-        if diff == True:
+        if self.diff == True:
             adds = 0
             removes = 0
 
@@ -259,7 +269,7 @@ class Parse:
             record = dict(zip(dicts.keys, row))
 
             # Address diffs, if we've got 'em.
-            if diff == True:
+            if self.diff == True:
                 #print record['INCIDENT_ID'][0]
                 if record['INCIDENT_ID'][0] == '>':
                     record['diff'] = 'ADD'
@@ -300,7 +310,7 @@ class Parse:
                     crimes.append(record)
 
         diffs = None
-        if diffs == True:
+        if self.diff == True:
             diffs = { 'adds': adds, 'removes': removes }
         return { 'crimes': crimes, 'diffs': diffs }
 
@@ -527,7 +537,7 @@ class Parse:
             return location
         return None
         
-    def open_csv(self, fn = '_input/currentyear', diff = False):
+    def open_csv(self, fn = '_input/currentyear'):
         """ Open the crime CSV for parsing.
             It defaults to the current year's file.
             >>> parse = Parse('_input/test')
@@ -541,7 +551,7 @@ class Parse:
         # because that's the only one that's guaranteed to be in the record.)
         # Newest items go on top. It's possible we won't hard-code
         # this forever.
-        if diff == False:
+        if self.diff == False:
             crime_file = sorted(crime_file_raw, key=operator.itemgetter(6), reverse=True)
         else:
             crime_file = crime_file_raw
@@ -836,7 +846,7 @@ if __name__ == '__main__':
     if diff == True:
         filename = 'latestdiff'
 
-    parse = Parse("_input/%s" % filename, diff, options)
+    parse = Parse("_input/%s" % filename, options)
     location = parse.get_neighborhood(location)
 
 
@@ -846,6 +856,7 @@ if __name__ == '__main__':
     parse.set_crime(crime)
     parse.set_location(location)
     parse.set_verbose(verbose)
+    parse.set_diff(diff)
     if action == 'monthly':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
