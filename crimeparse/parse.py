@@ -81,46 +81,57 @@ class Parse:
         self.set_grep(None)
         self.set_location(None)
         self.set_limit(None)
+        self.set_verbose(None)
 
-    def set_crime(self, crime):
+    def set_crime(self, value):
         """ Set the object's crime var.
             >>> parse = Parse('_input/test')
             >>> crime = parse.set_crime('love')
             >>> print crime
             love
             """
-        self.crime = crime
+        self.crime = value
         return self.crime
 
-    def set_grep(self, grep):
+    def set_grep(self, value):
         """ Set the object's grep var.
             >>> parse = Parse('_input/test')
             >>> grep = parse.set_grep(False)
             >>> print grep
             False
             """
-        self.grep = grep
+        self.grep = value
         return self.grep
 
-    def set_location(self, location):
+    def set_location(self, value):
         """ Set the object's location var.
             >>> parse = Parse('_input/test')
             >>> location = parse.set_location('cbd')
             >>> print location
             cbd
             """
-        self.location = location
+        self.location = value
         return self.location
 
-    def set_limit(self, limit):
+    def set_limit(self, value):
         """ Set the object's limit var.
             >>> parse = Parse('_input/test')
             >>> limit = parse.set_limit(15)
             >>> print limit
             15
             """
-        self.limit = limit
+        self.limit = value
         return self.limit
+
+    def set_verbose(self, value):
+        """ Set the object's verbose var.
+            >>> parse = Parse('_input/test')
+            >>> verbose = parse.set_verbose(False)
+            >>> print verbose
+            False
+            """
+        self.verbose = value 
+        return self.verbose
 
     def abstract_keys(self, key):
         # Take a key, return its CSV equivalent.
@@ -210,7 +221,7 @@ class Parse:
 
         return { 'count': count, 'last_crime': timeago(last_crime), 'crime': self.crime }
 
-    def get_recent_crimes(self, verbose = False, diff = False, *args, **kwargs):
+    def get_recent_crimes(self, diff = False, *args, **kwargs):
         """ Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
             Timespan is passed as an argument (start, finish)
             !!! the input files aren't listed in order of occurence, so we need to sort.
@@ -232,10 +243,10 @@ class Parse:
             # timespan a tuple of dates, that defaults to everything.
             # Decided to set that here rather than in the method def for the sake of space.
             timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
-            if verbose:
+            if self.verbose:
                 print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
 
-        if verbose:
+        if self.verbose:
             print "Timespan: %s, location: %s, crime: %s" % (timespan, location, crime)
 
         if diff == True:
@@ -834,6 +845,7 @@ if __name__ == '__main__':
     parse.set_limit(limit)
     parse.set_crime(crime)
     parse.set_location(location)
+    parse.set_verbose(verbose)
     if action == 'monthly':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
