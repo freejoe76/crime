@@ -148,7 +148,7 @@ class Parse:
         return datetime.strptime(value, '%Y-%m-%d')
 
     def check_datetime(self, value):
-        """ Check a datetime to see if it's valid. If not, throw error.
+        """ Check a datetime to see if it's valid. If not, return False.
             >>> parse = Parse('_input/test')
             >>> test_date = parse.check_datetime('2014-01-08 06:05:04')
             >>> print test_date
@@ -159,27 +159,27 @@ class Parse:
         except:
             return False
 
-    def does_crime_match(self, crime, grep, record, crime_type):
+    def does_crime_match(self, record, crime_type):
         """ Compares the crime against the fields in the record to see if it matches.
             Possible crime_type's include: parent_category, .....
             Used in get_recent and get_monthly.
             >>> parse = Parse('_input/test')
             >>> record = parse.get_row()
-            >>> crime, grep, record, crime_type = 'property', False, record, 'parent_category'
-            >>> print parse.does_crime_match(crime, grep, record, crime_type)
+            >>> crime, grep, record, crime_type = parse.set_crime('property'), parse.set_grep(False), record, 'parent_category'
+            >>> print parse.does_crime_match(record, crime_type)
             True
             """
         if crime_type == 'parent_category':
-            if record['OFFENSE_CATEGORY_ID'] in dicts.crime_lookup_reverse[crime]:
+            if record['OFFENSE_CATEGORY_ID'] in dicts.crime_lookup_reverse[self.crime]:
                 return True
         else:
-            if record[crime_type] == crime:
+            if record[crime_type] == self.crime:
                 return True
-            elif grep == True:
+            elif self.grep == True:
                 # Loop through the types of crimes 
                 # (the lowest-level crime taxonomy), 
                 # looking for a partial string match.
-                if crime in record['OFFENSE_TYPE_ID']:
+                if self.crime in record['OFFENSE_TYPE_ID']:
                     return True
 
         return False
@@ -285,7 +285,7 @@ class Parse:
                 continue
 
             if self.crime != None:
-                if self.does_crime_match(self.crime, self.grep, record, crime_type):
+                if self.does_crime_match(record, crime_type):
                     crimes.append(record)
 
         diffs = None
@@ -365,7 +365,7 @@ class Parse:
 
             for row in crime_file:
                 record = dict(zip(dicts.keys, row))
-                if self.does_crime_match(self.crime, self.grep, record, crime_type):
+                if self.does_crime_match(record, crime_type):
                     crimes['counts'][yearmonth]['count'] += 1
                     
         # Update the max, sum and avg:
