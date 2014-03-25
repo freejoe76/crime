@@ -151,7 +151,6 @@ class Parse:
         try:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         except:
-            print value
             return False
 
     def does_crime_match(self, crime, grep, record, crime_type):
@@ -197,7 +196,11 @@ class Parse:
         count = len(crimes['crimes'])
         last_crime = None
         if count > 0:
-            last_crime = self.check_datetime(crimes['crimes'][0]['FIRST_OCCURRENCE_DATE'])
+            # We don't want the header row... it's possible we should take care of this in get_recent.
+            if crimes['crimes'][0]['FIRST_OCCURRENCE_DATE'] == 'FIRST_OCCURRENCE_DATE':
+                last_crime = self.check_datetime(crimes['crimes'][1]['FIRST_OCCURRENCE_DATE'])
+            else:
+                last_crime = self.check_datetime(crimes['crimes'][0]['FIRST_OCCURRENCE_DATE'])
 
         return { 'count': count, 'last_crime': timeago(last_crime), 'crime': self.crime }
 
@@ -592,7 +595,7 @@ class Parse:
 
         if action == 'specific':
             if output == 'json':
-                print self.crime
+                #print self.crime
                 #rank_add = self.get_rankings(self.crime, self.grep, loc)
                 #print rank_add
                 json = """{\n    "items": [
