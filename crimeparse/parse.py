@@ -210,7 +210,6 @@ class Parse:
 
         return { 'count': count, 'last_crime': timeago(last_crime), 'crime': self.crime }
 
-    #def get_recent_crimes(self, crime = None, grep = False, location = None, verbose = False, diff = False, *args, **kwargs):
     def get_recent_crimes(self, verbose = False, diff = False, *args, **kwargs):
         """ Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
             Timespan is passed as an argument (start, finish)
@@ -327,7 +326,6 @@ class Parse:
         record = dict(zip(dicts.keys, self.crime_file[row]))
         return record
 
-    #def get_monthly(self, crime = None, grep = False, location = '', limit = 24):
     def get_monthly(self, limit=24):
         """ Loop through the monthly crime files, return frequency.
             Can filter by crime, location or both. 
@@ -378,7 +376,6 @@ class Parse:
         crimes['avg'] = crimes['sum'] / len(crimes['counts'])
         return crimes
 
-    #def get_rankings(self, crime = None, grep = False, location = None, *args, **kwargs):
     def get_rankings(self, *args, **kwargs):
         """ Take a crime type or category and return a list of neighborhoods 
             ranked by frequency of that crime.
