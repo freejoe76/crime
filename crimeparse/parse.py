@@ -843,14 +843,14 @@ if __name__ == '__main__':
         # The limit defaults to 0, but 48 is our go-to number for this report.
         if limit == 0:
             limit = 48
-        crimes = parse.get_monthly(crime, grep, location, limit)
+        crimes = parse.get_monthly()
         if verbose:
             print crimes
     if action == 'rankings':
         # Example:
         # $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
         # $ ./parse.py --action rankings --crime dv --grep '2013-01-01' '2013-08-01'
-        crimes = parse.get_rankings(crime, grep, location, args)
+        crimes = parse.get_rankings(args)
         if verbose:
             print crimes
         if not location:
@@ -863,7 +863,7 @@ if __name__ == '__main__':
         # $ ./parse.py --action recent --location capitol-hill
         # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill --diff
         # $ ./parse.py --verbose --action recent --crime drug-alcohol --location capitol-hill
-        crimes = parse.get_recent_crimes(crime, grep, location, args)
+        crimes = parse.get_recent_crimes(args)
     elif action == 'specific':
         # Example:
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
