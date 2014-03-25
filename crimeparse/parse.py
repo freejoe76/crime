@@ -235,7 +235,7 @@ class Parse:
 
         diffs = None
         crimes = []
-        crime_type = self.get_crime_type(self.crime)
+        crime_type = self.get_crime_type()
 
         if not args or args[0] == []:
             timespan = None
@@ -305,7 +305,7 @@ class Parse:
         return { 'crimes': crimes, 'diffs': diffs }
 
 
-    def get_crime_type(self, crime):
+    def get_crime_type(self):
         """ Figure out which type of crime we're querying.
             parent_category doesn't correspond to a CSV field, which is why 
             it looks different. So that's obvious.
@@ -315,15 +315,15 @@ class Parse:
                 genre => violent / property / other 
                 category => OFFENSE_CATEGORY_ID
             >>> parse = Parse('_input/test')
-            >>> crime = 'violent'
-            >>> result = parse.get_crime_type(crime)
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_crime_type()
             >>> print result
             parent_category
             """
         crime_type = 'OFFENSE_TYPE_ID'
-        if crime in dicts.crime_genres:
+        if self.crime in dicts.crime_genres:
             crime_type = 'parent_category'
-        elif crime in dicts.crime_lookup:
+        elif self.crime in dicts.crime_lookup:
             crime_type = 'OFFENSE_CATEGORY_ID'
 
         return crime_type
@@ -350,7 +350,7 @@ class Parse:
             # *** Will need a more robust selection of test data for this one.
             """
         i = 0
-        crime_type = self.get_crime_type(self.crime)
+        crime_type = self.get_crime_type()
         crimes = { 'crime': self.crime, 'counts': dict(), 'max': 0, 'sum': 0, 'avg': 0 }
 
         # We load year/month strings in like this because the crime data
@@ -429,7 +429,7 @@ class Parse:
         else:
             timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
 
-        crime_type = self.get_crime_type(self.crime)
+        crime_type = self.get_crime_type()
 
         for row in self.crime_file:
             record = dict(zip(dicts.keys, row))
