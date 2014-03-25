@@ -76,6 +76,12 @@ class Parse:
         self.diff = diff
         self.options = options
 
+        # Initialize the major vars
+        self.set_crime(None)
+        self.set_grep(None)
+        self.set_location(None)
+        self.set_limit(None)
+
     def set_crime(self, crime):
         """ Set the object's crime var.
             >>> parse = Parse('_input/test')
@@ -204,20 +210,22 @@ class Parse:
 
         return { 'count': count, 'last_crime': timeago(last_crime), 'crime': self.crime }
 
-    def get_recent_crimes(self, crime = None, grep = False, location = None, verbose = False, diff = False, *args, **kwargs):
+    #def get_recent_crimes(self, crime = None, grep = False, location = None, verbose = False, diff = False, *args, **kwargs):
+    def get_recent_crimes(self, verbose = False, diff = False, *args, **kwargs):
         """ Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
             Timespan is passed as an argument (start, finish)
             !!! the input files aren't listed in order of occurence, so we need to sort.
             >>> parse = Parse('_input/test')
-            >>> crime = 'violent'
-            >>> result = parse.get_recent_crimes(crime)
+            >>> parse.set_crime('violent')
+            'violent'
+            >>> result = parse.get_recent_crimes()
             >>> print len(result['crimes'])
             43
             """
 
         diffs = None
         crimes = []
-        crime_type = self.get_crime_type(crime)
+        crime_type = self.get_crime_type(self.crime)
 
         if not args or args[0] == []:
             timespan = None
@@ -265,20 +273,20 @@ class Parse:
             # 2. Maybe crime, but yes location,
             # 3. No crime, yes location
             # 4. Yes crime, no location 
-            if location == None and crime == None:
+            if self.location == None and self.crime == None:
                 crimes.append(record)
                 continue
 
-            if location != None:
-                if record['NEIGHBORHOOD_ID'] != location:
+            if self.location != None:
+                if record['NEIGHBORHOOD_ID'] != self.location:
                     continue
 
-            if crime == None:
+            if self.crime == None:
                 crimes.append(record)
                 continue
 
-            if crime != None:
-                if self.does_crime_match(crime, grep, record, crime_type):
+            if self.crime != None:
+                if self.does_crime_match(self.crime, self.grep, record, crime_type):
                     crimes.append(record)
 
         diffs = None
@@ -572,7 +580,9 @@ class Parse:
             Right now we're publishing them to be read in terminal.
             What we're parsing affects the dicts we have.
             >>> parse = Parse('_input/test')
-            >>> crimes = parse.get_recent_crimes('violent')
+            >>> parse.set_crime('violent')
+            'violent'
+            >>> crimes = parse.get_recent_crimes()
             >>> limit, action = 1, 'recent'
             >>> report = parse.print_crimes(crimes, limit, action)
             >>> print report.split("\\n")[0]
