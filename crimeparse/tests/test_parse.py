@@ -17,14 +17,15 @@ def test_monthly():
 
 def test_specific():
     # 
-    parse = Parse('../_input/test')
+    parse = Parse('_input/test')
+    print dir(parse)
     crime, grep = parse.set_crime('violent'), parse.set_grep(False)
     result = parse.get_specific_crime()
     #assert result['crimes']['neighborhood'][0] == ('wellshire', {'count': 0, 'rank': 0})
 
 def test_rankings():
     # Really should write something deeper than the existing doctests.
-    parse = Parse('../_input/test')
+    parse = Parse('_input/test')
     crime = parse.set_crime('violent')
     result = parse.get_rankings()
     assert result['crimes']['neighborhood'][0] == ('wellshire', {'count': 0, 'rank': 0})
