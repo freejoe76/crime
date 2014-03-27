@@ -70,18 +70,18 @@ class Parse:
         >>> print result['count'], result['crime']
         3 violent
         """
-    def __init__(self, crime_filename, options = None):
-        self.crime_file = self.open_csv(crime_filename, diff)
-        self.crime_filename = crime_filename
-        self.options = options
-
+    def __init__(self, crime_filename, diff = False, options = None):
         # Initialize the major vars
         self.set_crime(None)
         self.set_grep(None)
         self.set_location(None)
         self.set_limit(None)
         self.set_verbose(None)
-        self.set_diff(None)
+        self.set_diff(diff)
+
+        self.crime_file = self.open_csv(crime_filename, diff)
+        self.crime_filename = crime_filename
+        self.options = options
 
     def set_crime(self, value):
         """ Set the object's crime var.
@@ -185,8 +185,8 @@ class Parse:
             Possible crime_type's include: parent_category, .....
             Used in get_recent and get_monthly.
             >>> parse = Parse('_input/test')
+            >>> crime, grep, crime_type = parse.set_crime('property'), parse.set_grep(False), 'parent_category'
             >>> record = parse.get_row()
-            >>> crime, grep, record, crime_type = parse.set_crime('property'), parse.set_grep(False), record, 'parent_category'
             >>> print parse.does_crime_match(record, crime_type)
             True
             """
@@ -376,7 +376,7 @@ class Parse:
                 filename = 'location_%s-%s' % (self.location, yearmonth)
             else:
                 filename = 'last%imonths' % i
-            crime_file = self.open_csv('_input/%s' % filename)
+            crime_file = self.open_csv('_input/%s' % filename, self.diff)
             i += 1
             crimes['counts'][yearmonth] = { 'count': 0, 'date': self.check_date('%s-01' % yearmonth) }
 
@@ -458,7 +458,7 @@ class Parse:
                 rankings['neighborhood'][record['NEIGHBORHOOD_ID']] = { 'count': 0, 'rank': 0 }
                 percapita['neighborhood'][record['NEIGHBORHOOD_ID']] = { 'count': 0, 'rank': 0 }
 
-            if crime == None:
+            if self.crime == None:
                 # Update the neighborhood counter
                 rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                 percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
@@ -537,7 +537,7 @@ class Parse:
             return location
         return None
         
-    def open_csv(self, fn = '_input/currentyear'):
+    def open_csv(self, fn = '_input/currentyear', diff = False):
         """ Open the crime CSV for parsing.
             It defaults to the current year's file.
             >>> parse = Parse('_input/test')
@@ -551,7 +551,7 @@ class Parse:
         # because that's the only one that's guaranteed to be in the record.)
         # Newest items go on top. It's possible we won't hard-code
         # this forever.
-        if self.diff == False:
+        if diff == False:
             crime_file = sorted(crime_file_raw, key=operator.itemgetter(6), reverse=True)
         else:
             crime_file = crime_file_raw
@@ -837,7 +837,7 @@ if __name__ == '__main__':
     if options.diff == True:
         filename = 'latestdiff'
 
-    parse = Parse("_input/%s" % filename, options)
+    parse = Parse("_input/%s" % filename, options.diff, options)
     location = parse.get_neighborhood(options.location)
 
 
