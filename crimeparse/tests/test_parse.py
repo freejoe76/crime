@@ -18,8 +18,8 @@ def test_monthly():
 def test_specific():
     # 
     parse = Parse('../_input/test')
-    crime, grep = 'violent', False
-    result = parse.get_specific_crime(crime, grep)
+    crime, grep = parse.set_crime('violent'), parse.set_grep(False)
+    result = parse.get_specific_crime()
     #assert result['crimes']['neighborhood'][0] == ('wellshire', {'count': 0, 'rank': 0})
 
 def test_rankings():
