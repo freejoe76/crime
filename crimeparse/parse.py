@@ -71,17 +71,17 @@ class Parse:
         3 violent
         """
     def __init__(self, crime_filename, diff = False, options = None):
-        self.crime_file = self.open_csv(crime_filename, diff)
-        self.crime_filename = crime_filename
-        self.diff = diff
-        self.options = options
-
         # Initialize the major vars
         self.set_crime(None)
         self.set_grep(None)
         self.set_location(None)
         self.set_limit(None)
         self.set_verbose(None)
+        self.set_diff(diff)
+
+        self.crime_file = self.open_csv(crime_filename, diff)
+        self.crime_filename = crime_filename
+        self.options = options
 
     def set_crime(self, value):
         """ Set the object's crime var.
@@ -133,6 +133,16 @@ class Parse:
         self.verbose = value 
         return self.verbose
 
+    def set_diff(self, value):
+        """ Set the object's diff var.
+            >>> parse = Parse('_input/test')
+            >>> diff = parse.set_diff(False)
+            >>> print diff
+            False
+            """
+        self.diff = value 
+        return self.diff
+
     def abstract_keys(self, key):
         # Take a key, return its CSV equivalent.
         # Used so we can use this for more than just Denver crime csv.
@@ -175,8 +185,8 @@ class Parse:
             Possible crime_type's include: parent_category, .....
             Used in get_recent and get_monthly.
             >>> parse = Parse('_input/test')
+            >>> crime, grep, crime_type = parse.set_crime('property'), parse.set_grep(False), 'parent_category'
             >>> record = parse.get_row()
-            >>> crime, grep, record, crime_type = parse.set_crime('property'), parse.set_grep(False), record, 'parent_category'
             >>> print parse.does_crime_match(record, crime_type)
             True
             """
@@ -221,7 +231,7 @@ class Parse:
 
         return { 'count': count, 'last_crime': timeago(last_crime), 'crime': self.crime }
 
-    def get_recent_crimes(self, diff = False, *args, **kwargs):
+    def get_recent_crimes(self, *args, **kwargs):
         """ Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
             Timespan is passed as an argument (start, finish)
             !!! the input files aren't listed in order of occurence, so we need to sort.
@@ -249,7 +259,7 @@ class Parse:
         if self.verbose:
             print "Timespan: %s, location: %s, crime: %s" % (timespan, location, crime)
 
-        if diff == True:
+        if self.diff == True:
             adds = 0
             removes = 0
 
@@ -259,7 +269,7 @@ class Parse:
             record = dict(zip(dicts.keys, row))
 
             # Address diffs, if we've got 'em.
-            if diff == True:
+            if self.diff == True:
                 #print record['INCIDENT_ID'][0]
                 if record['INCIDENT_ID'][0] == '>':
                     record['diff'] = 'ADD'
@@ -300,7 +310,7 @@ class Parse:
                     crimes.append(record)
 
         diffs = None
-        if diffs == True:
+        if self.diff == True:
             diffs = { 'adds': adds, 'removes': removes }
         return { 'crimes': crimes, 'diffs': diffs }
 
@@ -366,7 +376,7 @@ class Parse:
                 filename = 'location_%s-%s' % (self.location, yearmonth)
             else:
                 filename = 'last%imonths' % i
-            crime_file = self.open_csv('_input/%s' % filename)
+            crime_file = self.open_csv('_input/%s' % filename, self.diff)
             i += 1
             crimes['counts'][yearmonth] = { 'count': 0, 'date': self.check_date('%s-01' % yearmonth) }
 
@@ -448,7 +458,7 @@ class Parse:
                 rankings['neighborhood'][record['NEIGHBORHOOD_ID']] = { 'count': 0, 'rank': 0 }
                 percapita['neighborhood'][record['NEIGHBORHOOD_ID']] = { 'count': 0, 'rank': 0 }
 
-            if crime == None:
+            if self.crime == None:
                 # Update the neighborhood counter
                 rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                 percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
@@ -817,35 +827,27 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
     filename = options.filename
     action = options.action
-    location = options.location
-    limit = int(options.limit)
-    crime = options.crime
-    grep = options.grep
-    diff = options.diff
     output = options.output
     yearoveryear = options.yearoveryear
-    verbose = options.verbose
     silent = options.silent
 
     import doctest
     doctest.testmod(verbose=options.verbose)
     
-    if verbose:
-        print "Options: %s\nArgs: %s" % (options, args)
-
-    if diff == True:
+    if options.diff == True:
         filename = 'latestdiff'
 
-    parse = Parse("_input/%s" % filename, diff, options)
-    location = parse.get_neighborhood(location)
+    parse = Parse("_input/%s" % filename, options.diff, options)
+    location = parse.get_neighborhood(options.location)
 
 
     crimes = None
-    parse.set_grep(grep)
-    parse.set_limit(limit)
-    parse.set_crime(crime)
-    parse.set_location(location)
-    parse.set_verbose(verbose)
+    parse.set_grep(options.grep)
+    limit = parse.set_limit(int(options.limit))
+    crime = parse.set_crime(options.crime)
+    location = parse.set_location(location)
+    verbose = parse.set_verbose(options.verbose)
+    parse.set_diff(options.diff)
     if action == 'monthly':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
