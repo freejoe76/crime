@@ -113,6 +113,16 @@ class Parse:
         self.location = value
         return self.location
 
+    def set_address(self, value):
+        """ Set the object's address var.
+            >>> parse = Parse('_input/test')
+            >>> address = parse.set_location('')
+            >>> print address
+            
+            """
+        self.address = value
+        return self.address
+
     def set_limit(self, value):
         """ Set the object's limit var.
             >>> parse = Parse('_input/test')
@@ -204,6 +214,42 @@ class Parse:
                     return True
 
         return False
+
+    def get_address_type(self):
+        """ Distinguish between the types of addresses we may be searching:
+            Street address, a street block, or a lat/lon.
+            >>> parse = Parse('_input/test')
+            >>> address = parse.set_address('39.23,24.00')
+            >>> print parse.get_address_type()
+            'lat/lon'
+            """
+        if ',' in self.address:
+            return 'lat/lon'
+        elif 'BLK' in self.address:
+            return 'block'
+        return 'street'
+
+    def search_addresses(self):
+        """ Searches crimes for those that happened at a particular address.
+            To get the newest crimes happening at places, search latestdiff.
+            This method returns a crime object with recent crimes and a count.
+
+            Example: How many crimes have been reported at 338 W. 12th Ave.?
+            $ ./parse.py --verbose --action search --address "338 W. 12th"
+            >>> parse = Parse('_input/test')
+            >>> address, grep = parse.set_address('The Address'), parse.set_grep(False)
+            >>> result = parse.search_addresses()
+            >>> print result['count'], result['crime']
+            
+            """
+        type_of = get_address_type()
+        if type_of == 'street' or type_of == 'block':
+            for row in self.crime_file:
+                if len(row) < 5:
+                    continue
+                record = dict(zip(dicts.keys, row))
+            
+        pass
 
     def get_specific_crime(self):
         """ Indexes specific crime.
@@ -814,6 +860,7 @@ if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-f", "--filename", dest="filename", default="currentyear")
     parser.add_option("-a", "--action", dest="action")
+    parser.add_option("--address", dest="address")
     parser.add_option("-l", "--location", dest="location", default=None)
     parser.add_option("-t", "--limit", dest="limit", default=0)
     parser.add_option("-c", "--crime", dest="crime", default=None)
@@ -840,13 +887,13 @@ if __name__ == '__main__':
     parse = Parse("_input/%s" % filename, options.diff, options)
     location = parse.get_neighborhood(options.location)
 
-
     crimes = None
     parse.set_grep(options.grep)
     limit = parse.set_limit(int(options.limit))
     crime = parse.set_crime(options.crime)
     location = parse.set_location(location)
     verbose = parse.set_verbose(options.verbose)
+    address = parse.set_address(options.address)
     parse.set_diff(options.diff)
     if action == 'monthly':
         # Example:
@@ -857,7 +904,7 @@ if __name__ == '__main__':
         crimes = parse.get_monthly(limit)
         if verbose:
             print crimes
-    if action == 'rankings':
+    elif action == 'rankings':
         # Example:
         # $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
         # $ ./parse.py --action rankings --crime dv --grep '2013-01-01' '2013-08-01'
@@ -880,5 +927,9 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep
         crimes = parse.get_specific_crime()
+    elif action == 'search':
+        crimes = parse.search_addresses()
+    else:
+        print "You must specify one of these actions: rankings, recent, specific, search."
     if not silent:
         print parse.print_crimes(crimes, limit, action, location, output)
