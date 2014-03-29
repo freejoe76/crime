@@ -254,7 +254,7 @@ class Parse:
             record = dict(zip(dicts.keys, row))
             # Skip removed records on the diff-search
             if self.diff == True:
-                if record['INCIDENT_ID'][0] == '<':
+                if record['INCIDENT_ID'][0] == '>':
                     continue
 
             if type_of == 'street' or type_of == 'block':
@@ -339,10 +339,10 @@ class Parse:
             # Address diffs, if we've got 'em.
             if self.diff == True:
                 #print record['INCIDENT_ID'][0]
-                if record['INCIDENT_ID'][0] == '>':
+                if record['INCIDENT_ID'][0] == '<':
                     record['diff'] = 'ADD'
                     adds += 1
-                elif record['INCIDENT_ID'][0] == '<': 
+                elif record['INCIDENT_ID'][0] == '>': 
                     record['diff'] = 'REMOVED'
                     removes += 1
 
