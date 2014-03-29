@@ -16,7 +16,7 @@ class TestParse:
 
     def __init__(self):
         self.basedir = 'crimeparse'       
-        self.basedir = '..'
+        self.basedir = '.'
         self.parse = Parse('%s/_input/test' % self.basedir)
 
     def test_monthly(self):
@@ -33,5 +33,13 @@ class TestParse:
         # Really should write something deeper than the existing doctests.
         crime = self.parse.set_crime('violent')
         result = self.parse.get_rankings()
+        # Test grepping
+        grep = self.parse.set_grep(True)
+        crime = self.parse.set_crime('dv')
+        result_grep = self.parse.get_rankings()
         assert result['crimes']['neighborhood'][0] == ('wellshire', {'count': 0, 'rank': 0})
-        assert result['crimes']['percapita'][50] == ('west-colfax', {'count': 0.1, 'rank': 0})
+        assert result['crimes']['neighborhood'][0] == ('wellshire', {'count': 0, 'rank': 0})
+        assert result_grep['crimes']['percapita'][50] == ('west-colfax', {'count': 0.1, 'rank': 0})
+        assert result_grep['crimes']['percapita'][50] == ('west-colfax', {'count': 0.1, 'rank': 0})
+
+#test = TestParse()
