@@ -231,16 +231,20 @@ class Parse:
 
     def search_addresses(self):
         """ Searches crimes for those that happened at a particular address.
+            The goal here is to allow us to loop through a list of addresses w/
+            business names and get a list of recent crimes at local businesses.
+
             To get the newest crimes happening at places, search latestdiff.
             This method returns a crime object with recent crimes and a count.
 
             Example: How many crimes have been reported at 338 W 12TH AVE?
             $ ./parse.py --verbose --action search --address "338 W 12TH AVE"
+
             >>> parse = Parse('_input/test')
-            >>> address, grep = parse.set_address('338 W 12TH AVE'), parse.set_grep(False)
+            >>> address, grep = parse.set_address('1999 N BROADWAY ST'), parse.set_grep(False)
             >>> result = parse.search_addresses()
-            >>> print result['count'], result['crimes']
-            0 []
+            >>> print result['count'], result['crimes'][0]['OFFENSE_CATEGORY_ID']
+            1 public-disorder
             """
         type_of = self.get_address_type()
         crimes = []
@@ -252,11 +256,11 @@ class Parse:
             if self.diff == True:
                 if record['INCIDENT_ID'][0] == '<':
                     continue
+
             if type_of == 'street' or type_of == 'block':
                 if self.address in record['INCIDENT_ADDRESS']:
                     crimes.append(record)
 
-                
         return { 'count': len(crimes), 'crimes': crimes }
 
     def get_specific_crime(self):
@@ -678,7 +682,21 @@ class Parse:
         if 'crimes' not in crimes and action != 'monthly' and action != 'specific':
             return False
 
-        if action == 'specific':
+        if action == 'search':
+            outputs = '%i crimes at %s.\n' % ( crimes['count'], self.address )
+            i = 0
+            for crime in crimes['crimes']:
+                i = i + 1
+                #print crime
+                #if 'diff' not in crime:
+                #    crime['diff'] = ''
+
+                outputs += '''%i. %s: %s
+        Occurred: %s - %s
+        Reported: %s
+        %s\n\n''' % (i, crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
+
+        elif action == 'specific':
             if output == 'json':
                 #print self.crime
                 #rank_add = self.get_rankings(self.crime, self.grep, loc)
