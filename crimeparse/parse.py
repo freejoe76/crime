@@ -270,8 +270,6 @@ class Parse:
                 lat, lon = self.address.split(',')
                 if lat in record['GEO_LAT'] and lon in record['GEO_LON']:
                     crimes.append(record)
-                else:
-                    print record['GEO_LAT'], record['GEO_LON']
 
         return { 'count': len(crimes), 'crimes': crimes }
 
@@ -706,7 +704,8 @@ class Parse:
                 outputs += '''%i. %s: %s
         Occurred: %s - %s
         Reported: %s
-        %s\n\n''' % (i, crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
+        %s
+        %s,%s\n\n''' % (i, crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
 
         elif action == 'specific':
             if output == 'json':
