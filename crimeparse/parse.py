@@ -258,8 +258,12 @@ class Parse:
                     continue
 
             if type_of == 'street' or type_of == 'block':
-                if self.address in record['INCIDENT_ADDRESS']:
-                    crimes.append(record)
+                if self.grep == True:
+                    if self.address in record['INCIDENT_ADDRESS']:
+                        crimes.append(record)
+                else:
+                    if self.address = record['INCIDENT_ADDRESS']:
+                        crimes.append(record)
 
         return { 'count': len(crimes), 'crimes': crimes }
 
