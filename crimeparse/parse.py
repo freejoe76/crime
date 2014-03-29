@@ -664,7 +664,8 @@ class Parse:
             which method we chose to piece this together).
             It also takes an action, which corresponds to which type of dict
             we have.
-            Possible actions: recent, specific, rankings, monthly.
+            Possible actions: search, recent, specific, rankings, monthly.
+            *** This Method Needs Refactor (TMNR).
 
             Right now we're publishing them to be read in terminal.
             What we're parsing affects the dicts we have.
@@ -697,9 +698,6 @@ class Parse:
             i = 0
             for crime in crimes['crimes']:
                 i = i + 1
-                #print crime
-                #if 'diff' not in crime:
-                #    crime['diff'] = ''
 
                 outputs += '''%i. %s: %s
         Occurred: %s - %s
