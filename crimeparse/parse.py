@@ -262,8 +262,16 @@ class Parse:
                     if self.address in record['INCIDENT_ADDRESS']:
                         crimes.append(record)
                 else:
-                    if self.address = record['INCIDENT_ADDRESS']:
+                    if self.address == record['INCIDENT_ADDRESS']:
                         crimes.append(record)
+            if type_of == 'lat/lon':
+                # Assumes lat/lon are split by a comma. If not, an error will
+                # be thrown and the user will know they are wrong.
+                lat, lon = self.address.split(',')
+                if lat in record['GEO_LAT'] and lon in record['GEO_LON']:
+                    crimes.append(record)
+                else:
+                    print record['GEO_LAT'], record['GEO_LON']
 
         return { 'count': len(crimes), 'crimes': crimes }
 
