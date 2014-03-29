@@ -116,9 +116,9 @@ class Parse:
     def set_address(self, value):
         """ Set the object's address var.
             >>> parse = Parse('_input/test')
-            >>> address = parse.set_location('')
+            >>> address = parse.set_location('835 E 18TH AVE')
             >>> print address
-            
+            835 E 18TH AVE
             """
         self.address = value
         return self.address
@@ -221,7 +221,7 @@ class Parse:
             >>> parse = Parse('_input/test')
             >>> address = parse.set_address('39.23,24.00')
             >>> print parse.get_address_type()
-            'lat/lon'
+            lat/lon
             """
         if ',' in self.address:
             return 'lat/lon'
@@ -234,22 +234,30 @@ class Parse:
             To get the newest crimes happening at places, search latestdiff.
             This method returns a crime object with recent crimes and a count.
 
-            Example: How many crimes have been reported at 338 W. 12th Ave.?
-            $ ./parse.py --verbose --action search --address "338 W. 12th"
+            Example: How many crimes have been reported at 338 W 12TH AVE?
+            $ ./parse.py --verbose --action search --address "338 W 12TH AVE"
             >>> parse = Parse('_input/test')
-            >>> address, grep = parse.set_address('The Address'), parse.set_grep(False)
+            >>> address, grep = parse.set_address('338 W 12TH AVE'), parse.set_grep(False)
             >>> result = parse.search_addresses()
-            >>> print result['count'], result['crime']
-            
+            >>> print result['count'], result['crimes']
+            0 []
             """
-        type_of = get_address_type()
-        if type_of == 'street' or type_of == 'block':
-            for row in self.crime_file:
-                if len(row) < 5:
+        type_of = self.get_address_type()
+        crimes = []
+        for row in self.crime_file:
+            if len(row) < 5:
+                continue
+            record = dict(zip(dicts.keys, row))
+            # Skip removed records on the diff-search
+            if self.diff == True:
+                if record['INCIDENT_ID'][0] == '<':
                     continue
-                record = dict(zip(dicts.keys, row))
-            
-        pass
+            if type_of == 'street' or type_of == 'block':
+                if self.address in record['INCIDENT_ADDRESS']:
+                    crimes.append(record)
+
+                
+        return { 'count': len(crimes), 'crimes': crimes }
 
     def get_specific_crime(self):
         """ Indexes specific crime.
