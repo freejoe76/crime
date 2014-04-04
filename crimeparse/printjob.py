@@ -25,9 +25,7 @@ class PrintJob:
         self.set_crimes(crimes)
         self.set_action(action)
         self.crime_filename = crime_filename
-        self.set_location(None)
-        self.set_limit(None)
-        self.set_verbose(None)
+        self.set_limit(limit)
         self.set_diff(diff)
 
         self.options = options
@@ -52,20 +50,10 @@ class PrintJob:
         self.action = value
         return self.action
 
-    def set_location(self, value):
-        """ Set the object's location var.
-            >>> parse = Parse('_input/test')
-            >>> location = parse.set_location('cbd')
-            >>> print location
-            cbd
-            """
-        self.location = value
-        return self.location
-
     def set_limit(self, value):
         """ Set the object's limit var.
-            >>> parse = Parse('_input/test')
-            >>> limit = parse.set_limit(15)
+            >>> printjob = PrintJob('_input/test')
+            >>> limit = printjob.set_limit(15)
             >>> print limit
             15
             """
@@ -74,8 +62,8 @@ class PrintJob:
 
     def set_verbose(self, value):
         """ Set the object's verbose var.
-            >>> parse = Parse('_input/test')
-            >>> verbose = parse.set_verbose(False)
+            >>> printjob = PrintJob('_input/test')
+            >>> verbose = printjob.set_verbose(False)
             >>> print verbose
             False
             """
@@ -94,8 +82,8 @@ class PrintJob:
 
     def clean_location(self, location):
         """ Take the location string, replace the -'s, capitalize what we can.
-            >>> parse = Parse('_input/test')
-            >>> parse.clean_location('capitol-hill')
+            >>> printjob = PrintJob('_input/test')
+            >>> printjob.clean_location('capitol-hill')
             'Capitol Hill'
             """
         location = location.replace('-', ' ')
