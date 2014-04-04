@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 # Print output from a parsing of the crime CSVs
 from optparse import OptionParser
+from parse import Parse
 from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
 
-class Print:
+class PrintCrimes:
     """ class Print prints the results of a Parse.
         >>> parse = Parse('_input/test')
         >>> parse.set_crime('violent')
@@ -15,10 +16,11 @@ class Print:
         >>> parse.set_location('capitol-hill')
         'capitol-hill'
         >>> result = parse.get_specific_crime()
-        >>> print result['count'], result['crime']
+        >>> printjob = PrintCrimes(result)
+        >>> print printjob['count'], printjob['crime']
         3 violent
         """
-    def __init__(self, crime_filename, diff = False, options = None):
+    def __init__(self, crimes, diff = False, options = None):
         # Initialize the major vars
         self.set_crime(None)
         self.set_grep(None)
@@ -27,8 +29,7 @@ class Print:
         self.set_verbose(None)
         self.set_diff(diff)
 
-        self.crime_file = self.open_csv(crime_filename, diff)
-        self.crime_filename = crime_filename
+        self.crimes = crimes
         self.options = options
 
     def set_crime(self, value):
@@ -315,3 +316,22 @@ class Print:
 
 if __name__ == '__main__':
     parser = OptionParser()
+    parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=True)
+    (options, args) = parser.parse_args()
+    import doctest
+    doctest.testmod(verbose=options.verbose)
+    parse = Parse('_input/test')
+    parse.set_crime('violent')
+    parse.set_grep(False)
+    parse.set_location('capitol-hill')
+    result = parse.get_specific_crime()
+    printjob = PrintCrimes(result)
+    '''
+    parse.set_grep(options.grep)
+    limit = parse.set_limit(int(options.limit))
+    crime = parse.set_crime(options.crime)
+    location = parse.set_location(location)
+    verbose = parse.set_verbose(options.verbose)
+    address = parse.set_address(options.address)
+    parse.set_diff(options.diff)
+    '''

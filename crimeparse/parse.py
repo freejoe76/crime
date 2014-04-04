@@ -10,6 +10,7 @@ from optparse import OptionParser
 from datetime import datetime, timedelta
 from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
+#from printcrimes import PrintCrimes
 
 # The location-specific data
 import dicts
