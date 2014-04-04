@@ -134,7 +134,8 @@ class PrintJob:
             1.  aggravated-assault: aggravated-assault-dv
             >>> crime, grep = parse.set_crime('violent'), parse.set_grep(False)
             >>> crimes = parse.get_specific_crime()
-            >>> report = parse.print_crimes(crimes, limit, 'specific')
+            >>> printjob = PrintJob(crimes, 'specific', parse.crime_filename)
+            >>> report = printjob.print_crimes()
             >>> print report.split(",")[0]
             43 violent crimes
 
@@ -308,6 +309,7 @@ if __name__ == '__main__':
     parse.set_location('capitol-hill')
     result = parse.get_specific_crime()
     printjob = PrintJob(result, 'specific', parse.crime_filename)
+    print printjob.print_crimes()
     '''
     parse.set_grep(options.grep)
     limit = parse.set_limit(int(options.limit))
