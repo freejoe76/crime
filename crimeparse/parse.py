@@ -10,7 +10,7 @@ from optparse import OptionParser
 from datetime import datetime, timedelta
 from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
-#from printcrimes import PrintCrimes
+#from printjob import PrintJob
 
 # The location-specific data
 import dicts
@@ -83,6 +83,10 @@ class Parse:
         self.crime_file = self.open_csv(crime_filename, diff)
         self.crime_filename = crime_filename
         self.options = options
+
+    def get_filename(self):
+        """ Returns"""
+        pass
 
     def set_crime(self, value):
         """ Set the object's crime var.

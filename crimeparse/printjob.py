@@ -7,7 +7,7 @@ from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
 
 class PrintJob:
-    """ class Print prints the results of a Parse.
+    """ class PrintJob prints the results of a Parse.
         >>> parse = Parse('_input/test')
         >>> parse.set_crime('violent')
         'violent'
@@ -15,44 +15,42 @@ class PrintJob:
         False
         >>> parse.set_location('capitol-hill')
         'capitol-hill'
-        >>> result = parse.get_specific_crime()
-        >>> printjob = PrintJob(result, 'specific')
-        >>> result = printjob.print_crimes():
-        >>> print result['count'], result['crime']
-        3 violent
+        >>> printjob = PrintJob(parse.get_specific_crime(), 'specific', parse.crime_filename)
+        >>> results = printjob.print_crimes()
+        >>> print results.split(',')[0]
+        3 violent crimes
         """
-    def __init__(self, crimes, action, limit = 15, diff = False, options = None):
+    def __init__(self, crimes = None, action = None, crime_filename = None, limit = 15, diff = False, options = None):
         # Initialize the major vars
-        self.set_crime(None)
-        self.set_grep(None)
+        self.set_crimes(crimes)
+        self.set_action(action)
+        self.crime_filename = crime_filename
         self.set_location(None)
         self.set_limit(None)
         self.set_verbose(None)
         self.set_diff(diff)
 
-        self.crimes = crimes
         self.options = options
-        self.action = action
 
-    def set_crime(self, value):
-        """ Set the object's crime var.
-            >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('love')
-            >>> print crime
+    def set_crimes(self, value):
+        """ Set the object's crimes var.
+            >>> printjob = PrintJob('_input/test')
+            >>> crimes = printjob.set_crimes('love')
+            >>> print crimes
             love
             """
-        self.crime = value
-        return self.crime
+        self.crimes = value
+        return self.crimes
 
-    def set_grep(self, value):
-        """ Set the object's grep var.
-            >>> parse = Parse('_input/test')
-            >>> grep = parse.set_grep(False)
-            >>> print grep
+    def set_action(self, value):
+        """ Set the object's action var.
+            >>> printjob = PrintJob('_input/test')
+            >>> action = printjob.set_action(False)
+            >>> print action
             False
             """
-        self.grep = value
-        return self.grep
+        self.action = value
+        return self.action
 
     def set_location(self, value):
         """ Set the object's location var.
@@ -63,16 +61,6 @@ class PrintJob:
             """
         self.location = value
         return self.location
-
-    def set_address(self, value):
-        """ Set the object's address var.
-            >>> parse = Parse('_input/test')
-            >>> address = parse.set_location('835 E 18TH AVE')
-            >>> print address
-            835 E 18TH AVE
-            """
-        self.address = value
-        return self.address
 
     def set_limit(self, value):
         """ Set the object's limit var.
@@ -331,7 +319,7 @@ if __name__ == '__main__':
     parse.set_grep(False)
     parse.set_location('capitol-hill')
     result = parse.get_specific_crime()
-    printjob = PrintCrimes(result, 'specific')
+    printjob = PrintJob(result, 'specific', parse.crime_filename)
     '''
     parse.set_grep(options.grep)
     limit = parse.set_limit(int(options.limit))
