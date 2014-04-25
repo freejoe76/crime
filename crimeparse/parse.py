@@ -339,10 +339,10 @@ class Parse:
             # Address diffs, if we've got 'em.
             if self.diff == True:
                 #print record['INCIDENT_ID'][0]
-                if record['INCIDENT_ID'][0] == '>':
+                if record['INCIDENT_ID'][0] == '<':
                     record['diff'] = 'ADD'
                     adds += 1
-                elif record['INCIDENT_ID'][0] == '<': 
+                elif record['INCIDENT_ID'][0] == '>': 
                     record['diff'] = 'REMOVED'
                     removes += 1
 
