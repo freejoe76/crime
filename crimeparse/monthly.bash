@@ -28,11 +28,12 @@ function subsection
     echo -e $divider$1$divider;
 }
 
-for MONTH in 1; do
-    FILENAME=$MONTH-month-$LOCATION
+for MONTH in 1 2 3 4 5 6; do
+    FILENAME=reports/$MONTH-month-$LOCATION
     > $FILENAME
     SUFFIX="--action rankings --location $LOCATION --file $MONTH"monthsago" --output json"
     VIOLENT=`./parse.py --crime violent $SUFFIX`
+    DV=`./parse.py --crime dv --grep $SUFFIX`
     PROPERTY=`./parse.py --crime property $SUFFIX`
     ROBBERY=`./parse.py --crime robbery --grep $SUFFIX`
     BURGLE=`./parse.py --crime burg --grep $SUFFIX`
@@ -42,8 +43,18 @@ for MONTH in 1; do
     BURGLE_UNFORCED=`./parse.py --crime no-force --grep $SUFFIX`
     THEFT_CAR=`./parse.py --crime theft-of-motor-vehicle $SUFFIX`
     THEFT_BICYCLE=`./parse.py --crime theft-bicycle $SUFFIX`
-    echo '{ "items": {'
-    echo '"violent": '$VIOLENT','
-    echo '"property": '$PROPERTY''
-    echo '}}'
+    echo '{ "items": {' >> $FILENAME
+    echo '"violent": '$VIOLENT',' >> $FILENAME
+    echo '"dv": '$DV',' >> $FILENAME
+    echo '"property": '$PROPERTY',' >> $FILENAME
+    echo '"robbery": '$ROBBERY',' >> $FILENAME
+    echo '"burgle": '$BURGLE',' >> $FILENAME
+    echo '"burgle_residence": '$BURGLE_RESIDENCE',' >> $FILENAME
+    echo '"burgle_business": '$BURGLE_BUSINESS',' >> $FILENAME
+    echo '"burgle_forced": '$BURGLE_FORCED',' >> $FILENAME
+    echo '"burgle_unforced": '$BURGLE_UNFORCED',' >> $FILENAME
+    echo '"theft_car": '$THEFT_CAR',' >> $FILENAME
+    echo '"theft_bicycle": '$THEFT_BICYCLE >> $FILENAME
+    #echo '"": '$','
+    echo '}}' >> $FILENAME
 done
