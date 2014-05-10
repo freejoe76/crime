@@ -14,6 +14,7 @@ THIS_YEAR=`date +'%Y'`
 LAST_YEAR=`expr $THIS_YEAR - 1`
 LAST_LAST_YEAR=`expr $THIS_YEAR - 2`
 THIS_MONTH=`date +'%Y-%m'`
+# *** These next two lines break on the macintosh shell, ugh ugh ugh ugh ugh ugh ugh.
 LAST_MONTH=`date +'%Y-%m' --date='month ago'`
 LAST_LAST_MONTH=`date +'%Y-%m' --date='2 months ago'`
 
