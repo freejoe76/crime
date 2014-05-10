@@ -14,7 +14,6 @@ THIS_YEAR=`date +'%Y'`
 LAST_YEAR=`expr $THIS_YEAR - 1`
 LAST_LAST_YEAR=`expr $THIS_YEAR - 2`
 THIS_MONTH=`date +'%Y-%m'`
-# *** These next two lines break on the macintosh shell, ugh ugh ugh ugh ugh ugh ugh.
 LAST_MONTH=`date +'%Y-%m' --date='month ago'`
 LAST_LAST_MONTH=`date +'%Y-%m' --date='2 months ago'`
 
@@ -46,19 +45,19 @@ for MONTH in 1 2 3 4 5 6; do
     BURGLE_UNFORCED=`./parse.py --crime no-force --grep $SUFFIX`
     THEFT_CAR=`./parse.py --crime theft-of-motor-vehicle $SUFFIX`
     THEFT_BICYCLE=`./parse.py --crime theft-bicycle $SUFFIX`
-    echo '[' >> $FILENAME
-    echo '{"violent": '$VIOLENT'},' >> $FILENAME
-    echo '{"dv": '$DV'},' >> $FILENAME
-    echo '{"property": '$PROPERTY'},' >> $FILENAME
-    echo '{"robbery": '$ROBBERY'},' >> $FILENAME
-    echo '{"burgle": '$BURGLE'},' >> $FILENAME
-    echo '{"burgle_residence": '$BURGLE_RESIDENCE'},' >> $FILENAME
-    echo '{"burgle_business": '$BURGLE_BUSINESS'},' >> $FILENAME
-    echo '{"burgle_forced": '$BURGLE_FORCED'},' >> $FILENAME
-    echo '{"burgle_unforced": '$BURGLE_UNFORCED'},' >> $FILENAME
-    echo '{"theft_car": '$THEFT_CAR'},' >> $FILENAME
-    echo '{"theft_bicycle": '$THEFT_BICYCLE'}' >> $FILENAME
+    echo '[{' >> $FILENAME
+    echo '"violent": '$VIOLENT',' >> $FILENAME
+    echo '"dv": '$DV',' >> $FILENAME
+    echo '"property": '$PROPERTY',' >> $FILENAME
+    echo '"robbery": '$ROBBERY',' >> $FILENAME
+    echo '"burgle": '$BURGLE',' >> $FILENAME
+    echo '"burgle_residence": '$BURGLE_RESIDENCE',' >> $FILENAME
+    echo '"burgle_business": '$BURGLE_BUSINESS',' >> $FILENAME
+    echo '"burgle_forced": '$BURGLE_FORCED',' >> $FILENAME
+    echo '"burgle_unforced": '$BURGLE_UNFORCED',' >> $FILENAME
+    echo '"theft_car": '$THEFT_CAR',' >> $FILENAME
+    echo '"theft_bicycle": '$THEFT_BICYCLE'' >> $FILENAME
     #echo '"": '$','
-    echo ']' >> $FILENAME
+    echo '}]' >> $FILENAME
 done
 done
