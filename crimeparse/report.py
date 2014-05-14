@@ -9,7 +9,7 @@ from parse import Parse
 class Report:
     """ class Report is an interface with class Parse to pull out defined 
         crime queries ( crime_items ). Report takes a dict of crime_item definitions:
-        { '[[slug]]': { 'name': '[[full-name]]', 'options': { 'type': 'month', 'location': 'capitol-hill' } } }
+        { '[[slug]]': { 'name': '[[full-name]]', 'options': { 'type': 'month', 'location': 'capitol-hill', 'crime': 'violent', 'grep': False } } }
         """
 
     def __init__(self, date_type, location, numago = 1, output = 'json', options = None):
@@ -100,7 +100,9 @@ if __name__ == '__main__':
     parser.add_option("-d", "--date_type", dest="date_type")
     parser.add_option("-n", "--numago", dest="numago")
     parser.add_option("-l", "--location", dest="location")
+    parser.add_option("-c", "--crime", dest="crime", default=None)
     parser.add_option("-o", "--output", dest="output", default="json")
+    parser.add_option("-g", "--grep", dest="grep", default=False, action="store_true")
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=True)
     (options, args) = parser.parse_args()
 
