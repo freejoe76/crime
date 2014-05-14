@@ -14,7 +14,7 @@ class Report:
 
     def __init__(self, date_type, location, numago = 1, output = 'json', options = None):
         # Initialize the major vars
-        self.set_type(date_type)
+        self.set_date_type(date_type)
         self.set_numago(numago)
         self.set_location(location)
         self.set_output(output)
@@ -93,16 +93,19 @@ class Report:
         parse.set_grep(False)
         parse.set_location(self.location)
         result = parse.get_rankings()
+        print result
 
 if __name__ == '__main__':
     parser = OptionParser()
-    parser.add_option("-t", "--type", dest="type")
+    parser.add_option("-d", "--date_type", dest="date_type")
     parser.add_option("-n", "--numago", dest="numago")
     parser.add_option("-l", "--location", dest="location")
     parser.add_option("-o", "--output", dest="output", default="json")
+    parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=True)
     (options, args) = parser.parse_args()
 
     import doctest
     doctest.testmod(verbose=options.verbose)
 
-    report = Report()
+    report = Report(options.date_type, options.location, options.numago, options.output)
+    report.get_crime_item()
