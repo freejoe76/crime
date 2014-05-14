@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Publish json data suitable for a ( month / quarter / year) report.
+# Publish json data suitable for a (month / quarter / year) report.
 #
 # Takes input (report time type, report location) and returns report in output type desired (json, text)
 from optparse import OptionParser
@@ -8,26 +8,26 @@ from parse import Parse
 
 class Report:
     """ class Report is an interface with class Parse to pull out defined 
-        crime queries. How these crime queries will be defined... is up in the
-        air. 
+        crime queries ( crime_items ). Report takes a dict of crime_item definitions:
+        { '[[slug]]': { 'name': '[[full-name]]', 'options': { 'type': 'month', 'location': 'capitol-hill' } } }
         """
 
-    def __init__(self, type, location, numago = 1, output = 'json', options = None):
+    def __init__(self, date_type, location, numago = 1, output = 'json', options = None):
         # Initialize the major vars
-        self.set_type(type)
+        self.set_type(date_type)
         self.set_numago(numago)
         self.set_location(location)
         self.set_output(output)
 
-    def set_type(self, value):
-        """ Set the object's type var.
+    def set_date_type(self, value):
+        """ Set the object's date_type var.
             >>> report = Report('month', 'capitol-hill')
-            >>> type = report.set_type('quarter')
-            >>> print type
+            >>> date_type = report.set_date_type('quarter')
+            >>> print date_type
             quarter
             """
-        self.type = value
-        return self.type
+        self.date_type = value
+        return self.date_type
 
     def set_numago(self, value):
         """ Set the object's numago var.
@@ -73,13 +73,16 @@ class Report:
     BURGLE_UNFORCED=`./parse.py --crime no-force --grep $SUFFIX`
     THEFT_CAR=`./parse.py --crime theft-of-motor-vehicle $SUFFIX`
     THEFT_BICYCLE=`./parse.py --crime theft-bicycle $SUFFIX`
+    echo '[{' >> $FILENAME
+    echo '"violent": '$VIOLENT',' >> $FILENAME
+    echo '"dv": '$DV',' >> $FILENAME
     """
     def build_filename(self):
         """ Put together the pieces we need to get the filename we query.
             """
-        if self.type == 'month':
+        if self.date_type == 'month':
             return '%smonthsago' % self.numago
-        if self.type == 'year':
+        if self.date_type == 'year':
             return ''
 
     def get_crime_item(self):
@@ -98,3 +101,8 @@ if __name__ == '__main__':
     parser.add_option("-l", "--location", dest="location")
     parser.add_option("-o", "--output", dest="output", default="json")
     (options, args) = parser.parse_args()
+
+    import doctest
+    doctest.testmod(verbose=options.verbose)
+
+    report = Report()

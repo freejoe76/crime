@@ -31,7 +31,7 @@ for LOCATION in capitol-hill; do
     #./parse.py --action rankings --file last12months --crime dv --grep --output json --location capitol-hill
 
 for MONTH in 1 2 3 4 5 6; do
-    FILENAME=reports/$MONTH-month-$LOCATION
+    FILENAME=reports/$MONTH-month-$LOCATION.json
     > $FILENAME
     SUFFIX="--action rankings --location $LOCATION --output json --file $MONTH"monthsago
     VIOLENT=`./parse.py --crime violent $SUFFIX`
