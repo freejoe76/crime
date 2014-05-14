@@ -88,7 +88,7 @@ class Report:
     def get_crime_item(self):
         """ Return a Parse report.
             """
-        parse = Parse('_input/%s' % self.build_filename)
+        parse = Parse('_input/%s' % self.build_filename())
         parse.set_crime('violent')
         parse.set_grep(False)
         parse.set_location(self.location)
