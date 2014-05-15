@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Publish json data suitable for a (month / quarter / year) report.
+# Publish json data suitable for a (month / quarter / year) report. A higher-level interface to parse.py
 #
-# Takes input (report time type, report location) and returns report in output type desired (json, text)
+# Takes input (report date type, crime, location) and returns report in output type desired (json, text)
 from optparse import OptionParser
 from parse import Parse
 
@@ -59,24 +59,6 @@ class Report:
         self.output = value
         return self.output
 
-    """
-    # For reference
-    SUFFIX="--action rankings --location $LOCATION --output json --file $MONTH"monthsago
-    VIOLENT=`./parse.py --crime violent $SUFFIX`
-    DV=`./parse.py --crime dv --grep $SUFFIX`
-    PROPERTY=`./parse.py --crime property $SUFFIX`
-    ROBBERY=`./parse.py --crime robbery --grep $SUFFIX`
-    BURGLE=`./parse.py --crime burg --grep $SUFFIX`
-    BURGLE_RESIDENCE=`./parse.py --crime burglary-residence --grep $SUFFIX`
-    BURGLE_BUSINESS=`./parse.py --crime burglary-business --grep $SUFFIX`
-    BURGLE_FORCED=`./parse.py --crime by-force --grep $SUFFIX`
-    BURGLE_UNFORCED=`./parse.py --crime no-force --grep $SUFFIX`
-    THEFT_CAR=`./parse.py --crime theft-of-motor-vehicle $SUFFIX`
-    THEFT_BICYCLE=`./parse.py --crime theft-bicycle $SUFFIX`
-    echo '[{' >> $FILENAME
-    echo '"violent": '$VIOLENT',' >> $FILENAME
-    echo '"dv": '$DV',' >> $FILENAME
-    """
     def build_filename(self):
         """ Put together the pieces we need to get the filename we query.
             """
