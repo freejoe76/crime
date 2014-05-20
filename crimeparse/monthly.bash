@@ -22,6 +22,8 @@ LAST_LAST_MONTH=`date +'%Y-%m' --date='2 months ago'`
 for LOCATION in $LOCATIONS; do
     FILENAME=reports/1-year-$LOCATION.json
     SUFFIX="--action rankings --location $LOCATION --output json --file last12months"
+    #./parse.py --action rankings --file last12months --crime dv --grep --output json --location capitol-hill
+
     VIOLENT=`./parse.py --crime violent $SUFFIX`
     DV=`./parse.py --crime dv --grep $SUFFIX`
     PROPERTY=`./parse.py --crime property $SUFFIX`
@@ -77,4 +79,7 @@ for LOCATION in $LOCATIONS; do
         #echo '"": '$','
         echo '}}' >> $FILENAME
     done
+    echo '"theft_bicycle": '$THEFT_BICYCLE'' >> $FILENAME
+    #echo '"": '$','
+    echo '}]' >> $FILENAME
 done
