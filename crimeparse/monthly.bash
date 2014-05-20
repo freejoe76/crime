@@ -79,7 +79,4 @@ for LOCATION in $LOCATIONS; do
         #echo '"": '$','
         echo '}}' >> $FILENAME
     done
-    echo '"theft_bicycle": '$THEFT_BICYCLE'' >> $FILENAME
-    #echo '"": '$','
-    echo '}]' >> $FILENAME
 done
