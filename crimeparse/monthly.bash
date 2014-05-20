@@ -20,7 +20,7 @@ LAST_MONTH=`date +'%Y-%m' --date='month ago'`
 LAST_LAST_MONTH=`date +'%Y-%m' --date='2 months ago'`
 
 for LOCATION in $LOCATIONS; do
-    FILENAME=reports/1-year-$LOCATION
+    FILENAME=reports/1-year-$LOCATION.json
     SUFFIX="--action rankings --location $LOCATION --output json --file last12months"
     VIOLENT=`./parse.py --crime violent $SUFFIX`
     DV=`./parse.py --crime dv --grep $SUFFIX`
@@ -48,7 +48,7 @@ for LOCATION in $LOCATIONS; do
     echo '}}' >> $FILENAME
 
     for MONTH in 1 2 3 4 5 6; do
-        FILENAME=reports/$MONTH-month-$LOCATION
+        FILENAME=reports/$MONTH-month-$LOCATION.json
         > $FILENAME
         SUFFIX="--action rankings --location $LOCATION --output json --file $MONTH"monthsago
         VIOLENT=`./parse.py --crime violent $SUFFIX`
