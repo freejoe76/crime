@@ -10,12 +10,11 @@ from optparse import OptionParser
 from datetime import datetime, timedelta
 from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
-#from printjob import PrintJob
+from printcrimes import *
 
 # The location-specific data
 import dicts
 
-divider='\n=============================================================\n'
 
 def timeago(time=False):
     """ Get a datetime object or a int() Epoch timestamp and return a
@@ -745,6 +744,6 @@ if __name__ == '__main__':
     else:
         print "You must specify one of these actions: rankings, recent, specific, search."
     if not silent:
-        from printjob import PrintJob
-        printjob = PrintJob(crimes, action, parse.crime_filename, limit)
+        from printcrimes import *
+        printjob = PrintCrimes(crimes, action, parse.crime_filename, limit)
         print printjob.print_crimes(location, output)

@@ -6,8 +6,10 @@ from parse import Parse
 from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
 
-class PrintJob:
-    """ class Print prints the results of a Parse.
+divider='\n=============================================================\n'
+
+class PrintCrimes:
+    """ class PrintCrimes prints the results of a Parse.
         >>> parse = Parse('_input/test')
         >>> parse.set_crime('violent')
         'violent'
@@ -16,8 +18,8 @@ class PrintJob:
         >>> parse.set_location('capitol-hill')
         'capitol-hill'
         >>> result = parse.get_specific_crime()
-        >>> printjob = PrintJob(result, 'specific')
-        >>> result = printjob.print_crimes():
+        >>> printcrimes = PrintCrimes(result, 'specific')
+        >>> result = printcrimes.print_crimes():
         >>> print result['count'], result['crime']
         3 violent
         """
@@ -331,7 +333,7 @@ if __name__ == '__main__':
     parse.set_grep(False)
     parse.set_location('capitol-hill')
     result = parse.get_specific_crime()
-    printjob = PrintCrimes(result, 'specific')
+    printcrimes = PrintCrimes(result, 'specific')
     '''
     parse.set_grep(options.grep)
     limit = parse.set_limit(int(options.limit))
