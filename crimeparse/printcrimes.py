@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 # Print output from a parsing of the crime CSVs
 from optparse import OptionParser
-from parse import Parse
 from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
 
