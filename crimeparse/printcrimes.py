@@ -5,6 +5,12 @@ from optparse import OptionParser
 from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
 
+# We only want this module once.
+try:
+    from parse import Parse
+except:
+    pass
+
 divider='\n=============================================================\n'
 
 class PrintCrimes:
@@ -14,13 +20,13 @@ class PrintCrimes:
         'violent'
         >>> parse.set_grep(False)
         False
-        >>> parse.set_location('capitol-hill')
-        'capitol-hill'
         >>> result = parse.get_specific_crime()
         >>> printcrimes = PrintCrimes(result, 'specific')
-        >>> result = printcrimes.print_crimes():
+        >>> result = printcrimes.print_crimes()
         >>> print result['count'], result['crime']
-        3 violent
+        43 violent
+        >>> parse.set_location('capitol-hill')
+        'capitol-hill'
         """
     def __init__(self, crimes, action, limit = 15, diff = False, options = None):
         # Initialize the major vars
@@ -152,14 +158,17 @@ class PrintCrimes:
             >>> parse = Parse('_input/test')
             >>> parse.set_crime('violent')
             'violent'
-            >>> crimes = parse.get_recent_crimes()
+            >>> result = parse.get_recent_crimes()
             >>> limit, action = 1, 'recent'
-            >>> report = parse.print_crimes(crimes, limit, action)
+            >>> printcrimes = PrintCrimes(result, action)
+            >>> report = printcrimes.print_crimes()
             >>> print report.split("\\n")[0]
             1.  aggravated-assault: aggravated-assault-dv
             >>> crime, grep = parse.set_crime('violent'), parse.set_grep(False)
-            >>> crimes = parse.get_specific_crime()
-            >>> report = parse.print_crimes(crimes, limit, 'specific')
+            >>> result = parse.get_specific_crime()
+            >>> limit, action = 1, 'specific'
+            >>> printcrimes = PrintCrimes(result, action)
+            >>> report = printcrimes.print_crimes(result)
             >>> print report.split(",")[0]
             43 violent crimes
 
