@@ -44,7 +44,10 @@ class PrintCrimes:
     def set_crime(self, value):
         """ Set the object's crime var.
             >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('love')
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> crime = printcrimes.set_crime('love')
             >>> print crime
             love
             """
@@ -54,7 +57,10 @@ class PrintCrimes:
     def set_action(self, value):
         """ Set the object's action var.
             >>> parse = Parse('_input/test')
-            >>> action = parse.set_action('specific')
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> action = printcrimes.set_action('specific')
             >>> print action
             specific
             """
@@ -64,7 +70,10 @@ class PrintCrimes:
     def set_grep(self, value):
         """ Set the object's grep var.
             >>> parse = Parse('_input/test')
-            >>> grep = parse.set_grep(False)
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> grep = printcrimes.set_grep(False)
             >>> print grep
             False
             """
@@ -74,7 +83,10 @@ class PrintCrimes:
     def set_location(self, value):
         """ Set the object's location var.
             >>> parse = Parse('_input/test')
-            >>> location = parse.set_location('cbd')
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> location = printcrimes.set_location('cbd')
             >>> print location
             cbd
             """
@@ -84,7 +96,10 @@ class PrintCrimes:
     def set_limit(self, value):
         """ Set the object's limit var.
             >>> parse = Parse('_input/test')
-            >>> limit = parse.set_limit(15)
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> limit = printcrimes.set_limit(15)
             >>> print limit
             15
             """
@@ -94,7 +109,10 @@ class PrintCrimes:
     def set_verbose(self, value):
         """ Set the object's verbose var.
             >>> parse = Parse('_input/test')
-            >>> verbose = parse.set_verbose(False)
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> verbose = printcrimes.set_verbose(False)
             >>> print verbose
             False
             """
@@ -104,7 +122,10 @@ class PrintCrimes:
     def set_diff(self, value):
         """ Set the object's diff var.
             >>> parse = Parse('_input/test')
-            >>> diff = parse.set_diff(False)
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> diff = printcrimes.set_diff(False)
             >>> print diff
             False
             """
@@ -114,7 +135,10 @@ class PrintCrimes:
     def clean_location(self, location):
         """ Take the location string, replace the -'s, capitalize what we can.
             >>> parse = Parse('_input/test')
-            >>> parse.clean_location('capitol-hill')
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> printcrimes.clean_location('capitol-hill')
             'Capitol Hill'
             """
         location = location.replace('-', ' ')
@@ -133,9 +157,10 @@ class PrintCrimes:
             manual dicts in dicts.py
             >>> parse = Parse('_input/test')
             >>> crime = parse.set_crime('violent')
-            >>> crimes = parse.get_rankings()
-            >>> result = parse.print_neighborhoods(crimes)
-            >>> print result[0]
+            >>> result = parse.get_rankings()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> neighborhoods = printcrimes.print_neighborhoods(result)
+            >>> print neighborhoods[0]
                 'wellshire': {'full': 'Wellshire'},
             """
         outputs = []
