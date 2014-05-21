@@ -174,6 +174,7 @@ class PrintCrimes:
 
         if 'crimes' not in crimes and action != 'monthly' and action != 'specific':
             return False
+        print action
 
         if action == 'search':
             outputs = '%i crimes at %s.\n' % ( crimes['count'], self.address )
