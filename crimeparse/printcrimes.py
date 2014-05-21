@@ -22,11 +22,9 @@ class PrintCrimes:
         False
         >>> result = parse.get_specific_crime()
         >>> printcrimes = PrintCrimes(result, 'specific')
-        >>> result = printcrimes.print_crimes()
-        >>> print result['count'], result['crime']
-        43 violent
-        >>> parse.set_location('capitol-hill')
-        'capitol-hill'
+        >>> report = printcrimes.print_crimes()
+        >>> print report.split(",")[0]
+        43 violent crimes
         """
     def __init__(self, crimes, action, limit = 15, diff = False, options = None):
         # Initialize the major vars
