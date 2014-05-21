@@ -51,6 +51,16 @@ class PrintCrimes:
         self.crime = value
         return self.crime
 
+    def set_action(self, value):
+        """ Set the object's action var.
+            >>> parse = Parse('_input/test')
+            >>> action = parse.set_action('specific')
+            >>> print action
+            specific
+            """
+        self.action = value
+        return self.action
+
     def set_grep(self, value):
         """ Set the object's grep var.
             >>> parse = Parse('_input/test')
@@ -154,10 +164,8 @@ class PrintCrimes:
             >>> report = printcrimes.print_crimes()
             >>> print report.split("\\n")[0]
             1.  aggravated-assault: aggravated-assault-dv
-            >>> crime, grep = parse.set_crime('violent'), parse.set_grep(False)
             >>> result = parse.get_specific_crime()
-            >>> limit, action = 1, 'specific'
-            >>> printcrimes = PrintCrimes(result, action, limit)
+            >>> printcrimes = PrintCrimes(result, 'specific')
             >>> report = printcrimes.print_crimes()
             >>> print report.split(",")[0]
             43 violent crimes
@@ -174,7 +182,6 @@ class PrintCrimes:
 
         if 'crimes' not in crimes and action != 'monthly' and action != 'specific':
             return False
-        print action
 
         if action == 'search':
             outputs = '%i crimes at %s.\n' % ( crimes['count'], self.address )
