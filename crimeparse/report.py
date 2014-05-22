@@ -15,7 +15,6 @@ class Report:
     #def __init__(self, date_type='month', location='', numago = 1, output = 'json', options = None, **kwargs):
     def __init__(self, **kwargs):
         # Initialize the major vars
-        print dir(kwargs)
         self.set_date_type(None)
         self.set_location(None)
         for key, value in kwargs.iteritems():
@@ -24,9 +23,9 @@ class Report:
                 if subkey == 'type':
                     self.set_date_type(subvalue)
                 elif subkey == 'location' and subvalue != '':
-                    self.set_location(location)
+                    self.set_location(subvalue)
                 elif subkey == 'output':
-                    self.set_output(output)
+                    self.set_output(subvalue)
         self.set_numago(None)
 
     def set_date_type(self, value):
