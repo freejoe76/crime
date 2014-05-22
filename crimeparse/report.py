@@ -15,12 +15,19 @@ class Report:
     #def __init__(self, date_type='month', location='', numago = 1, output = 'json', options = None, **kwargs):
     def __init__(self, **kwargs):
         # Initialize the major vars
-        for key, value in kwargs.__iteritems__():
-            print key, value
-        self.set_date_type(date_type)
-        self.set_numago(numago)
-        self.set_location(location)
-        self.set_output(output)
+        print dir(kwargs)
+        self.set_date_type(None)
+        self.set_location(None)
+        for key, value in kwargs.iteritems():
+            for subkey, subvalue in kwargs[key]['options'].iteritems():
+                print subkey, subvalue
+                if subkey == 'type':
+                    self.set_date_type(subvalue)
+                elif subkey == 'location' and subvalue != '':
+                    self.set_location(location)
+                elif subkey == 'output':
+                    self.set_output(output)
+        self.set_numago(None)
 
     def set_date_type(self, value):
         """ Set the object's date_type var.
