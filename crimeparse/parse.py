@@ -10,11 +10,11 @@ from optparse import OptionParser
 from datetime import datetime, timedelta
 from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
+from printcrimes import *
 
 # The location-specific data
 import dicts
 
-divider='\n=============================================================\n'
 
 def timeago(time=False):
     """ Get a datetime object or a int() Epoch timestamp and return a
@@ -83,6 +83,10 @@ class Parse:
         self.crime_filename = crime_filename
         self.options = options
 
+    def get_filename(self):
+        """ Returns"""
+        pass
+
     def set_crime(self, value):
         """ Set the object's crime var.
             >>> parse = Parse('_input/test')
@@ -112,6 +116,16 @@ class Parse:
             """
         self.location = value
         return self.location
+
+    def set_address(self, value):
+        """ Set the object's address var.
+            >>> parse = Parse('_input/test')
+            >>> address = parse.set_location('835 E 18TH AVE')
+            >>> print address
+            835 E 18TH AVE
+            """
+        self.address = value
+        return self.address
 
     def set_limit(self, value):
         """ Set the object's limit var.
@@ -204,6 +218,64 @@ class Parse:
                     return True
 
         return False
+
+    def get_address_type(self):
+        """ Distinguish between the types of addresses we may be searching:
+            Street address, a street block, or a lat/lon.
+            >>> parse = Parse('_input/test')
+            >>> address = parse.set_address('39.23,24.00')
+            >>> print parse.get_address_type()
+            lat/lon
+            """
+        if ',' in self.address:
+            return 'lat/lon'
+        elif 'BLK' in self.address:
+            return 'block'
+        return 'street'
+
+    def search_addresses(self):
+        """ Searches crimes for those that happened at a particular address.
+            The goal here is to allow us to loop through a list of addresses w/
+            business names and get a list of recent crimes at local businesses.
+
+            To get the newest crimes happening at places, search latestdiff.
+            This method returns a crime object with recent crimes and a count.
+
+            Example: How many crimes have been reported at 338 W 12TH AVE?
+            $ ./parse.py --verbose --action search --address "338 W 12TH AVE"
+
+            >>> parse = Parse('_input/test')
+            >>> address, grep = parse.set_address('1999 N BROADWAY ST'), parse.set_grep(False)
+            >>> result = parse.search_addresses()
+            >>> print result['count'], result['crimes'][0]['OFFENSE_CATEGORY_ID']
+            1 public-disorder
+            """
+        type_of = self.get_address_type()
+        crimes = []
+        for row in self.crime_file:
+            if len(row) < 5:
+                continue
+            record = dict(zip(dicts.keys, row))
+            # Skip removed records on the diff-search
+            if self.diff == True:
+                if record['INCIDENT_ID'][0] == '<':
+                    continue
+
+            if type_of == 'street' or type_of == 'block':
+                if self.grep == True:
+                    if self.address in record['INCIDENT_ADDRESS']:
+                        crimes.append(record)
+                else:
+                    if self.address == record['INCIDENT_ADDRESS']:
+                        crimes.append(record)
+            if type_of == 'lat/lon':
+                # Assumes lat/lon are split by a comma. If not, an error will
+                # be thrown and the user will know they are wrong.
+                lat, lon = self.address.split(',')
+                if lat in record['GEO_LAT'] and lon in record['GEO_LON']:
+                    crimes.append(record)
+
+        return { 'count': len(crimes), 'crimes': crimes }
 
     def get_specific_crime(self):
         """ Indexes specific crime.
@@ -590,220 +662,6 @@ class Parse:
             #outputs += ["    '%s': '%s'," % (item[0], item[0])]
         return outputs
 
-    def print_crimes(self, crimes, limit, action, loc=None, output=None, *args):
-        """ How do we want to display the crimes?
-            This method takes a dict of crimes (the type of dict depends on 
-            which method we chose to piece this together).
-            It also takes an action, which corresponds to which type of dict
-            we have.
-            Possible actions: recent, specific, rankings, monthly.
-
-            Right now we're publishing them to be read in terminal.
-            What we're parsing affects the dicts we have.
-            >>> parse = Parse('_input/test')
-            >>> parse.set_crime('violent')
-            'violent'
-            >>> crimes = parse.get_recent_crimes()
-            >>> limit, action = 1, 'recent'
-            >>> report = parse.print_crimes(crimes, limit, action)
-            >>> print report.split("\\n")[0]
-            1.  aggravated-assault: aggravated-assault-dv
-            >>> crime, grep = parse.set_crime('violent'), parse.set_grep(False)
-            >>> crimes = parse.get_specific_crime()
-            >>> report = parse.print_crimes(crimes, limit, 'specific')
-            >>> print report.split(",")[0]
-            43 violent crimes
-
-            #>>> crimes = parse.get_rankings('violent')
-            #>>> report = parse.print_crimes(crimes, 15, 'rankings')
-            #>>> print report
-            #1.  aggravated-assault: aggravated-assault-dv
-            """
-        outputs, json = '', None
-
-        if 'crimes' not in crimes and action != 'monthly' and action != 'specific':
-            return False
-
-        if action == 'specific':
-            if output == 'json':
-                #print self.crime
-                #rank_add = self.get_rankings(self.crime, self.grep, loc)
-                #print rank_add
-                json = """{\n    "items": [
-    {
-    "count": "%i",
-    "crime": "%s",
-    "filename": "%s",
-    "last_crime": "%s"
-    }]\n}""" % ( crimes['count'], crimes['crime'], self.crime_filename, crimes['last_crime'] )
-            else:
-                outputs = '%i %s crimes, (in file %s) last one %s ago' % ( crimes['count'], crimes['crime'], self.crime_filename, crimes['last_crime'] )
-
-        elif action == 'recent':
-            # Lists, probably recents, with full crime record dicts
-            i = 0
-            if output == 'csv':
-                outputs += 'category, type, date_reported, address, lat, lon\n'
-            elif output == 'json':
-                json = '{\n    "items": ['
-
-            crimes_to_print = crimes['crimes'][:limit]
-            if limit == 0:
-                crimes_to_print = crimes['crimes']
-            length = len(crimes_to_print)
-
-            for crime in crimes_to_print:
-                i = i + 1
-                if output == 'csv':
-                    outputs += '%s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
-                    continue
-                elif output == 'json':
-                    close_bracket = '},'
-                    if i == length:
-                        close_bracket = '}'
-
-                    json += """  {
-    "category": "%s",
-    "type": "%s",
-    "date-reported": "%s",
-    "address": "%s",
-    "latitude": "%s",
-    "longitude": "%s"
-    %s
-""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], close_bracket)
-                    continue
-
-                if 'diff' not in crime:
-                    crime['diff'] = ''
-
-                outputs += '''%i. %s %s: %s
-        Occurred: %s - %s
-        Reported: %s
-        %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
-
-            #if output == 'json':
-            #    outputs += ']\n}'
-
-
-        # No-location rankings get passed a list of neighborhoods and counts
-        # rather than a dict, which means the approach for publishing these
-        # in the terminal is different.
-        elif action == 'rankings' and loc is None:
-            outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
-            i = 0
-            
-            for item in crimes['crimes']['percapita']:
-                i = i + 1
-                location = self.clean_location(item[0])
-                outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
-
-            outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
-            i = 0
-            for item in crimes['crimes']['neighborhood']:
-                i = i + 1
-                location = self.clean_location(item[0])
-                outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
-
-        elif action == 'rankings':
-            outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
-            i = 0
-            
-            for item in reversed(sorted(crimes['crimes']['percapita'].iteritems(), key=operator.itemgetter(1))):
-                i = i + 1
-                if loc == item[0]:
-                    location = '***%s***' % self.clean_location(item[0])
-                else:
-                    location = self.clean_location(item[0])
-
-                if output == 'json' and loc == item[0]:
-                        json = '{ "percapita": [ "rank": "%i", "location": "%s", "count": "%s" ], ' % ( i, loc, crimes['crimes']['percapita'][item[0]]['count'] )
-                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['percapita'][item[0]]['count'])
-
-            outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
-            i = 0
-            for item in reversed(sorted(crimes['crimes']['neighborhood'].iteritems(), key=operator.itemgetter(1))):
-                i = i + 1
-                if loc == item[0]:
-                    location = '***%s***' % self.clean_location(item[0])
-                else:
-                    location = self.clean_location(item[0])
-
-                if output == 'json' and loc == item[0]:
-                    json += '\n "raw": [ "rank": "%i", "location": "%s", "count": "%s" ] }' % ( i, loc, crimes['crimes']['neighborhood'][item[0]]['count'] )
-                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['neighborhood'][item[0]]['count'])
-
-        elif action == 'monthly':
-            # We use the textbarchart here.
-            options = { 'type': None, 'font': 'monospace', 'unicode': self.options.unicode }
-            crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
-            bar = TextBarchart(options, crime_dict, crimes['max'])
-            outputs = bar.build_chart()
-            '''
-            divisor = 1
-            if crimes['max'] > 80:
-                divisor = 50
-            if crimes['max'] > 800:
-                divisor = 500
-            if crimes['max'] > 8000:
-                divisor = 5000
-
-            # Calculate the standard deviation.
-            # If the deviation's too low, there's no point in publishing the bar part of this chart.
-            count = []
-            for item in crime_dict:
-                count.append(item[1]['count'])
-            mean = int(sum(count)/len(count))
-            #print mean
-            count = []
-            for item in crime_dict:
-                diff = item[1]['count'] - mean
-                count.append(diff*diff)
-            variance = int(sum(count)/len(count))
-            #print variance
-            deviation = int(math.sqrt(variance))
-
-            # *** Possible barchars: #,■,▮
-            barchar = '#'
-            if self.options.unicode == True:
-                barchar = u'■'
-                # In case we want the date monospaced.
-                font = FancyText()
-
-            # If the deviation-to-mean ratio is more than 50%, that means
-            # most of the values are close to the mean and we don't really
-            # need a barchart.
-            if float(deviation)/mean > .5:
-                barchar = ''
-
-            # *** We should have an option to allow for the year if we want it in this month-to-month
-            date_format = '%b'
-
-            for item in crime_dict:
-                date = datetime.strftime(item[1]['date'], date_format).upper()
-                if self.options.unicode == True:
-                    date = font.translate(date)
-                values = {
-                    'date': date,
-                    'count': item[1]['count'],
-                    'barchart': barchar*int(item[1]['count']/divisor)
-                }
-                outputs += u'%(date)s %(barchart)s %(count)s\n' % values
-            '''
-
-        else:
-            print "We did not have any crimes to handle"
-            outputs = ''
-
-
-        # Close up loose strings
-        if action == 'recent' and output == 'json':
-            json += ']\n}'
-
-        if json is None:
-            return outputs
-        return json
-
-
 
 if __name__ == '__main__':
     # Parse the arguments, pass 'em to the function
@@ -814,6 +672,7 @@ if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-f", "--filename", dest="filename", default="currentyear")
     parser.add_option("-a", "--action", dest="action")
+    parser.add_option("--address", dest="address")
     parser.add_option("-l", "--location", dest="location", default=None)
     parser.add_option("-t", "--limit", dest="limit", default=0)
     parser.add_option("-c", "--crime", dest="crime", default=None)
@@ -840,13 +699,13 @@ if __name__ == '__main__':
     parse = Parse("_input/%s" % filename, options.diff, options)
     location = parse.get_neighborhood(options.location)
 
-
     crimes = None
     parse.set_grep(options.grep)
     limit = parse.set_limit(int(options.limit))
     crime = parse.set_crime(options.crime)
     location = parse.set_location(location)
     verbose = parse.set_verbose(options.verbose)
+    address = parse.set_address(options.address)
     parse.set_diff(options.diff)
     if action == 'monthly':
         # Example:
@@ -857,7 +716,7 @@ if __name__ == '__main__':
         crimes = parse.get_monthly(limit)
         if verbose:
             print crimes
-    if action == 'rankings':
+    elif action == 'rankings':
         # Example:
         # $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
         # $ ./parse.py --action rankings --crime dv --grep '2013-01-01' '2013-08-01'
@@ -880,5 +739,11 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep
         crimes = parse.get_specific_crime()
+    elif action == 'search':
+        crimes = parse.search_addresses()
+    else:
+        print "You must specify one of these actions: rankings, recent, specific, search."
     if not silent:
-        print parse.print_crimes(crimes, limit, action, location, output)
+        from printcrimes import *
+        printjob = PrintCrimes(crimes, action, parse.crime_filename, limit)
+        print printjob.print_crimes(location, output)
