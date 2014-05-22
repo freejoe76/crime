@@ -12,8 +12,11 @@ class Report:
         { '[[slug]]': { 'name': '[[full-name]]', 'options': { 'type': 'month', 'location': 'capitol-hill', 'crime': 'violent', 'grep': False } } }
         """
 
-    def __init__(self, date_type, location, numago = 1, output = 'json', options = None):
+    #def __init__(self, date_type='month', location='', numago = 1, output = 'json', options = None, **kwargs):
+    def __init__(self, **kwargs):
         # Initialize the major vars
+        for key, value in kwargs.__iteritems__():
+            print key, value
         self.set_date_type(date_type)
         self.set_numago(numago)
         self.set_location(location)
@@ -61,7 +64,16 @@ class Report:
 
     def build_filename(self):
         """ Put together the pieces we need to get the filename we query.
+            >>> report = Report('month', 'capitol-hill')
+            >>> filename = report.build_filename()
+            >>> print filename
+            1monthsago
             """
+        if self.numago == None:
+            self.set_numago(1)
+
+        if self.date_type == 'test':
+            return 'test'
         if self.date_type == 'month':
             return '%smonthsago' % self.numago
         if self.date_type == 'year':
@@ -78,6 +90,10 @@ class Report:
         print result
 
 if __name__ == '__main__':
+    import doctest
+    doctest.testmod(verbose=True)
+    """
+    # Kill command-line usage for now
     parser = OptionParser()
     parser.add_option("-d", "--date_type", dest="date_type")
     parser.add_option("-n", "--numago", dest="numago")
@@ -88,8 +104,7 @@ if __name__ == '__main__':
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=True)
     (options, args) = parser.parse_args()
 
-    import doctest
-    doctest.testmod(verbose=options.verbose)
 
     report = Report(options.date_type, options.location, options.numago, options.output)
     report.get_crime_item()
+    """
