@@ -17,6 +17,7 @@ class Report:
         # Initialize the major vars
         self.set_date_type(None)
         self.set_location(None)
+        self.set_numago(None)
         for key, value in kwargs.iteritems():
             for subkey, subvalue in kwargs[key]['options'].iteritems():
                 print subkey, subvalue
@@ -26,7 +27,10 @@ class Report:
                     self.set_location(subvalue)
                 elif subkey == 'output':
                     self.set_output(subvalue)
-        self.set_numago(None)
+                elif subkey == 'crime':
+                    self.set_crime(subvalue)
+                elif subkey == 'grep':
+                    self.set_grep(subvalue)
 
     def set_date_type(self, value):
         """ Set the object's date_type var.
@@ -47,6 +51,30 @@ class Report:
             """
         self.numago = value
         return self.numago
+
+    def set_crime(self, value):
+        """ Set the object's crime var.
+            >>> report = Report('month', 'capitol-hill')
+            >>> crime = report.set_crime('property')
+            >>> print crime
+            property
+            """
+        self.crime = value
+        return self.crime
+
+    def set_grep(self, value):
+        """ Set the object's grep var.
+            >>> report = Report('month', 'capitol-hill')
+            >>> grep = report.set_grep('True')
+            >>> print grep
+            True
+            """
+        self.grep = value
+        if value == 'True':
+            self.grep = True
+        elif value == 'False':
+            self.grep = False
+        return self.crime
 
     def set_location(self, value):
         """ Set the object's location var.
@@ -89,9 +117,10 @@ class Report:
         """ Return a Parse report.
             """
         parse = Parse('_input/%s' % self.build_filename())
-        parse.set_crime('violent')
-        parse.set_grep(False)
+        parse.set_crime(self.crime)
+        parse.set_grep(self.grep)
         parse.set_location(self.location)
+        # *** other types of reports
         result = parse.get_rankings()
         print result
 
