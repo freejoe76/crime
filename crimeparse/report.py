@@ -10,33 +10,43 @@ from datetime import datetime
 class Report:
     """ class Report is an interface with class Parse to pull out defined 
         crime queries ( crime_items ). Report takes a dict of crime_item definitions:
-        { '[[slug]]': { 'name': '[[full-name]]', 'options': { 'date_type': 'month', 'location': 'capitol-hill', 'crime': 'violent', 'grep': False } } }
+        { 
+            'slug': '[[slug]]', 'name': '[[full-name]]', 
+            'date_type': 'month', 'numago': '0', 'report_type': 'rankings',
+            'location': 'capitol-hill', 'crime': 'violent', 'grep': False 
+        }
         """
 
-    #def __init__(self, date_type='month', location='', numago = 1, output = 'json', options = None, **kwargs):
     def __init__(self, **kwargs):
-        # Initialize the major vars
         self.set_date_type(None)
         self.set_location(None)
         self.set_numago(None)
-        self.set_type('rankings')
+        self.set_report_type('rankings')
         for key, value in kwargs.iteritems():
-            for subkey, subvalue in kwargs[key]['options'].iteritems():
-                print subkey, subvalue
-                if subkey == 'date_type':
-                    self.set_date_type(subvalue)
-                elif subkey == 'location' and subvalue != '':
-                    self.set_location(subvalue)
-                elif subkey == 'output':
-                    self.set_output(subvalue)
-                elif subkey == 'crime':
-                    self.set_crime(subvalue)
-                elif subkey == 'grep':
-                    self.set_grep(subvalue)
-                elif subkey == 'numago':
-                    self.set_numago(subvalue)
-                elif subkey == 'report_type':
-                    self.set_report_type(subvalue)
+            if key == 'date_type':
+                self.set_date_type(subvalue)
+            elif key == 'location' and subvalue != '':
+                self.set_location(subvalue)
+            elif key == 'output':
+                self.set_output(subvalue)
+            elif key == 'crime':
+                self.set_crime(subvalue)
+            elif key == 'grep':
+                self.set_grep(subvalue)
+            elif key == 'numago':
+                self.set_numago(subvalue)
+            elif key == 'report_type':
+                self.set_report_type(subvalue)
+
+    def set_timespan(self, value):
+        """ Set the object's timespan var.
+            >>> report = Report('month', 'capitol-hill')
+            >>> timespan = report.set_timespan(['2013-01-08', '2013-11-27'])
+            >>> print timespan
+            
+            """
+        self.timespan = value
+        return self.timespan
 
     def set_report_type(self, value):
         """ Set the object's report_type var.
@@ -139,6 +149,9 @@ class Report:
         parse.set_crime(self.crime)
         parse.set_grep(self.grep)
         parse.set_location(self.location)
+        # *** Can't uncomment this until we merge with master
+        #if self.timespan:
+        #    parse.set_timespan(self.timespan)
         # *** other types of reports
         if self.report_type == 'rankings':
             result = parse.get_rankings()

@@ -4,10 +4,10 @@
 from report import Report
 from optparse import OptionParser
 
-report_items = { 
-        'violent': { 'name': 'Violent', 'options': { 'date_type': '', 'location': '', 'crime': 'violent', 'grep': False } },
-        'property': { 'name': 'Property', 'options': { 'date_type': '', 'location': '', 'crime': 'property', 'grep': False } },
-}
+report_items = [ 
+        { 'slug': 'violent', 'name': 'Violent', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'violent', 'grep': False  },
+        { 'slug': 'property', 'name': 'Property', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'property', 'grep': False },
+]
 
 if __name__ == '__main__':
     parser = OptionParser()
@@ -18,11 +18,11 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
 
     for item in report_items:
-        report_items[item]['options']['type'] = options.date_type
+        item['date_type'] = options.date_type
         if options.location != None:
-            report_items[item]['options']['location'] = options.location
-        print report_items[item]
+            item['location'] = options.location
+        print item
         for yearback in [0, 1, 2, 3]:
-            report_items[item]['options']['numago'] = yearback
-            report = Report(**{item: report_items[item]})
+            item['numago'] = yearback
+            report = Report(**{item: item})
             report.get_crime_item()
