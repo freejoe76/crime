@@ -6,13 +6,14 @@ from optparse import OptionParser
 
 report_items = { 
         'violent': { 'name': 'Violent', 'options': { 'type': '', 'location': '', 'crime': 'violent', 'grep': False } },
+        'property': { 'name': 'Violent', 'options': { 'type': '', 'location': '', 'crime': 'property', 'grep': False } },
 }
 
 if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-l", "--location", dest="location")
     parser.add_option("-d", "--date_type", dest="date_type", default="year")
-    parser.add_option("-l", "--location", dest="location")
+    #parser.add_option("-c", "--crime", dest="crime", default=None)
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=True)
     (options, args) = parser.parse_args()
 
@@ -23,4 +24,3 @@ if __name__ == '__main__':
         print report_items[item]
         report = Report(**{item: report_items[item]})
         report.get_crime_item()
-

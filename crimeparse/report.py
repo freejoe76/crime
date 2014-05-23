@@ -5,6 +5,7 @@
 # Takes input (report date type, crime, location) and returns report in output type desired (json, text)
 from optparse import OptionParser
 from parse import Parse
+from datetime import datetime
 
 class Report:
     """ class Report is an interface with class Parse to pull out defined 
@@ -104,14 +105,18 @@ class Report:
             1monthsago
             """
         if self.numago == None:
-            self.set_numago(1)
+            self.set_numago(0)
 
         if self.date_type == 'test':
             return 'test'
         if self.date_type == 'month':
+            #self.set_numago(self.numago + 1)
             return '%smonthsago' % self.numago
         if self.date_type == 'year':
-            return ''
+            # Numago defaults to 1 -- we would never query the current month, it's never complete --
+            # but we *would* query the current year, which is why we subtract one from the numago value.
+            # Yes, this seems unnecessarily complex.
+            return datetime.now().year - ( self.numago - 1 )
 
     def get_crime_item(self):
         """ Return a Parse report.
