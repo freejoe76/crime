@@ -74,7 +74,7 @@ class Report:
             self.grep = True
         elif value == 'False':
             self.grep = False
-        return self.crime
+        return self.grep
 
     def set_location(self, value):
         """ Set the object's location var.
