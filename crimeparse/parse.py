@@ -160,7 +160,7 @@ class Parse:
     def set_timespan(self, value):
         """ Set the object's timespan, a tuple of dates.
             >>> parse = Parse('_input/test')
-            >>> timespan = parse.set_timespan()
+            >>> timespan = parse.set_timespan(['2013-01-08', '2013-11-27'])
             >>> print timespan
             
             """
@@ -180,11 +180,6 @@ class Parse:
 
     def get_location_ranking(self, locations, crime_type):
         pass
-
-    def get_timespan_crimes(self, location = None, time_type = 'month', quantity = 'this',  *args, **kwargs):
-        # Get crimes from a particular span of time
-        pass
-
 
     def check_date(self, value):
         """ Check a date to see if it's valid. If not, throw error.
