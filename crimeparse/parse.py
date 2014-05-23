@@ -157,6 +157,19 @@ class Parse:
         self.diff = value 
         return self.diff
 
+    def set_timespan(self, value):
+        """ Set the object's timespan, a tuple of dates.
+            >>> parse = Parse('_input/test')
+            >>> timespan = parse.set_timespan()
+            >>> print timespan
+            
+            """
+        timespan = (datetime.date(datetime.strptime(value[0], '%Y-%m-%d')), datetime.date(datetime.strptime(value[1], '%Y-%m-%d')))
+        if self.verbose:
+            print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
+        self.timespan = timespan
+        return self.timespan
+
     def abstract_keys(self, key):
         # Take a key, return its CSV equivalent.
         # Used so we can use this for more than just Denver crime csv.
@@ -285,6 +298,9 @@ class Parse:
             
             Returns frequency for csv specified.
             Also returns the # of days since the last crime.
+
+            Args, if they exist, should be two valid date or datetimes, and be
+            the timespan's range.
             >>> parse = Parse('_input/test')
             >>> crime, grep = parse.set_crime('violent'), parse.set_grep(False)
             >>> result = parse.get_specific_crime()
@@ -322,11 +338,7 @@ class Parse:
         if not args or args[0] == []:
             timespan = None
         else:
-            # timespan a tuple of dates, that defaults to everything.
-            # Decided to set that here rather than in the method def for the sake of space.
-            timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
-            if self.verbose:
-                print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
+            timespan = self.set_timespan(args[0])
 
         if self.verbose:
             print "Timespan: %s, location: %s, crime: %s" % (timespan, location, crime)
@@ -353,7 +365,7 @@ class Parse:
                 # Strip the "< " at the start, and the ".0" at the end
                 record['INCIDENT_ID'] = record['INCIDENT_ID'][2:-2]
 
-            # Time queries
+            # Timespan queries
             if timespan:
                 ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
                 if not timespan[0] <= datetime.date(ts) <= timespan[1]:
@@ -509,7 +521,7 @@ class Parse:
         if not args or args[0] == []:
             timespan = False
         else:
-            timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
+            timespan = self.set_timespan(args[0])
 
         crime_type = self.get_crime_type()
 
@@ -718,8 +730,8 @@ if __name__ == '__main__':
             print crimes
     elif action == 'rankings':
         # Example:
-        # $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
-        # $ ./parse.py --action rankings --crime dv --grep '2013-01-01' '2013-08-01'
+        # $ ./parse.py --action rankings --crime violent --file 2013 '2013-01-01' '2013-02-01'
+        # $ ./parse.py --action rankings --crime dv --grep --file 2013 '2013-01-01' '2013-08-01'
         crimes = parse.get_rankings(args)
         if verbose:
             print crimes
