@@ -307,6 +307,10 @@ class Parse:
             >>> print result['count'], result['crime']
             43 violent
             """
+        if not args or args[0] == []:
+            timespan = False
+        else:
+            timespan = self.set_timespan(args)
         crimes = self.get_recent_crimes()
         count = len(crimes['crimes'])
         last_crime = None
@@ -338,10 +342,10 @@ class Parse:
         if not args or args[0] == []:
             timespan = None
         else:
-            timespan = self.set_timespan(args[0])
+            timespan = self.set_timespan(args)
 
         if self.verbose:
-            print "Timespan: %s, location: %s, crime: %s" % (timespan, location, crime)
+            print "Timespan: %s, location: %s, crime: %s" % (self.timespan, location, crime)
 
         if self.diff == True:
             adds = 0
@@ -366,9 +370,9 @@ class Parse:
                 record['INCIDENT_ID'] = record['INCIDENT_ID'][2:-2]
 
             # Timespan queries
-            if timespan:
+            if self.timespan:
                 ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
-                if not timespan[0] <= datetime.date(ts) <= timespan[1]:
+                if not self.timespan[0] <= datetime.date(ts) <= self.timespan[1]:
                     continue
 
             # Location, then crime queries
@@ -493,8 +497,6 @@ class Parse:
             We return a dict of raw numbers (dict['crimes']['neighborhood']) 
             and per-capita (dict['crimes']['percapita']) numbers.
             If a location is given, we will also rank all locations.
-
-            This is done implicitly in the CLI report. <-- what does that mean?
             >>> parse = Parse('_input/test')
             >>> crime = parse.set_crime('violent')
             >>> result = parse.get_rankings()
@@ -521,7 +523,7 @@ class Parse:
         if not args or args[0] == []:
             timespan = False
         else:
-            timespan = self.set_timespan(args[0])
+            timespan = self.set_timespan(args)
 
         crime_type = self.get_crime_type()
 
