@@ -32,6 +32,8 @@ class Report:
                     self.set_crime(subvalue)
                 elif subkey == 'grep':
                     self.set_grep(subvalue)
+                elif subkey == 'numago':
+                    self.set_numago(subvalue)
 
     def set_date_type(self, value):
         """ Set the object's date_type var.

@@ -22,5 +22,7 @@ if __name__ == '__main__':
         if options.location != None:
             report_items[item]['options']['location'] = options.location
         print report_items[item]
-        report = Report(**{item: report_items[item]})
-        report.get_crime_item()
+        for yearback in [0, 1, 2, 3]:
+            report_items[item]['options']['numago'] = yearback
+            report = Report(**{item: report_items[item]})
+            report.get_crime_item()
