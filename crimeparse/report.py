@@ -110,13 +110,11 @@ class Report:
         if self.date_type == 'test':
             return 'test'
         if self.date_type == 'month':
-            #self.set_numago(self.numago + 1)
+            # We would never query the current month, it's never complete.
+            self.set_numago(self.numago + 1)
             return '%smonthsago' % self.numago
         if self.date_type == 'year':
-            # Numago defaults to 1 -- we would never query the current month, it's never complete --
-            # but we *would* query the current year, which is why we subtract one from the numago value.
-            # Yes, this seems unnecessarily complex.
-            return datetime.now().year - ( self.numago - 1 )
+            return datetime.now().year - self.numago
 
     def get_crime_item(self):
         """ Return a Parse report.
