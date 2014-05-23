@@ -19,6 +19,7 @@ class Report:
         self.set_date_type(None)
         self.set_location(None)
         self.set_numago(None)
+        self.set_type('rankings')
         for key, value in kwargs.iteritems():
             for subkey, subvalue in kwargs[key]['options'].iteritems():
                 print subkey, subvalue
@@ -34,6 +35,18 @@ class Report:
                     self.set_grep(subvalue)
                 elif subkey == 'numago':
                     self.set_numago(subvalue)
+                elif subkey == 'report_type':
+                    self.set_report_type(subvalue)
+
+    def set_report_type(self, value):
+        """ Set the object's report_type var.
+            >>> report = Report('month', 'capitol-hill')
+            >>> report_type = report.set_report_type('specific')
+            >>> print report_type
+            specific
+            """
+        self.report_type = value
+        return self.report_type
 
     def set_date_type(self, value):
         """ Set the object's date_type var.
@@ -127,7 +140,10 @@ class Report:
         parse.set_grep(self.grep)
         parse.set_location(self.location)
         # *** other types of reports
-        result = parse.get_rankings()
+        if self.report_type == 'rankings':
+            result = parse.get_rankings()
+        elif self.report_type == 'specific':
+            reslt = parse.get_specific()
         print result
 
 if __name__ == '__main__':
