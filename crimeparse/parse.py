@@ -529,10 +529,11 @@ class Parse:
             if record['FIRST_OCCURRENCE_DATE'] == 'FIRST_OCCURRENCE_DATE':
                 continue
 
-            # Time queries
-            ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
-            if timespan != False and not timespan[0] <= datetime.date(ts) <= timespan[1]:
-                continue
+            # Timespan queries
+            if self.timespan:
+                ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
+                if not self.timespan[0] <= datetime.date(ts) <= self.timespan[1]:
+                    continue
 
             # Create the neighborhood dict if we haven't yet:
             if record['NEIGHBORHOOD_ID'] not in rankings['neighborhood']:
