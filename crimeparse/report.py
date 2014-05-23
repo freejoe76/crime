@@ -10,7 +10,7 @@ from datetime import datetime
 class Report:
     """ class Report is an interface with class Parse to pull out defined 
         crime queries ( crime_items ). Report takes a dict of crime_item definitions:
-        { '[[slug]]': { 'name': '[[full-name]]', 'options': { 'type': 'month', 'location': 'capitol-hill', 'crime': 'violent', 'grep': False } } }
+        { '[[slug]]': { 'name': '[[full-name]]', 'options': { 'date_type': 'month', 'location': 'capitol-hill', 'crime': 'violent', 'grep': False } } }
         """
 
     #def __init__(self, date_type='month', location='', numago = 1, output = 'json', options = None, **kwargs):
@@ -22,7 +22,7 @@ class Report:
         for key, value in kwargs.iteritems():
             for subkey, subvalue in kwargs[key]['options'].iteritems():
                 print subkey, subvalue
-                if subkey == 'type':
+                if subkey == 'date_type':
                     self.set_date_type(subvalue)
                 elif subkey == 'location' and subvalue != '':
                     self.set_location(subvalue)
@@ -113,6 +113,7 @@ class Report:
             return 'test'
         if self.date_type == 'month':
             # We would never query the current month, it's never complete.
+            # That's why we offset all month-queries by one.
             self.set_numago(self.numago + 1)
             return '%smonthsago' % self.numago
         if self.date_type == 'year':

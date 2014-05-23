@@ -5,8 +5,8 @@ from report import Report
 from optparse import OptionParser
 
 report_items = { 
-        'violent': { 'name': 'Violent', 'options': { 'type': '', 'location': '', 'crime': 'violent', 'grep': False } },
-        'property': { 'name': 'Violent', 'options': { 'type': '', 'location': '', 'crime': 'property', 'grep': False } },
+        'violent': { 'name': 'Violent', 'options': { 'date_type': '', 'location': '', 'crime': 'violent', 'grep': False } },
+        'property': { 'name': 'Property', 'options': { 'date_type': '', 'location': '', 'crime': 'property', 'grep': False } },
 }
 
 if __name__ == '__main__':
