@@ -145,13 +145,14 @@ class Report:
 
         if self.date_type == 'test':
             return 'test'
-        if self.date_type == 'month':
+        elif self.date_type == 'month':
             # We would never query the current month, it's never complete.
             # That's why we offset all month-queries by one.
             self.set_numago(self.numago + 1)
             return '%smonthsago' % self.numago
-        if self.date_type == 'year':
+        elif self.date_type == 'year':
             return datetime.now().year - self.numago
+        return False
 
     def get_crime_item(self):
         """ Return a Parse report.
