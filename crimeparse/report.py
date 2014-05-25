@@ -44,10 +44,10 @@ class Report:
 
     def set_timespan(self, value, numago=0):
         """ Set the object's timespan var.
-            >>> report = Report('month', 'capitol-hill')
+            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
             >>> timespan = report.set_timespan(['2013-01-08', '2013-11-27'])
             >>> print timespan
-            
+            [datetime.datetime(2013, 1, 8, 0, 0), datetime.datetime(2013, 11, 27, 0, 0)]
             """
         time_from = datetime.strptime(value[0], '%Y-%m-%d')
         time_to = datetime.strptime(value[1], '%Y-%m-%d')
@@ -61,7 +61,7 @@ class Report:
 
     def set_report_type(self, value):
         """ Set the object's report_type var.
-            >>> report = Report('month', 'capitol-hill')
+            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
             >>> report_type = report.set_report_type('specific')
             >>> print report_type
             specific
@@ -71,7 +71,7 @@ class Report:
 
     def set_date_type(self, value):
         """ Set the object's date_type var.
-            >>> report = Report('month', 'capitol-hill')
+            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
             >>> date_type = report.set_date_type('quarter')
             >>> print date_type
             quarter
@@ -81,7 +81,7 @@ class Report:
 
     def set_numago(self, value):
         """ Set the object's numago var.
-            >>> report = Report('month', 'capitol-hill', 3)
+            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
             >>> numago = report.set_numago(1)
             >>> print numago
             1
@@ -91,7 +91,7 @@ class Report:
 
     def set_crime(self, value):
         """ Set the object's crime var.
-            >>> report = Report('month', 'capitol-hill')
+            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
             >>> crime = report.set_crime('property')
             >>> print crime
             property
@@ -101,7 +101,7 @@ class Report:
 
     def set_grep(self, value):
         """ Set the object's grep var.
-            >>> report = Report('month', 'capitol-hill')
+            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
             >>> grep = report.set_grep('True')
             >>> print grep
             True
@@ -115,7 +115,7 @@ class Report:
 
     def set_location(self, value):
         """ Set the object's location var.
-            >>> report = Report('month', 'capitol-hill')
+            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
             >>> location = report.set_location('cbd')
             >>> print location
             cbd
@@ -125,7 +125,7 @@ class Report:
 
     def set_output(self, value):
         """ Set the object's output var.
-            >>> report = Report('month', 'capitol-hill')
+            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
             >>> output = report.set_output('text')
             >>> print output
             text
@@ -135,7 +135,7 @@ class Report:
 
     def build_filename(self):
         """ Put together the pieces we need to get the filename we query.
-            >>> report = Report('month', 'capitol-hill')
+            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
             >>> filename = report.build_filename()
             >>> print filename
             1monthsago
