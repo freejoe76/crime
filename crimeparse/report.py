@@ -24,19 +24,19 @@ class Report:
         self.set_report_type('rankings')
         for key, value in kwargs.iteritems():
             if key == 'date_type':
-                self.set_date_type(subvalue)
-            elif key == 'location' and subvalue != '':
-                self.set_location(subvalue)
+                self.set_date_type(value)
+            elif key == 'location' and value != '':
+                self.set_location(value)
             elif key == 'output':
-                self.set_output(subvalue)
+                self.set_output(value)
             elif key == 'crime':
-                self.set_crime(subvalue)
+                self.set_crime(value)
             elif key == 'grep':
-                self.set_grep(subvalue)
+                self.set_grep(value)
             elif key == 'numago':
-                self.set_numago(subvalue)
+                self.set_numago(value)
             elif key == 'report_type':
-                self.set_report_type(subvalue)
+                self.set_report_type(value)
 
     def set_timespan(self, value):
         """ Set the object's timespan var.
@@ -156,7 +156,7 @@ class Report:
         if self.report_type == 'rankings':
             result = parse.get_rankings()
         elif self.report_type == 'specific':
-            reslt = parse.get_specific()
+            result = parse.get_specific_crime()
         print result
 
 if __name__ == '__main__':

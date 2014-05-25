@@ -24,5 +24,5 @@ if __name__ == '__main__':
         print item
         for yearback in [0, 1, 2, 3]:
             item['numago'] = yearback
-            report = Report(**{item: item})
+            report = Report(**item)
             report.get_crime_item()
