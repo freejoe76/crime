@@ -5,7 +5,7 @@
 # Takes input (report date type, crime, location) and returns report in output type desired (json, text)
 from optparse import OptionParser
 from parse import Parse
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class Report:
     """ class Report is an interface with class Parse to pull out defined 
@@ -17,7 +17,7 @@ class Report:
         }
         """
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         self.set_date_type(None)
         self.set_location(None)
         self.set_numago(None)
@@ -38,14 +38,25 @@ class Report:
             elif key == 'report_type':
                 self.set_report_type(value)
 
-    def set_timespan(self, value):
+        # This comes last because we need to know what self.numago is to run this.
+        if args and args[0] != '':
+            self.set_timespan(args, self.numago)
+
+    def set_timespan(self, value, numago=0):
         """ Set the object's timespan var.
             >>> report = Report('month', 'capitol-hill')
             >>> timespan = report.set_timespan(['2013-01-08', '2013-11-27'])
             >>> print timespan
             
             """
-        self.timespan = value
+        time_from = datetime.strptime(value[0], '%Y-%m-%d')
+        time_to = datetime.strptime(value[1], '%Y-%m-%d')
+        if numago > 0:
+            delta = 1 + (numago * 365)
+            time_from = time_from - timedelta(delta)
+            time_to = time_to - timedelta(delta)
+
+        self.timespan = [time_from, time_to]
         return self.timespan
 
     def set_report_type(self, value):
