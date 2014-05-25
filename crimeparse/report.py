@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Publish json data suitable for a (month / quarter / year) report. A higher-level interface to parse.py
+# Publish json data suitable for a (month / year) report. A higher-level interface to parse.py
 #
-# Takes input (report date type, crime, location) and returns report in output type desired (json, text)
+# Takes input (report date type, crime, location) and returns report in json
 from optparse import OptionParser
 from parse import Parse
 from datetime import datetime, timedelta
@@ -72,9 +72,9 @@ class Report:
     def set_date_type(self, value):
         """ Set the object's date_type var.
             >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
-            >>> date_type = report.set_date_type('quarter')
+            >>> date_type = report.set_date_type('year')
             >>> print date_type
-            quarter
+            year
             """
         self.date_type = value
         return self.date_type
@@ -126,9 +126,9 @@ class Report:
     def set_output(self, value):
         """ Set the object's output var.
             >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
-            >>> output = report.set_output('text')
+            >>> output = report.set_output('json')
             >>> print output
-            text
+            json
             """
         self.output = value
         return self.output
