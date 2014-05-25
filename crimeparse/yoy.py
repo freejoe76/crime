@@ -21,8 +21,7 @@ if __name__ == '__main__':
         item['date_type'] = options.date_type
         if options.location != None:
             item['location'] = options.location
-        print item
         for yearback in [0, 1, 2, 3]:
             item['numago'] = yearback
             report = Report(*args, **item)
-            report.get_crime_item()
+            print report.get_crime_item()

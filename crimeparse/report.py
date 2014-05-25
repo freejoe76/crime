@@ -18,9 +18,11 @@ class Report:
         """
 
     def __init__(self, *args, **kwargs):
+        self.set_crime(None)
         self.set_date_type(None)
         self.set_location(None)
         self.set_numago(None)
+        self.set_grep(False)
         self.set_report_type('rankings')
         for key, value in kwargs.iteritems():
             if key == 'date_type':
@@ -156,6 +158,10 @@ class Report:
 
     def get_crime_item(self):
         """ Return a Parse report.
+            >>> report = Report(**{'date_type': 'test', 'location': 'capitol-hill', 'report_type': 'specific'})
+            >>> output = report.get_crime_item()
+            >>> print output['count'], output['crime']
+            29 None
             """
         parse = Parse('_input/%s' % self.build_filename())
         parse.set_crime(self.crime)
@@ -169,7 +175,7 @@ class Report:
             result = parse.get_rankings()
         elif self.report_type == 'specific':
             result = parse.get_specific_crime()
-        print result
+        return result
 
 if __name__ == '__main__':
     import doctest

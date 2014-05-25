@@ -27,7 +27,5 @@ if __name__ == '__main__':
     for item in report_items:
         if options.location != None:
             item['location'] = options.location
-        print item
         report = Report(**item)
-        report.get_crime_item()
-
+        print report.get_crime_item()
