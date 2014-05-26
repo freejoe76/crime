@@ -2,24 +2,30 @@
 # -*- coding: utf-8 -*-
 # Print output from a parsing of the crime CSVs
 from optparse import OptionParser
-from parse import Parse
 from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
+import operator
 
-class PrintJob:
-    """ class Print prints the results of a Parse.
+# We only want this module once.
+try:
+    from parse import Parse
+except:
+    pass
+
+divider='\n=============================================================\n'
+
+class PrintCrimes:
+    """ class PrintCrimes prints the results of a Parse.
         >>> parse = Parse('_input/test')
         >>> parse.set_crime('violent')
         'violent'
         >>> parse.set_grep(False)
         False
-        >>> parse.set_location('capitol-hill')
-        'capitol-hill'
         >>> result = parse.get_specific_crime()
-        >>> printjob = PrintJob(result, 'specific')
-        >>> result = printjob.print_crimes():
-        >>> print result['count'], result['crime']
-        3 violent
+        >>> printcrimes = PrintCrimes(result, 'specific')
+        >>> report = printcrimes.print_crimes()
+        >>> print report.split(",")[0]
+        43 violent crimes
         """
     def __init__(self, crimes, action, limit = 15, diff = False, options = None):
         # Initialize the major vars
@@ -37,17 +43,49 @@ class PrintJob:
     def set_crime(self, value):
         """ Set the object's crime var.
             >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('love')
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> crime = printcrimes.set_crime('love')
             >>> print crime
             love
             """
         self.crime = value
         return self.crime
 
+    def set_options(self, value):
+        """ Set the object's options dict.
+            >>> parse = Parse('_input/test')
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> options = printcrimes.set_options({'unicode': False})
+            >>> print options
+            {'unicode': False}
+            """
+        self.options = value
+        return self.options
+
+    def set_action(self, value):
+        """ Set the object's action var.
+            >>> parse = Parse('_input/test')
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> action = printcrimes.set_action('specific')
+            >>> print action
+            specific
+            """
+        self.action = value
+        return self.action
+
     def set_grep(self, value):
         """ Set the object's grep var.
             >>> parse = Parse('_input/test')
-            >>> grep = parse.set_grep(False)
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> grep = printcrimes.set_grep(False)
             >>> print grep
             False
             """
@@ -57,27 +95,23 @@ class PrintJob:
     def set_location(self, value):
         """ Set the object's location var.
             >>> parse = Parse('_input/test')
-            >>> location = parse.set_location('cbd')
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> location = printcrimes.set_location('cbd')
             >>> print location
             cbd
             """
         self.location = value
         return self.location
 
-    def set_address(self, value):
-        """ Set the object's address var.
-            >>> parse = Parse('_input/test')
-            >>> address = parse.set_location('835 E 18TH AVE')
-            >>> print address
-            835 E 18TH AVE
-            """
-        self.address = value
-        return self.address
-
     def set_limit(self, value):
         """ Set the object's limit var.
             >>> parse = Parse('_input/test')
-            >>> limit = parse.set_limit(15)
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> limit = printcrimes.set_limit(15)
             >>> print limit
             15
             """
@@ -87,7 +121,10 @@ class PrintJob:
     def set_verbose(self, value):
         """ Set the object's verbose var.
             >>> parse = Parse('_input/test')
-            >>> verbose = parse.set_verbose(False)
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> verbose = printcrimes.set_verbose(False)
             >>> print verbose
             False
             """
@@ -97,7 +134,10 @@ class PrintJob:
     def set_diff(self, value):
         """ Set the object's diff var.
             >>> parse = Parse('_input/test')
-            >>> diff = parse.set_diff(False)
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> diff = printcrimes.set_diff(False)
             >>> print diff
             False
             """
@@ -107,7 +147,10 @@ class PrintJob:
     def clean_location(self, location):
         """ Take the location string, replace the -'s, capitalize what we can.
             >>> parse = Parse('_input/test')
-            >>> parse.clean_location('capitol-hill')
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> printcrimes.clean_location('capitol-hill')
             'Capitol Hill'
             """
         location = location.replace('-', ' ')
@@ -126,9 +169,10 @@ class PrintJob:
             manual dicts in dicts.py
             >>> parse = Parse('_input/test')
             >>> crime = parse.set_crime('violent')
-            >>> crimes = parse.get_rankings()
-            >>> result = parse.print_neighborhoods(crimes)
-            >>> print result[0]
+            >>> result = parse.get_rankings()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> neighborhoods = printcrimes.print_neighborhoods(result)
+            >>> print neighborhoods[0]
                 'wellshire': {'full': 'Wellshire'},
             """
         outputs = []
@@ -151,14 +195,15 @@ class PrintJob:
             >>> parse = Parse('_input/test')
             >>> parse.set_crime('violent')
             'violent'
-            >>> crimes = parse.get_recent_crimes()
+            >>> result = parse.get_recent_crimes()
             >>> limit, action = 1, 'recent'
-            >>> report = parse.print_crimes(crimes, limit, action)
+            >>> printcrimes = PrintCrimes(result, action, limit)
+            >>> report = printcrimes.print_crimes()
             >>> print report.split("\\n")[0]
             1.  aggravated-assault: aggravated-assault-dv
-            >>> crime, grep = parse.set_crime('violent'), parse.set_grep(False)
-            >>> crimes = parse.get_specific_crime()
-            >>> report = parse.print_crimes(crimes, limit, 'specific')
+            >>> result = parse.get_specific_crime()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> report = printcrimes.print_crimes()
             >>> print report.split(",")[0]
             43 violent crimes
 
@@ -199,11 +244,10 @@ class PrintJob:
     {
     "count": "%i",
     "crime": "%s",
-    "filename": "%s",
     "last_crime": "%s"
-    }]\n}""" % ( crimes['count'], crimes['crime'], self.crime_filename, crimes['last_crime'] )
+    }]\n}""" % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
             else:
-                outputs = '%i %s crimes, (in file %s) last one %s ago' % ( crimes['count'], crimes['crime'], self.crime_filename, crimes['last_crime'] )
+                outputs = '%i %s crimes, last one %s ago' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
 
         elif action == 'recent':
             # Lists, probably recents, with full crime record dicts
@@ -300,7 +344,8 @@ class PrintJob:
 
         elif action == 'monthly':
             # We use the textbarchart here.
-            options = { 'type': None, 'font': 'monospace', 'unicode': self.options.unicode }
+            self.set_options({'unicode': True})
+            options = { 'type': None, 'font': 'monospace', 'unicode': self.options['unicode'] }
             crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
             bar = TextBarchart(options, crime_dict, crimes['max'])
             outputs = bar.build_chart()
@@ -331,7 +376,7 @@ if __name__ == '__main__':
     parse.set_grep(False)
     parse.set_location('capitol-hill')
     result = parse.get_specific_crime()
-    printjob = PrintCrimes(result, 'specific')
+    printcrimes = PrintCrimes(result, 'specific')
     '''
     parse.set_grep(options.grep)
     limit = parse.set_limit(int(options.limit))
