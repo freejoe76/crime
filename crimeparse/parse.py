@@ -78,6 +78,7 @@ class Parse:
         self.set_limit(None)
         self.set_verbose(None)
         self.set_diff(diff)
+        self.set_timespan(None)
 
         self.crime_file = self.open_csv(crime_filename, diff)
         self.crime_filename = crime_filename
@@ -164,6 +165,10 @@ class Parse:
             >>> print timespan
             
             """
+        if value == None:
+            self.timespan = value
+            return value
+
         timespan = (datetime.date(datetime.strptime(value[0], '%Y-%m-%d')), datetime.date(datetime.strptime(value[1], '%Y-%m-%d')))
         if self.verbose:
             print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
@@ -285,7 +290,7 @@ class Parse:
 
         return { 'count': len(crimes), 'crimes': crimes }
 
-    def get_specific_crime(self):
+    def get_specific_crime(self, *args):
         """ Indexes specific crime.
             Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
             $ ./parse.py --verbose --action specific --crime meth --grep True
