@@ -16,6 +16,7 @@ from printcrimes import *
 import dicts
 
 
+
 def timeago(time=False):
     """ Get a datetime object or a int() Epoch timestamp and return a
         pretty string like 'an hour ago', 'Yesterday', '3 months ago',
@@ -82,10 +83,6 @@ class Parse:
         self.crime_file = self.open_csv(crime_filename, diff)
         self.crime_filename = crime_filename
         self.options = options
-
-    def get_filename(self):
-        """ Returns"""
-        pass
 
     def set_crime(self, value):
         """ Set the object's crime var.
@@ -343,10 +340,10 @@ class Parse:
             # Address diffs, if we've got 'em.
             if self.diff == True:
                 #print record['INCIDENT_ID'][0]
-                if record['INCIDENT_ID'][0] == '>':
+                if record['INCIDENT_ID'][0] == '<':
                     record['diff'] = 'ADD'
                     adds += 1
-                elif record['INCIDENT_ID'][0] == '<': 
+                elif record['INCIDENT_ID'][0] == '>': 
                     record['diff'] = 'REMOVED'
                     removes += 1
 
@@ -661,6 +658,233 @@ class Parse:
             outputs += ["    '%s': {'full': '%s'}," % (item[0], self.clean_location(item[0]))]
             #outputs += ["    '%s': '%s'," % (item[0], item[0])]
         return outputs
+
+    def print_crimes(self, crimes, limit, action, loc=None, output=None, *args):
+        """ How do we want to display the crimes?
+            This method takes a dict of crimes (the type of dict depends on 
+            which method we chose to piece this together).
+            It also takes an action, which corresponds to which type of dict
+            we have.
+            Possible actions: search, recent, specific, rankings, monthly.
+            *** This Method Needs Refactor (TMNR).
+
+            Right now we're publishing them to be read in terminal.
+            What we're parsing affects the dicts we have.
+            >>> parse = Parse('_input/test')
+            >>> parse.set_crime('violent')
+            'violent'
+            >>> crimes = parse.get_recent_crimes()
+            >>> limit, action = 1, 'recent'
+            >>> report = parse.print_crimes(crimes, limit, action)
+            >>> print report.split("\\n")[0]
+            1.  aggravated-assault: aggravated-assault-dv
+            >>> crime, grep = parse.set_crime('violent'), parse.set_grep(False)
+            >>> crimes = parse.get_specific_crime()
+            >>> report = parse.print_crimes(crimes, limit, 'specific')
+            >>> print report.split(",")[0]
+            43 violent crimes
+
+            #>>> crimes = parse.get_rankings('violent')
+            #>>> report = parse.print_crimes(crimes, 15, 'rankings')
+            #>>> print report
+            #1.  aggravated-assault: aggravated-assault-dv
+            """
+        outputs, json = '', None
+
+        if 'crimes' not in crimes and action != 'monthly' and action != 'specific':
+            return False
+
+        if action == 'search':
+            outputs = '%i crimes at %s.\n' % ( crimes['count'], self.address )
+            i = 0
+            for crime in crimes['crimes']:
+                i = i + 1
+
+                outputs += '''%i. %s: %s
+        Occurred: %s - %s
+        Reported: %s
+        %s
+        %s,%s\n\n''' % (i, crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
+
+        elif action == 'specific':
+            if output == 'json':
+                #print self.crime
+                #rank_add = self.get_rankings(self.crime, self.grep, loc)
+                #print rank_add
+                json = """{\n    "items": [
+    {
+    "count": "%i",
+    "crime": "%s",
+    "filename": "%s",
+    "last_crime": "%s"
+    }]\n}""" % ( crimes['count'], crimes['crime'], self.crime_filename, crimes['last_crime'] )
+            else:
+                outputs = '%i %s crimes, (in file %s) last one %s ago' % ( crimes['count'], crimes['crime'], self.crime_filename, crimes['last_crime'] )
+
+        elif action == 'recent':
+            # Lists, probably recents, with full crime record dicts
+            i = 0
+            if output == 'csv':
+                outputs += 'category, type, date_reported, address, lat, lon\n'
+            elif output == 'json':
+                json = '{\n    "items": ['
+
+            crimes_to_print = crimes['crimes'][:limit]
+            if limit == 0:
+                crimes_to_print = crimes['crimes']
+            length = len(crimes_to_print)
+
+            for crime in crimes_to_print:
+                i = i + 1
+                if output == 'csv':
+                    outputs += '%s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
+                    continue
+                elif output == 'json':
+                    close_bracket = '},'
+                    if i == length:
+                        close_bracket = '}'
+
+                    json += """  {
+    "category": "%s",
+    "type": "%s",
+    "date-reported": "%s",
+    "address": "%s",
+    "latitude": "%s",
+    "longitude": "%s"
+    %s
+""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], close_bracket)
+                    continue
+
+                if 'diff' not in crime:
+                    crime['diff'] = ''
+
+                outputs += '''%i. %s %s: %s
+        Occurred: %s - %s
+        Reported: %s
+        %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
+
+            #if output == 'json':
+            #    outputs += ']\n}'
+
+
+        # No-location rankings get passed a list of neighborhoods and counts
+        # rather than a dict, which means the approach for publishing these
+        # in the terminal is different.
+        elif action == 'rankings' and loc is None:
+            outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
+            i = 0
+            
+            for item in crimes['crimes']['percapita']:
+                i = i + 1
+                location = self.clean_location(item[0])
+                outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
+
+            outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
+            i = 0
+            for item in crimes['crimes']['neighborhood']:
+                i = i + 1
+                location = self.clean_location(item[0])
+                outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
+
+        elif action == 'rankings':
+            outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
+            i = 0
+            
+            for item in reversed(sorted(crimes['crimes']['percapita'].iteritems(), key=operator.itemgetter(1))):
+                i = i + 1
+                if loc == item[0]:
+                    location = '***%s***' % self.clean_location(item[0])
+                else:
+                    location = self.clean_location(item[0])
+
+                if output == 'json' and loc == item[0]:
+                        json = '{ "percapita": [ "rank": "%i", "location": "%s", "count": "%s" ], ' % ( i, loc, crimes['crimes']['percapita'][item[0]]['count'] )
+                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['percapita'][item[0]]['count'])
+
+            outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
+            i = 0
+            for item in reversed(sorted(crimes['crimes']['neighborhood'].iteritems(), key=operator.itemgetter(1))):
+                i = i + 1
+                if loc == item[0]:
+                    location = '***%s***' % self.clean_location(item[0])
+                else:
+                    location = self.clean_location(item[0])
+
+                if output == 'json' and loc == item[0]:
+                    json += '\n "raw": [ "rank": "%i", "location": "%s", "count": "%s" ] }' % ( i, loc, crimes['crimes']['neighborhood'][item[0]]['count'] )
+                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['neighborhood'][item[0]]['count'])
+
+        elif action == 'monthly':
+            # We use the textbarchart here.
+            options = { 'type': None, 'font': 'monospace', 'unicode': self.options.unicode }
+            crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
+            bar = TextBarchart(options, crime_dict, crimes['max'])
+            outputs = bar.build_chart()
+            '''
+            divisor = 1
+            if crimes['max'] > 80:
+                divisor = 50
+            if crimes['max'] > 800:
+                divisor = 500
+            if crimes['max'] > 8000:
+                divisor = 5000
+
+            # Calculate the standard deviation.
+            # If the deviation's too low, there's no point in publishing the bar part of this chart.
+            count = []
+            for item in crime_dict:
+                count.append(item[1]['count'])
+            mean = int(sum(count)/len(count))
+            #print mean
+            count = []
+            for item in crime_dict:
+                diff = item[1]['count'] - mean
+                count.append(diff*diff)
+            variance = int(sum(count)/len(count))
+            #print variance
+            deviation = int(math.sqrt(variance))
+
+            # *** Possible barchars: #,■,▮
+            barchar = '#'
+            if self.options.unicode == True:
+                barchar = u'■'
+                # In case we want the date monospaced.
+                font = FancyText()
+
+            # If the deviation-to-mean ratio is more than 50%, that means
+            # most of the values are close to the mean and we don't really
+            # need a barchart.
+            if float(deviation)/mean > .5:
+                barchar = ''
+
+            # *** We should have an option to allow for the year if we want it in this month-to-month
+            date_format = '%b'
+
+            for item in crime_dict:
+                date = datetime.strftime(item[1]['date'], date_format).upper()
+                if self.options.unicode == True:
+                    date = font.translate(date)
+                values = {
+                    'date': date,
+                    'count': item[1]['count'],
+                    'barchart': barchar*int(item[1]['count']/divisor)
+                }
+                outputs += u'%(date)s %(barchart)s %(count)s\n' % values
+            '''
+
+        else:
+            print "We did not have any crimes to handle"
+            outputs = ''
+
+
+        # Close up loose strings
+        if action == 'recent' and output == 'json':
+            json += ']\n}'
+
+        if json is None:
+            return outputs
+        return json
+
 
 
 if __name__ == '__main__':
