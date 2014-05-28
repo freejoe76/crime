@@ -1,6 +1,7 @@
 git+git://github.com/freejoe76/fancytext#egg=FancyText
-redis
+#redis
 python-coveralls
+pytest
 #Shapely
 #six
 #Fiona
