@@ -6,7 +6,7 @@ from optparse import OptionParser
 
 report_items = [ 
         { 'slug': 'violent', 'name': 'Violent', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'violent', 'grep': False  },
-        { 'slug': 'property', 'name': 'Property', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'property', 'grep': False },
+        #{ 'slug': 'property', 'name': 'Property', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'property', 'grep': False },
 ]
 
 if __name__ == '__main__':
@@ -19,8 +19,7 @@ if __name__ == '__main__':
 
     for item in report_items:
         item['date_type'] = options.date_type
-        if options.location != None:
-            item['location'] = options.location
+        item['location'] = options.location
         for yearback in [0, 1, 2, 3]:
             item['numago'] = yearback
             report = Report(*args, **item)

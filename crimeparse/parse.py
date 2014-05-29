@@ -159,13 +159,16 @@ class Parse:
             >>> parse = Parse('_input/test')
             >>> timespan = parse.set_timespan(['2013-01-08', '2013-11-27'])
             >>> print timespan
-            
+            (datetime.date(2013, 1, 8), datetime.date(2013, 11, 27))
             """
         if value == None:
             self.timespan = value
             return value
 
-        timespan = (datetime.date(datetime.strptime(value[0], '%Y-%m-%d')), datetime.date(datetime.strptime(value[1], '%Y-%m-%d')))
+        # This value is either a str or a datetime object.
+        timespan = value
+        if type(value[0]) is str:
+            timespan = (datetime.date(datetime.strptime(value[0], '%Y-%m-%d')), datetime.date(datetime.strptime(value[1], '%Y-%m-%d')))
         if self.verbose:
             print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
         self.timespan = timespan
@@ -368,6 +371,8 @@ class Parse:
             # Timespan queries
             if self.timespan:
                 ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
+                if ts == False:
+                    continue
                 if not self.timespan[0] <= datetime.date(ts) <= self.timespan[1]:
                     continue
 
@@ -749,7 +754,7 @@ if __name__ == '__main__':
         # Example:
         # $ ./parse.py --verbose --action specific --crime drug-alcohol
         # $ ./parse.py --verbose --action specific --crime meth --grep
-        crimes = parse.get_specific_crime()
+        crimes = parse.get_specific_crime(*args)
     elif action == 'search':
         crimes = parse.search_addresses()
     else:
