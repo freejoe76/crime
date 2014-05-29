@@ -84,10 +84,6 @@ class Parse:
         self.crime_filename = crime_filename
         self.options = options
 
-    def get_filename(self):
-        """ Returns"""
-        pass
-
     def set_crime(self, value):
         """ Set the object's crime var.
             >>> parse = Parse('_input/test')
@@ -359,10 +355,10 @@ class Parse:
             # Address diffs, if we've got 'em.
             if self.diff == True:
                 #print record['INCIDENT_ID'][0]
-                if record['INCIDENT_ID'][0] == '>':
+                if record['INCIDENT_ID'][0] == '<':
                     record['diff'] = 'ADD'
                     adds += 1
-                elif record['INCIDENT_ID'][0] == '<': 
+                elif record['INCIDENT_ID'][0] == '>': 
                     record['diff'] = 'REMOVED'
                     removes += 1
 

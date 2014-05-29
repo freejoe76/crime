@@ -1,11 +1,13 @@
 #!/bin/bash
-# Collate multiple information into a single report
-# $ ./report.bash --location capitol-hill
+# Publish a json file suitable for a monthly report. No premature optimization here!
+# $ ./monthly.bash --location capitol-hill
 
+# Default:
+LOCATIONS=capitol-hill
 while [ "$1" != "" ]; do
     case $1 in
         -l | --location ) shift
-            location=$1
+            LOCATIONS=$1
             ;;
     esac
     shift
@@ -17,52 +19,64 @@ THIS_MONTH=`date +'%Y-%m'`
 LAST_MONTH=`date +'%Y-%m' --date='month ago'`
 LAST_LAST_MONTH=`date +'%Y-%m' --date='2 months ago'`
 
-function section
-{
-    divider='\n=============================================================\n=============================================================\n'
-    echo -e $divider$1$divider;
-}
-function subsection
-{
-    divider='\n=============================================================\n'
-    echo -e $divider$1$divider;
-}
+for LOCATION in $LOCATIONS; do
+    FILENAME=reports/1-year-$LOCATION.json
+    SUFFIX="--action rankings --location $LOCATION --output json --file last12months"
+    #./parse.py --action rankings --file last12months --crime dv --grep --output json --location capitol-hill
 
-> crimereport
-for TYPE in violent property; do
-    section "Trends ( $TYPE crime ) in $location"
-    subsection "This month  "
-    echo "Per-capita Rank. Neighborhood: Per-capita crime rate"
-    echo "Total-number Rank. Neighborhood: Total number of crimes"
-    python parse.py --action rankings --crime $TYPE --location $location --filename 0monthsago | grep \*
-    subsection "Last month"
-    python parse.py --action rankings --crime $TYPE --location $location --filename 1monthsago | grep \*
-    subsection "The month prior"
-    python parse.py --action rankings --crime $TYPE --location $location --filename 2monthsago | grep \*
-    subsection "Twelve months prior"
-    python parse.py --action rankings --crime $TYPE --location $location --filename 11monthsago | grep \*
-    subsection "The previous twelve months"
-    python parse.py --action rankings --crime $TYPE --location $location --filename last12months | grep \*
+    VIOLENT=`./parse.py --crime violent $SUFFIX`
+    DV=`./parse.py --crime dv --grep $SUFFIX`
+    PROPERTY=`./parse.py --crime property $SUFFIX`
+    ROBBERY=`./parse.py --crime robbery --grep $SUFFIX`
+    BURGLE=`./parse.py --crime burg --grep $SUFFIX`
+    BURGLE_RESIDENCE=`./parse.py --crime burglary-residence --grep $SUFFIX`
+    BURGLE_BUSINESS=`./parse.py --crime burglary-business --grep $SUFFIX`
+    BURGLE_FORCED=`./parse.py --crime by-force --grep $SUFFIX`
+    BURGLE_UNFORCED=`./parse.py --crime no-force --grep $SUFFIX`
+    THEFT_CAR=`./parse.py --crime theft-of-motor-vehicle $SUFFIX`
+    THEFT_BICYCLE=`./parse.py --crime theft-bicycle $SUFFIX`
+    echo '{ "items": {' >> $FILENAME
+    echo '"violent": '$VIOLENT',' >> $FILENAME
+    echo '"dv": '$DV',' >> $FILENAME
+    echo '"property": '$PROPERTY',' >> $FILENAME
+    echo '"robbery": '$ROBBERY',' >> $FILENAME
+    echo '"burgle": '$BURGLE',' >> $FILENAME
+    echo '"burgle_residence": '$BURGLE_RESIDENCE',' >> $FILENAME
+    echo '"burgle_business": '$BURGLE_BUSINESS',' >> $FILENAME
+    echo '"burgle_forced": '$BURGLE_FORCED',' >> $FILENAME
+    echo '"burgle_unforced": '$BURGLE_UNFORCED',' >> $FILENAME
+    echo '"theft_car": '$THEFT_CAR',' >> $FILENAME
+    echo '"theft_bicycle": '$THEFT_BICYCLE >> $FILENAME
+    echo '}}' >> $FILENAME
+
+    for MONTH in 1 2 3 4 5 6; do
+        FILENAME=reports/$MONTH-month-$LOCATION.json
+        > $FILENAME
+        SUFFIX="--action rankings --location $LOCATION --output json --file $MONTH"monthsago
+        VIOLENT=`./parse.py --crime violent $SUFFIX`
+        DV=`./parse.py --crime dv --grep $SUFFIX`
+        PROPERTY=`./parse.py --crime property $SUFFIX`
+        ROBBERY=`./parse.py --crime robbery --grep $SUFFIX`
+        BURGLE=`./parse.py --crime burg --grep $SUFFIX`
+        BURGLE_RESIDENCE=`./parse.py --crime burglary-residence --grep $SUFFIX`
+        BURGLE_BUSINESS=`./parse.py --crime burglary-business --grep $SUFFIX`
+        BURGLE_FORCED=`./parse.py --crime by-force --grep $SUFFIX`
+        BURGLE_UNFORCED=`./parse.py --crime no-force --grep $SUFFIX`
+        THEFT_CAR=`./parse.py --crime theft-of-motor-vehicle $SUFFIX`
+        THEFT_BICYCLE=`./parse.py --crime theft-bicycle $SUFFIX`
+        echo '{ "items": {' >> $FILENAME
+        echo '"violent": '$VIOLENT',' >> $FILENAME
+        echo '"dv": '$DV',' >> $FILENAME
+        echo '"property": '$PROPERTY',' >> $FILENAME
+        echo '"robbery": '$ROBBERY',' >> $FILENAME
+        echo '"burgle": '$BURGLE',' >> $FILENAME
+        echo '"burgle_residence": '$BURGLE_RESIDENCE',' >> $FILENAME
+        echo '"burgle_business": '$BURGLE_BUSINESS',' >> $FILENAME
+        echo '"burgle_forced": '$BURGLE_FORCED',' >> $FILENAME
+        echo '"burgle_unforced": '$BURGLE_UNFORCED',' >> $FILENAME
+        echo '"theft_car": '$THEFT_CAR',' >> $FILENAME
+        echo '"theft_bicycle": '$THEFT_BICYCLE >> $FILENAME
+        #echo '"": '$','
+        echo '}}' >> $FILENAME
+    done
 done
-
-section "The last murder in $location"
-python parse.py --action specific --crime murder --grep --location $location
-
-section "Recent crimes in $location"
-python parse.py --limit 20 --action recent --location $location
-
-section "Recent Violent Crimes in $location"
-python parse.py --limit 20 --crime violent --action recent --location $location
-
-section "Violent-crime rankings this year in $location"
-python parse.py --action rankings --crime violent --location $location
-
-section "Violent-crime rankings this month in $location"
-python parse.py --action rankings --crime violent --location $location --filename currentmonth
-
-section "Property-crime rankings this year in $location"
-python parse.py --action rankings --crime property --location $location
-
-section "Property-crime rankings this month in $location"
-python parse.py --action rankings --crime property --location $location --filename currentmonth
-
