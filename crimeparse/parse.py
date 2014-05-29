@@ -7,7 +7,7 @@ import operator
 import math
 from collections import defaultdict, OrderedDict
 from optparse import OptionParser
-from datetime import datetime, timedelta
+from datetime import datetime, date, timedelta
 from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
 from printcrimes import *
@@ -166,9 +166,13 @@ class Parse:
             return value
 
         # This value is either a str or a datetime object.
-        timespan = value
-        if type(value[0]) is str:
-            timespan = (datetime.date(datetime.strptime(value[0], '%Y-%m-%d')), datetime.date(datetime.strptime(value[1], '%Y-%m-%d')))
+        try:
+            if type(value[0]) is str:
+                timespan = (datetime.date(datetime.strptime(value[0], '%Y-%m-%d')), datetime.date(datetime.strptime(value[1], '%Y-%m-%d')))
+            elif type(value[0][0]) is str:
+                timespan = (datetime.date(datetime.strptime(value[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(value[0][1], '%Y-%m-%d')))
+        except:
+            timespan = value
         if self.verbose:
             print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
         self.timespan = timespan
@@ -373,7 +377,7 @@ class Parse:
                 ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
                 if ts == False:
                     continue
-                if not self.timespan[0] <= datetime.date(ts) <= self.timespan[1]:
+                if not self.timespan[0] <= ts.date() <= self.timespan[1]:
                     continue
 
             # Location, then crime queries
