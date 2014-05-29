@@ -153,6 +153,19 @@ class Parse:
         self.diff = value 
         return self.diff
 
+    def set_timespan(self, value):
+        """ Set the object's timespan, a tuple of dates.
+            >>> parse = Parse('_input/test')
+            >>> timespan = parse.set_timespan(['2013-01-08', '2013-11-27'])
+            >>> print timespan
+            
+            """
+        timespan = (datetime.date(datetime.strptime(value[0], '%Y-%m-%d')), datetime.date(datetime.strptime(value[1], '%Y-%m-%d')))
+        if self.verbose:
+            print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
+        self.timespan = timespan
+        return self.timespan
+
     def abstract_keys(self, key):
         # Take a key, return its CSV equivalent.
         # Used so we can use this for more than just Denver crime csv.
@@ -163,11 +176,6 @@ class Parse:
 
     def get_location_ranking(self, locations, crime_type):
         pass
-
-    def get_timespan_crimes(self, location = None, time_type = 'month', quantity = 'this',  *args, **kwargs):
-        # Get crimes from a particular span of time
-        pass
-
 
     def check_date(self, value):
         """ Check a date to see if it's valid. If not, throw error.
@@ -281,12 +289,19 @@ class Parse:
             
             Returns frequency for csv specified.
             Also returns the # of days since the last crime.
+
+            Args, if they exist, should be two valid date or datetimes, and be
+            the timespan's range.
             >>> parse = Parse('_input/test')
             >>> crime, grep = parse.set_crime('violent'), parse.set_grep(False)
             >>> result = parse.get_specific_crime()
             >>> print result['count'], result['crime']
             43 violent
             """
+        if not args or args[0] == []:
+            timespan = False
+        else:
+            timespan = self.set_timespan(args)
         crimes = self.get_recent_crimes()
         count = len(crimes['crimes'])
         last_crime = None
@@ -318,14 +333,10 @@ class Parse:
         if not args or args[0] == []:
             timespan = None
         else:
-            # timespan a tuple of dates, that defaults to everything.
-            # Decided to set that here rather than in the method def for the sake of space.
-            timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
-            if self.verbose:
-                print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
+            timespan = self.set_timespan(args)
 
         if self.verbose:
-            print "Timespan: %s, location: %s, crime: %s" % (timespan, location, crime)
+            print "Timespan: %s, location: %s, crime: %s" % (self.timespan, location, crime)
 
         if self.diff == True:
             adds = 0
@@ -349,10 +360,10 @@ class Parse:
                 # Strip the "< " at the start, and the ".0" at the end
                 record['INCIDENT_ID'] = record['INCIDENT_ID'][2:-2]
 
-            # Time queries
-            if timespan:
+            # Timespan queries
+            if self.timespan:
                 ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
-                if not timespan[0] <= datetime.date(ts) <= timespan[1]:
+                if not self.timespan[0] <= datetime.date(ts) <= self.timespan[1]:
                     continue
 
             # Location, then crime queries
@@ -477,8 +488,6 @@ class Parse:
             We return a dict of raw numbers (dict['crimes']['neighborhood']) 
             and per-capita (dict['crimes']['percapita']) numbers.
             If a location is given, we will also rank all locations.
-
-            This is done implicitly in the CLI report. <-- what does that mean?
             >>> parse = Parse('_input/test')
             >>> crime = parse.set_crime('violent')
             >>> result = parse.get_rankings()
@@ -505,7 +514,7 @@ class Parse:
         if not args or args[0] == []:
             timespan = False
         else:
-            timespan = (datetime.date(datetime.strptime(args[0][0], '%Y-%m-%d')), datetime.date(datetime.strptime(args[0][1], '%Y-%m-%d')))
+            timespan = self.set_timespan(args)
 
         crime_type = self.get_crime_type()
 
@@ -516,10 +525,11 @@ class Parse:
             if record['FIRST_OCCURRENCE_DATE'] == 'FIRST_OCCURRENCE_DATE':
                 continue
 
-            # Time queries
-            ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
-            if timespan != False and not timespan[0] <= datetime.date(ts) <= timespan[1]:
-                continue
+            # Timespan queries
+            if self.timespan:
+                ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
+                if not self.timespan[0] <= datetime.date(ts) <= self.timespan[1]:
+                    continue
 
             # Create the neighborhood dict if we haven't yet:
             if record['NEIGHBORHOOD_ID'] not in rankings['neighborhood']:
@@ -714,8 +724,8 @@ if __name__ == '__main__':
             print crimes
     elif action == 'rankings':
         # Example:
-        # $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
-        # $ ./parse.py --action rankings --crime dv --grep '2013-01-01' '2013-08-01'
+        # $ ./parse.py --action rankings --crime violent --file 2013 '2013-01-01' '2013-02-01'
+        # $ ./parse.py --action rankings --crime dv --grep --file 2013 '2013-01-01' '2013-08-01'
         crimes = parse.get_rankings(args)
         if verbose:
             print crimes

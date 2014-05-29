@@ -4,6 +4,7 @@
 from optparse import OptionParser
 from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
+import operator
 
 # We only want this module once.
 try:
@@ -51,6 +52,19 @@ class PrintCrimes:
             """
         self.crime = value
         return self.crime
+
+    def set_options(self, value):
+        """ Set the object's options dict.
+            >>> parse = Parse('_input/test')
+            >>> crime = parse.set_crime('violent')
+            >>> result = parse.get_recent_crimes()
+            >>> printcrimes = PrintCrimes(result, 'specific')
+            >>> options = printcrimes.set_options({'unicode': False})
+            >>> print options
+            {'unicode': False}
+            """
+        self.options = value
+        return self.options
 
     def set_action(self, value):
         """ Set the object's action var.
@@ -330,7 +344,8 @@ class PrintCrimes:
 
         elif action == 'monthly':
             # We use the textbarchart here.
-            options = { 'type': None, 'font': 'monospace', 'unicode': self.options.unicode }
+            self.set_options({'unicode': True})
+            options = { 'type': None, 'font': 'monospace', 'unicode': self.options['unicode'] }
             crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
             bar = TextBarchart(options, crime_dict, crimes['max'])
             outputs = bar.build_chart()
