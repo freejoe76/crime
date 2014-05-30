@@ -223,7 +223,9 @@ class Parse:
                 # Loop through the types of crimes 
                 # (the lowest-level crime taxonomy), 
                 # looking for a partial string match.
-                if self.crime in record['OFFENSE_TYPE_ID']:
+                if '*' in self.grep:
+                    # *** regex to search
+                elif self.crime in record['OFFENSE_TYPE_ID']:
                     return True
 
         return False
@@ -272,8 +274,11 @@ class Parse:
 
             if type_of == 'street' or type_of == 'block':
                 if self.grep == True:
-                    if self.address in record['INCIDENT_ADDRESS']:
-                        crimes.append(record)
+                    if '*' in self.grep:
+                        # *** regex to search
+                    else:
+                        if self.address in record['INCIDENT_ADDRESS']:
+                            crimes.append(record)
                 else:
                     if self.address == record['INCIDENT_ADDRESS']:
                         crimes.append(record)
@@ -555,9 +560,13 @@ class Parse:
                 if self.crime == dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or self.crime == record['OFFENSE_CATEGORY_ID'] or self.crime == record['OFFENSE_TYPE_ID']:
                     rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                     percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
-                elif self.grep == True and self.crime in dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or self.crime in record['OFFENSE_CATEGORY_ID'] or self.crime in record['OFFENSE_TYPE_ID']:
-                    rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
-                    percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
+                elif self.grep == True:
+                    if '*' in self.grep:
+                        # *** regex to search
+                    else:
+                        if self.crime in dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or self.crime in record['OFFENSE_CATEGORY_ID'] or self.crime in record['OFFENSE_TYPE_ID']:
+                            rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
+                            percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
 
         for item in percapita['neighborhood'].items():
             item[1]['count'] = round( float(item[1]['count'])/float(dicts.populations[item[0]]) * 1000, 2)
