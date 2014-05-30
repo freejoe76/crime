@@ -225,6 +225,7 @@ class Parse:
                 # looking for a partial string match.
                 if '*' in self.grep:
                     # *** regex to search
+                    pass
                 elif self.crime in record['OFFENSE_TYPE_ID']:
                     return True
 
@@ -276,6 +277,7 @@ class Parse:
                 if self.grep == True:
                     if '*' in self.grep:
                         # *** regex to search
+                        pass
                     else:
                         if self.address in record['INCIDENT_ADDRESS']:
                             crimes.append(record)
@@ -563,6 +565,7 @@ class Parse:
                 elif self.grep == True:
                     if '*' in self.grep:
                         # *** regex to search
+                        pass
                     else:
                         if self.crime in dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or self.crime in record['OFFENSE_CATEGORY_ID'] or self.crime in record['OFFENSE_TYPE_ID']:
                             rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
