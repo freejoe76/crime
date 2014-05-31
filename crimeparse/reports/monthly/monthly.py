@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Config file for running a monthly report.
+# Usage:
+# $ cd crime/crimeparse; python -m reports.monthly.monthly
 from report import Report
 from optparse import OptionParser
 
