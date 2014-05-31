@@ -5,7 +5,7 @@
 # Takes input (report date type, crime, location) and returns report in json
 from optparse import OptionParser
 from parse import Parse
-from datetime import datetime, timedelta
+from datetime import datetime, date
 
 class Report:
     """ class Report is an interface with class Parse to pull out defined 
@@ -46,17 +46,17 @@ class Report:
 
     def set_timespan(self, value, numago=0):
         """ Set the object's timespan var.
+            numago defines the number of years previous to the initial timestamp.
             >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
             >>> timespan = report.set_timespan(['2013-01-08', '2013-11-27'])
             >>> print timespan
             [datetime.datetime(2013, 1, 8, 0, 0), datetime.datetime(2013, 11, 27, 0, 0)]
             """
-        time_from = datetime.strptime(value[0], '%Y-%m-%d')
-        time_to = datetime.strptime(value[1], '%Y-%m-%d')
+        time_from = datetime.strptime(value[0], '%Y-%m-%d').date()
+        time_to = datetime.strptime(value[1], '%Y-%m-%d').date()
         if numago > 0:
-            delta = 1 + (numago * 365)
-            time_from = time_from - timedelta(delta)
-            time_to = time_to - timedelta(delta)
+            time_from = date(time_from.year - numago, time_from.month, time_from.day)
+            time_to = date(time_to.year - numago, time_to.month, time_to.day)
 
         self.timespan = [time_from, time_to]
         return self.timespan
@@ -153,7 +153,8 @@ class Report:
             self.set_numago(self.numago + 1)
             return '%smonthsago' % self.numago
         elif self.date_type == 'year':
-            return datetime.now().year - self.numago
+            return 'current'
+            #return datetime.now().year - self.numago
         return False
 
     def get_crime_item(self):
@@ -166,10 +167,11 @@ class Report:
         parse = Parse('_input/%s' % self.build_filename())
         parse.set_crime(self.crime)
         parse.set_grep(self.grep)
-        parse.set_location(self.location)
-        # *** Can't uncomment this until we merge with master
-        #if self.timespan:
-        #    parse.set_timespan(self.timespan)
+        if self.location != None:
+            parse.set_location(self.location)
+        if self.timespan:
+            print self.timespan
+            parse.set_timespan(self.timespan)
         # *** other types of reports
         if self.report_type == 'rankings':
             result = parse.get_rankings()
