@@ -286,7 +286,7 @@ class Parse:
                     if '*' in self.address:
                         search_re = self.address.replace('*', '.*')
                         if re.search(search_re, record['INCIDENT_ADDRESS']) != None:
-                            crimes.append(record)return True
+                            crimes.append(record)
                     else:
                         if self.address in record['INCIDENT_ADDRESS']:
                             crimes.append(record)
