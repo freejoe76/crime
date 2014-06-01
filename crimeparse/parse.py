@@ -232,7 +232,12 @@ class Parse:
                 # looking for a partial string match.
                 if '*' in self.grep:
                     # *** regex to search
-                    pass
+                    searches = self.grep.split('*')
+                    # Concatenate the search strings with wildcards between each element.
+                    # Works no matter the number of asterisks in the search string.
+                    search_string = reduce(lambda one_string, another: one_string + '.*' . another, searches)
+                    if re.search(search_re, record['OFFENSE_TYPE_ID']) != None:
+                        return True
                 elif self.crime in record['OFFENSE_TYPE_ID']:
                     return True
 
