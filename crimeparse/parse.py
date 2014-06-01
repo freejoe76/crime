@@ -230,12 +230,8 @@ class Parse:
                 # Loop through the types of crimes 
                 # (the lowest-level crime taxonomy), 
                 # looking for a partial string match.
-                if '*' in self.grep:
-                    # *** regex to search
-                    searches = self.grep.split('*')
-                    # Concatenate the search strings with wildcards between each element.
-                    # Works no matter the number of asterisks in the search string.
-                    search_string = reduce(lambda one_string, another: one_string + '.*' . another, searches)
+                if '*' in self.crime:
+                    search_re = self.crime.replace('*', '.*')
                     if re.search(search_re, record['OFFENSE_TYPE_ID']) != None:
                         return True
                 elif self.crime in record['OFFENSE_TYPE_ID']:
@@ -287,9 +283,10 @@ class Parse:
 
             if type_of == 'street' or type_of == 'block':
                 if self.grep == True:
-                    if '*' in self.grep:
-                        # *** regex to search
-                        pass
+                    if '*' in self.address:
+                        search_re = self.address.replace('*', '.*')
+                        if re.search(search_re, record['INCIDENT_ADDRESS']) != None:
+                            crimes.append(record)return True
                     else:
                         if self.address in record['INCIDENT_ADDRESS']:
                             crimes.append(record)
@@ -577,9 +574,13 @@ class Parse:
                     rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                     percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                 elif self.grep == True:
-                    if '*' in self.grep:
-                        # *** regex to search
-                        pass
+                    if '*' in self.crime:
+                        search_re = self.crime.replace('*', '.*')
+                        if re.search(search_re, dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']]) != None or \
+                            re.search(search_re, record['OFFENSE_CATEGORY_ID']) != None  or \
+                            re.search(search_re, record['OFFENSE_TYPE_ID']) != None:
+                            rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
+                            percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                     else:
                         if self.crime in dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or self.crime in record['OFFENSE_CATEGORY_ID'] or self.crime in record['OFFENSE_TYPE_ID']:
                             rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
