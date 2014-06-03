@@ -5,6 +5,7 @@ import os
 import csv
 import operator
 import math
+import re
 from collections import defaultdict, OrderedDict
 from optparse import OptionParser
 from datetime import datetime, date, timedelta
