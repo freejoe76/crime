@@ -8,6 +8,8 @@ report_items = [
         #{ 'slug': 'violent', 'name': 'Violent', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'violent', 'grep': False  },
         #{ 'slug': 'property', 'name': 'Property', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'property', 'grep': False },
         #{ 'slug': 'drug-alcohol', 'name': 'Drug and Alcohol', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'drug-alcohol', 'grep': False},
+        { 'slug': 'drug-sell', 'name': 'Drug: Selling', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'drug*sell', 'grep': True},
+        { 'slug': 'drug-possess', 'name': 'Drug: Possession', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'drug*possess', 'grep': True},
         #{ 'slug': 'drug-poss', 'name': 'Drug: Paraphernalia Possesion', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'drug-poss', 'grep': True},
         { 'slug': 'drug-synth', 'name': 'Drug: synth', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'drug-synth', 'grep': True},
         #{ 'slug': 'drug-opium', 'name': 'Drug: opium', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'drug-opium', 'grep': True},
