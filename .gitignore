@@ -1,3 +1,5 @@
+*.pyc
+*.swp
 crimeparse/_input/location*.csv
 crimeparse/_input/last*.*
 crimeparse/_input/*months*.csv
