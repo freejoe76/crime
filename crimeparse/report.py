@@ -167,11 +167,15 @@ class Report:
         parse = Parse('_input/%s' % self.build_filename())
         parse.set_crime(self.crime)
         parse.set_grep(self.grep)
-        if self.location != None:
+        try:
             parse.set_location(self.location)
-        if self.timespan:
+        except:
+            pass
+        try:
             print self.timespan
             parse.set_timespan(self.timespan)
+        except:
+            pass
         # *** other types of reports
         if self.report_type == 'rankings':
             result = parse.get_rankings()

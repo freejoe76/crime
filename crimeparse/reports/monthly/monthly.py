@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Config file for running a monthly report.
+# Usage:
+# $ cd crime/crimeparse; python -m reports.monthly.monthly
 from report import Report
 from optparse import OptionParser
 
-report_items = { 
+report_items = [ 
         { 'slug': 'violent', 'name': 'Violent',  'date_type': 'month', 'location': '', 'crime': 'violent', 'grep': False },
         { 'slug': 'dv', 'name': 'Domestic Violence',  'date_type': 'month', 'location': '', 'crime': 'dv', 'grep': True },
         { 'slug': 'property', 'name': 'Property',  'date_type': 'month', 'location': '', 'crime': 'property', 'grep': False },
@@ -16,7 +18,7 @@ report_items = {
         { 'slug': 'burgle_unforced', 'name': 'Burglary: Unforced',  'date_type': 'month', 'location': '', 'crime': 'no-force', 'grep': True },
         { 'slug': 'theft_car', 'name': 'Car Theft',  'date_type': 'month', 'location': '', 'crime': 'theft-of-motor-vehicle', 'grep': False },
         { 'slug': 'theft_bike', 'name': 'Bike Theft',  'date_type': 'month', 'location': '', 'crime': 'theft-bicycle', 'grep': False }
-}
+]
 
 if __name__ == '__main__':
     parser = OptionParser()

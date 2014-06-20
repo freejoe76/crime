@@ -5,9 +5,9 @@ A parser and logger for the City of Denver's crime CSV. Currently outputs to ter
 ![CrimeParse Tests](https://api.travis-ci.org/freejoe76/crime.png)
 
 To get started with the first download and a view on a variety of reports:
-    $ cd crimeparse
+`    $ cd crimeparse
     $ ./ingest.bash
-    $ ./report.bash --location capitol-hill
+    $ ./report.bash --location capitol-hill`
 
 Taxonomy
 ========
@@ -45,4 +45,4 @@ Rankings
 Publish per-capita and raw-number rankings for a crime type and/or category, or genre. Can filter by date.
 ### Example usage
     # Compare neighborhood violent crime rate in January:
-    $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
+    $ ./parse.py --action rankings --crime violent --filename current '2013-01-01' '2013-02-01'
