@@ -11,6 +11,18 @@
 #     -l / --location, for building archives on a particular location.
 ### * Note: Should look at the diffs and see at what age the data stops changing. From there,
 ### can build a more refined archiving (and, thus, querying) strategy.
+### * Reply: The data never stops changing.
+# I compared the numbers between a DPD spreadsheet I downloaded on May 3 2014 and the one I downloaded May 28 2014. Here's a sample of the variances:
+#
+# Property Crimes, Jan-April 2013:
+# May 3 sheet: 7211
+# May 28 sheet: 7176
+# Property Crimes, 2012:
+# May 3: 6398
+# May 28: 6383
+# Property Crimes, 2011
+# May 3: 6835
+# May 28: 6776
 
 TEST=0
 NODOWNLOAD=0
