@@ -80,6 +80,8 @@ class Parse:
         self.set_diff(diff)
         self.set_timespan(None)
 
+        self.date_field = 'REPORTED_DATE'
+        #FIRST_OCCURRENCE_DATE
         self.crime_file = self.open_csv(crime_filename, diff)
         self.crime_filename = crime_filename
         self.options = options
@@ -320,9 +322,9 @@ class Parse:
         if count > 0:
             # We don't want the header row... it's possible we should take care of this in get_recent.
             if crimes['crimes'][0]['FIRST_OCCURRENCE_DATE'] == 'FIRST_OCCURRENCE_DATE':
-                last_crime = self.check_datetime(crimes['crimes'][1]['FIRST_OCCURRENCE_DATE'])
+                last_crime = self.check_datetime(crimes['crimes'][1][self.date_field])
             else:
-                last_crime = self.check_datetime(crimes['crimes'][0]['FIRST_OCCURRENCE_DATE'])
+                last_crime = self.check_datetime(crimes['crimes'][0][self.date_field])
 
         return { 'count': count, 'last_crime': timeago(last_crime), 'crime': self.crime }
 
@@ -374,7 +376,7 @@ class Parse:
 
             # Timespan queries
             if self.timespan:
-                ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
+                ts = self.check_datetime(record[self.date_field])
                 if ts == False:
                     continue
                 if not self.timespan[0] <= ts.date() <= self.timespan[1]:
@@ -541,7 +543,7 @@ class Parse:
 
             # Timespan queries
             if self.timespan:
-                ts = self.check_datetime(record['FIRST_OCCURRENCE_DATE'])
+                ts = self.check_datetime(record[self.date_field])
                 if not self.timespan[0] <= datetime.date(ts) <= self.timespan[1]:
                     continue
 
