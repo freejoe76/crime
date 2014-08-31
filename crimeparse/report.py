@@ -68,9 +68,9 @@ class Report:
             >>> print report_type
             specific
             """
-        report_types = ['specific']
-        if value not in report_types:
-            raise ValueError('Report Type provided is not available.\nAvailable report types: %s' % report_types)
+        approved_values = ['specific']
+        if value not in approved_values:
+            raise ValueError('Report Type provided is not available.\nAvailable report types: %s' % approved_values)
         self.report_type = value
         return self.report_type
 
@@ -111,11 +111,14 @@ class Report:
             >>> print grep
             True
             """
+        approved_values = [True, False]
+        if value not in approved_values:
+            raise ValueError('')
         self.grep = value
-        if value == 'True':
-            self.grep = True
-        elif value == 'False':
-            self.grep = False
+        #if value == 'True':
+        #    self.grep = True
+        #elif value == 'False':
+        #    self.grep = False
         return self.grep
 
     def set_location(self, value):

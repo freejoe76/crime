@@ -104,6 +104,9 @@ class Parse:
             >>> print grep
             False
             """
+        approved_values = [True, False]
+        if value not in approved_values:
+            raise ValueError('')
         self.grep = value
         return self.grep
 
@@ -144,6 +147,9 @@ class Parse:
             >>> print verbose
             False
             """
+        approved_values = [True, False]
+        if value not in approved_values:
+            raise ValueError('')
         self.verbose = value 
         return self.verbose
 
@@ -154,6 +160,9 @@ class Parse:
             >>> print diff
             False
             """
+        approved_values = [True, False]
+        if value not in approved_values:
+            raise ValueError('')
         self.diff = value 
         return self.diff
 
