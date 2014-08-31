@@ -50,7 +50,7 @@ class Report:
             >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
             >>> timespan = report.set_timespan(['2013-01-08', '2013-11-27'])
             >>> print timespan
-            [datetime.datetime(2013, 1, 8, 0, 0), datetime.datetime(2013, 11, 27, 0, 0)]
+            [datetime.date(2013, 1, 8), datetime.date(2013, 11, 27)]
             """
         time_from = datetime.strptime(value[0], '%Y-%m-%d').date()
         time_to = datetime.strptime(value[1], '%Y-%m-%d').date()
