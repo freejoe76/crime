@@ -3,6 +3,8 @@
 # Publish json data suitable for a (month / year) report. A higher-level interface to parse.py
 #
 # Takes input (report date type, crime, location) and returns report in json
+# Example command (assumes report config file in ./reports/yoy/yoy.py:
+# $ python -m reports.yoy.yoy 2014-01-01 2014-07-31 --location capitol-hill
 from optparse import OptionParser
 from parse import Parse
 from datetime import datetime, date
