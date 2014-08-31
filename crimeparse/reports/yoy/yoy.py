@@ -5,10 +5,10 @@ from report import Report
 from optparse import OptionParser
 
 report_items = [ 
+        { 'slug': 'violent', 'name': 'Violent', 'report_type': 'rankings', 'date_type': '', 'location': '', 'crime': 'violent', 'grep': False  },
         { 'slug': 'violent', 'name': 'Violent', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'violent', 'grep': False  },
         { 'slug': 'property', 'name': 'Property', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'property', 'grep': False },
         { 'slug': 'drug', 'name': 'Drug', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'drug', 'grep': True},
-]
 """
         { 'slug': 'drug-sell', 'name': 'Drug: Selling', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'drug*sell', 'grep': True},
         { 'slug': 'drug-possess', 'name': 'Drug: Possession', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'drug*possess', 'grep': True},
@@ -26,6 +26,7 @@ report_items = [
         { 'slug': 'drug-pcs', 'name': 'Drug: pcs / other', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'drug-pcs', 'grep': True},
         { 'slug': 'drug-meth', 'name': 'Drug: Meth', 'report_type': 'specific', 'date_type': '', 'location': '', 'crime': 'drug-meth', 'grep': True},
 """
+]
 
 if __name__ == '__main__':
     parser = OptionParser()

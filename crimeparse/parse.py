@@ -731,7 +731,7 @@ if __name__ == '__main__':
     parser.add_option("-u", "--unicode", dest="unicode", default=False, action="store_true")
     parser.add_option("-o", "--output", dest="output", default=None)
     parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default=False, action="store_true")
-    parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
+    parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
     parser.add_option("-s", "--silent", dest="silent", action="store_true")
     (options, args) = parser.parse_args()
     filename = options.filename

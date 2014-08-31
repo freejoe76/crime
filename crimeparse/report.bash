@@ -1,5 +1,5 @@
 #!/bin/bash
-# Publish a json file suitable for a monthly report. No premature optimization here!
+# Publish a json file suitable for a monthly report.
 # $ ./monthly.bash --location capitol-hill
 
 # Default:
