@@ -97,7 +97,7 @@ fi
 if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
 	./matchline.py "$THIS_YEAR-" current.csv > currentyear.csv
 	./matchline.py "$LAST_YEAR-" current.csv > lastyear.csv
-	./matchline.py "$THIS_MONTH" current.csv > currentmonth.csv
+	./matchline.py "$THIS_YEAR-$THIS_MONTH" current.csv > currentmonth.csv
 
     # Build a csv of the crimes for the last 0-12 months
     for MONTHNUM in {1..12}; do > $MONTHNUM"monthsago.csv"; done
