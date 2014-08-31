@@ -68,7 +68,7 @@ class Report:
             >>> print report_type
             specific
             """
-        approved_values = ['specific']
+        approved_values = ['specific', 'rankings', 'recent', 'monthly', 'search']
         if value not in approved_values:
             raise ValueError('Report Type provided is not available.\nAvailable report types: %s' % approved_values)
         self.report_type = value

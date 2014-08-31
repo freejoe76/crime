@@ -74,10 +74,10 @@ class Parse:
     def __init__(self, crime_filename, diff = False, options = None):
         # Initialize the major vars
         self.set_crime(None)
-        self.set_grep(None)
+        self.set_grep(False)
         self.set_location(None)
         self.set_limit(None)
-        self.set_verbose(None)
+        self.set_verbose(False)
         self.set_diff(diff)
         self.set_timespan(None)
 
@@ -792,7 +792,7 @@ if __name__ == '__main__':
     elif action == 'search':
         crimes = parse.search_addresses()
     else:
-        print "You must specify one of these actions: rankings, recent, specific, search."
+        print "You must specify one of these actions: monthly, rankings, recent, specific, search."
     if not silent:
         from printcrimes import *
         printjob = PrintCrimes(crimes, action, parse.crime_filename, limit)
