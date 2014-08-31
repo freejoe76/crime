@@ -1,4 +1,9 @@
 #!/bin/bash
+# NOTE: Using this on a Mac? The Mac's default date command is insufficient.
+# Download a better version using the instructions here:
+# http://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/
+#
+#
 # This script downloads the current edition of the City of Denver's crime files.
 # If there are changes to the file since we last downloaded it, we:
 #     1. Save a copy of those differences with a timestamp
@@ -11,18 +16,6 @@
 #     -l / --location, for building archives on a particular location.
 ### * Note: Should look at the diffs and see at what age the data stops changing. From there,
 ### can build a more refined archiving (and, thus, querying) strategy.
-### * Reply: The data never stops changing.
-# I compared the numbers between a DPD spreadsheet I downloaded on May 3 2014 and the one I downloaded May 28 2014. Here's a sample of the variances:
-#
-# Property Crimes, Jan-April 2013:
-# May 3 sheet: 7211
-# May 28 sheet: 7176
-# Property Crimes, 2012:
-# May 3: 6398
-# May 28: 6383
-# Property Crimes, 2011
-# May 3: 6835
-# May 28: 6776
 
 TEST=0
 NODOWNLOAD=0
@@ -97,7 +90,7 @@ fi
 if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
 	./matchline.py "$THIS_YEAR-" current.csv > currentyear.csv
 	./matchline.py "$LAST_YEAR-" current.csv > lastyear.csv
-	./matchline.py "$THIS_YEAR-$THIS_MONTH" current.csv > currentmonth.csv
+	./matchline.py "$THIS_MONTH" current.csv > currentmonth.csv
 
     # Build a csv of the crimes for the last 0-12 months
     for MONTHNUM in {1..12}; do > $MONTHNUM"monthsago.csv"; done
