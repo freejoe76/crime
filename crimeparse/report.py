@@ -68,6 +68,9 @@ class Report:
             >>> print report_type
             specific
             """
+        report_types = ['specific']
+        if value not in report_types:
+            raise ValueError('Report Type provided is not available.\nAvailable report types: %s' % report_types)
         self.report_type = value
         return self.report_type
 
