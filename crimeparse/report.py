@@ -180,12 +180,14 @@ class Report:
         except:
             pass
         try:
-            if self.options.verbose == True:
-                print self.timespan
+            #if self.options.verbose == True:
+            #    print self.timespan
             parse.set_timespan(self.timespan)
         except:
             pass
         # *** other types of reports
+        #if self.options.verbose == True:
+        #    print self.report_type
         if self.report_type == 'rankings':
             result = parse.get_rankings()
         elif self.report_type == 'specific':

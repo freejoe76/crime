@@ -8,7 +8,7 @@ from optparse import OptionParser
 report_items = [ 
         { 'slug': 'violent', 'name': 'Violent', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'violent', 'grep': False  },
         { 'slug': 'property', 'name': 'Property', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'property', 'grep': False },
-        { 'slug': 'drug', 'name': 'Drug', 'report_type': 'rankings', '': '', 'location': '', 'crime': 'drug', 'grep': True},
+        { 'slug': 'drug', 'name': 'Drug', 'report_type': '', '': '', 'location': '', 'crime': 'drug', 'grep': True},
         { 'slug': 'drug-sell', 'name': 'Drug: Selling', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug*sell', 'grep': True},
         { 'slug': 'drug-possess', 'name': 'Drug: Possession', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug*possess', 'grep': True},
         { 'slug': 'car-theft', 'name': 'Car Thefts', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'theft-of-motor-vehicle', 'grep': False  },
@@ -38,6 +38,7 @@ if __name__ == '__main__':
     for item in report_items:
         if options.verbose == True:
             print item['name']
+            print args
         item['date_type'] = options.date_type
         item['location'] = options.location
         item['report_type'] = options.report_type
