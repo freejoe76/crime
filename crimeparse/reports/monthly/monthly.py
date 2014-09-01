@@ -5,6 +5,7 @@
 # $ cd crime/crimeparse; python -m reports.monthly.monthly
 from report import Report
 from optparse import OptionParser
+from datetime import date
 
 report_items = [ 
         { 'slug': 'violent', 'name': 'Violent',  'date_type': 'month', 'location': '', 'crime': 'violent', 'grep': False },
@@ -23,11 +24,29 @@ report_items = [
 if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-l", "--location", dest="location")
-    parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=True)
+    parser.add_option("-d", "--date_type", dest="date_type", default="month")
+    parser.add_option("-r", "--report", dest="report_type", default="specific")
+    #parser.add_option("-c", "--crime", dest="crime", default=None)
+    parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False)
     (options, args) = parser.parse_args()
 
     for item in report_items:
-        if options.location != None:
-            item['location'] = options.location
-        report = Report(**item)
-        print report.get_crime_item()
+        if options.verbose == True:
+            print item['name']
+        item['date_type'] = options.date_type
+        item['location'] = options.location
+        item['report_type'] = options.report_type
+        year = date.today().year
+        for yearback in [0, 1, 2, 3]:
+            item['numago'] = yearback
+            report = Report(*args, **item)
+            # Rankings output comes default in specific report,
+            # so if we're specifying rankings as the report_type that means
+            # we're using this output for something else... something else that
+            # needs it in ready-to-write-the-compiled-json-to-a-file format.
+            if item['report_type'] == 'rankings':
+                print '"%s__%d": ' % ( item['slug'], year - yearback ) 
+                print report.get_crime_item(),
+                print ","
+            else:
+                print report.get_crime_item()
