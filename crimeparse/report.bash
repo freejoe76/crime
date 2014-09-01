@@ -1,25 +1,26 @@
 #!/bin/bash
-# Publish a json file suitable for a monthly report.
-# $ ./monthly.bash --location capitol-hill
+# Publish a json file suitable for a year over year report.
+# $ ./report.bash
 
-# Default:
-LOCATIONS=capitol-hill
-while [ "$1" != "" ]; do
-    case $1 in
-        -l | --location ) shift
-            LOCATIONS=$1
-            ;;
-    esac
-    shift
-done
-THIS_YEAR=`date +'%Y'`
-LAST_YEAR=`expr $THIS_YEAR - 1`
-LAST_LAST_YEAR=`expr $THIS_YEAR - 2`
-THIS_MONTH=`date +'%Y-%m'`
-LAST_MONTH=`date +'%Y-%m' --date='month ago'`
-LAST_LAST_MONTH=`date +'%Y-%m' --date='2 months ago'`
+FILENAME=reports/yoy.json
+echo '{' > $FILENAME
+python -m reports.yoy.yoy 2014-01-01 2014-07-31 --location capitol-hill --report rankings >> $FILENAME 
+# We replace all the single quotes with double, then remove the traces of our work.
+sed -i .bak "s/'/\"/g" $FILENAME
+rm -f $FILENAME".bak"
+python deletecomma/deletecomma.py $FILENAME
+echo '}' >> $FILENAME
 
-for LOCATION in $LOCATIONS; do
+
+
+
+
+
+
+
+
+# Deprecated
+for LOCATION in $XXXXXXXLOCATIONS; do
     FILENAME=reports/1-year-$LOCATION.json
     SUFFIX="--action rankings --location $LOCATION --output json --file last12months"
     #./parse.py --action rankings --file last12months --crime dv --grep --output json --location capitol-hill

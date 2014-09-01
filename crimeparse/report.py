@@ -180,7 +180,8 @@ class Report:
         except:
             pass
         try:
-            print self.timespan
+            if self.options.verbose == True:
+                print self.timespan
             parse.set_timespan(self.timespan)
         except:
             pass
