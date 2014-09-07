@@ -1,5 +1,6 @@
 #!/bin/bash
 # Publish a json file suitable for a year over year report.
+# Example usage:
 # $ ./report.bash
 
 FILENAME=reports/yoy.json
