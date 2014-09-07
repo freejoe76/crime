@@ -1,10 +1,13 @@
 Crime
 =====
-A parser and logger for the City of Denver's crime CSV. Currently outputs to terminal. No database on the backend.
+A parser and logger for the City of Denver's crime CSV. Currently outputs to terminal. No database required.
+
+![CrimeParse Tests](https://api.travis-ci.org/freejoe76/crime.png)
 
 To get started with the first download and a view on a variety of reports:
+`    $ cd crimeparse
     $ ./ingest.bash
-    $ ./report.bash --location capitol-hill
+    $ ./report.bash --location capitol-hill`
 
 Taxonomy
 ========
@@ -42,23 +45,4 @@ Rankings
 Publish per-capita and raw-number rankings for a crime type and/or category, or genre. Can filter by date.
 ### Example usage
     # Compare neighborhood violent crime rate in January:
-    $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
-
-Dependencies
-============
-* CSVkit http://csvkit.readthedocs.org/en/latest/
-
-## Flask http://flask.pocoo.org/
-    $ pip install flask
-
-### Flask Extensions:
-    # Flask-FlatPages 0.5 http://pythonhosted.org/Flask-FlatPages/
-    $ pip install Flask-FlatPages
-    # Flask-Testing 0.4 http://pythonhosted.org/Flask-Testing/
-    $ pip install Flask-Testing
-
-## MongoDB http://api.mongodb.org/python/current/
-    $ sudo apt-get install build-essential python-dev
-    $ pip install pymongo
-    $ sudo apt-get install mongodb-server
-
+    $ ./parse.py --action rankings --crime violent --filename current '2013-01-01' '2013-02-01'
