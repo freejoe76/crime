@@ -6,13 +6,19 @@ from datetime import date
 from optparse import OptionParser
 
 report_items = [ 
+        { 'slug': 'homicide', 'name': 'Homicide', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'murder', 'grep': False  },
         { 'slug': 'violent', 'name': 'Violent', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'violent', 'grep': False  },
         { 'slug': 'property', 'name': 'Property', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'property', 'grep': False },
+        { 'slug': 'dv', 'name': 'Domestic Violence',  'date_type': '', 'location': '', 'crime': 'dv', 'grep': True },
+        { 'slug': 'robbery', 'name': 'Robbery',  'date_type': '', 'location': '', 'crime': 'robbery', 'grep': True },
+        { 'slug': 'burglary', 'name': 'Burglary',  'date_type': '', 'location': '', 'crime': 'burg', 'grep': True },
         { 'slug': 'drug', 'name': 'Drug', 'report_type': '', '': '', 'location': '', 'crime': 'drug', 'grep': True},
         { 'slug': 'drug-sell', 'name': 'Drug: Selling', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug*sell', 'grep': True},
         { 'slug': 'drug-possess', 'name': 'Drug: Possession', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug*possess', 'grep': True},
         { 'slug': 'car-theft', 'name': 'Car Thefts', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'theft-of-motor-vehicle', 'grep': False  },
         { 'slug': 'bike-theft', 'name': 'Bike Thefts', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'theft-bicycle', 'grep': False  },
+        { 'slug': 'burgle_forced', 'name': 'Burglary: Forced',  'date_type': '', 'location': '', 'crime': 'by-force', 'grep': True },
+        { 'slug': 'burgle_unforced', 'name': 'Burglary: Unforced',  'date_type': '', 'location': '', 'crime': 'no-force', 'grep': True },
         { 'slug': 'burglary-business', 'name': 'Burglary: Business', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'burglary-business', 'grep': True},
         { 'slug': 'burglary-residence', 'name': 'Burglary: Residence', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'burglary-residence', 'grep': True},
         { 'slug': 'drug-alcohol', 'name': 'Drug and Alcohol', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug-alcohol', 'grep': False},
