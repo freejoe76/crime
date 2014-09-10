@@ -3,16 +3,21 @@
 # Example usage:
 # $ ./report.bash
 
+for LOCATION in capitol-hill north-capitol-hill;
+do
+    ./parse.py --action recent --location $LOCATION --output json --crime murder > _output/recent_murder_$LOCATION.json
+    ./parse.py --action recent --location $LOCATION --output json --crime aggravated-assault > _output/recent_assault_$LOCATION.json
+    ./parse.py --action recent --location $LOCATION --output json --crime robbery > _output/recent_robbery_$LOCATION.json
+done
+
 FILENAME=reports/yoy.json
 echo '{' > $FILENAME
-python -m reports.yoy.yoy 2014-01-01 2014-07-31 --location capitol-hill --report rankings >> $FILENAME 
+python -m reports.yoy.yoy 2014-01-01 2014-08-31 --location capitol-hill --report rankings >> $FILENAME 
 # We replace all the single quotes with double, then remove the traces of our work.
 sed -i .bak "s/'/\"/g" $FILENAME
 rm -f $FILENAME".bak"
 python deletecomma/deletecomma.py $FILENAME
 echo '}' >> $FILENAME
-
-
 
 
 
