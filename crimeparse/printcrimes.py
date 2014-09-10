@@ -275,7 +275,7 @@ class PrintCrimes:
                     json += """  {
     "category": "%s",
     "type": "%s",
-    "date-reported": "%s",
+    "date_reported": "%s",
     "address": "%s",
     "latitude": "%s",
     "longitude": "%s"
