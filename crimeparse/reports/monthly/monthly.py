@@ -37,7 +37,7 @@ if __name__ == '__main__':
         item['location'] = options.location
         item['report_type'] = options.report_type
         year = date.today().year
-        for yearback in [0, 1, 2, 3]:
+        for yearback in [0, 1, 2, 3, 4, 5, 6]:
             item['numago'] = yearback
             report = Report(*args, **item)
             # Rankings output comes default in specific report,
