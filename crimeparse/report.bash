@@ -10,13 +10,13 @@ do
     ./parse.py --action recent --location $LOCATION --output json --crime robbery > _output/recent_robbery_$LOCATION.json
 done
 
-FILENAME=reports/yoy.json
+FILENAME=_output/yoy.json
 echo '{' > $FILENAME
 python -m reports.yoy.yoy 2014-01-01 2014-08-31 --location capitol-hill --report rankings >> $FILENAME 
 # We replace all the single quotes with double, then remove the traces of our work.
 sed -i .bak "s/'/\"/g" $FILENAME
 rm -f $FILENAME".bak"
-python deletecomma/deletecomma.py $FILENAME
+python deletecomma.py $FILENAME
 echo '}' >> $FILENAME
 
 
