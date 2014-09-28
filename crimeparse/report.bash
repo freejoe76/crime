@@ -3,6 +3,11 @@
 # Example usage:
 # $ ./report.bash
 
+./parse.py --action recent --output json --crime violent > _output/recent_violent.json
+./parse.py --action recent --output json --crime murder > _output/recent_murder.json
+./parse.py --action recent --output json --crime dv --grep > _output/recent_dv.json
+./parse.py --action recent --output json --crime sex-aslt-rape > _output/recent_rape.json
+
 for LOCATION in capitol-hill north-capitol-hill;
 do
     ./parse.py --action recent --location $LOCATION --output json --crime murder > _output/recent_murder_$LOCATION.json
@@ -12,7 +17,7 @@ done
 
 FILENAME=_output/yoy.json
 echo '{' > $FILENAME
-python -m report.yoy.yoy 2014-01-01 2014-08-31 --location capitol-hill --report rankings >> $FILENAME 
+python -m reports.yoy.yoy 2014-01-01 2014-08-31 --location capitol-hill --report rankings >> $FILENAME 
 # We replace all the single quotes with double, then remove the traces of our work.
 sed -i .bak "s/'/\"/g" $FILENAME
 rm -f $FILENAME".bak"
