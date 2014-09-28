@@ -1,7 +1,5 @@
 git+git://github.com/freejoe76/fancytext#egg=FancyText
-redis
 python-coveralls
 #Shapely
 #six
 #Fiona
-#sudo apt-get install libgdal1-dev
