@@ -563,6 +563,8 @@ class Parse:
             # Timespan queries
             if self.timespan:
                 ts = self.check_datetime(record[self.date_field])
+                if ts == False:
+                    print record[self.date_field]
                 if not self.timespan[0] <= datetime.date(ts) <= self.timespan[1]:
                     continue
 

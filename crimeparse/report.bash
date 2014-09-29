@@ -8,15 +8,19 @@
 ./parse.py --action recent --output json --crime dv --grep > _output/recent_dv.json
 ./parse.py --action recent --output json --crime sex-aslt-rape > _output/recent_rape.json
 
-for LOCATION in capitol-hill north-capitol-hill;
-do
-    ./parse.py --action recent --location $LOCATION --output json --crime murder > _output/recent_murder_$LOCATION.json
-    ./parse.py --action recent --location $LOCATION --output json --crime aggravated-assault > _output/recent_assault_$LOCATION.json
-    ./parse.py --action recent --location $LOCATION --output json --crime robbery > _output/recent_robbery_$LOCATION.json
+for LOCATION in capitol-hill north-capitol-hill; do
+    echo $LOCATION
+    for CRIME in murder aggravated-assault robbery violent; do
+        echo $CRIME
+        ./parse.py --action recent --location $LOCATION --output json --crime $CRIME > _output/recent-$CRIME-$LOCATION.json
+        ./parse.py --action monthly --crime $CRIME --limit 24 --location $LOCATION --output json > _output/monthly-$CRIME-$LOCATION.json
+    done
 done
 
 FILENAME=_output/yoy.json
 echo '{' > $FILENAME
+# We pass it a location, but it doesn't really matter for this report
+echo "YOY"
 python -m reports.yoy.yoy 2014-01-01 2014-08-31 --location capitol-hill --report rankings >> $FILENAME 
 # We replace all the single quotes with double, then remove the traces of our work.
 sed -i .bak "s/'/\"/g" $FILENAME
