@@ -332,7 +332,7 @@ class PrintCrimes:
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
             i = 0
             for item in reversed(sorted(crimes['crimes']['neighborhood'].iteritems(), key=operator.itemgetter(1))):
-                i = i + 1
+                i += 1
                 if loc == item[0]:
                     location = '***%s***' % self.clean_location(item[0])
                 else:
@@ -347,8 +347,21 @@ class PrintCrimes:
             self.set_options({'unicode': True})
             options = { 'type': None, 'font': 'monospace', 'unicode': self.options['unicode'] }
             crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
-            bar = TextBarchart(options, crime_dict, crimes['max'])
-            outputs = bar.build_chart()
+            if output == 'json':
+                length = len(crime_dict)
+                comma = ','
+                i = 0
+                json = '['
+                for item in crime_dict:
+                    i += 1
+                    if i == length:
+                        comma = ''
+                    json += '\n {"count": "%s", "date": "%s"}%s' % (item[1]['count'], item[0], comma)
+                json += ']'
+            else:
+                bar = TextBarchart(options, crime_dict, crimes['max'])
+                outputs = bar.build_chart()
+           
 
         else:
             print "We did not have any crimes to handle"

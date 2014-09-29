@@ -481,7 +481,7 @@ class Parse:
         # can lag, and we want to be accurate. If the last update of the crime
         # happened two days ago, but that two days ago was a different month,
         # doing it this way keeps it correct.
-        yearmonths = open('_input/last%imonths.txt' % limit).readlines()
+        yearmonths = open('_input/last.txt').readlines()
 
         while i < limit:
             # We need the crimes, the counter, the empty dict, and the month.

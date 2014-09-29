@@ -41,6 +41,7 @@ class TextBarchart():
         if the_max == None:
             the_max = self.the_max
 
+        divisor = 5
         if the_max > 80:
             divisor = 50
         if the_max > 800:
@@ -74,7 +75,7 @@ class TextBarchart():
 
     def compute_deviation(self):
         """ Calculate the standard deviation.
-            If the deviation's too low, there's no point in publishing the bar part of this chart.
+            If the deviation's too low, there's not much point in publishing the bar part of this chart.
             """
         return int(math.sqrt(self.variance))
 
