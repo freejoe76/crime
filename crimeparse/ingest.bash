@@ -17,7 +17,8 @@
 ### * Note: Should look at the diffs and see at what age the data stops changing. From there,
 ### can build a more refined archiving (and, thus, querying) strategy.
 
-declare -a HOODS=('capitol-hill', 'north-capitol-hill', 'civic-center')
+declare -a HOODS=('capitol-hill' 'north-capitol-hill' 'civic-center')
+
 TEST=0
 NODOWNLOAD=0
 while [ "$1" != "" ]; do
@@ -134,7 +135,7 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
         # We don't need month-by-month neighborhood CSVs for more than the two previous years.
         #if [[ $NUM -gt 23 ]]; then continue; fi
 
-        for HOOD in $HOODS; do
+        for HOOD in ${HOODS[@]}; do
             # We include the comma in the grep to distinguish btw, say,
             # north-capitol-hill and capitol-hill. It's a CSV, the comma's the delimiter.
             ./matchline.py $YEARMONTH current.csv | grep ,$HOOD > location_$HOOD-$YEARMONTH.csv
@@ -143,7 +144,7 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
         date
     done
 
-    for HOOD in $HOODS; do
+    for HOOD in ${HOODS[@]}; do
         ./matchline.py $THIS_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$THIS_YEAR.csv
         ./matchline.py $LAST_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$LAST_YEAR.csv
         ./matchline.py $LAST_LAST_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$LAST_LAST_YEAR.csv

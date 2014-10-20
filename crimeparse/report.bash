@@ -21,7 +21,7 @@ FILENAME=_output/yoy.json
 echo '{' > $FILENAME
 # We pass it a location, but it doesn't really matter for this report
 echo "YOY"
-python -m reports.yoy.yoy 2014-01-01 2014-08-31 --location capitol-hill --report rankings >> $FILENAME 
+python -m reports.yoy.yoy 2014-01-01 2014-10-01 --location capitol-hill --report rankings >> $FILENAME 
 # We replace all the single quotes with double, then remove the traces of our work.
 sed -i .bak "s/'/\"/g" $FILENAME
 rm -f $FILENAME".bak"
