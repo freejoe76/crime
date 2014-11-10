@@ -1,5 +1,11 @@
-git+git://github.com/freejoe76/fancytext#egg=FancyText
-python-coveralls
-#Shapely
-#six
-#Fiona
+FancyText==0.2
+PyYAML==3.11
+coverage==3.7.1
+py==1.4.20
+pytest==2.5.2
+python-coveralls==2.4.2
+redis==2.9.1
+requests==2.2.1
+sh==1.09
+six==1.6.1
+wsgiref==0.1.2
