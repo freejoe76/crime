@@ -7,6 +7,7 @@
 ./parse.py --action recent --output json --crime murder > _output/recent_murder.json
 ./parse.py --action recent --output json --crime dv --grep > _output/recent_dv.json
 ./parse.py --action recent --output json --crime sex-aslt-rape > _output/recent_rape.json
+./parse.py --action recent --output json --crime robbery > _output/recent_robbery.json
 
 for LOCATION in capitol-hill north-capitol-hill; do
     echo $LOCATION
