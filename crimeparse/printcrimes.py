@@ -278,9 +278,10 @@ class PrintCrimes:
     "date_reported": "%s",
     "address": "%s",
     "latitude": "%s",
-    "longitude": "%s"
+    "longitude": "%s",
+    "neighborhood": "%s"
     %s
-""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], close_bracket)
+""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], crime['NEIGHBORHOOD_ID'], close_bracket)
                     continue
 
                 if 'diff' not in crime:
