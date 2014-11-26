@@ -605,8 +605,8 @@ class Parse:
             item[1]['count'] = round( float(item[1]['count'])/float(dicts.populations[item[0]]) * 1000, 2)
 
         sorted_rankings = {
-            'neighborhood': sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1)),
-            'percapita': sorted(percapita['neighborhood'].iteritems(), key=operator.itemgetter(1)),
+            'neighborhood': sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1), reverse=True),
+            'percapita': sorted(percapita['neighborhood'].iteritems(), key=operator.itemgetter(1), reverse=True),
             'genre': sorted(rankings['genre'].iteritems(), key=operator.itemgetter(1)),
             'category': sorted(rankings['category'].iteritems(), key=operator.itemgetter(1)),
             'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
