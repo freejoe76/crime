@@ -72,7 +72,7 @@ neighborhood_lookup = {
     'montclair': {'full': 'Montclair', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'north-capitol-hill': {'full': 'North Capitol Hill', 'nearest_neighbors': {'capitol-hill', 'cbd', 'five-points', 'city-park-west', }, 'location': {}, 'population': 0},
     'northeast-park-hill': {'full': 'Northeast Park Hill', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
-    'north-park-hill': {'full': 'North Park Hill', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
+    'north-park-hill': {'full': 'North Park Hill', 'nearest_neighbors': {'south-park-hill', 'skyland', 'northeast-park-hill', 'stapleton'}, 'location': {}, 'population': 0},
     'overland': {'full': 'Overland', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'platt-park': {'full': 'Platt Park', 'nearest_neighbors': {'washington-park-west', 'university', 'rosedale', 'overland'}, 'location': {}, 'population': 0},
     'regis': {'full': 'Regis', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
@@ -81,9 +81,9 @@ neighborhood_lookup = {
     'skyland': {'full': 'Skyland', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'sloan-lake': {'full': 'Sloan Lake', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'southmoor-park': {'full': 'Southmoor Park', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
-    'south-park-hill': {'full': 'South Park Hill', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
+    'south-park-hill': {'full': 'South Park Hill', 'nearest_neighbors': {'north-park-hill', 'east-colfax', 'montclair', 'hale', 'city-park'}, 'location': {}, 'population': 0},
     'speer': {'full': 'Speer', 'nearest_neighbors': {'capitol-hill', 'country-club', 'washington-park', 'washington-park-west', 'baker'}, 'location': {}, 'population': 0},
-    'stapleton': {'full': 'Stapleton', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
+    'stapleton': {'full': 'Stapleton', 'nearest_neighbors': {'montbello', 'east-colfax', 'north-park-hill', 'northeast-park-hill'}, 'location': {}, 'population': 0},
     'sunnyside': {'full': 'Sunnyside', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'sun-valley': {'full': 'Sun Valley', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'union-station': {'full': 'Union Station', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
@@ -107,6 +107,11 @@ neighborhood_lookup = {
 
 # Human-readable crime names.
 crime_name_lookup = {
+    'homicide': 'Homicide',
+    'rape': 'Rape',
+    'violent': 'Violent crime',
+    'property': 'Property crime',
+    'dv': 'Domestic Violence',
     'sovereign-treason-viol': 'Treason',
     'immigration-violations': 'Immigration violation',
     'homicide-family': 'Homicide by a family member',
