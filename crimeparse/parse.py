@@ -528,9 +528,9 @@ class Parse:
             >>> crime = parse.set_crime('violent')
             >>> result = parse.get_rankings()
             >>> print result['crimes']['neighborhood'][0]
-            ('wellshire', {'count': 0, 'rank': 0})
+            ('cbd', {'count': 3, 'rank': 0})
             >>> print result['crimes']['percapita'][50]
-            ('west-colfax', {'count': 0.1, 'rank': 0})
+            ('harvey-park-south', {'count': 0.0, 'rank': 0})
             """
         rankings = { 
             'neighborhood': dict(),
@@ -707,7 +707,7 @@ class Parse:
             >>> crimes = parse.get_rankings()
             >>> result = parse.print_neighborhoods(crimes)
             >>> print result[0]
-                'wellshire': {'full': 'Wellshire'},
+                'sun-valley': {'full': 'Sun Valley'},
             """
         outputs = []
         for item in crimes['crimes']['percapita']:
