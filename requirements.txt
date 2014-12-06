@@ -1,4 +1,8 @@
-FancyText==0.2
+git+git://github.com/freejoe76/fancytext#egg=FancyText
+#python-coveralls
+#Shapely
+#six
+#Fiona
 PyYAML==3.11
 coverage==3.7.1
 py==1.4.20
