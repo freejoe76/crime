@@ -53,15 +53,15 @@ neighborhood_lookup = {
     'fort-logan': {'full': 'Fort Logan', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'gateway-green-valley-ranch': {'full': 'Gateway Green Valley Ranch', 'nearest_neighbors': {'montbello', 'dia'}, 'location': {}, 'population': 0},
     'globeville': {'full': 'Globeville', 'nearest_neighbors': {'elyria-swansea', 'five-points', 'highland', 'sunnyside', 'chaffee-park'}, 'location': {}, 'population': 0},
-    'goldsmith': {'full': 'Goldsmith', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
+    'goldsmith': {'full': 'Goldsmith', 'nearest_neighbors': {'virginia-village', 'hampden'}, 'location': {}, 'population': 0},
     'hale': {'full': 'Hale', 'nearest_neighbors': {'congress-park', 'south-park-hill', 'montclair', 'hilltop'}, 'location': {}, 'population': 0},
-    'hampden': {'full': 'Hampden', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
+    'hampden': {'full': 'Hampden', 'nearest_neighbors': {'goldsmith', 'hampden-south', 'university-hills'}, 'location': {}, 'population': 0},
     'hampden-south': {'full': 'Hampden South', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'harvey-park': {'full': 'Harvey Park', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'harvey-park-south': {'full': 'Harvey Park South', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'highland': {'full': 'Highland', 'nearest_neighbors': {'sunnyside', 'west-highland', 'jefferson-park', 'union-station', 'five-points', 'globeville'}, 'location': {}, 'population': 0},
     'hilltop': {'full': 'Hilltop', 'nearest_neighbors': {'hale', 'montclair', 'lowry-field', 'washington-virginia-vale', 'cherry-creek'}, 'location': {}, 'population': 0},
-    'indian-creek': {'full': 'Indian Creek', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
+    'indian-creek': {'full': 'Indian Creek', 'nearest_neighbors': {'washington-virginia-vale', 'virginia-village'}, 'location': {}, 'population': 0},
     'jefferson-park': {'full': 'Jefferson Park', 'nearest_neighbors': {'sloan-lake', 'highland', 'auraria', 'sun-valley'}, 'location': {}, 'population': 0},
     'kennedy': {'full': 'Kennedy', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'lincoln-park': {'full': 'Lincoln Park', 'nearest_neighbors': {'sun-valley', 'auraria', 'civic-center', 'baker'}, 'location': {}, 'population': 0},
@@ -92,16 +92,16 @@ neighborhood_lookup = {
     'university-park': {'full': 'University Park', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'valverde': {'full': 'Valverde', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'villa-park': {'full': 'Villa Park', 'nearest_neighbors': {'west-colfax', 'sun-valley', 'barnum-west', 'barnum'}, 'location': {}, 'population': 0},
-    'virginia-village': {'full': 'Virginia Village', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
+    'virginia-village': {'full': 'Virginia Village', 'nearest_neighbors': {'washington-virginia-vale', 'indian-creek', 'goldsmith', 'cory-merrill'}, 'location': {}, 'population': 0},
     'washington-park': {'full': 'Washington Park', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'washington-park-west': {'full': 'Washington Park West', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
-    'washington-virginia-vale': {'full': 'Washington Virginia Vale', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
+    'washington-virginia-vale': {'full': 'Washington Virginia Vale', 'nearest_neighbors': {'hilltop', 'lowry-field', 'windsor', 'indian-creek', 'virginia-village', }, 'location': {}, 'population': 0},
     'wellshire': {'full': 'Wellshire', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'west-colfax': {'full': 'West Colfax', 'nearest_neighbors': {'sloan-lake', 'sun-valley', 'villa-park'}, 'location': {}, 'population': 0},
     'west-highland': {'full': 'West Highland', 'nearest_neighbors': {'berkeley', 'highland', 'sloan-lake'}, 'location': {}, 'population': 0},
     'westwood': {'full': 'Westwood', 'nearest_neighbors': {}, 'location': {}, 'population': 0},
     'whittier': {'full': 'Whittier', 'nearest_neighbors': {'five-points', 'cole', 'skyland', 'city-park-west'}, 'location': {}, 'population': 0},
-    'windsor': {'full': 'Windsor', 'nearest_neighbors': {}, 'location': {}, 'population': 0}
+    'windsor': {'full': 'Windsor', 'nearest_neighbors': {'lowry-field', 'washington-virginia-vale'}, 'location': {}, 'population': 0}
 }
 
 # Human-readable crime names.
