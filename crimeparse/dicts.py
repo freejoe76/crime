@@ -63,7 +63,7 @@ neighborhood_lookup = {
     'hilltop': {'full': 'Hilltop', 'adjacent-neighbors': {}, 'nearest_neighbors': {'hale', 'montclair', 'lowry-field', 'washington-virginia-vale', 'cherry-creek'}, 'location': {}, 'population': 0},
     'indian-creek': {'full': 'Indian Creek', 'adjacent-neighbors': {}, 'nearest_neighbors': {'washington-virginia-vale', 'virginia-village'}, 'location': {}, 'population': 0},
     'jefferson-park': {'full': 'Jefferson Park', 'adjacent-neighbors': {}, 'nearest_neighbors': {'sloan-lake', 'highland', 'auraria', 'sun-valley'}, 'location': {}, 'population': 0},
-    'kennedy': {'full': 'Kennedy', 'adjacent-neighbors': {}, 'nearest_neighbors': {}, 'location': {}, 'population': 0},
+    'kennedy': {'full': 'Kennedy', 'adjacent-neighbors': {}, 'nearest_neighbors': {'hampden'}, 'location': {}, 'population': 0},
     'lincoln-park': {'full': 'Lincoln Park', 'adjacent-neighbors': {}, 'nearest_neighbors': {'sun-valley', 'auraria', 'civic-center', 'baker'}, 'location': {}, 'population': 0},
     'lowry-field': {'full': 'Lowry Field', 'adjacent-neighbors': {}, 'nearest_neighbors': {'east-colfax', 'montclair', 'hilltop', 'washington-virginia-vale', 'windsor'}, 'location': {}, 'population': 0},
     'mar-lee': {'full': 'Mar Lee', 'adjacent-neighbors': {}, 'nearest_neighbors': {'westwood', 'ruby-hill', 'harvey-park'}, 'location': {}, 'population': 0},
