@@ -40,15 +40,15 @@ if __name__ == '__main__':
         item['location'] = options.location
         item['report_type'] = options.report_type
         year = date.today().year
-        for yearback in [0, 1, 2, 3, 4, 5, 6]:
-            item['numago'] = yearback
+        for ago in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+            item['numago'] = ago 
             report = Report(*args, **item)
             # Rankings output comes default in specific report,
             # so if we're specifying rankings as the report_type that means
             # we're using this output for something else... something else that
             # needs it in ready-to-write-the-compiled-json-to-a-file format.
             if item['report_type'] == 'rankings':
-                print '"%s__%d": ' % ( item['slug'], year - yearback ) 
+                print '"%s__%d": ' % ( item['slug'], year - ago ) 
                 print report.get_crime_item(),
                 print ","
             else:
