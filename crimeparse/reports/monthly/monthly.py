@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Config file for running a monthly report.
+# Config file for running a weekly report.
 # Usage:
-# $ cd crime/crimeparse; python -m reports.monthly.monthly
+# $ cd crime/crimeparse; python -m reports.weekly.weekly
 from report import Report
 from optparse import OptionParser
 from datetime import date
@@ -15,13 +15,26 @@ report_items = [
         { 'slug': 'property', 'name': 'Property',  'date_type': 'month', 'location': '', 'crime': 'property', 'grep': False },
         { 'slug': 'dv', 'name': 'Domestic Violence',  'date_type': 'month', 'location': '', 'crime': 'dv', 'grep': True },
         { 'slug': 'robbery', 'name': 'Robbery',  'date_type': 'month', 'location': '', 'crime': 'robbery', 'grep': True },
-        { 'slug': 'burgle', 'name': 'Burglary',  'date_type': 'month', 'location': '', 'crime': 'burg', 'grep': True },
-        { 'slug': 'burgle_residence', 'name': 'Burglary: Residential',  'date_type': 'month', 'location': '', 'crime': 'burglary-residence', 'grep': True },
-        { 'slug': 'burgle_business', 'name': 'Burglary: Business',  'date_type': 'month', 'location': '', 'crime': 'burglary-business', 'grep': True },
-        { 'slug': 'burgle_forced', 'name': 'Burglary: Forced',  'date_type': 'month', 'location': '', 'crime': 'by-force', 'grep': True },
-        { 'slug': 'burgle_unforced', 'name': 'Burglary: Unforced',  'date_type': 'month', 'location': '', 'crime': 'no-force', 'grep': True },
         { 'slug': 'theft_car', 'name': 'Car Theft',  'date_type': 'month', 'location': '', 'crime': 'theft-of-motor-vehicle', 'grep': False },
-        { 'slug': 'theft_bike', 'name': 'Bike Theft',  'date_type': 'month', 'location': '', 'crime': 'theft-bicycle', 'grep': False }
+        { 'slug': 'theft_bike', 'name': 'Bike Theft',  'date_type': 'month', 'location': '', 'crime': 'theft-bicycle', 'grep': False },
+        { 'slug': 'burglary-forced', 'name': 'Burglary: Forced',  'date_type': 'weekly', 'location': '', 'crime': 'by-force', 'grep': True },
+        { 'slug': 'burglary-unforced', 'name': 'Burglary: Unforced',  'date_type': 'weekly', 'location': '', 'crime': 'no-force', 'grep': True },
+        { 'slug': 'burglary-business-forced', 'name': 'Burglary: Business: Forced',  'date_type': 'weekly', 'location': '', 'crime': 'burglary-business-by-force', 'grep': True},
+        { 'slug': 'burglary-business-unforced', 'name': 'Burglary: Business: Unforced',  'date_type': 'weekly', 'location': '', 'crime': 'burglary-business-no-force', 'grep': True},
+        { 'slug': 'burglary-business', 'name': 'Burglary: Business',  'date_type': 'weekly', 'location': '', 'crime': 'burglary-business', 'grep': True},
+        { 'slug': 'burglary-residence-forced', 'name': 'Burglary: Residence: Forced',  'date_type': 'weekly', 'location': '', 'crime': 'burglary-residence-by-force', 'grep': True},
+        { 'slug': 'burglary-residence-unforced', 'name': 'Burglary: Residence: Unforced',  'date_type': 'weekly', 'location': '', 'crime': 'burglary-residence-no-force', 'grep': True},
+        { 'slug': 'burglary-residence', 'name': 'Burglary: Residence',  'date_type': 'weekly', 'location': '', 'crime': 'burglary-residence', 'grep': True},
+        { 'slug': 'drug-alcohol', 'name': 'Drug and Alcohol',  'date_type': 'weekly', 'location': '', 'crime': 'drug-alcohol', 'grep': False},
+        { 'slug': 'drug-poss', 'name': 'Drug: Paraphernalia Possesion',  'date_type': 'weekly', 'location': '', 'crime': 'drug-poss', 'grep': True},
+        { 'slug': 'drug-synth', 'name': 'Drug: synth',  'date_type': 'weekly', 'location': '', 'crime': 'drug-synth', 'grep': True},
+        { 'slug': 'drug-opium', 'name': 'Drug: opium',  'date_type': 'weekly', 'location': '', 'crime': 'drug-opium', 'grep': True},
+        { 'slug': 'drug-marijuana', 'name': 'Drug: Marijuana',  'date_type': 'weekly', 'location': '', 'crime': 'drug-mari', 'grep': True},
+        { 'slug': 'drug-heroin', 'name': 'Drug: heroin',  'date_type': 'weekly', 'location': '', 'crime': 'drug-heroin', 'grep': True},
+        { 'slug': 'drug-cocaine', 'name': 'Drug: cocaine',  'date_type': 'weekly', 'location': '', 'crime': 'drug-cocaine', 'grep': True},
+        { 'slug': 'drug-pcs', 'name': 'Drug: pcs / other',  'date_type': 'weekly', 'location': '', 'crime': 'drug-pcs', 'grep': True},
+        { 'slug': 'drug-meth', 'name': 'Drug: Meth',  'date_type': 'weekly', 'location': '', 'crime': 'drug-meth', 'grep': True},
+        { 'slug': 'drug-hallu', 'name': 'Drug: Hallucinogen',  'date_type': 'weekly', 'location': '', 'crime': 'drug-hallu', 'grep': True},
 ]
 
 if __name__ == '__main__':
