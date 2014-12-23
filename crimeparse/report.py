@@ -186,8 +186,6 @@ class Report:
         except:
             pass
         # *** other types of reports
-        #if self.options.verbose == True:
-        #    print self.report_type
         if self.report_type == 'rankings':
             result = parse.get_rankings()
         elif self.report_type == 'specific':

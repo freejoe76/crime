@@ -1,0 +1,13 @@
+[{
+"violent": { "percapita": { "rank": "22", "location": "capitol-hill", "count": "0.48" }, "raw": { "rank": "8", "location": "capitol-hill", "count": "7" } },
+"dv": { "percapita": { "rank": "20", "location": "capitol-hill", "count": "0.34" }, "raw": { "rank": "8", "location": "capitol-hill", "count": "5" } },
+"property": { "percapita": { "rank": "16", "location": "capitol-hill", "count": "3.6" }, "raw": { "rank": "5", "location": "capitol-hill", "count": "53" } },
+"robbery": { "percapita": { "rank": "22", "location": "capitol-hill", "count": "0.14" }, "raw": { "rank": "14", "location": "capitol-hill", "count": "2" } },
+"burgle": { "percapita": { "rank": "42", "location": "capitol-hill", "count": "0.48" }, "raw": { "rank": "12", "location": "capitol-hill", "count": "7" } },
+"burgle_residence": { "percapita": { "rank": "31", "location": "capitol-hill", "count": "0.41" }, "raw": { "rank": "10", "location": "capitol-hill", "count": "6" } },
+"burgle_business": { "percapita": { "rank": "40", "location": "capitol-hill", "count": "0.07" }, "raw": { "rank": "37", "location": "capitol-hill", "count": "1" } },
+"burgle_forced": { "percapita": { "rank": "66", "location": "capitol-hill", "count": "0.07" }, "raw": { "rank": "61", "location": "capitol-hill", "count": "1" } },
+"burgle_unforced": { "percapita": { "rank": "14", "location": "capitol-hill", "count": "0.41" }, "raw": { "rank": "2", "location": "capitol-hill", "count": "6" } },
+"theft_car": { "percapita": { "rank": "52", "location": "capitol-hill", "count": "0.27" }, "raw": { "rank": "23", "location": "capitol-hill", "count": "4" } },
+"theft_bicycle": { "percapita": { "rank": "7", "location": "capitol-hill", "count": "0.34" }, "raw": { "rank": "1", "location": "capitol-hill", "count": "5" } }
+}]
