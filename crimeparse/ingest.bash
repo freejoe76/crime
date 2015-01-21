@@ -17,7 +17,7 @@
 ### * Note: Should look at the diffs and see at what age the data stops changing. From there,
 ### can build a more refined archiving (and, thus, querying) strategy.
 
-declare -a HOODS=('capitol-hill' 'north-capitol-hill' 'civic-center')
+declare -a HOODS=('capitol-hill' 'north-capitol-hill' 'civic-center', 'lincoln-park', 'cheesman-park', 'congress-park')
 
 TEST=0
 NODOWNLOAD=0
@@ -125,7 +125,7 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
     #for NUM in {0..23}; do
     for NUM in {0..59}; do
         YEARMONTH=`date +'%Y-%m' --date="$NUM months ago"`
-        for MONTH in 24 48 60; do
+        for MONTH in 24 36 48 60; do
             if [[ $NUM -lt $MONTH ]]; then
                 ./matchline.py $YEARMONTH current.csv >> last$MONTH"months.csv"
                 echo $YEARMONTH >> last$MONTH"months.txt"
