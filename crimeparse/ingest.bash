@@ -107,12 +107,15 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
         # January 2014.
         # First NUM loop: NUM = 0, TEMPNUM = 1, MONTHNUM { 0 } months ago = 0, grep 2014-01 current.csv >> last0months
         # Second NUM loop: NUM = 1, TEMPNUM = 2, MONTHNUM { 0 1 } months ago = 0 1, grep 2014-01 + 2013-12 current.csv >> last0 + 1monthsago
+        # Third NUM loop: NUM = 2, TEMPNUM = 3, MONTHNUM { 0 1 2 } months ago = 0 1, grep 2014-01 + 2013-12 current.csv >> last0 + 1monthsago
         for MONTHNUM in {1..12}; do
             TEMPNUM=$(($NUM + 1))
             if [ $MONTHNUM -gt $TEMPNUM ]; then
+                print $MONTHNUM
                 ./matchline.py `date +'%Y-%m' --date="$NUM months ago"` current.csv >> "last"$MONTHNUM"months.csv"
             fi
         done
+        print '======'
         ./matchline.py `date +'%Y-%m' --date="$NUM months ago"` current.csv >> $NUM"monthsago.csv"
     done
 
