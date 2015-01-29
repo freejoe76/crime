@@ -1,24 +1,23 @@
-Crime
-=====
+# Crime
 A parser and logger for the City of Denver's crime CSV. Currently outputs to terminal. No database required.
 
-To get started with the first download and a view on a variety of reports:
-    $ ./ingest.bash
-    $ ./report.bash --location capitol-hill
+![CrimeParse Tests](https://api.travis-ci.org/freejoe76/crime.png)
 
-Taxonomy
-========
+To get started with the first download and a view on a variety of reports:
+`    $ cd crimeparse
+    $ ./ingest.bash
+    $ ./report.bash --location capitol-hill`
+
+# Taxonomy
 There are three levels of crimes: 
 
 1. Genre (violent / property / other)
 2. Category (i.e. Drug & Alcohol)
 3. Type (i.e. Drug: Cocaine Possession)
 
-Usage
-=====
+# Usage
 Three major views exist:
-Specifc
--------
+## Specific
 This publishes frequency and last-occurence info about a particular type of crime in a particular neighborhood (optional).
 ### Example usage
     # Publish information about drug and alcohol crimes in the whole city:
@@ -28,8 +27,7 @@ This publishes frequency and last-occurence info about a particular type of crim
     # Publish information about homicides in Capitol Hill
     $ ./parse.py --action specific --crime murder --location capitol-hill
 
-Recent
-------
+## Recent
 Publish a list of recent crimes of a particular type and/or category, or genre. Can filter crimes by location and date.
 ### Example usage
     # Publish a list of drug and alcohol crimes in Capitol Hill
@@ -37,28 +35,8 @@ Publish a list of recent crimes of a particular type and/or category, or genre. 
     # Publish a CSV of all violent crimes in Capitol Hill
     $ ./parse.py --action recent --crime violent --location capitol-hill --output csv
 
-Rankings
---------
+## Rankings
 Publish per-capita and raw-number rankings for a crime type and/or category, or genre. Can filter by date.
 ### Example usage
     # Compare neighborhood violent crime rate in January:
-    $ ./parse.py --action rankings --crime violent '2013-01-01' '2013-02-01'
-
-Dependencies
-============
-* CSVkit http://csvkit.readthedocs.org/en/latest/
-
-## Flask http://flask.pocoo.org/
-    $ pip install flask
-
-### Flask Extensions:
-    # Flask-FlatPages 0.5 http://pythonhosted.org/Flask-FlatPages/
-    $ pip install Flask-FlatPages
-    # Flask-Testing 0.4 http://pythonhosted.org/Flask-Testing/
-    $ pip install Flask-Testing
-
-## MongoDB http://api.mongodb.org/python/current/
-    $ sudo apt-get install build-essential python-dev
-    $ pip install pymongo
-    $ sudo apt-get install mongodb-server
-
+    $ ./parse.py --action rankings --crime violent --filename current '2013-01-01' '2013-02-01'
