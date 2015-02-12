@@ -6,14 +6,18 @@ from datetime import date
 from optparse import OptionParser
 
 report_items = [ 
-        { 'slug': 'assault', 'name': 'Assault', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'assault', 'grep': True },
+        { 'slug': 'assault', 'name': 'All Assaults', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'assault', 'grep': True },
+        { 'slug': 'aggravated-assault', 'name': 'Serious Assault', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'aggravated-assault' },
+        { 'slug': 'assault-simple', 'name': 'Minor Assault', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'assault-simple' },
         { 'slug': 'homicide', 'name': 'Homicide', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'murder', 'grep': False  },
         { 'slug': 'rape', 'name': 'Rape', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'sex-aslt-rape', 'grep': False  },
         { 'slug': 'violent', 'name': 'Violent', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'violent', 'grep': False  },
         { 'slug': 'property', 'name': 'Property', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'property', 'grep': False },
         { 'slug': 'dv', 'name': 'Domestic Violence',  'date_type': '', 'location': '', 'crime': 'dv', 'grep': True },
+        { 'slug': 'sexual-assault', 'name': 'Sexual Assault',  'date_type': '', 'location': '', 'crime': 'sexual-assault', 'grep': False },
         { 'slug': 'robbery', 'name': 'Robbery',  'date_type': '', 'location': '', 'crime': 'robbery', 'grep': True },
         { 'slug': 'burglary', 'name': 'Burglary',  'date_type': '', 'location': '', 'crime': 'burg', 'grep': True },
+        { 'slug': 'burg', 'name': 'Burglary',  'date_type': '', 'location': '', 'crime': 'burg', 'grep': True },
         { 'slug': 'drug', 'name': 'Drug', 'report_type': '', '': '', 'location': '', 'crime': 'drug', 'grep': True},
         { 'slug': 'drug-sell', 'name': 'Drug: Selling', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug*sell', 'grep': True},
         { 'slug': 'drug-possess', 'name': 'Drug: Possession', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug*possess', 'grep': True},
