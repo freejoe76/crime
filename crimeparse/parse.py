@@ -461,7 +461,7 @@ class Parse:
         record = dict(zip(dicts.keys, self.crime_file[row]))
         return record
 
-    def get_monthly(self, limit=24):
+    def get_monthly(self, limit=12):
         """ Loop through the monthly crime files, return frequency.
             Can filter by crime, location or both. 
             Have some gymnastics to do here in jumping across files.
@@ -490,6 +490,7 @@ class Parse:
                 filename = 'location_%s-%s' % (self.location, yearmonth)
             else:
                 filename = 'last%imonths' % i
+            print i,
             crime_file = self.open_csv('_input/%s' % filename, self.diff)
             i += 1
             crimes['counts'][yearmonth] = { 'count': 0, 'date': self.check_date('%s-01' % yearmonth) }
