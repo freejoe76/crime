@@ -490,7 +490,6 @@ class Parse:
                 filename = 'location_%s-%s' % (self.location, yearmonth)
             else:
                 filename = 'last%imonths' % i
-            print i,
             crime_file = self.open_csv('_input/%s' % filename, self.diff)
             i += 1
             crimes['counts'][yearmonth] = { 'count': 0, 'date': self.check_date('%s-01' % yearmonth) }
@@ -763,9 +762,9 @@ if __name__ == '__main__':
     if action == 'monthly':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
-        # The limit defaults to 0, but 48 is our go-to number for this report.
+        # The limit defaults to 0, but 12 is our go-to number for this report.
         if limit == 0:
-            limit = 48
+            limit = 12
         crimes = parse.get_monthly(limit)
         if verbose:
             print crimes
