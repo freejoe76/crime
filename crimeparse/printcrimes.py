@@ -4,6 +4,7 @@
 from optparse import OptionParser
 from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
+from datetime import datetime
 import operator
 
 # We only want this module once.
@@ -264,6 +265,15 @@ class PrintCrimes:
 
             for crime in crimes_to_print:
                 i = i + 1
+
+                # Include the weekday
+                d = crime['FIRST_OCCURRENCE_DATE'].split(' ')[0]
+                weekday = datetime.strptime(d, '%Y-%M-%d').weekday()
+
+                # Include the early-morning / morning / afternoon / evening
+                t = crime['FIRST_OCCURRENCE_DATE'].split(' ')[1]
+                #time = datetime.strptime(t, 'something that equates to 01:19:59')
+
                 if output == 'csv':
                     outputs += '%s, %s, %s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_ID'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['NEIGHBORHOOD_ID'], crime['GEO_LAT'], crime['GEO_LON'])
                     continue
@@ -276,12 +286,14 @@ class PrintCrimes:
     "category": "%s",
     "type": "%s",
     "date_reported": "%s",
+    "date_occurred": "%s",
     "address": "%s",
     "latitude": "%s",
     "longitude": "%s",
-    "neighborhood": "%s"
+    "neighborhood": "%s",
+    "weekday": "%s"
     %s
-""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], crime['NEIGHBORHOOD_ID'], close_bracket)
+""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['FIRST_OCCURRENCE_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], crime['NEIGHBORHOOD_ID'], weekday, close_bracket)
                     continue
 
                 if 'diff' not in crime:

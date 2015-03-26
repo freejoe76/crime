@@ -82,7 +82,7 @@ class Parse:
         self.set_timespan(None)
 
         self.date_field = 'REPORTED_DATE'
-        #FIRST_OCCURRENCE_DATE
+        #self.date_field = 'FIRST_OCCURRENCE_DATE'
         self.crime_file = self.open_csv(crime_filename, diff)
         self.crime_filename = crime_filename
         self.options = options
@@ -191,8 +191,9 @@ class Parse:
         return self.timespan
 
     def abstract_keys(self, key):
-        # Take a key, return its CSV equivalent.
-        # Used so we can use this for more than just Denver crime csv.
+        """ Take a key, return its CSV equivalent.
+            Used so we can use this for more than just Denver crime csv.
+            """
         pass
 
     def get_location_list(self, location_type):
