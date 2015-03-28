@@ -270,11 +270,12 @@ class PrintCrimes:
                 d = crime['FIRST_OCCURRENCE_DATE'].split(' ')[0]
                 weekday = datetime.strptime(d, '%Y-%M-%d').weekday()
 
-                # Include the early-morning / morning / afternoon / evening
+                # Include the hour
                 t = crime['FIRST_OCCURRENCE_DATE'].split(' ')[1]
-                #time = datetime.strptime(t, 'something that equates to 01:19:59')
+                hour = t.split(':')[0]
 
                 if output == 'csv':
+                    outputs += '%s, %s, %s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_ID'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['NEIGHBORHOOD_ID'], crime['GEO_LAT'], crime['GEO_LON'])
                     outputs += '%s, %s, %s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_ID'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['NEIGHBORHOOD_ID'], crime['GEO_LAT'], crime['GEO_LON'])
                     continue
                 elif output == 'json':
@@ -291,9 +292,10 @@ class PrintCrimes:
     "latitude": "%s",
     "longitude": "%s",
     "neighborhood": "%s",
-    "weekday": "%s"
+    "weekday": "%s",
+    "hour": "%s"
     %s
-""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['FIRST_OCCURRENCE_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], crime['NEIGHBORHOOD_ID'], weekday, close_bracket)
+""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['FIRST_OCCURRENCE_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], crime['NEIGHBORHOOD_ID'], weekday, hour, close_bracket)
                     continue
 
                 if 'diff' not in crime:
