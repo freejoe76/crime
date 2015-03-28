@@ -223,9 +223,7 @@ class PrintCrimes:
 
         if action == 'search':
             outputs = '%i crimes at %s.\n' % ( crimes['count'], self.address )
-            i = 0
-            for crime in crimes['crimes']:
-                i = i + 1
+            for i, crime in enumerate(crimes['crimes']):
                 #print crime
                 #if 'diff' not in crime:
                 #    crime['diff'] = ''
@@ -234,7 +232,7 @@ class PrintCrimes:
         Occurred: %s - %s
         Reported: %s
         %s
-        %s,%s\n\n''' % (i, crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
+        %s,%s\n\n''' % (i+1, crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
 
         elif action == 'specific':
             if output == 'json':
@@ -243,12 +241,12 @@ class PrintCrimes:
                 #print rank_add
                 json = """{\n    "items": [
     {
-    "count": "%i",
-    "crime": "%s",
-    "last_crime": "%s"
-    }]\n}""" % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
+    "count": "%(count)i",
+    "crime": "%(crime)s",
+    "last_crime": "%(last_crime)s"
+    }]\n}""" % crimes
             else:
-                outputs = '%i %s crimes, last one %s ago' % ( crimes['count'], crimes['crime'], crimes['last_crime'] )
+                outputs = '%(count)i %(crime)s crimes, last one %(last_crime)s ago' % crimes
 
         elif action == 'recent':
             # Lists, probably recents, with full crime record dicts
@@ -315,47 +313,39 @@ class PrintCrimes:
         # in the terminal is different.
         elif action == 'rankings' and loc is None:
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
-            i = 0
             
-            for item in crimes['crimes']['percapita']:
-                i = i + 1
+            for i, item in enumerate(crimes['crimes']['percapita']):
                 location = self.clean_location(item[0])
-                outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
+                outputs += "%i. %s, %s\n" % (i+1, location, item[1]['count'])
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
-            i = 0
-            for item in crimes['crimes']['neighborhood']:
-                i = i + 1
+            for i, item in enumerate(crimes['crimes']['neighborhood']):
                 location = self.clean_location(item[0])
-                outputs += "%i. %s, %s\n" % (i, location, item[1]['count'])
+                outputs += "%i. %s, %s\n" % (i+1, location, item[1]['count'])
 
         elif action == 'rankings':
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
-            i = 0
             
-            for item in reversed(sorted(crimes['crimes']['percapita'].iteritems(), key=operator.itemgetter(1))):
-                i = i + 1
+            for i, item in enumerate(reversed(sorted(crimes['crimes']['percapita'].iteritems(), key=operator.itemgetter(1)))):
                 if loc == item[0]:
                     location = '***%s***' % self.clean_location(item[0])
                 else:
                     location = self.clean_location(item[0])
 
                 if output == 'json' and loc == item[0]:
-                        json = '{ "percapita": [ "rank": "%i", "location": "%s", "count": "%s" ], ' % ( i, loc, crimes['crimes']['percapita'][item[0]]['count'] )
-                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['percapita'][item[0]]['count'])
+                        json = '{ "percapita": [ "rank": "%i", "location": "%s", "count": "%s" ], ' % (i+1, loc, crimes['crimes']['percapita'][item[0]]['count'])
+                outputs += "%i. %s, %s\n" % (i+1, location, crimes['crimes']['percapita'][item[0]]['count'])
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
-            i = 0
-            for item in reversed(sorted(crimes['crimes']['neighborhood'].iteritems(), key=operator.itemgetter(1))):
-                i += 1
+            for i, item in enumerate(reversed(sorted(crimes['crimes']['neighborhood'].iteritems(), key=operator.itemgetter(1)))):
                 if loc == item[0]:
                     location = '***%s***' % self.clean_location(item[0])
                 else:
                     location = self.clean_location(item[0])
 
                 if output == 'json' and loc == item[0]:
-                    json += '\n "raw": [ "rank": "%i", "location": "%s", "count": "%s" ] }' % ( i, loc, crimes['crimes']['neighborhood'][item[0]]['count'] )
-                outputs += "%i. %s, %s\n" % (i, location, crimes['crimes']['neighborhood'][item[0]]['count'])
+                    json += '\n "raw": [ "rank": "%i", "location": "%s", "count": "%s" ] }' % (i+1, loc, crimes['crimes']['neighborhood'][item[0]]['count'])
+                outputs += "%i. %s, %s\n" % (i+1, location, crimes['crimes']['neighborhood'][item[0]]['count'])
 
         elif action == 'monthly':
             # We use the textbarchart here.
