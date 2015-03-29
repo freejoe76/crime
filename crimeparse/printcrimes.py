@@ -264,9 +264,12 @@ class PrintCrimes:
             for crime in crimes_to_print:
                 i = i + 1
 
-                # Include the weekday
+                # Include the weekday, and a boolean flag for whether it's a weekend day
                 d = crime['FIRST_OCCURRENCE_DATE'].split(' ')[0]
                 weekday = datetime.strptime(d, '%Y-%M-%d').weekday()
+                weekend = 0
+                if weekday == 0 || weekday == 6:
+                    weekend = 1
 
                 # Include the hour
                 t = crime['FIRST_OCCURRENCE_DATE'].split(' ')[1]
@@ -290,10 +293,11 @@ class PrintCrimes:
     "latitude": "%s",
     "longitude": "%s",
     "neighborhood": "%s",
-    "weekday": "%s",
-    "hour": "%s"
+    "weekday": "%d",
+    "weekend": "%d",
+    "hour": "%d"
     %s
-""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['FIRST_OCCURRENCE_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], crime['NEIGHBORHOOD_ID'], weekday, hour, close_bracket)
+""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['FIRST_OCCURRENCE_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], crime['NEIGHBORHOOD_ID'], weekday, weekend, hour, close_bracket)
                     continue
 
                 if 'diff' not in crime:
