@@ -268,7 +268,7 @@ class PrintCrimes:
                 d = crime['FIRST_OCCURRENCE_DATE'].split(' ')[0]
                 weekday = datetime.strptime(d, '%Y-%M-%d').weekday()
                 weekend = 0
-                if weekday == 0 || weekday == 6:
+                if weekday == 0 or weekday == 6:
                     weekend = 1
 
                 # Include the hour
