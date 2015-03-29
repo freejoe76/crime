@@ -295,7 +295,7 @@ class PrintCrimes:
     "neighborhood": "%s",
     "weekday": "%d",
     "weekend": "%d",
-    "hour": "%d"
+    "hour": "%s"
     %s
 """ % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['FIRST_OCCURRENCE_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], crime['NEIGHBORHOOD_ID'], weekday, weekend, hour, close_bracket)
                     continue
