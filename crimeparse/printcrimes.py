@@ -314,12 +314,12 @@ class PrintCrimes:
         elif action == 'rankings' and loc is None:
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
             
-            for i, item in enumerate(crimes['crimes']['percapita']):
+            for i, item in enumerate(reversed(crimes['crimes']['percapita'])):
                 location = self.clean_location(item[0])
                 outputs += "%i. %s, %s\n" % (i+1, location, item[1]['count'])
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
-            for i, item in enumerate(crimes['crimes']['neighborhood']):
+            for i, item in enumerate(reversed(crimes['crimes']['neighborhood'])):
                 location = self.clean_location(item[0])
                 outputs += "%i. %s, %s\n" % (i+1, location, item[1]['count'])
 
@@ -344,7 +344,7 @@ class PrintCrimes:
                     location = self.clean_location(item[0])
 
                 if output == 'json' and loc == item[0]:
-                    json += '\n "raw": [ "rank": "%i", "location": "%s", "count": "%s" ] }' % (i+1, loc, crimes['crimes']['neighborhood'][item[0]]['count'])
+                    json += '\n "raw": [ "rank": "%i", "location": "%s", "count": "%s" ] }' % (i, loc, crimes['crimes']['neighborhood'][item[0]]['count'])
                 outputs += "%i. %s, %s\n" % (i+1, location, crimes['crimes']['neighborhood'][item[0]]['count'])
 
         elif action == 'monthly':
