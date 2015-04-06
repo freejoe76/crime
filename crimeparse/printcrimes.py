@@ -307,9 +307,6 @@ class PrintCrimes:
         Reported: %s
         %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
 
-            #if output == 'json':
-            #    outputs += ']\n}'
-
 
         # No-location rankings get passed a list of neighborhoods and counts
         # rather than a dict, which means the approach for publishing these
@@ -376,7 +373,7 @@ class PrintCrimes:
             outputs = ''
 
 
-        # Close up loose strings
+        # Tie up loose strings
         if action == 'recent' and output == 'json':
             json += ']\n}'
 
