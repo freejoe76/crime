@@ -179,7 +179,6 @@ class PrintCrimes:
         outputs = []
         for item in crimes['crimes']['percapita']:
             outputs += ["    '%s': {'full': '%s'}," % (item[0], self.clean_location(item[0]))]
-            #outputs += ["    '%s': '%s'," % (item[0], item[0])]
         return outputs
 
     #def print_crimes(self, crimes, limit, action, loc=None, output=None, *args):
