@@ -223,7 +223,6 @@ class PrintCrimes:
         if action == 'search':
             outputs = '%i crimes at %s.\n' % ( crimes['count'], self.address )
             for i, crime in enumerate(crimes['crimes']):
-                #print crime
                 #if 'diff' not in crime:
                 #    crime['diff'] = ''
 
