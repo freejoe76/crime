@@ -13,7 +13,8 @@ try:
 except:
     pass
 
-divider='\n=============================================================\n'
+divider = '\n=============================================================\n'
+
 
 class PrintCrimes:
     """ class PrintCrimes prints the results of a Parse.
@@ -28,7 +29,8 @@ class PrintCrimes:
         >>> print report.split(",")[0]
         43 violent crimes
         """
-    def __init__(self, crimes, action, limit = 15, diff = False, options = None):
+
+    def __init__(self, crimes, action, limit=15, diff=False, options=None):
         # Initialize the major vars
         self.set_crime(None)
         self.set_grep(None)
@@ -129,7 +131,7 @@ class PrintCrimes:
             >>> print verbose
             False
             """
-        self.verbose = value 
+        self.verbose = value
         return self.verbose
 
     def set_diff(self, value):
@@ -142,7 +144,7 @@ class PrintCrimes:
             >>> print diff
             False
             """
-        self.diff = value 
+        self.diff = value
         return self.diff
 
     def clean_location(self, location):
@@ -165,7 +167,7 @@ class PrintCrimes:
     def print_neighborhoods(self, crimes):
         """ Output a dict of neighborhoods to fancy-names.
             Takes a dict of crimes, as returned by get_rankings.
-            
+
             This is a helper function to build some of the more
             manual dicts in dicts.py
             >>> parse = Parse('_input/test')
@@ -181,10 +183,10 @@ class PrintCrimes:
             outputs += ["    '%s': {'full': '%s'}," % (item[0], self.clean_location(item[0]))]
         return outputs
 
-    #def print_crimes(self, crimes, limit, action, loc=None, output=None, *args):
+    # def print_crimes(self, crimes, limit, action, loc=None, output=None, *args):
     def print_crimes(self, loc=None, output=None, *args):
         """ How do we want to display the crimes?
-            This method takes a dict of crimes (the type of dict depends on 
+            This method takes a dict of crimes (the type of dict depends on
             which method we chose to piece this together).
             It also takes an action, which corresponds to which type of dict
             we have.
@@ -221,9 +223,9 @@ class PrintCrimes:
             return False
 
         if action == 'search':
-            outputs = '%i crimes at %s.\n' % ( crimes['count'], self.address )
+            outputs = '%i crimes at %s.\n' % (crimes['count'], self.address)
             for i, crime in enumerate(crimes['crimes']):
-                #if 'diff' not in crime:
+                # if 'diff' not in crime:
                 #    crime['diff'] = ''
 
                 outputs += '''%i. %s: %s
@@ -234,9 +236,9 @@ class PrintCrimes:
 
         elif action == 'specific':
             if output == 'json':
-                #print self.crime
-                #rank_add = self.get_rankings(self.crime, self.grep, loc)
-                #print rank_add
+                # print self.crime
+                # rank_add = self.get_rankings(self.crime, self.grep, loc)
+                # print rank_add
                 json = """{\n    "items": [
     {
     "count": "%(count)i",
@@ -306,13 +308,12 @@ class PrintCrimes:
         Reported: %s
         %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
 
-
         # No-location rankings get passed a list of neighborhoods and counts
         # rather than a dict, which means the approach for publishing these
         # in the terminal is different.
         elif action == 'rankings' and loc is None:
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
-            
+
             for i, item in enumerate(reversed(crimes['crimes']['percapita'])):
                 location = self.clean_location(item[0])
                 outputs += "%i. %s, %s\n" % (i+1, location, item[1]['count'])
@@ -324,7 +325,7 @@ class PrintCrimes:
 
         elif action == 'rankings':
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
-            
+
             for i, item in enumerate(reversed(sorted(crimes['crimes']['percapita'].iteritems(), key=operator.itemgetter(1)))):
                 if loc == item[0]:
                     location = '***%s***' % self.clean_location(item[0])
@@ -347,10 +348,14 @@ class PrintCrimes:
                 outputs += "%i. %s, %s\n" % (i+1, location, crimes['crimes']['neighborhood'][item[0]]['count'])
 
         elif action == 'monthly':
+
             # We use the textbarchart here.
             self.set_options({'unicode': True})
-            options = { 'type': None, 'font': 'monospace', 'unicode': self.options['unicode'] }
-            crime_dict = list(reversed(sorted(crimes['counts'].iteritems(), key=operator.itemgetter(0))))
+            options = {
+                        'type': None, 'font': 'monospace',
+                        'unicode': self.options['unicode']}
+            crime_dict = list(reversed(sorted(crimes['counts'].iteritems(),
+                              key=operator.itemgetter(0))))
             if output == 'json':
                 length = len(crime_dict)
                 comma = ','
@@ -365,12 +370,10 @@ class PrintCrimes:
             else:
                 bar = TextBarchart(options, crime_dict, crimes['max'])
                 outputs = bar.build_chart()
-           
 
         else:
             print "We did not have any crimes to handle"
             outputs = ''
-
 
         # Tie up loose strings
         if action == 'recent' and output == 'json':
@@ -381,10 +384,10 @@ class PrintCrimes:
         return json
 
 
-
 if __name__ == '__main__':
     parser = OptionParser()
-    parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=True)
+    parser.add_option("-v", "--verbose", dest="verbose",
+                      action="store_true", default=True)
     (options, args) = parser.parse_args()
     import doctest
     doctest.testmod(verbose=options.verbose)

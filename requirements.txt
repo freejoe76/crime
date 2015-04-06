@@ -3,6 +3,7 @@ git+git://github.com/freejoe76/fancytext#egg=FancyText
 #Shapely
 #six
 #Fiona
+pep8==1.6.2
 PyYAML==3.11
 coverage==3.7.1
 py==1.4.20
