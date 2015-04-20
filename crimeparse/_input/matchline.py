@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # If the seventh field in the input contains the date string that we're looking for, 
-# output the entire line to stdout
-import os
+# output the entire line to stdout.
+# The seventh field is FIRST_OCCURRENCE_DATE
 from optparse import OptionParser
 
 if __name__ == '__main__':
