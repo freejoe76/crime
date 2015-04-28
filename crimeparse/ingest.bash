@@ -17,7 +17,7 @@
 ### * Note: Should look at the diffs and see at what age the data stops changing. From there,
 ### can build a more refined archiving (and, thus, querying) strategy.
 
-declare -a HOODS=('country-club' 'speer' 'cherry-creek' 'city-park' 'city-park-west' 'five-points' 'cole' 'north-park-hill' 'park-hill' 'platt-park' 'capitol-hill' 'north-capitol-hill' 'civic-center' 'lincoln-park' 'cheesman-park' 'congress-park')
+declare -a HOODS=('highland' 'country-club' 'speer' 'cherry-creek' 'city-park' 'city-park-west' 'five-points' 'cole' 'north-park-hill' 'south-park-hill' 'platt-park' 'capitol-hill' 'north-capitol-hill' 'civic-center' 'lincoln-park' 'cheesman-park' 'congress-park')
 
 TEST=0
 NODOWNLOAD=0
