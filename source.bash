@@ -2,6 +2,7 @@
 # Aliases of commonly used commands. A shortcut list.
 # Usage:
 # $ source source.sh
+workon CRIME
 alias gpa='git pull -a'
 
 alias setlocal='export DENVERCRIME_SETTINGS=/home/joe/crime/site/public/settings.cfg; echo "Python Environment: $DENVERCRIME_SETTINGS"'
