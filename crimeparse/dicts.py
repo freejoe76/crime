@@ -49,7 +49,7 @@ neighborhood_lookup = {
     'dia': {'full': 'DIA', 'adjacent-neighbors': {}, 'nearest_neighbors': {'gateway-green-valley-ranch'}, 'location': {}, 'population': 0},
     'east-colfax': {'full': 'East Colfax', 'adjacent-neighbors': {}, 'nearest_neighbors': {'stapleton', 'lowry-field', 'montclair', 'south-park-hill'}, 'location': {}, 'population': 0},
     'elyria-swansea': {'full': 'Elyria Swansea', 'adjacent-neighbors': {}, 'nearest_neighbors': {'globeville', 'northeast-park-hill', 'clayton', 'cole', 'five-points'}, 'location': {}, 'population': 0},
-    'five-points': {'full': 'Five Points', 'adjacent-neighbors': {}, 'nearest_neighbors': {'highland', 'globeville', 'elyria-swansea', 'cole', 'whittier', 'civic-park-west', 'north-capitol-hill', 'cbd', 'union-station'}, 'location': {}, 'population': 0},
+    'five-points': {'full': 'Five Points', 'adjacent-neighbors': {}, 'nearest_neighbors': {'highland', 'globeville', 'elyria-swansea', 'cole', 'whittier', 'city-park-west', 'north-capitol-hill', 'cbd', 'union-station'}, 'location': {}, 'population': 0},
     'fort-logan': {'full': 'Fort Logan', 'adjacent-neighbors': {}, 'nearest_neighbors': {'bear-valley', 'harvey-park-south', 'marston'}, 'location': {}, 'population': 0},
     'gateway-green-valley-ranch': {'full': 'Gateway Green Valley Ranch', 'adjacent-neighbors': {}, 'nearest_neighbors': {'montbello', 'dia'}, 'location': {}, 'population': 0},
     'globeville': {'full': 'Globeville', 'adjacent-neighbors': {}, 'nearest_neighbors': {'elyria-swansea', 'five-points', 'highland', 'sunnyside', 'chaffee-park'}, 'location': {}, 'population': 0},
