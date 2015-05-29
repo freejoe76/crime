@@ -21,8 +21,8 @@ report_items = [
         { 'slug': 'burglary', 'name': 'Burglary',  'date_type': '', 'location': '', 'crime': 'burglary', 'grep': False },
         { 'slug': 'robbery-bank', 'name': 'Burglary',  'date_type': '', 'location': '', 'crime': 'robbery-bank', 'grep': False },
         { 'slug': 'drug', 'name': 'Drug', 'report_type': '', '': '', 'location': '', 'crime': 'drug', 'grep': True},
-        { 'slug': 'drug-sell', 'name': 'Drug: Selling', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug*sell', 'grep': True},
-        { 'slug': 'drug-possess', 'name': 'Drug: Possession', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug*possess', 'grep': True},
+        #{ 'slug': 'drug-sell', 'name': 'Drug: Selling', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug*sell', 'grep': True},
+        #{ 'slug': 'drug-possess', 'name': 'Drug: Possession', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug*possess', 'grep': True},
         { 'slug': 'auto-theft', 'name': 'Car Thefts', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'auto-theft', 'grep': False  },
         { 'slug': 'theft-bicycle', 'name': 'Bike Thefts', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'theft-bicycle', 'grep': False  },
         { 'slug': 'by-force', 'name': 'Burglary: Forced',  'date_type': '', 'location': '', 'crime': 'by-force', 'grep': True },
@@ -33,13 +33,13 @@ report_items = [
         { 'slug': 'burglary-residence-by-force', 'name': 'Burglary: Residence: Forced', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'burglary-residence-by-force', 'grep': True},
         { 'slug': 'burglary-residence-no-force', 'name': 'Burglary: Residence: Unforced', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'burglary-residence-no-force', 'grep': True},
         { 'slug': 'burglary-residence', 'name': 'Burglary: Residence', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'burglary-residence', 'grep': True},
-        { 'slug': 'drug-alcohol', 'name': 'Drug and Alcohol', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug-alcohol', 'grep': False},
+        ##{ 'slug': 'drug-alcohol', 'name': 'Drug and Alcohol', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug-alcohol', 'grep': False},
         # { 'slug': 'drug-poss', 'name': 'Drug: Paraphernalia Possesion', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug-poss', 'grep': True},
         # { 'slug': 'drug-synth', 'name': 'Drug: synth', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug-synth', 'grep': True},
         # { 'slug': 'drug-opium', 'name': 'Drug: opium', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug-opium', 'grep': True},
         # { 'slug': 'drug-marijuana', 'name': 'Drug: Marijuana', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug-mari', 'grep': True},
         # { 'slug': 'drug-heroin', 'name': 'Drug: heroin', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug-heroin', 'grep': True},
-        { 'slug': 'drug-cocaine', 'name': 'Drug: cocaine', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug-cocaine', 'grep': True},
+        ##{ 'slug': 'drug-cocaine', 'name': 'Drug: cocaine', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug-cocaine', 'grep': True},
         # { 'slug': 'drug-pcs', 'name': 'Drug: pcs / other', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug-pcs', 'grep': True},
         # { 'slug': 'drug-meth', 'name': 'Drug: Meth', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug-meth', 'grep': True},
         # { 'slug': 'drug-hallu', 'name': 'Drug: Hallucinogen', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug-hallu', 'grep': True},
@@ -62,7 +62,8 @@ if __name__ == '__main__':
         item['location'] = options.location
         item['report_type'] = options.report_type
         year = date.today().year
-        for yearback in [0, 1, 2, 3]:
+        #for yearback in [0, 1, 2, 3]:
+        for yearback in [0, 1]:
             item['numago'] = yearback
             report = Report(*args, **item)
             # Rankings output comes default in specific report,
