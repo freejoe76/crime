@@ -6,6 +6,7 @@ from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
 from datetime import datetime
 import operator
+import string
 
 # We only want this module once.
 try:
@@ -263,6 +264,11 @@ class PrintCrimes:
 
             for crime in crimes_to_print:
                 i = i + 1
+
+                # Sometimes these "\" get fat-fingered into the address field,
+                # which is a problem bc it's an escape character that breaks 
+                # python's json library.
+                crime['INCIDENT_ADDRESS'] = string.replace(crime['INCIDENT_ADDRESS'], '\\', '')
 
                 # Include the weekday, and a boolean flag for whether it's a weekend day
                 d = crime['FIRST_OCCURRENCE_DATE'].split(' ')[0]

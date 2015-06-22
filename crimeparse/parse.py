@@ -499,6 +499,9 @@ class Parse:
                 crimes['counts'][yearmonth]['count'] = len(crime_file)
                 continue
 
+            if not crime_file:
+                continue
+
             for row in crime_file:
                 record = dict(zip(dicts.keys, row))
                 if self.does_crime_match(record, crime_type):
@@ -670,7 +673,10 @@ class Parse:
             >>> print result[0][0]
             INCIDENT_ID
             """
-        crime_file_raw = csv.reader(open('%s.csv' % fn, 'rb'), delimiter = ',')
+        try:
+            crime_file_raw = csv.reader(open('%s.csv' % fn, 'rb'), delimiter = ',')
+        except:
+            return False
 
         # Sort the csv by the reported date (the 7th field, 6 on a 0-index,
         # because that's the only one that's guaranteed to be in the record.)
