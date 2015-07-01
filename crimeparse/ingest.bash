@@ -10,7 +10,7 @@
 #     2. Save that copy of those differences to latestdiff.csv
 #     3. Update the current-year csv with the results, currentyear.csv
 #
-# It takes two arguments:
+# It takes three arguments:
 #     -t / --test, which skips all file-writing operations except initial download
 #     -n / --nodl, which skips the csv download, and assumes an existing new.csv file is in place.
 #     -l / --location, for building archives on a particular location.
@@ -86,7 +86,8 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
 	mv current.csv old.csv
 	mv new.csv current.csv
     echo $DATE > ../latest
-
+else
+    echo "NO NEW CRIMES."
 fi
 
 # We run these operations if there are differences, or if we've set NODOWNLOAD.
