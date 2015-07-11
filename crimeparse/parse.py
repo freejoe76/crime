@@ -605,7 +605,12 @@ class Parse:
                             percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
 
         for item in percapita['neighborhood'].items():
-            item[1]['count'] = round( float(item[1]['count'])/float(dicts.populations[item[0]]) * 1000, 2)
+            try:
+                item[1]['count'] = round( float(item[1]['count'])/float(dicts.populations[item[0]]) * 1000, 2)
+            except:
+                #print "ERROR: ",
+                #print item
+                pass
 
         sorted_rankings = {
             'neighborhood': sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1), reverse=True),

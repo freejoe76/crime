@@ -142,13 +142,17 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
         # We don't need month-by-month neighborhood CSVs for more than the two previous years.
         #if [[ $NUM -gt 23 ]]; then continue; fi
 
-        #for HOOD in ${HOODS[@]}; do
-            # We include the comma in the grep to distinguish btw, say,
-            # north-capitol-hill and capitol-hill. It's a CSV, the comma's the delimiter.
-        #    ./matchline.py $YEARMONTH current.csv | grep ,$HOOD > location_$HOOD-$YEARMONTH.csv
-        #done
         echo $NUM 
         date
+    done
+
+    for NUM in {0..23}; do
+        YEARMONTH=`date +'%Y-%m' --date="$NUM months ago"`
+        for HOOD in ${HOODS[@]}; do
+            # We include the comma in the grep to distinguish btw, say,
+            # north-capitol-hill and capitol-hill. It's a CSV, the comma's the delimiter.
+            ./matchline.py $YEARMONTH current.csv | grep ,$HOOD > location_$HOOD-$YEARMONTH.csv
+        done
     done
 
     for HOOD in ${HOODS[@]}; do
