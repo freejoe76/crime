@@ -22,6 +22,7 @@ declare -a HOODS=('highland' 'country-club' 'speer' 'cherry-creek' 'city-park' '
 
 TEST=0
 NODOWNLOAD=0
+URL='http://data.denvergov.org/download/gis/crime/csv/crime.csv'
 while [ "$1" != "" ]; do
 	case $1 in
 		-n | --nodl ) 
@@ -32,6 +33,9 @@ while [ "$1" != "" ]; do
 			;;
 		-l | --location ) 
 			LOCATION=$1
+			;;
+		-u | --url ) 
+			URL=$1
 			;;
 	esac
 	shift
@@ -61,7 +65,7 @@ if [[ $NODOWNLOAD -eq 0 ]]; then
     FILESIZE=0
     while [ $FILESIZE -lt 40000 ]; do
         echo "Filesize: $FILESIZE"
-        wget -O new.csv http://data.denvergov.org/download/gis/crime/csv/crime.csv; 
+        wget -O new.csv $URL; 
         FILESIZE=$(du -b "new.csv" | cut -f 1)
     done
 fi
