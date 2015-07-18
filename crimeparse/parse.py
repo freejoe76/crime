@@ -841,7 +841,7 @@ if __name__ == '__main__':
     elif action == 'by-address':
         crimes = parse.get_addresses()
     else:
-        print "You must specify one of these actions: monthly, rankings, recent, specific, search."
+        print "You must specify one of these actions: monthly, rankings, recent, specific, search, by-address."
     if not silent:
         from printcrimes import *
         printjob = PrintCrimes(crimes, action, parse.crime_filename, limit)

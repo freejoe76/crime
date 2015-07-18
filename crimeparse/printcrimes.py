@@ -7,6 +7,7 @@ from textbarchart import TextBarchart
 from datetime import datetime
 import operator
 import string
+import json
 
 # We only want this module once.
 try:
@@ -215,15 +216,17 @@ class PrintCrimes:
             #>>> print report
             #1.  aggravated-assault: aggravated-assault-dv
             """
-        outputs, json = '', None
+        outputs, json_str = '', None
         crimes = self.crimes
         limit = self.limit
         action = self.action
 
-        if 'crimes' not in crimes and action != 'monthly' and action != 'specific':
+        if 'crimes' not in crimes and action not in ['monthly', 'specific', 'by-address']:
             return False
 
-        if action == 'search':
+        if action == 'by-address':
+            json_str = json.dumps(crimes)
+        elif action == 'search':
             outputs = '%i crimes at %s.\n' % (crimes['count'], self.address)
             for i, crime in enumerate(crimes['crimes']):
                 # if 'diff' not in crime:
@@ -240,7 +243,7 @@ class PrintCrimes:
                 # print self.crime
                 # rank_add = self.get_rankings(self.crime, self.grep, loc)
                 # print rank_add
-                json = """{\n    "items": [
+                json_str = """{\n    "items": [
     {
     "count": "%(count)i",
     "crime": "%(crime)s",
@@ -255,7 +258,7 @@ class PrintCrimes:
             if output == 'csv':
                 outputs += 'id, category, type, date_occurred, date_reported, address, neighborhood, lat, lon\n'
             elif output == 'json':
-                json = '{\n    "items": ['
+                json_str = '{\n    "items": ['
 
             crimes_to_print = crimes['crimes'][:limit]
             if limit == 0:
@@ -290,7 +293,7 @@ class PrintCrimes:
                     if i == length:
                         close_bracket = '}'
 
-                    json += """  {
+                    json_str += """  {
     "category": "%s",
     "type": "%s",
     "date_reported": "%s",
@@ -339,7 +342,7 @@ class PrintCrimes:
                     location = self.clean_location(item[0])
 
                 if output == 'json' and loc == item[0]:
-                        json = '{ "percapita": [ "rank": "%i", "location": "%s", "count": "%s" ], ' % (i+1, loc, crimes['crimes']['percapita'][item[0]]['count'])
+                        json_str = '{ "percapita": [ "rank": "%i", "location": "%s", "count": "%s" ], ' % (i+1, loc, crimes['crimes']['percapita'][item[0]]['count'])
                 outputs += "%i. %s, %s\n" % (i+1, location, crimes['crimes']['percapita'][item[0]]['count'])
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
@@ -350,7 +353,7 @@ class PrintCrimes:
                     location = self.clean_location(item[0])
 
                 if output == 'json' and loc == item[0]:
-                    json += '\n "raw": [ "rank": "%i", "location": "%s", "count": "%s" ] }' % (i, loc, crimes['crimes']['neighborhood'][item[0]]['count'])
+                    json_str += '\n "raw": [ "rank": "%i", "location": "%s", "count": "%s" ] }' % (i, loc, crimes['crimes']['neighborhood'][item[0]]['count'])
                 outputs += "%i. %s, %s\n" % (i+1, location, crimes['crimes']['neighborhood'][item[0]]['count'])
 
         elif action == 'monthly':
@@ -366,13 +369,13 @@ class PrintCrimes:
                 length = len(crime_dict)
                 comma = ','
                 i = 0
-                json = '['
+                json_str = '['
                 for item in crime_dict:
                     i += 1
                     if i == length:
                         comma = ''
-                    json += '\n {"count": "%s", "date": "%s"}%s' % (item[1]['count'], item[0], comma)
-                json += ']'
+                    json_str += '\n {"count": "%s", "date": "%s"}%s' % (item[1]['count'], item[0], comma)
+                json_str += ']'
             else:
                 bar = TextBarchart(options, crime_dict, crimes['max'])
                 outputs = bar.build_chart()
@@ -383,11 +386,11 @@ class PrintCrimes:
 
         # Tie up loose strings
         if action == 'recent' and output == 'json':
-            json += ']\n}'
+            json_str += ']\n}'
 
-        if json is None:
+        if json_str is None:
             return outputs
-        return json
+        return json_str
 
 
 if __name__ == '__main__':
