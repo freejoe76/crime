@@ -267,12 +267,13 @@ class Parse:
         return 'street'
 
     def get_addresses(self):
-        """ Get a dict of streets with unique addresses for a neighborhood, or the city.
+        """ Get a dict of streets with unique addresses, and crimes for each
+            of the addresses, for a neighborhood or the city.
             >>> parse = Parse('_input/test')
             >>> location = parse.set_location('west-highland')
             >>> result = parse.get_addresses()
-            >>> print result[0]
-            
+            >>> print result['37TH AVE']['5030 W 37TH AVE'][0]['INCIDENT_ADDRESS']
+            5030 W 37TH AVE
             """
         addresses = {}
         for row in self.crime_file:
@@ -291,13 +292,11 @@ class Parse:
             # Street name will be the last two words in the address.
             street = ' '.join(record['INCIDENT_ADDRESS'].split(' ')[-2:])
             if street not in addresses:
-                addresses[street] = []
-            addresses[street].append(record['INCIDENT_ADDRESS'])
+                addresses[street] = OrderedDict()
+            if record['INCIDENT_ADDRESS'] not in addresses[street]:
+                addresses[street][record['INCIDENT_ADDRESS']] = []
+            addresses[street][record['INCIDENT_ADDRESS']].append(record)
             
-        # Get the uniques, sort the addresses
-        for key, value in addresses.iteritems():
-            addresses[key] = sorted(list(set(value)))
-
         return addresses
 
     def search_addresses(self):
