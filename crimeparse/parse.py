@@ -267,7 +267,7 @@ class Parse:
         return 'street'
 
     def get_addresses(self):
-        """ Get a list of unique addresses for a neighborhood, or the city.
+        """ Get a dict of streets with unique addresses for a neighborhood, or the city.
             >>> parse = Parse('_input/test')
             >>> location = parse.set_location('west-highland')
             >>> result = parse.get_addresses()
@@ -294,6 +294,8 @@ class Parse:
                 addresses[street] = []
             addresses[street].append(record['INCIDENT_ADDRESS'])
             
+        for key, value in addresses:
+            addresses[key] = set(value)
         print addresses
 
     def search_addresses(self):
