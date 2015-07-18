@@ -285,7 +285,7 @@ class Parse:
 
             # Clean up street name
             if 'BLK' in record['INCIDENT_ADDRESS']:
-                record['INCIDENT_ADDRESS'] = string.replace('BLK', 'BLOCK', record['INCIDENT_ADDRESS'])
+                record['INCIDENT_ADDRESS'] = string.replace(record['INCIDENT_ADDRESS'], 'BLK', 'BLOCK')
 
             # We build a dict based on street name.
             # Street name will be the last two words in the address.
@@ -294,9 +294,11 @@ class Parse:
                 addresses[street] = []
             addresses[street].append(record['INCIDENT_ADDRESS'])
             
-        for key, value in addresses:
-            addresses[key] = set(value)
-        print addresses
+        # Get the uniques, sort the addresses
+        for key, value in addresses.iteritems():
+            addresses[key] = sorted(list(set(value)))
+
+        return addresses
 
     def search_addresses(self):
         """ Searches crimes for those that happened at a particular address.
@@ -326,7 +328,7 @@ class Parse:
                 if record['INCIDENT_ID'][0] == '<':
                     continue
 
-            if type_of == 'street' or type_of == 'block':
+            if type_of in ['street', 'block']:
                 if self.grep == True:
                     if '*' in self.address:
                         search_re = self.address.replace('*', '.*')
