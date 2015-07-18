@@ -266,6 +266,36 @@ class Parse:
             return 'block'
         return 'street'
 
+    def get_addresses(self):
+        """ Get a list of unique addresses for a neighborhood, or the city.
+            >>> parse = Parse('_input/test')
+            >>> location = parse.set_location('west-highland')
+            >>> result = parse.get_addresses()
+            >>> print result[0]
+            
+            """
+        addresses = {}
+        for row in self.crime_file:
+            if len(row) < 5:
+                continue
+            record = dict(zip(dicts.keys, row))
+            if self.location != None:
+                if record['NEIGHBORHOOD_ID'] != self.location:
+                    continue
+
+            # Clean up street name
+            if 'BLK' in record['INCIDENT_ADDRESS']:
+                record['INCIDENT_ADDRESS'] = string.replace('BLK', 'BLOCK', record['INCIDENT_ADDRESS'])
+
+            # We build a dict based on street name.
+            # Street name will be the last two words in the address.
+            street = ' '.join(record['INCIDENT_ADDRESS'].split(' ')[-2:])
+            if street not in addresses:
+                addresses[street] = []
+            addresses[street].append(record['INCIDENT_ADDRESS'])
+            
+        print addresses
+
     def search_addresses(self):
         """ Searches crimes for those that happened at a particular address.
             The goal here is to allow us to loop through a list of addresses w/
@@ -805,6 +835,8 @@ if __name__ == '__main__':
         crimes = parse.get_specific_crime(*args)
     elif action == 'search':
         crimes = parse.search_addresses()
+    elif action == 'by-address':
+        crimes = parse.get_addresses()
     else:
         print "You must specify one of these actions: monthly, rankings, recent, specific, search."
     if not silent:
