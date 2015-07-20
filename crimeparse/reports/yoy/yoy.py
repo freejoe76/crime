@@ -21,7 +21,7 @@ report_items = [
         { 'slug': 'burglary', 'name': 'Burglary',  'date_type': '', 'location': '', 'crime': 'burglary', 'grep': False },
         { 'slug': 'robbery-bank', 'name': 'Bank Robbery',  'date_type': '', 'location': '', 'crime': 'robbery-bank', 'grep': False },
         { 'slug': 'robbery-car-jacking', 'name': 'Carjacking',  'date_type': '', 'location': '', 'crime': 'robbery-car-jacking', 'grep': False },
-        { 'slug': 'prostitution', 'name': 'Prostitution',  'date_type': '', 'location': '', 'crime': 'prostitution', 'grep': False },
+        { 'slug': 'prostitution', 'name': 'Prostitution',  'date_type': '', 'location': '', 'crime': 'prostitution', 'grep': True },
         { 'slug': 'public-fighting', 'name': 'Public Fighting',  'date_type': '', 'location': '', 'crime': 'public-fighting', 'grep': False },
         #{ 'slug': 'public-fighting', 'name': 'Public Fighting',  'date_type': '', 'location': '', 'crime': 'public-fighting', 'grep': False },
         { 'slug': 'drug', 'name': 'Drug', 'report_type': '', '': '', 'location': '', 'crime': 'drug', 'grep': True},
