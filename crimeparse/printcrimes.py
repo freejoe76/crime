@@ -285,7 +285,7 @@ class PrintCrimes:
                 hour = t.split(':')[0]
 
                 if output == 'csv':
-                    outputs += '%s, %s, %s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_ID'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['NEIGHBORHOOD_ID'], crime['GEO_LAT'], crime['GEO_LON'])
+                    outputs += '%s,%s,%s,%s,%s,%s,%s,%s,%s\n' % (crime['INCIDENT_ID'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['NEIGHBORHOOD_ID'], crime['GEO_LAT'], crime['GEO_LON'])
                     # outputs += '%s, %s, %s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_ID'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['NEIGHBORHOOD_ID'], crime['GEO_LAT'], crime['GEO_LON'])
                     continue
                 elif output == 'json':
