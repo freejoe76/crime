@@ -70,7 +70,7 @@ class Report:
             >>> print report_type
             specific
             """
-        approved_values = ['specific', 'rankings', 'recent', 'monthly', 'search']
+        approved_values = ['specific', 'rankings', 'recent', 'monthly', 'search', 'by-address']
         if value not in approved_values:
             raise ValueError('Report Type provided is not available.\nAvailable report types: %s' % approved_values)
         self.report_type = value
@@ -115,7 +115,7 @@ class Report:
             """
         approved_values = [True, False]
         if value not in approved_values:
-            raise ValueError('')
+            raise ValueError('Grep must be a boolean')
         self.grep = value
         #if value == 'True':
         #    self.grep = True
@@ -185,7 +185,7 @@ class Report:
             parse.set_timespan(self.timespan)
         except:
             pass
-        # *** other types of reports
+        # *** eventually we might want to allow for other types of reports
         if self.report_type == 'rankings':
             result = parse.get_rankings()
         elif self.report_type == 'specific':
