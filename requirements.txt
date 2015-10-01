@@ -1,7 +1,6 @@
 git+git://github.com/freejoe76/fancytext#egg=FancyText
 #python-coveralls
 #Shapely
-#six
 #Fiona
 pep8==1.6.2
 PyYAML==3.11

@@ -1,4 +1,4 @@
-# Crime
+# Denver Crime
 A parser and logger for the City of Denver's crime CSV. Currently outputs to terminal. No database required.
 
 ![CrimeParse Tests](https://api.travis-ci.org/freejoe76/crime.png)
@@ -40,3 +40,6 @@ Publish per-capita and raw-number rankings for a crime type and/or category, or 
 ### Example usage
     # Compare neighborhood violent crime rate in January:
     $ ./parse.py --action rankings --crime violent --filename current '2013-01-01' '2013-02-01'
+
+## Search
+Look up all crimes at a particular address.
