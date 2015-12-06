@@ -71,6 +71,7 @@ class Parse:
         >>> print result['count'], result['crime']
         3 violent
         """
+
     def __init__(self, crime_filename, diff = False, options = None):
         # Initialize the major vars
         self.set_crime(None)
@@ -436,7 +437,7 @@ class Parse:
                     continue
 
             # Location, then crime queries
-            # This logic tree is more like four shrubs next to each other:
+            # This logic tree is a lot like four shrubs next to each other:
             # 1. No crime and no location parameters,
             # 2. Maybe crime, but yes location,
             # 3. No crime, yes location

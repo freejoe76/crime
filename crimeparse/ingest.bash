@@ -18,7 +18,7 @@
 ### can build a more refined archiving (and, thus, querying) strategy.
 
 #declare -a HOODS=('wellshire' 'bear-valley' 'hilltop' 'cbd' 'university-hills' 'overland' 'speer' 'union-station' 'washington-virginia-vale' 'marston' 'north-capitol-hill' 'city-park' 'sloan-lake' 'five-points' 'sun-valley' 'westwood' 'cole' 'windsor' 'platt-park' 'jefferson-park' 'harvey-park' 'skyland' 'sunnyside' 'southmoor-park' 'ruby-hill' 'capitol-hill' 'barnum-west' 'harvey-park-south' 'dia' 'athmar-park' 'elyria-swansea' 'lowry-field' 'goldsmith' 'stapleton' 'chaffee-park' 'berkeley' 'washington-park' 'indian-creek' 'barnum' 'montbello' 'civic-center' 'hampden-south' 'globeville' 'city-park-west' 'clayton' 'northeast-park-hill' 'country-club' 'hale' 'mar-lee' 'lincoln-park' 'gateway-green-valley-ranch' 'west-highland' 'congress-park' 'regis' 'east-colfax' 'whittier' 'belcaro' 'hampden' 'fort-logan' 'college-view-south-platte' 'montclair' 'baker' 'kennedy' 'cherry-creek' 'cheesman-park' 'west-colfax' 'south-park-hill' 'cory-merrill' 'rosedale' 'valverde' 'university-park' 'auraria' 'north-park-hill' 'highland' 'villa-park' 'university' 'virginia-village' 'washington-park-west')
-declare -a HOODS=('highland' 'country-club' 'speer' 'cherry-creek' 'city-park' 'city-park-west' 'five-points' 'cole' 'north-park-hill' 'south-park-hill' 'platt-park' 'capitol-hill' 'north-capitol-hill' 'civic-center' 'lincoln-park' 'cheesman-park' 'congress-park' 'cbd' 'five-points' 'whittier' 'union-station' 'auraria' 'baker' 'hale' 'clayton' 'sloan-lake' 'washington-park' 'east-colfax' 'harvey-park-south' 'washington-park-west' 'montclair' 'athmar-park' 'university-park' 'indian-creek' 'barnum' 'montbello')
+declare -a HOODS=('highland' 'country-club' 'speer' 'cherry-creek' 'city-park' 'city-park-west' 'five-points' 'cole' 'north-park-hill' 'south-park-hill' 'platt-park' 'capitol-hill' 'north-capitol-hill' 'civic-center' 'lincoln-park' 'cheesman-park' 'congress-park' 'cbd' 'five-points' 'whittier' 'union-station' 'auraria' 'baker' 'hale' 'clayton' 'sloan-lake' 'washington-park' 'east-colfax' 'harvey-park-south' 'washington-park-west' 'montclair' 'athmar-park' 'university-park' 'indian-creek' 'barnum' 'montbello' 'hilltop' 'washington-virginia-vale' 'ruby-hill')
 
 TEST=0
 NODOWNLOAD=0
@@ -96,10 +96,10 @@ fi
 
 # We run these operations if there are differences, or if we've set NODOWNLOAD.
 if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
-	./matchline.py "$THIS_YEAR-" current.csv > currentyear.csv
-	./matchline.py "$THIS_YEAR-" current.csv > $THIS_YEAR.csv
-	./matchline.py "$LAST_YEAR-" current.csv > lastyear.csv
-	./matchline.py "$THIS_YEAR-$THIS_MONTH" current.csv > currentmonth.csv
+	./matchline.py "$THIS_YEAR-" current.csv > currentyear.csv &
+	./matchline.py "$THIS_YEAR-" current.csv > $THIS_YEAR.csv &
+	./matchline.py "$LAST_YEAR-" current.csv > lastyear.csv &
+	./matchline.py "$THIS_YEAR-$THIS_MONTH" current.csv > currentmonth.csv &
 
     # Build a csv of the crimes for the last 0-12 months
     for MONTHNUM in {1..12}; do > $MONTHNUM"monthsago.csv"; done
@@ -160,7 +160,7 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
     done
 
     for HOOD in ${HOODS[@]}; do
-        ./matchline.py $THIS_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$THIS_YEAR.csv
+        ./matchline.py $THIS_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$THIS_YEAR.csv &
         ./matchline.py $LAST_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$LAST_YEAR.csv
         ./matchline.py $LAST_LAST_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$LAST_LAST_YEAR.csv
     done
