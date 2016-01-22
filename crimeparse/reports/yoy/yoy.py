@@ -59,6 +59,8 @@ if __name__ == '__main__':
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False)
     (options, args) = parser.parse_args()
 
+    today = date.today()
+
     for item in report_items:
         if options.verbose == True:
             print item['name']
@@ -75,7 +77,9 @@ if __name__ == '__main__':
             # so if we're specifying rankings as the report_type that means
             # we're using this output for something else... something else that
             # needs it in ready-to-write-the-compiled-json-to-a-file format.
-            if item['report_type'] == 'rankings':
+            if item['report_type'] in ['rankings', 'specific']:
+                if today.month == 1 and today.day < 21:
+                    yearback += 1
                 print '"%s__%d": ' % ( item['slug'], year - yearback ) 
                 print report.get_crime_item(),
                 print ","
