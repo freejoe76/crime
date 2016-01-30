@@ -68,7 +68,7 @@ if __name__ == '__main__':
         item['date_type'] = options.date_type
         item['location'] = options.location
         item['report_type'] = options.report_type
-        year = date.today().year
+        year = today.year
         #for yearback in [0, 1, 2, 3]:
         for yearback in [0, 1]:
             item['numago'] = yearback
