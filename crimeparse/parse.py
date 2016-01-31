@@ -75,6 +75,7 @@ class Parse:
         self.verbose = False
         self.diff = diff
         self.set_timespan(None)
+        self.location = None
 
         #self.date_field = 'REPORTED_DATE'
         self.date_field = 'FIRST_OCCURRENCE_DATE'
@@ -719,7 +720,7 @@ if __name__ == '__main__':
     parse.grep = options.grep
     limit = int(options.limit)
     parse.limit = limit
-    crime = options.crimt
+    crime = options.crime
     parse.crime = crime
     parse.location = location
     verbose = options.verbose

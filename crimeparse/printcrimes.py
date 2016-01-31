@@ -106,7 +106,10 @@ class PrintCrimes:
             """
         outputs, json_str = '', None
         crimes = self.crimes
-        limit = self.limit
+        try:
+            limit = self.limit
+        except:
+            limit = 0
         action = self.action
 
         if 'crimes' not in crimes and action not in ['monthly', 'specific', 'by-address']:
