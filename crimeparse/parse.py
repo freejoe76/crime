@@ -185,7 +185,7 @@ class Parse:
             return 'block'
         return 'street'
 
-    def get_addresses(self):
+    def get_addresses(self, *args):
         """ Get a dict of streets with unique addresses, and crimes for each
             of the addresses, for a neighborhood or the city.
             >>> parse = Parse('_input/test')
@@ -194,6 +194,10 @@ class Parse:
             >>> print result['37TH AVE']['5030 W 37TH AVE'][0]['INCIDENT_ADDRESS']
             5030 W 37TH AVE
             """
+        if not args or args[0] == []:
+            timespan = False
+        else:
+            timespan = self.set_timespan(args)
         addresses = {}
         for row in self.crime_file:
             if len(row) < 5:
@@ -201,6 +205,14 @@ class Parse:
             record = dict(zip(dicts.keys, row))
             if self.location != None:
                 if record['NEIGHBORHOOD_ID'] != self.location:
+                    continue
+
+            # Timespan queries
+            if self.timespan:
+                ts = self.check_datetime(record[self.date_field])
+                if ts == False:
+                    continue
+                if not self.timespan[0] <= ts.date() <= self.timespan[1]:
                     continue
 
             # Clean up street name
@@ -731,9 +743,9 @@ if __name__ == '__main__':
     if action == 'monthly':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
-        # The limit defaults to 0, but 12 is our go-to number for this report.
+        # The limit defaults to 0, but 23 is our go-to number for this report.
         if limit == 0:
-            limit = 12
+            limit = 23
         crimes = parse.get_monthly(limit)
         if verbose:
             print crimes
@@ -761,9 +773,9 @@ if __name__ == '__main__':
         # $ ./parse.py --verbose --action specific --crime meth --grep
         crimes = parse.get_specific_crime(*args)
     elif action == 'search':
-        crimes = parse.search_addresses()
+        crimes = parse.search_addresses(args)
     elif action == 'by-address':
-        crimes = parse.get_addresses()
+        crimes = parse.get_addresses(args)
     else:
         print "You must specify one of these actions: monthly, rankings, recent, specific, search, by-address."
     if not silent:
