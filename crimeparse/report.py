@@ -20,25 +20,23 @@ class Report:
         """
 
     def __init__(self, *args, **kwargs):
-        self.set_crime(None)
-        self.set_date_type(None)
-        self.set_location(None)
-        self.set_numago(None)
-        self.set_grep(False)
+        """ Set what we need to start a Report object.
+            """
+        self.grep = False
         self.set_report_type('rankings')
         for key, value in kwargs.iteritems():
             if key == 'date_type':
-                self.set_date_type(value)
+                self.date_type = value
             elif key == 'location' and value != '':
-                self.set_location(value)
+                self.location = value
             elif key == 'output':
-                self.set_output(value)
+                self.output = value
             elif key == 'crime':
-                self.set_crime(value)
+                self.crime = value
             elif key == 'grep':
-                self.set_grep(value)
+                self.grep = value
             elif key == 'numago':
-                self.set_numago(value)
+                self.numago = value
             elif key == 'report_type':
                 self.set_report_type(value)
 
@@ -76,73 +74,6 @@ class Report:
         self.report_type = value
         return self.report_type
 
-    def set_date_type(self, value):
-        """ Set the object's date_type var.
-            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
-            >>> date_type = report.set_date_type('year')
-            >>> print date_type
-            year
-            """
-        self.date_type = value
-        return self.date_type
-
-    def set_numago(self, value):
-        """ Set the object's numago var.
-            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
-            >>> numago = report.set_numago(1)
-            >>> print numago
-            1
-            """
-        self.numago = value
-        return self.numago
-
-    def set_crime(self, value):
-        """ Set the object's crime var.
-            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
-            >>> crime = report.set_crime('property')
-            >>> print crime
-            property
-            """
-        self.crime = value
-        return self.crime
-
-    def set_grep(self, value):
-        """ Set the object's grep var.
-            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
-            >>> grep = report.set_grep('True')
-            >>> print grep
-            True
-            """
-        approved_values = [True, False]
-        if value not in approved_values:
-            raise ValueError('Grep must be a boolean')
-        self.grep = value
-        #if value == 'True':
-        #    self.grep = True
-        #elif value == 'False':
-        #    self.grep = False
-        return self.grep
-
-    def set_location(self, value):
-        """ Set the object's location var.
-            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
-            >>> location = report.set_location('cbd')
-            >>> print location
-            cbd
-            """
-        self.location = value
-        return self.location
-
-    def set_output(self, value):
-        """ Set the object's output var.
-            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
-            >>> output = report.set_output('json')
-            >>> print output
-            json
-            """
-        self.output = value
-        return self.output
-
     def build_filename(self):
         """ Put together the pieces we need to get the filename we query.
             >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
@@ -151,14 +82,14 @@ class Report:
             1monthsago
             """
         if self.numago == None:
-            self.set_numago(0)
+            self.numago = 0
 
         if self.date_type == 'test':
             return 'test'
         elif self.date_type == 'month':
             # We would never query the current month, it's never complete.
             # That's why we offset all month-queries by one.
-            self.set_numago(self.numago + 1)
+            self.numago += 1
             return '%smonthsago' % self.numago
         elif self.date_type == 'year':
             return 'current'
@@ -173,10 +104,10 @@ class Report:
             29 None
             """
         parse = Parse('_input/%s' % self.build_filename())
-        parse.set_crime(self.crime)
-        parse.set_grep(self.grep)
+        parse.crime = self.crime
+        parse.grep = self.grep
         try:
-            parse.set_location(self.location)
+            parse.location = self.location
         except:
             pass
         try:

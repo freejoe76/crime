@@ -73,6 +73,7 @@ if __name__ == '__main__':
         for yearback in [0, 1]:
             item['numago'] = yearback
             report = Report(*args, **item)
+
             # Rankings output comes default in specific report,
             # so if we're specifying rankings as the report_type that means
             # we're using this output for something else... something else that
