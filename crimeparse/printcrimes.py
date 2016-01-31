@@ -21,10 +21,8 @@ divider = '\n=============================================================\n'
 class PrintCrimes:
     """ class PrintCrimes prints the results of a Parse.
         >>> parse = Parse('_input/test')
-        >>> parse.set_crime('violent')
-        'violent'
-        >>> parse.set_grep(False)
-        False
+        >>> parse.crime = 'violent'
+        >>> parse.grep = False
         >>> result = parse.get_specific_crime()
         >>> printcrimes = PrintCrimes(result, 'specific')
         >>> report = printcrimes.print_crimes()
@@ -34,125 +32,16 @@ class PrintCrimes:
 
     def __init__(self, crimes, action, limit=15, diff=False, options=None):
         # Initialize the major vars
-        self.set_crime(None)
-        self.set_grep(None)
-        self.set_location(None)
-        self.set_limit(None)
-        self.set_verbose(None)
-        self.set_diff(diff)
+        self.diff = diff
 
         self.crimes = crimes
         self.options = options
         self.action = action
 
-    def set_crime(self, value):
-        """ Set the object's crime var.
-            >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('violent')
-            >>> result = parse.get_recent_crimes()
-            >>> printcrimes = PrintCrimes(result, 'specific')
-            >>> crime = printcrimes.set_crime('love')
-            >>> print crime
-            love
-            """
-        self.crime = value
-        return self.crime
-
-    def set_options(self, value):
-        """ Set the object's options dict.
-            >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('violent')
-            >>> result = parse.get_recent_crimes()
-            >>> printcrimes = PrintCrimes(result, 'specific')
-            >>> options = printcrimes.set_options({'unicode': False})
-            >>> print options
-            {'unicode': False}
-            """
-        self.options = value
-        return self.options
-
-    def set_action(self, value):
-        """ Set the object's action var.
-            >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('violent')
-            >>> result = parse.get_recent_crimes()
-            >>> printcrimes = PrintCrimes(result, 'specific')
-            >>> action = printcrimes.set_action('specific')
-            >>> print action
-            specific
-            """
-        self.action = value
-        return self.action
-
-    def set_grep(self, value):
-        """ Set the object's grep var.
-            >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('violent')
-            >>> result = parse.get_recent_crimes()
-            >>> printcrimes = PrintCrimes(result, 'specific')
-            >>> grep = printcrimes.set_grep(False)
-            >>> print grep
-            False
-            """
-        self.grep = value
-        return self.grep
-
-    def set_location(self, value):
-        """ Set the object's location var.
-            >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('violent')
-            >>> result = parse.get_recent_crimes()
-            >>> printcrimes = PrintCrimes(result, 'specific')
-            >>> location = printcrimes.set_location('cbd')
-            >>> print location
-            cbd
-            """
-        self.location = value
-        return self.location
-
-    def set_limit(self, value):
-        """ Set the object's limit var.
-            >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('violent')
-            >>> result = parse.get_recent_crimes()
-            >>> printcrimes = PrintCrimes(result, 'specific')
-            >>> limit = printcrimes.set_limit(15)
-            >>> print limit
-            15
-            """
-        self.limit = value
-        return self.limit
-
-    def set_verbose(self, value):
-        """ Set the object's verbose var.
-            >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('violent')
-            >>> result = parse.get_recent_crimes()
-            >>> printcrimes = PrintCrimes(result, 'specific')
-            >>> verbose = printcrimes.set_verbose(False)
-            >>> print verbose
-            False
-            """
-        self.verbose = value
-        return self.verbose
-
-    def set_diff(self, value):
-        """ Set the object's diff var.
-            >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('violent')
-            >>> result = parse.get_recent_crimes()
-            >>> printcrimes = PrintCrimes(result, 'specific')
-            >>> diff = printcrimes.set_diff(False)
-            >>> print diff
-            False
-            """
-        self.diff = value
-        return self.diff
-
     def clean_location(self, location):
         """ Take the location string, replace the -'s, capitalize what we can.
             >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('violent')
+            >>> parse.crime = 'violent'
             >>> result = parse.get_recent_crimes()
             >>> printcrimes = PrintCrimes(result, 'specific')
             >>> printcrimes.clean_location('capitol-hill')
@@ -173,7 +62,7 @@ class PrintCrimes:
             This is a helper function to build some of the more
             manual dicts in dicts.py
             >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('violent')
+            >>> parse.crime = 'violent'
             >>> result = parse.get_rankings()
             >>> printcrimes = PrintCrimes(result, 'specific')
             >>> neighborhoods = printcrimes.print_neighborhoods(result)
@@ -197,8 +86,7 @@ class PrintCrimes:
             Right now we're publishing them to be read in terminal.
             What we're parsing affects the dicts we have.
             >>> parse = Parse('_input/test')
-            >>> parse.set_crime('violent')
-            'violent'
+            >>> parse.crime = 'violent'
             >>> result = parse.get_recent_crimes()
             >>> limit, action = 1, 'recent'
             >>> printcrimes = PrintCrimes(result, action, limit)
@@ -359,7 +247,7 @@ class PrintCrimes:
         elif action == 'monthly':
 
             # We use the textbarchart here.
-            self.set_options({'unicode': True})
+            self.options = {'unicode': True}
             options = {
                         'type': None, 'font': 'monospace',
                         'unicode': self.options['unicode']}
@@ -401,9 +289,9 @@ if __name__ == '__main__':
     import doctest
     doctest.testmod(verbose=options.verbose)
     parse = Parse('_input/test')
-    parse.set_crime('violent')
-    parse.set_grep(False)
-    parse.set_location('capitol-hill')
+    parse.crime = 'violent'
+    parse.grep = False
+    parse.location = 'capitol-hill'
     result = parse.get_specific_crime()
     printcrimes = PrintCrimes(result, 'specific')
     '''

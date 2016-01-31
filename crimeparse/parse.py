@@ -61,12 +61,9 @@ class Parse:
         There are two means of outputting the results Parse generates: The 
         command-line, and a python dict. 
         >>> parse = Parse('_input/test')
-        >>> parse.set_crime('violent')
-        'violent'
-        >>> parse.set_grep(False)
-        False
-        >>> parse.set_location('capitol-hill')
-        'capitol-hill'
+        >>> parse.crime = 'violent'
+        >>> parse.grep = False
+        >>> parse.location = 'capitol-hill'
         >>> result = parse.get_specific_crime()
         >>> print result['count'], result['crime']
         3 violent
@@ -74,12 +71,9 @@ class Parse:
 
     def __init__(self, crime_filename, diff = False, options = None):
         # Initialize the major vars
-        self.set_crime(None)
-        self.set_grep(False)
-        self.set_location(None)
-        self.set_limit(None)
-        self.set_verbose(False)
-        self.set_diff(diff)
+        self.grep = False
+        self.verbose = False
+        self.diff = diff
         self.set_timespan(None)
 
         #self.date_field = 'REPORTED_DATE'
@@ -87,85 +81,6 @@ class Parse:
         self.crime_file = self.open_csv(crime_filename, diff)
         self.crime_filename = crime_filename
         self.options = options
-
-    def set_crime(self, value):
-        """ Set the object's crime var.
-            >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('love')
-            >>> print crime
-            love
-            """
-        self.crime = value
-        return self.crime
-
-    def set_grep(self, value):
-        """ Set the object's grep var.
-            >>> parse = Parse('_input/test')
-            >>> grep = parse.set_grep(False)
-            >>> print grep
-            False
-            """
-        approved_values = [True, False]
-        if value not in approved_values:
-            raise ValueError('')
-        self.grep = value
-        return self.grep
-
-    def set_location(self, value):
-        """ Set the object's location var.
-            >>> parse = Parse('_input/test')
-            >>> location = parse.set_location('cbd')
-            >>> print location
-            cbd
-            """
-        self.location = value
-        return self.location
-
-    def set_address(self, value):
-        """ Set the object's address var.
-            >>> parse = Parse('_input/test')
-            >>> address = parse.set_location('835 E 18TH AVE')
-            >>> print address
-            835 E 18TH AVE
-            """
-        self.address = value
-        return self.address
-
-    def set_limit(self, value):
-        """ Set the object's limit var.
-            >>> parse = Parse('_input/test')
-            >>> limit = parse.set_limit(15)
-            >>> print limit
-            15
-            """
-        self.limit = value
-        return self.limit
-
-    def set_verbose(self, value):
-        """ Set the object's verbose var.
-            >>> parse = Parse('_input/test')
-            >>> verbose = parse.set_verbose(False)
-            >>> print verbose
-            False
-            """
-        approved_values = [True, False]
-        if value not in approved_values:
-            raise ValueError('')
-        self.verbose = value 
-        return self.verbose
-
-    def set_diff(self, value):
-        """ Set the object's diff var.
-            >>> parse = Parse('_input/test')
-            >>> diff = parse.set_diff(False)
-            >>> print diff
-            False
-            """
-        approved_values = [True, False]
-        if value not in approved_values:
-            raise ValueError('')
-        self.diff = value 
-        return self.diff
 
     def set_timespan(self, value):
         """ Set the object's timespan, a tuple of dates.
@@ -229,7 +144,9 @@ class Parse:
             Possible crime_type's include: parent_category, .....
             Used in get_recent and get_monthly.
             >>> parse = Parse('_input/test')
-            >>> crime, grep, crime_type = parse.set_crime('property'), parse.set_grep(False), 'parent_category'
+            >>> crime_type = 'parent_category'
+            >>> parse.crime = 'property'
+            >>> parse.grep = False
             >>> record = parse.get_row()
             >>> print parse.does_crime_match(record, crime_type)
             True
@@ -257,7 +174,7 @@ class Parse:
         """ Distinguish between the types of addresses we may be searching:
             Street address, a street block, or a lat/lon.
             >>> parse = Parse('_input/test')
-            >>> address = parse.set_address('39.23,24.00')
+            >>> parse.address = '39.23,24.00'
             >>> print parse.get_address_type()
             lat/lon
             """
@@ -271,7 +188,7 @@ class Parse:
         """ Get a dict of streets with unique addresses, and crimes for each
             of the addresses, for a neighborhood or the city.
             >>> parse = Parse('_input/test')
-            >>> location = parse.set_location('west-highland')
+            >>> parse.location = 'west-highland'
             >>> result = parse.get_addresses()
             >>> print result['37TH AVE']['5030 W 37TH AVE'][0]['INCIDENT_ADDRESS']
             5030 W 37TH AVE
@@ -312,7 +229,8 @@ class Parse:
             $ ./parse.py --verbose --action search --address "338 W 12TH AVE"
 
             >>> parse = Parse('_input/test')
-            >>> address, grep = parse.set_address('1999 N BROADWAY ST'), parse.set_grep(False)
+            >>> parse.address = '1999 N BROADWAY ST'
+            >>> parse.grep = False
             >>> result = parse.search_addresses()
             >>> print result['count'], result['crimes'][0]['OFFENSE_CATEGORY_ID']
             1 public-disorder
@@ -361,7 +279,8 @@ class Parse:
             Args, if they exist, should be two valid date or datetimes, and be
             the timespan's range.
             >>> parse = Parse('_input/test')
-            >>> crime, grep = parse.set_crime('violent'), parse.set_grep(False)
+            >>> parse.crime = 'violent'
+            >>> parse.grep = False
             >>> result = parse.get_specific_crime()
             >>> print result['count'], result['crime']
             43 violent
@@ -387,8 +306,7 @@ class Parse:
             Timespan is passed as an argument (start, finish)
             !!! the input files aren't listed in order of occurence, so we need to sort.
             >>> parse = Parse('_input/test')
-            >>> parse.set_crime('violent')
-            'violent'
+            >>> parse.crime = 'violent'
             >>> result = parse.get_recent_crimes()
             >>> print len(result['crimes'])
             43
@@ -474,7 +392,7 @@ class Parse:
                 genre => violent / property / other 
                 category => OFFENSE_CATEGORY_ID
             >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('violent')
+            >>> parse.crime = 'violent'
             >>> result = parse.get_crime_type()
             >>> print result
             parent_category
@@ -562,7 +480,7 @@ class Parse:
             and per-capita (dict['crimes']['percapita']) numbers.
             If a location is given, we will also rank all locations.
             >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('violent')
+            >>> parse.crime = 'violent'
             >>> result = parse.get_rankings()
             >>> print result['crimes']['neighborhood'][0]
             ('cbd', {'count': 3, 'rank': 0})
@@ -748,7 +666,7 @@ class Parse:
             This is a helper function to build some of the more
             manual dicts in dicts.py
             >>> parse = Parse('_input/test')
-            >>> crime = parse.set_crime('violent')
+            >>> parse.crime = 'violent'
             >>> crimes = parse.get_rankings()
             >>> result = parse.print_neighborhoods(crimes)
             >>> print result[0]
@@ -798,13 +716,17 @@ if __name__ == '__main__':
     location = parse.get_neighborhood(options.location)
 
     crimes = None
-    parse.set_grep(options.grep)
-    limit = parse.set_limit(int(options.limit))
-    crime = parse.set_crime(options.crime)
-    location = parse.set_location(location)
-    verbose = parse.set_verbose(options.verbose)
-    address = parse.set_address(options.address)
-    parse.set_diff(options.diff)
+    parse.grep = options.grep
+    limit = int(options.limit)
+    parse.limit = limit
+    crime = options.crimt
+    parse.crime = crime
+    parse.location = location
+    verbose = options.verbose
+    parse.verbose = verbose
+    address = options.address
+    parse.address = address
+    parse.diff = options.diff
     if action == 'monthly':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
