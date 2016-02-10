@@ -230,7 +230,7 @@ class Parse:
             
         return addresses
 
-    def search_addresses(self):
+    def search_addresses(self, *args):
         """ Searches crimes for those that happened at a particular address.
             The goal here is to allow us to loop through a list of addresses w/
             business names and get a list of recent crimes at local businesses.
