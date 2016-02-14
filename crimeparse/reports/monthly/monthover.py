@@ -7,8 +7,8 @@
 # $ cd crime/crimeparse; python -m reports.monthly.monthover 2016-01-30 --location capitol-hill
 # Note: We need location parameter passed because that triggers the sorting and the ranking... for some reason.
 from report import Report
-from collections import OrderedDict
 import operator
+import json
 from optparse import OptionParser
 from datetime import date
 
@@ -66,7 +66,7 @@ if __name__ == '__main__':
                 crime_item = report.get_crime_item(),
                 comparison.append(crime_item)
                 print '"%s__%d": ' % ( item['slug'], ago ) 
-                print crime_item, ","
+                print crime_item[0], ","
             else:
                 print report.get_crime_item()
 
@@ -80,7 +80,6 @@ if __name__ == '__main__':
                 # Compare each item in the current set to the set that follows.
                 # Make note of the difference in count and ranking.
                 for record in comparison[i][0]['crimes']['percapita']:
-                    print record, comparison[i][0]['crimes']['percapita'][record]
                     diff = round(comparison[i][0]['crimes']['percapita'][record]['count'] - comparison[i+1][0]['crimes']['percapita'][record]['count'], 3)
                     if diff != 0:
                         if diff > 0:
@@ -96,9 +95,10 @@ if __name__ == '__main__':
                         fallers['rank'][record] = diff
         risers['count'] = sorted(risers['count'].iteritems(), key=operator.itemgetter(1), reverse=True)
         risers['rank'] = sorted(risers['rank'].iteritems(), key=operator.itemgetter(1), reverse=True)
-        fallers['count'] = sorted(fallers['count'].iteritems(), key=operator.itemgetter(1), reverse=True)
-        fallers['rank'] = sorted(fallers['rank'].iteritems(), key=operator.itemgetter(1), reverse=True)
+        fallers['count'] = sorted(fallers['count'].iteritems(), key=operator.itemgetter(1))
+        fallers['rank'] = sorted(fallers['rank'].iteritems(), key=operator.itemgetter(1))
+        
         print '"%s__%d__risers": ' % ( item['slug'], i) 
-        print risers, ","
+        print json.dumps(risers), ","
         print '"%s__%d__fallers": ' % ( item['slug'], i) 
-        print fallers, ","
+        print json.dumps(fallers), ","
