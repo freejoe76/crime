@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Config file for running a month-over-month report
+# Config file for running a month-over-month report.
+# Pass it a date param -- months are defined as 30 days, the month will 
+# end on the date passed and then work its way back.
 # Usage:
-# $ cd crime/crimeparse; python -m reports.monthly.monthover
+# $ cd crime/crimeparse; python -m reports.monthly.monthover 2016-01-30
 from report import Report
 from optparse import OptionParser
 from datetime import date
@@ -10,6 +12,8 @@ from datetime import date
 report_items = [ 
         { 'slug': 'assault', 'name': 'Assault', 'date_type': 'month', 'location': '', 'crime': 'assault', 'grep': True },
         { 'slug': 'homicide', 'name': 'Homicide', 'date_type': 'month', 'location': '', 'crime': 'murder', 'grep': False  },
+]
+"""
         { 'slug': 'rape', 'name': 'Rape', 'date_type': 'month', 'location': '', 'crime': 'sex-aslt-rape', 'grep': False  },
         { 'slug': 'violent', 'name': 'Violent',  'date_type': 'month', 'location': '', 'crime': 'violent', 'grep': False },
         { 'slug': 'property', 'name': 'Property',  'date_type': 'month', 'location': '', 'crime': 'property', 'grep': False },
@@ -26,6 +30,7 @@ report_items = [
         { 'slug': 'burglary-residence-unforced', 'name': 'Burglary: Residence: Unforced',  'date_type': 'monthly', 'location': '', 'crime': 'burglary-residence-no-force', 'grep': True},
         { 'slug': 'burglary-residence', 'name': 'Burglary: Residence',  'date_type': 'monthly', 'location': '', 'crime': 'burglary-residence', 'grep': True},
 ]
+"""
 
 if __name__ == '__main__':
     parser = OptionParser()
@@ -42,14 +47,10 @@ if __name__ == '__main__':
         item['date_type'] = options.date_type
         item['location'] = options.location
         item['report_type'] = options.report_type
-        year = date.today().year
-        for ago in [0, 1]:
+
+        for ago in [0, 1, 2]:
             item['numago'] = ago 
             report = Report(*args, **item)
-            # Rankings output comes default in specific report,
-            # so if we're specifying rankings as the report_type that means
-            # we're using this output for something else... something else that
-            # needs it in ready-to-write-the-compiled-json-to-a-file format.
             if item['report_type'] == 'rankings':
                 print '"%s__%d": ' % ( item['slug'], ago ) 
                 print report.get_crime_item(),

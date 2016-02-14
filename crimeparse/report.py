@@ -7,7 +7,7 @@
 # $ python -m reports.yoy.yoy 2014-01-01 2014-07-31 --location capitol-hill
 from optparse import OptionParser
 from parse import Parse
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 class Report:
     """ class Report is an interface with class Parse to pull out defined 
@@ -53,11 +53,28 @@ class Report:
             >>> print timespan
             [datetime.date(2013, 1, 8), datetime.date(2013, 11, 27)]
             """
-        time_from = datetime.strptime(value[0], '%Y-%m-%d').date()
-        time_to = datetime.strptime(value[1], '%Y-%m-%d').date()
+        if self.date_type == 'month':
+            # Months only take one value: The date you want to start counting
+            # backward to figure out the month from.
+            # We're defining "month" here as "any 30 day period of time."
+            time_to = datetime.strptime(value[0], '%Y-%m-%d').date()
+            time_from = time_to - timedelta(30)
+        else:
+            time_from = datetime.strptime(value[0], '%Y-%m-%d').date()
+            time_to = datetime.strptime(value[1], '%Y-%m-%d').date()
+
         if numago > 0:
-            time_from = date(time_from.year - numago, time_from.month, time_from.day)
-            time_to = date(time_to.year - numago, time_to.month, time_to.day)
+            if self.date_type == 'month':
+                daysago = numago * 30
+                # The +1 makes sure that we're not counting the crimes on the
+                # border dates twice.
+                # If our first date range was January 1-31, we want the next
+                # one to be December 1-31, not December 2-Jan 1.
+                time_from = time_from - timedelta(daysago + 1)
+                time_to = time_to - timedelta(daysago + 1)
+            else:
+                time_from = date(time_from.year - numago, time_from.month, time_from.day)
+                time_to = date(time_to.year - numago, time_to.month, time_to.day)
 
         self.timespan = [time_from, time_to]
         return self.timespan
@@ -104,7 +121,9 @@ class Report:
             >>> print output['count'], output['crime']
             29 None
             """
-        parse = Parse('_input/%s' % self.build_filename())
+        fn = self.build_filename()
+        print fn, self.timespan
+        parse = Parse('_input/%s' % fn)
         parse.crime = self.crime
         parse.grep = self.grep
         try:
