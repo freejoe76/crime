@@ -21,6 +21,7 @@ class Report:
 
     def __init__(self, *args, **kwargs):
         """ Set what we need to start a Report object.
+            >>> r = Report()
             """
         self.grep = False
         self.set_report_type('rankings')

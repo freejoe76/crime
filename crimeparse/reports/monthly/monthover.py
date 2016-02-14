@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Config file for running a monthly report.
+# Config file for running a month-over-month report
 # Usage:
-# $ cd crime/crimeparse; python -m reports.monthly.monthly
+# $ cd crime/crimeparse; python -m reports.monthly.monthover
 from report import Report
 from optparse import OptionParser
 from datetime import date
@@ -25,23 +25,13 @@ report_items = [
         { 'slug': 'burglary-residence-forced', 'name': 'Burglary: Residence: Forced',  'date_type': 'monthly', 'location': '', 'crime': 'burglary-residence-by-force', 'grep': True},
         { 'slug': 'burglary-residence-unforced', 'name': 'Burglary: Residence: Unforced',  'date_type': 'monthly', 'location': '', 'crime': 'burglary-residence-no-force', 'grep': True},
         { 'slug': 'burglary-residence', 'name': 'Burglary: Residence',  'date_type': 'monthly', 'location': '', 'crime': 'burglary-residence', 'grep': True},
-        #{ 'slug': 'drug-alcohol', 'name': 'Drug and Alcohol',  'date_type': 'monthly', 'location': '', 'crime': 'drug-alcohol', 'grep': False},
-        #{ 'slug': 'drug-poss', 'name': 'Drug: Paraphernalia Possesion',  'date_type': 'monthly', 'location': '', 'crime': 'drug-poss', 'grep': True},
-        #{ 'slug': 'drug-synth', 'name': 'Drug: synth',  'date_type': 'monthly', 'location': '', 'crime': 'drug-synth', 'grep': True},
-        #{ 'slug': 'drug-opium', 'name': 'Drug: opium',  'date_type': 'monthly', 'location': '', 'crime': 'drug-opium', 'grep': True},
-        #{ 'slug': 'drug-marijuana', 'name': 'Drug: Marijuana',  'date_type': 'monthly', 'location': '', 'crime': 'drug-mari', 'grep': True},
-        #{ 'slug': 'drug-heroin', 'name': 'Drug: heroin',  'date_type': 'monthly', 'location': '', 'crime': 'drug-heroin', 'grep': True},
-        #{ 'slug': 'drug-cocaine', 'name': 'Drug: cocaine',  'date_type': 'monthly', 'location': '', 'crime': 'drug-cocaine', 'grep': True},
-        #{ 'slug': 'drug-pcs', 'name': 'Drug: pcs / other',  'date_type': 'monthly', 'location': '', 'crime': 'drug-pcs', 'grep': True},
-        #{ 'slug': 'drug-meth', 'name': 'Drug: Meth',  'date_type': 'monthly', 'location': '', 'crime': 'drug-meth', 'grep': True},
-        #{ 'slug': 'drug-hallu', 'name': 'Drug: Hallucinogen',  'date_type': 'monthly', 'location': '', 'crime': 'drug-hallu', 'grep': True},
 ]
 
 if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-l", "--location", dest="location")
     parser.add_option("-d", "--date_type", dest="date_type", default="month")
-    parser.add_option("-r", "--report", dest="report_type", default="specific")
+    parser.add_option("-r", "--report", dest="report_type", default="rankings")
     #parser.add_option("-c", "--crime", dest="crime", default=None)
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False)
     (options, args) = parser.parse_args()
@@ -53,7 +43,7 @@ if __name__ == '__main__':
         item['location'] = options.location
         item['report_type'] = options.report_type
         year = date.today().year
-        for ago in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+        for ago in [0, 1]:
             item['numago'] = ago 
             report = Report(*args, **item)
             # Rankings output comes default in specific report,
@@ -61,7 +51,7 @@ if __name__ == '__main__':
             # we're using this output for something else... something else that
             # needs it in ready-to-write-the-compiled-json-to-a-file format.
             if item['report_type'] == 'rankings':
-                print '"%s__%d": ' % ( item['slug'], year - ago ) 
+                print '"%s__%d": ' % ( item['slug'], ago ) 
                 print report.get_crime_item(),
                 print ","
             else:
