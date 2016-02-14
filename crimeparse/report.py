@@ -97,7 +97,7 @@ class Report:
             >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
             >>> filename = report.build_filename()
             >>> print filename
-            1monthsago
+            last4months
             """
         if self.numago == None:
             self.numago = 0
@@ -107,8 +107,9 @@ class Report:
         elif self.date_type == 'month':
             # We would never query the current month, it's never complete.
             # That's why we offset all month-queries by one.
-            self.numago += 1
-            return '%smonthsago' % self.numago
+            self.numago += 4
+            #return 'last12months'
+            return 'last%smonths' % self.numago
         elif self.date_type == 'year':
             return 'current'
             #return datetime.now().year - self.numago
@@ -122,7 +123,6 @@ class Report:
             29 None
             """
         fn = self.build_filename()
-        print fn, self.timespan
         parse = Parse('_input/%s' % fn)
         parse.crime = self.crime
         parse.grep = self.grep

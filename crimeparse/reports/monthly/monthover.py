@@ -4,17 +4,16 @@
 # Pass it a date param -- months are defined as 30 days, the month will 
 # end on the date passed and then work its way back.
 # Usage:
-# $ cd crime/crimeparse; python -m reports.monthly.monthover 2016-01-30
+# $ cd crime/crimeparse; python -m reports.monthly.monthover 2016-01-30 --location capitol-hill
+# Note: We need location parameter passed because that triggers the sorting and the ranking... for some reason.
 from report import Report
 from optparse import OptionParser
 from datetime import date
 
 report_items = [ 
-        #{ 'slug': 'assault', 'name': 'Assault', 'date_type': 'month', 'location': '', 'crime': 'assault', 'grep': True },
+        { 'slug': 'assault', 'name': 'Assault', 'date_type': 'month', 'location': '', 'crime': 'assault', 'grep': True },
+        { 'slug': 'homicide', 'name': 'Homicide', 'date_type': 'month', 'location': '', 'crime': 'murder', 'grep': False  },
         { 'slug': 'violent', 'name': 'Violent',  'date_type': 'month', 'location': '', 'crime': 'violent', 'grep': False },
-        #{ 'slug': 'homicide', 'name': 'Homicide', 'date_type': 'month', 'location': '', 'crime': 'murder', 'grep': False  },
-]
-"""
         { 'slug': 'rape', 'name': 'Rape', 'date_type': 'month', 'location': '', 'crime': 'sex-aslt-rape', 'grep': False  },
         { 'slug': 'property', 'name': 'Property',  'date_type': 'month', 'location': '', 'crime': 'property', 'grep': False },
         { 'slug': 'dv', 'name': 'Domestic Violence',  'date_type': 'month', 'location': '', 'crime': 'dv', 'grep': True },
@@ -30,7 +29,6 @@ report_items = [
         { 'slug': 'burglary-residence-unforced', 'name': 'Burglary: Residence: Unforced',  'date_type': 'monthly', 'location': '', 'crime': 'burglary-residence-no-force', 'grep': True},
         { 'slug': 'burglary-residence', 'name': 'Burglary: Residence',  'date_type': 'monthly', 'location': '', 'crime': 'burglary-residence', 'grep': True},
 ]
-"""
 
 if __name__ == '__main__':
     parser = OptionParser()
