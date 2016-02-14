@@ -39,6 +39,10 @@ report_items = [
         { 'slug': 'arson', 'name': 'Arson',  'date_type': 'month', 'location': '', 'crime': 'arson', 'grep': False },
 ]
 
+report_items = [ 
+        { 'slug': 'traffic-accident-hit-and-run', 'name': 'Hit and Runs',  'date_type': 'month', 'location': '', 'crime': 'traffic-accident-hit-and-run', 'grep': False },
+]
+
 if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-l", "--location", dest="location")
@@ -55,12 +59,34 @@ if __name__ == '__main__':
         item['location'] = options.location
         item['report_type'] = options.report_type
 
+        comparison = []
         for ago in [0, 1, 2]:
             item['numago'] = ago 
             report = Report(*args, **item)
             if item['report_type'] == 'rankings':
+                crime_item = report.get_crime_item(),
+                comparison.append(crime_item)
                 print '"%s__%d": ' % ( item['slug'], ago ) 
-                print report.get_crime_item(),
+                #print crime_item
                 print ","
             else:
                 print report.get_crime_item()
+
+        print '========'
+        risers = {'count': [], 'rank': []}
+        if len(comparison) > 0:
+            # Loop through the stored crime items and generate a fastest-risers
+            # and fastest-fallers report.
+            # We need the rise/fall report for per-capita count and for ranking.
+            for i in range(0, len(comparison) - 1):
+                # Compare each item in the current set to the set that follows.
+                # Make note of the difference in count and ranking.
+                for record in comparison[i][0]['crimes']['percapita']:
+                    print record, comparison[i][0]['crimes']['percapita'][record]
+                    diff = comparison[i][0]['crimes']['percapita'][record]['count'] - comparison[i+1][0]['crimes']['percapita'][record]['count']
+                    risers['count'].append({record: diff})
+                    if comparison[i][0]['crimes']['percapita'][record]['count'] == 0:
+                        continue
+                    diff = comparison[i][0]['crimes']['percapita'][record]['rank'] - comparison[i+1][0]['crimes']['percapita'][record]['rank']
+                    risers['rank'].append({record: diff})
+        print risers
