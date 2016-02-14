@@ -7,6 +7,8 @@
 # $ cd crime/crimeparse; python -m reports.monthly.monthover 2016-01-30 --location capitol-hill
 # Note: We need location parameter passed because that triggers the sorting and the ranking... for some reason.
 from report import Report
+from collections import OrderedDict
+import operator
 from optparse import OptionParser
 from datetime import date
 
@@ -67,13 +69,14 @@ if __name__ == '__main__':
                 crime_item = report.get_crime_item(),
                 comparison.append(crime_item)
                 print '"%s__%d": ' % ( item['slug'], ago ) 
-                #print crime_item
+                print crime_item
                 print ","
             else:
                 print report.get_crime_item()
 
         print '========'
-        risers = {'count': [], 'rank': []}
+        risers = {'count': {}, 'rank': {}}
+        fallers = {'count': {}, 'rank': {}}
         if len(comparison) > 0:
             # Loop through the stored crime items and generate a fastest-risers
             # and fastest-fallers report.
@@ -83,10 +86,26 @@ if __name__ == '__main__':
                 # Make note of the difference in count and ranking.
                 for record in comparison[i][0]['crimes']['percapita']:
                     print record, comparison[i][0]['crimes']['percapita'][record]
-                    diff = comparison[i][0]['crimes']['percapita'][record]['count'] - comparison[i+1][0]['crimes']['percapita'][record]['count']
-                    risers['count'].append({record: diff})
+                    diff = round(comparison[i][0]['crimes']['percapita'][record]['count'] - comparison[i+1][0]['crimes']['percapita'][record]['count'], 3)
+                    if diff != 0:
+                        if diff > 0:
+                            risers['count'][record] = diff
+                        else:
+                            fallers['count'][record] = diff
                     if comparison[i][0]['crimes']['percapita'][record]['count'] == 0:
                         continue
                     diff = comparison[i][0]['crimes']['percapita'][record]['rank'] - comparison[i+1][0]['crimes']['percapita'][record]['rank']
-                    risers['rank'].append({record: diff})
+                    if diff > 0:
+                        risers['rank'][record] = diff
+                    else:
+                        fallers['rank'][record] = diff
+        risers['count'] = sorted(risers['count'].iteritems(), key=operator.itemgetter(1), reverse=True)
+        risers['rank'] = sorted(risers['rank'].iteritems(), key=operator.itemgetter(1), reverse=True)
+        fallers['count'] = sorted(fallers['count'].iteritems(), key=operator.itemgetter(1), reverse=True)
+        fallers['rank'] = sorted(fallers['rank'].iteritems(), key=operator.itemgetter(1), reverse=True)
+        print '"%s__%d__risers": ' % ( item['slug'], i) 
         print risers
+        print ","
+        print '"%s__%d__fallers": ' % ( item['slug'], i) 
+        print fallers
+        print ","
