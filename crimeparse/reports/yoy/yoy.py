@@ -24,7 +24,6 @@ report_items = [
         { 'slug': 'prostitution', 'name': 'Prostitution',  'date_type': '', 'location': '', 'crime': 'prostitution', 'grep': True },
         { 'slug': 'public-fighting', 'name': 'Public Fighting',  'date_type': '', 'location': '', 'crime': 'public-fighting', 'grep': False },
         { 'slug': 'arson', 'name': 'Arson',  'date_type': '', 'location': '', 'crime': 'arson', 'grep': False },
-        #{ 'slug': 'public-fighting', 'name': 'Public Fighting',  'date_type': '', 'location': '', 'crime': 'public-fighting', 'grep': False },
         { 'slug': 'drug', 'name': 'Drug', 'report_type': '', '': '', 'location': '', 'crime': 'drug', 'grep': True},
         #{ 'slug': 'drug-sell', 'name': 'Drug: Selling', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug*sell', 'grep': True},
         #{ 'slug': 'drug-possess', 'name': 'Drug: Possession', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug*possess', 'grep': True},

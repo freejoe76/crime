@@ -41,9 +41,6 @@ report_items = [
         { 'slug': 'arson', 'name': 'Arson',  'date_type': 'month', 'location': '', 'crime': 'arson', 'grep': False },
 ]
 
-report_items = [ 
-        { 'slug': 'traffic-accident-hit-and-run', 'name': 'Hit and Runs',  'date_type': 'month', 'location': '', 'crime': 'traffic-accident-hit-and-run', 'grep': False },
-]
 
 if __name__ == '__main__':
     parser = OptionParser()
@@ -69,12 +66,10 @@ if __name__ == '__main__':
                 crime_item = report.get_crime_item(),
                 comparison.append(crime_item)
                 print '"%s__%d": ' % ( item['slug'], ago ) 
-                print crime_item
-                print ","
+                print crime_item, ","
             else:
                 print report.get_crime_item()
 
-        print '========'
         risers = {'count': {}, 'rank': {}}
         fallers = {'count': {}, 'rank': {}}
         if len(comparison) > 0:
@@ -104,8 +99,6 @@ if __name__ == '__main__':
         fallers['count'] = sorted(fallers['count'].iteritems(), key=operator.itemgetter(1), reverse=True)
         fallers['rank'] = sorted(fallers['rank'].iteritems(), key=operator.itemgetter(1), reverse=True)
         print '"%s__%d__risers": ' % ( item['slug'], i) 
-        print risers
-        print ","
+        print risers, ","
         print '"%s__%d__fallers": ' % ( item['slug'], i) 
-        print fallers
-        print ","
+        print fallers, ","
