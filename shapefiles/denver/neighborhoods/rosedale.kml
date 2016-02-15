@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="statistical_neighborhoods" id="statistical_neighborhoods">
+	<SimpleField name="NBHD_ID" type="int"></SimpleField>
+	<SimpleField name="NBHD_NAME" type="string"></SimpleField>
+	<SimpleField name="TYPOLOGY" type="string"></SimpleField>
+	<SimpleField name="NOTES" type="string"></SimpleField>
+	<SimpleField name="SHAPE_Leng" type="float"></SimpleField>
+	<SimpleField name="SHAPE_Area" type="float"></SimpleField>
+</Schema>
+<Folder><name>statistical_neighborhoods</name>
+  <Placemark>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<ExtendedData><SchemaData schemaUrl="#statistical_neighborhoods">
+		<SimpleData name="NBHD_ID">53</SimpleData>
+		<SimpleData name="NBHD_NAME">Rosedale</SimpleData>
+		<SimpleData name="SHAPE_Leng">0.04989773498</SimpleData>
+		<SimpleData name="SHAPE_Area">0.00015326231</SimpleData>
+	</SchemaData></ExtendedData>
+      <Polygon><outerBoundaryIs><LinearRing><coordinates>-104.97343064699993,39.678512946000069 -104.973456612999939,39.676702309000063 -104.973445518999938,39.674849248000044 -104.973451454999918,39.673110987000086 -104.973465030999932,39.671279437000067 -104.973474912999905,39.669492182000056 -104.973485931999903,39.667684942000051 -104.973485965999942,39.667675745000054 -104.97818550799991,39.667701814000054 -104.987571892999938,39.667682891000084 -104.987584277999929,39.669485143000088 -104.987584065999897,39.671287972000073 -104.987581410999894,39.673089226000059 -104.987574510999934,39.674891716000047 -104.987574053999936,39.676706078000052 -104.987567215999945,39.678519519000076 -104.986369687999911,39.678554475000055 -104.985224009999911,39.678560937000043 -104.984074728999929,39.678561611000077 -104.982885579999902,39.678564785000049 -104.981680103999906,39.678569357000072 -104.980523181999899,39.67856970400004 -104.979360530999941,39.678546038000036 -104.978127740999923,39.67853229900004 -104.976910969999949,39.678529241000035 -104.9757516499999,39.678526907000048 -104.974593879999929,39.67851962900005 -104.97343064699993,39.678512946000069</coordinates></LinearRing></outerBoundaryIs></Polygon>
+  </Placemark>
+</Folder>
+</Document></kml>

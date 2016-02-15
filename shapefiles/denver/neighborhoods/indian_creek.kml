@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="statistical_neighborhoods" id="statistical_neighborhoods">
+	<SimpleField name="NBHD_ID" type="int"></SimpleField>
+	<SimpleField name="NBHD_NAME" type="string"></SimpleField>
+	<SimpleField name="TYPOLOGY" type="string"></SimpleField>
+	<SimpleField name="NOTES" type="string"></SimpleField>
+	<SimpleField name="SHAPE_Leng" type="float"></SimpleField>
+	<SimpleField name="SHAPE_Area" type="float"></SimpleField>
+</Schema>
+<Folder><name>statistical_neighborhoods</name>
+  <Placemark>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<ExtendedData><SchemaData schemaUrl="#statistical_neighborhoods">
+		<SimpleData name="NBHD_ID">38</SimpleData>
+		<SimpleData name="NBHD_NAME">Indian Creek</SimpleData>
+		<SimpleData name="SHAPE_Leng">0.06898694161</SimpleData>
+		<SimpleData name="SHAPE_Area">0.00013255662</SimpleData>
+	</SchemaData></ExtendedData>
+      <Polygon><outerBoundaryIs><LinearRing><coordinates>-104.903513963999899,39.684756229000072 -104.903442920999908,39.684858375000033 -104.903431490999935,39.685457625000083 -104.903425621999929,39.685744102000058 -104.903466378999894,39.686383629000034 -104.903538591999904,39.687377049000077 -104.903512226999908,39.689350882000042 -104.898811155999908,39.689338951000082 -104.898822391999943,39.690723686000069 -104.898181850999947,39.690726586000039 -104.898827905999894,39.691428235000046 -104.898838793999914,39.692957440000043 -104.894195841999931,39.692977194000036 -104.8940828449999,39.692893909000077 -104.894071003999898,39.689326287000085 -104.894058834999896,39.68569380100007 -104.889328667999905,39.685684772000059 -104.889308717999938,39.682056013000079 -104.894045778999896,39.682061306000037 -104.894057424999914,39.678448494000065 -104.89633744799994,39.678451987000074 -104.903530918999934,39.678475319000086 -104.903515406999929,39.682077815000071 -104.903513963999899,39.684756229000072</coordinates></LinearRing></outerBoundaryIs><innerBoundaryIs><LinearRing><coordinates>-104.902670827999941,39.685712473000081 -104.901149759999896,39.684808727000075 -104.898782948999894,39.683402016000059 -104.8987863239999,39.685704343000054 -104.902670827999941,39.685712473000081</coordinates></LinearRing></innerBoundaryIs></Polygon>
+  </Placemark>
+</Folder>
+</Document></kml>
