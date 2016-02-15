@@ -13,6 +13,7 @@ from optparse import OptionParser
 from datetime import date
 
 report_items = [ 
+        { 'slug': 'all', 'name': 'All Crime', 'date_type': 'month', 'location': '', 'crime': '*', 'grep': True},
         { 'slug': 'traffic-accident-hit-and-run', 'name': 'Hit and Runs',  'date_type': 'month', 'location': '', 'crime': 'traffic-accident-hit-and-run', 'grep': False },
         { 'slug': 'traffic-accident-dui-duid', 'name': 'DUI',  'date_type': 'month', 'location': '', 'crime': 'traffic-accident-dui-duid', 'grep': False },
         { 'slug': 'aggravated-assault', 'name': 'Serious Assault',  'date_type': 'month', 'location': '', 'crime': 'aggravated-assault' },
@@ -27,7 +28,8 @@ report_items = [
         { 'slug': 'robbery-bank', 'name': 'Bank Robbery',  'date_type': 'month', 'location': '', 'crime': 'robbery-bank', 'grep': False },
         { 'slug': 'robbery-car-jacking', 'name': 'Carjacking',  'date_type': 'month', 'location': '', 'crime': 'robbery-car-jacking', 'grep': False },
         { 'slug': 'auto-theft', 'name': 'Car Theft',  'date_type': 'month', 'location': '', 'crime': 'theft-of-motor-vehicle', 'grep': False },
-        { 'slug': 'theft_bicycle', 'name': 'Bike Theft',  'date_type': 'month', 'location': '', 'crime': 'theft-bicycle', 'grep': False },
+        { 'slug': 'theft-bicycle', 'name': 'Bike Theft',  'date_type': 'month', 'location': '', 'crime': 'theft-bicycle', 'grep': False },
+        { 'slug': 'burglary', 'name': 'Burglary',  'date_type': 'month', 'location': '', 'crime': 'burglary', 'grep': False },
         { 'slug': 'by-force', 'name': 'Burglary: Forced',  'date_type': 'month', 'location': '', 'crime': 'by-force', 'grep': True },
         { 'slug': 'no-force', 'name': 'Burglary: Unforced',  'date_type': 'month', 'location': '', 'crime': 'no-force', 'grep': True },
         { 'slug': 'burglary-business-by-force', 'name': 'Burglary: Business: Forced',  'date_type': 'month', 'location': '', 'crime': 'burglary-business-by-force', 'grep': True},
@@ -44,12 +46,16 @@ report_items = [
 
 if __name__ == '__main__':
     parser = OptionParser()
+    parser.add_option("--limit", dest="limit", default=0)
     parser.add_option("-l", "--location", dest="location")
     parser.add_option("-d", "--date_type", dest="date_type", default="month")
     parser.add_option("-r", "--report", dest="report_type", default="rankings")
     #parser.add_option("-c", "--crime", dest="crime", default=None)
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False)
     (options, args) = parser.parse_args()
+
+    if int(options.limit) > 0:
+        report_items = report_items[:int(options.limit)]
 
     for item in report_items:
         if options.verbose == True:
