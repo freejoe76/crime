@@ -455,7 +455,8 @@ class Parse:
             if location:
                 filename = 'location_%s-%s' % (self.location, yearmonth)
             else:
-                filename = 'last%imonths' % i
+                #filename = '%imonthsago' % i 
+                filename = 'last24months'
             crime_file = self.open_csv('_input/%s' % filename, self.diff)
             i += 1
             crimes['counts'][yearmonth] = { 'count': 0, 'date': self.check_date('%s-01' % yearmonth) }
@@ -469,8 +470,15 @@ class Parse:
 
             for row in crime_file:
                 record = dict(zip(dicts.keys, row))
-                if self.does_crime_match(record, crime_type):
-                    crimes['counts'][yearmonth]['count'] += 1
+                if location:
+                    if self.does_crime_match(record, crime_type):
+                        crimes['counts'][yearmonth]['count'] += 1
+                else:
+                    # We query a more general csv file for the no-location
+                    # queries, so we have to filter it more.
+                    if self.does_crime_match(record, crime_type):
+                        if yearmonth in record['FIRST_OCCURRENCE_DATE']:
+                            crimes['counts'][yearmonth]['count'] += 1
                     
         # Update the max, sum and avg:
         for item in crimes['counts']:
