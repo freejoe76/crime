@@ -74,7 +74,13 @@ class Report:
                 time_to = time_to - timedelta(daysago + 1)
             else:
                 time_from = date(time_from.year - numago, time_from.month, time_from.day)
-                time_to = date(time_to.year - numago, time_to.month, time_to.day)
+                try:
+                    time_to = date(time_to.year - numago, time_to.month, time_to.day)
+                except ValueError as e:
+                    if e == 'day is out of range for month':
+                        time_to = date(time_to.year - numago, time_to.month, time_to.day - 1)
+                    else:
+                        raise ValueError
 
         self.timespan = [time_from, time_to]
         return self.timespan
