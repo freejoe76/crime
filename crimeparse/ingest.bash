@@ -18,7 +18,8 @@
 ### can build a more refined archiving (and, thus, querying) strategy.
 
 #declare -a HOODS=('wellshire' 'bear-valley' 'hilltop' 'cbd' 'university-hills' 'overland' 'speer' 'union-station' 'washington-virginia-vale' 'marston' 'north-capitol-hill' 'city-park' 'sloan-lake' 'five-points' 'sun-valley' 'westwood' 'cole' 'windsor' 'platt-park' 'jefferson-park' 'harvey-park' 'skyland' 'sunnyside' 'southmoor-park' 'ruby-hill' 'capitol-hill' 'barnum-west' 'harvey-park-south' 'dia' 'athmar-park' 'elyria-swansea' 'lowry-field' 'goldsmith' 'stapleton' 'chaffee-park' 'berkeley' 'washington-park' 'indian-creek' 'barnum' 'montbello' 'civic-center' 'hampden-south' 'globeville' 'city-park-west' 'clayton' 'northeast-park-hill' 'country-club' 'hale' 'mar-lee' 'lincoln-park' 'gateway-green-valley-ranch' 'west-highland' 'congress-park' 'regis' 'east-colfax' 'whittier' 'belcaro' 'hampden' 'fort-logan' 'college-view-south-platte' 'montclair' 'baker' 'kennedy' 'cherry-creek' 'cheesman-park' 'west-colfax' 'south-park-hill' 'cory-merrill' 'rosedale' 'valverde' 'university-park' 'auraria' 'north-park-hill' 'highland' 'villa-park' 'university' 'virginia-village' 'washington-park-west')
-declare -a HOODS=('highland' 'country-club' 'speer' 'cherry-creek' 'city-park' 'city-park-west' 'five-points' 'cole' 'north-park-hill' 'south-park-hill' 'platt-park' 'capitol-hill' 'north-capitol-hill' 'civic-center' 'lincoln-park' 'cheesman-park' 'congress-park' 'cbd' 'five-points' 'whittier' 'union-station' 'auraria' 'baker' 'hale' 'clayton' 'sloan-lake' 'washington-park' 'east-colfax' 'harvey-park-south' 'washington-park-west' 'montclair' 'athmar-park' 'university-park' 'indian-creek' 'barnum' 'montbello' 'hilltop' 'washington-virginia-vale' 'ruby-hill')
+#declare -a HOODS=('highland' 'country-club' 'speer' 'cherry-creek' 'city-park' 'city-park-west' 'five-points' 'cole' 'north-park-hill' 'south-park-hill' 'platt-park' 'capitol-hill' 'north-capitol-hill' 'civic-center' 'lincoln-park' 'cheesman-park' 'congress-park' 'cbd' 'five-points' 'whittier' 'union-station' 'auraria' 'baker' 'hale' 'clayton' 'sloan-lake' 'washington-park' 'east-colfax' 'harvey-park-south' 'washington-park-west' 'montclair' 'athmar-park' 'university-park' 'indian-creek' 'barnum' 'montbello' 'hilltop' 'washington-virginia-vale' 'ruby-hill')
+source local.bash
 
 TEST=0
 NODOWNLOAD=0
@@ -65,11 +66,13 @@ if [[ $NODOWNLOAD -eq 0 ]]; then
     FILESIZE=0
     while [ $FILESIZE -lt 40000 ]; do
         echo "Filesize: $FILESIZE"
-        wget -O new.csv $URL; 
-        FILESIZE=$(du -b "new.csv" | cut -f 1)
+        wget -O new-unsorted.csv $URL; 
+        FILESIZE=$(du -b "new-unsorted.csv" | cut -f 1)
     done
 fi
 
+cat head.csv > current.csv; tail -n +2 new-unsorted.csv | sort -r >> current.csv
+#sort -r new-unsorted.csv > new.csv
 diff new.csv current.csv > newdiff.csv
 DIFFCOUNT=`cat newdiff.csv | wc -l`
 
@@ -88,7 +91,8 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
 	cp newdiff.csv latestdiff.csv
 	mv newdiff.csv "archive-$DATE.csv"
 	mv current.csv old.csv
-	mv new.csv current.csv
+	sort new.csv -r > current.csv
+    rm new.csv; rm new-unsorted.csv
     echo $DATE > ../latest
 else
     echo "NO NEW CRIMES."
