@@ -94,8 +94,9 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
 	cp newdiff.csv latestdiff.csv
 	mv newdiff.csv "archive-$DATE.csv"
 	mv current.csv old.csv
-	sort new.csv -r > current.csv
-    rm new.csv; rm new-unsorted.csv
+	#sort new.csv -r > current.csv
+    mv new.csv current.csv
+    rm new-unsorted.csv
     echo $DATE > ../latest
 else
     echo "NO NEW CRIMES."
