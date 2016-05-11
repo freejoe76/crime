@@ -175,8 +175,8 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
         # Look for what's changed since the last time.
         # This saves all the changes that happened in a month in a monnth file,
         # and the most recent set of changes.
-        grep ,$HOOD archive-$DATE.csv >> location_$HOOD_archive-`date +'%Y-%m'`.csv
-        grep ,$HOOD archive-$DATE.csv > location_$HOOD_archive.csv
+        grep "<.*,$HOOD" archive-$DATE.csv >> location_$HOOD_archive-`date +'%Y-%m'`.csv
+        grep "<.*,$HOOD" archive-$DATE.csv > location_$HOOD_archive.csv
     done
 
     # Just because we might need it: A text file of the last yearmonth pairs for the last ten years.
