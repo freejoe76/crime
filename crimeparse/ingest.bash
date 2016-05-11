@@ -171,6 +171,9 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
         ./matchline.py $THIS_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$THIS_YEAR.csv &
         ./matchline.py $LAST_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$LAST_YEAR.csv
         ./matchline.py $LAST_LAST_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$LAST_LAST_YEAR.csv
+        # Look for what's changed since the last time
+        grep ,$HOOD archive-$DATE.csv >> location_$HOOD_archive-`date +'%Y-%m'`.csv
+        grep ,$HOOD archive-$DATE.csv >> location_$HOOD_archive-$DATE.csv
     done
 
     # Just because we might need it: A text file of the last yearmonth pairs for the last ten years.
