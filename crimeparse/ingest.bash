@@ -7,7 +7,7 @@
 # This script downloads the current edition of the City of Denver's crime files.
 # If there are changes to the file since we last downloaded it, we:
 #     1. Save a copy of those differences with a timestamp
-#     2. Save that copy of those differences to latestdiff.csv
+#     2. Save that copy of those differences to latest.diff
 #     3. Update the current-year csv with the results, currentyear.csv
 #
 # It takes three arguments:
@@ -76,14 +76,14 @@ fi
 # 2. Run a diff between new-unsorted and the current (previous day's) csv, current.csv
 # 3. If there are differences btw the CSVs, run the rest of this script.
 cat head.csv > new.csv; tail -n +2 new-unsorted.csv | sort -r >> new.csv 
-diff new.csv current.csv > newdiff.csv
-DIFFCOUNT=`cat newdiff.csv | wc -l`
+diff new.csv current.csv > new.diff
+DIFFCOUNT=`cat new.diff | wc -l`
 
 if [[ $TEST -eq 1 ]]; then
 	echo "# Number of diffs between new.csv and current.csv: $DIFFCOUNT"
 	echo "# TEST: These are the commands that would be run."
-	echo 'cp newdiff.csv latestdiff.csv'
-	echo 'mv newdiff.csv "archive-'$DATE'.csv"'
+	echo 'cp new.diff latest.diff'
+	echo 'mv new.diff "archive-'$DATE'.csv"'
 	echo 'mv current.csv old.csv'
 	echo 'mv new.csv current.csv'
 	echo './matchline.py "'$THIS_YEAR'-" current.csv > currentyear.csv'
@@ -91,8 +91,8 @@ if [[ $TEST -eq 1 ]]; then
 	echo './matchline.py "'$THIS_MONTH'" current.csv > currentmonth.csv'
 
 elif [[ $DIFFCOUNT -gt 0 ]]; then
-	cp newdiff.csv latestdiff.csv
-	mv newdiff.csv "archive-$DATE.csv"
+	cp new.diff latest.diff
+	mv new.diff "archive-$DATE.csv"
 	mv current.csv old.csv
 	#sort new.csv -r > current.csv
     mv new.csv current.csv
