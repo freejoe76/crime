@@ -83,7 +83,8 @@ if [[ $TEST -eq 1 ]]; then
 	echo "# Number of diffs between new.csv and current.csv: $DIFFCOUNT"
 	echo "# TEST: These are the commands that would be run."
 	echo 'cp new.diff latest.diff'
-	echo 'mv new.diff "archive-'$DATE'.csv"'
+	echo 'mv new.diff "archive-'$DATE'.diff"'
+    echo './processdiff.py new.diff > "archive-$DATE.csv"'
 	echo 'mv current.csv old.csv'
 	echo 'mv new.csv current.csv'
 	echo './matchline.py "'$THIS_YEAR'-" current.csv > currentyear.csv'
@@ -92,7 +93,8 @@ if [[ $TEST -eq 1 ]]; then
 
 elif [[ $DIFFCOUNT -gt 0 ]]; then
 	cp new.diff latest.diff
-	mv new.diff "archive-$DATE.csv"
+	cp new.diff "archive-$DATE.diff"
+    ./processdiff.py new.diff > "archive-$DATE.csv"
 	mv current.csv old.csv
 	#sort new.csv -r > current.csv
     mv new.csv current.csv
@@ -175,8 +177,8 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
         # Look for what's changed since the last time.
         # This saves all the changes that happened in a month in a monnth file,
         # and the most recent set of changes.
-        grep "<.*,$HOOD" archive-$DATE.csv >> location_$HOOD_archive-`date +'%Y-%m'`.csv
-        grep "<.*,$HOOD" archive-$DATE.csv > location_$HOOD_archive.csv
+        grep ,$HOOD archive-$DATE.csv >> location_$HOOD_archive-`date +'%Y-%m'`.csv
+        grep ,$HOOD archive-$DATE.csv > location_$HOOD_archive.csv
     done
 
     # Just because we might need it: A text file of the last yearmonth pairs for the last ten years.
