@@ -1,0 +1,19 @@
+declare -a HOODS=('highland' 'country-club' 'speer')
+declare -a YEARS=('2016' '2015' '2014' '2013')
+declare -a YEARS_PREVIOUS=('2015' '2014')
+declare -a CRIMES=('traffic-accident-dui-duid' 'traffic-accident-hit-and-run' 'theft-bicycle' 'murder' 'aggravated-assault' 'sexual-assault')
+declare -a CRIMES_TO_GREP=('burglary-residence' 'burglary-business' 'by-force' 'no-force' 'dv' 'traffic' 'rape' 'assault' 'robbery' 'drug' 'weapon-fire' 'drug*sell' 'theft' 'prostitution')
+declare -a CRIMES_DRUGS=('alcohol' 'synth' 'opium' 'marijuana' 'heroin' 'cocaine' 'pcs' 'meth' 'hallucinogen')
+
+THIS_YEAR=$YEARS
+JAN_ONE=`date +'%Y-%m-%d' --date='January 1'`
+LAST_YEAR=`expr $THIS_YEAR - 1`
+TODAY=`date +'%Y-%m-%d' --date='2 days ago'`
+ONEWEEK=`date +'%Y-%m-%d' --date='9 days ago'`
+TWOWEEK=`date +'%Y-%m-%d' --date='16 days ago'`
+THREEWEEK=`date +'%Y-%m-%d' --date='23 days ago'`
+FOURWEEK=`date +'%Y-%m-%d' --date='30 days ago'`
+
+# Used for thismonth & lastmonth
+ONEMONTH=`date +'%Y-%m-%d' --date='32 days ago'`
+TWOMONTH=`date +'%Y-%m-%d' --date='62 days ago'`

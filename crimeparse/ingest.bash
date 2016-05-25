@@ -4,18 +4,18 @@
 # http://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/
 #
 #
-# This script downloads the current edition of the City of Denver's crime files.
+# This script downloads the City of Denver's reported crime CSV.
 # If there are changes to the file since we last downloaded it, we:
 #     1. Save a copy of those differences with a timestamp
 #     2. Save that copy of those differences to latest.diff
 #     3. Update the current-year csv with the results, currentyear.csv
 #
-# It takes three arguments:
+# It accepts three arguments:
 #     -t / --test, which skips all file-writing operations except initial download
 #     -n / --nodl, which skips the initial download, and assumes an existing new.csv file is in place.
 #     -l / --location, for building archives on a particular location.
 ### * Note: Should look at the diffs and see at what age the data stops changing. From there,
-### can build a more refined archiving (and, thus, querying) strategy.
+### can build a more refined archiving (and then, querying) strategy.
 
 source local.bash
 
