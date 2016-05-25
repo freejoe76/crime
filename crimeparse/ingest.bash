@@ -173,18 +173,18 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
         ./matchline.py $LAST_LAST_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$LAST_LAST_YEAR.csv
 
         # Look for what's changed since the last time.
-        # This saves all the changes that happened in a month in a monnth file,
-        # and the most recent set of changes.
-        grep ,$HOOD archive-$DATE.csv >> location_$HOOD_archive-`date +'%Y-%m'`.csv
-        grep ,$HOOD archive-$DATE.csv > location_$HOOD_archive.csv
+        # This saves all the changes that happened in a month in a month file,
+        # as well as the most recent set of changes.
+        grep ,$HOOD archive-$DATE.csv >> location_$HOOD-archive-`date +'%Y-%m'`.csv
+        grep ,$HOOD archive-$DATE.csv > location_$HOOD-archive.csv
     done
 
     for CRIME in ${CRIMES[@]}; do
         # Look for what's changed since the last time.
-        # This saves all the changes that happened in a month in a monnth file,
-        # and the most recent set of changes.
-        grep ,$CRIME archive-$DATE.csv >> crime_$CRIME_archive-`date +'%Y-%m'`.csv
-        grep ,$CRIME archive-$DATE.csv > crime_$CRIME_archive.csv
+        # This saves all the changes that happened in a month in a month file,
+        # as well as the most recent set of changes.
+        grep ,$CRIME archive-$DATE.csv >> crime_$CRIME-archive-`date +'%Y-%m'`.csv
+        grep ,$CRIME archive-$DATE.csv > crime_$CRIME-archive.csv
     done
 
     # Just because we might need it: A text file of the last yearmonth pairs for the last ten years.
