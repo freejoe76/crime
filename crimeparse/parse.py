@@ -186,7 +186,8 @@ class Parse:
         return 'street'
 
     def get_addresses(self, *args):
-        """ Get a dict of streets with unique addresses, and crimes for each
+        """ Get all the unique addresses. Filterable by neighborhood.
+            Returns a dict of streets with unique addresses, and crimes for each
             of the addresses, for a neighborhood or the city.
             >>> parse = Parse('_input/test')
             >>> parse.location = 'west-highland'
@@ -789,4 +790,6 @@ if __name__ == '__main__':
     if not silent:
         from printcrimes import *
         printjob = PrintCrimes(crimes, action, parse.crime_filename, limit)
+        if action == 'search':
+            printjob.address = options.address
         print printjob.print_crimes(location, output)
