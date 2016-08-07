@@ -117,17 +117,6 @@ class PrintCrimes:
 
         if action == 'by-address':
             json_str = json.dumps(crimes)
-        elif action == 'search':
-            outputs = '%i crimes at %s.\n' % (crimes['count'], self.address)
-            for i, crime in enumerate(crimes['crimes']):
-                # if 'diff' not in crime:
-                #    crime['diff'] = ''
-
-                outputs += '''%i. %s: %s
-        Occurred: %s - %s
-        Reported: %s
-        %s
-        %s,%s\n\n''' % (i+1, crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'])
 
         elif action == 'specific':
             if output == 'json':
@@ -143,7 +132,7 @@ class PrintCrimes:
             else:
                 outputs = '%(count)i %(crime)s crimes, last one %(last_crime)s ago' % crimes
 
-        elif action == 'recent':
+        elif action in ['recent', 'search']:
             # Lists, probably recents, with full crime record dicts
             i = 0
             if output == 'csv':
