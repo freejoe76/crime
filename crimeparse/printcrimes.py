@@ -37,6 +37,7 @@ class PrintCrimes:
         self.crimes = crimes
         self.options = options
         self.action = action
+        self.monthly = False
 
     def clean_location(self, location):
         """ Take the location string, replace the -'s, capitalize what we can.
@@ -112,8 +113,9 @@ class PrintCrimes:
             limit = 0
         action = self.action
 
-        if 'crimes' not in crimes and action not in ['monthly', 'specific', 'by-address']:
+        if 'crimes' not in crimes and action not in ['search', 'monthly', 'specific', 'by-address']:
             return False
+        print crimes
 
         if action == 'by-address':
             json_str = json.dumps(crimes)
@@ -131,6 +133,30 @@ class PrintCrimes:
     }]\n}""" % crimes
             else:
                 outputs = '%(count)i %(crime)s crimes, last one %(last_crime)s ago' % crimes
+
+        elif action == 'monthly' or self.monthly:
+
+            # We use the textbarchart here.
+            self.options = {'unicode': True}
+            options = {
+                        'type': None, 'font': 'monospace',
+                        'unicode': self.options['unicode']}
+            crime_dict = list(reversed(sorted(crimes['counts'].iteritems(),
+                              key=operator.itemgetter(0))))
+            if output == 'json':
+                length = len(crime_dict)
+                comma = ','
+                i = 0
+                json_str = '['
+                for item in crime_dict:
+                    i += 1
+                    if i == length:
+                        comma = ''
+                    json_str += '\n {"count": "%s", "date": "%s"}%s' % (item[1]['count'], item[0], comma)
+                json_str += ']'
+            else:
+                bar = TextBarchart(options, crime_dict, crimes['max'])
+                outputs = bar.build_chart()
 
         elif action in ['recent', 'search']:
             # Lists, probably recents, with full crime record dicts
@@ -235,30 +261,6 @@ class PrintCrimes:
                 if output == 'json' and loc == item[0]:
                     json_str += '\n "raw": [ "rank": "%i", "location": "%s", "count": "%s" ] }' % (i, loc, crimes['crimes']['neighborhood'][item[0]]['count'])
                 outputs += "%i. %s, %s\n" % (i+1, location, crimes['crimes']['neighborhood'][item[0]]['count'])
-
-        elif action == 'monthly':
-
-            # We use the textbarchart here.
-            self.options = {'unicode': True}
-            options = {
-                        'type': None, 'font': 'monospace',
-                        'unicode': self.options['unicode']}
-            crime_dict = list(reversed(sorted(crimes['counts'].iteritems(),
-                              key=operator.itemgetter(0))))
-            if output == 'json':
-                length = len(crime_dict)
-                comma = ','
-                i = 0
-                json_str = '['
-                for item in crime_dict:
-                    i += 1
-                    if i == length:
-                        comma = ''
-                    json_str += '\n {"count": "%s", "date": "%s"}%s' % (item[1]['count'], item[0], comma)
-                json_str += ']'
-            else:
-                bar = TextBarchart(options, crime_dict, crimes['max'])
-                outputs = bar.build_chart()
 
         else:
             print "We did not have any crimes to handle"

@@ -479,7 +479,12 @@ class Parse:
                 continue
 
             for row in crime_file:
+                # These two outcomes depend on whether we're reading from a file
+                # or already have a dict of crimes that we got from another query.
                 record = dict(zip(dicts.keys, row))
+                if 'OFFENSE_CATEGORY_ID' in row:
+                    record = row
+
                 if location:
                     if self.does_crime_match(record, crime_type):
                         crimes['counts'][yearmonth]['count'] += 1
@@ -797,6 +802,7 @@ if __name__ == '__main__':
         if monthly:
             parse.crimes = crimes
             crimes = parse.get_monthly(args)
+            print crimes
     elif action == 'by-address':
         crimes = parse.get_addresses(args)
     else:
@@ -804,6 +810,8 @@ if __name__ == '__main__':
     if not silent:
         from printcrimes import *
         printjob = PrintCrimes(crimes, action, parse.crime_filename, limit)
+        if monthly:
+            printjob.monthly = True
         if action == 'search':
             printjob.address = options.address
         print printjob.print_crimes(location, output)
