@@ -223,6 +223,11 @@ class PrintCrimes:
         Reported: %s
         %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
 
+                # Tie up loose strings
+                if output == 'json':
+                    json_str += ']\n}'
+
+
         # No-location rankings get passed a list of neighborhoods and counts
         # rather than a dict, which means the approach for publishing these
         # in the terminal is different.
@@ -265,10 +270,6 @@ class PrintCrimes:
         else:
             print "We did not have any crimes to handle"
             outputs = ''
-
-        # Tie up loose strings
-        if action in ['recent', 'search'] and output == 'json':
-            json_str += ']\n}'
 
         if json_str is None:
             return outputs
