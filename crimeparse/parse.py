@@ -802,7 +802,6 @@ if __name__ == '__main__':
         if monthly:
             parse.crimes = crimes
             crimes = parse.get_monthly(args)
-            print crimes
     elif action == 'by-address':
         crimes = parse.get_addresses(args)
     else:

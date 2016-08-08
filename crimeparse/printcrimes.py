@@ -115,7 +115,6 @@ class PrintCrimes:
 
         if 'crimes' not in crimes and action not in ['search', 'monthly', 'specific', 'by-address']:
             return False
-        print crimes
 
         if action == 'by-address':
             json_str = json.dumps(crimes)
