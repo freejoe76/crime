@@ -265,7 +265,7 @@ class PrintCrimes:
             outputs = ''
 
         # Tie up loose strings
-        if action == 'recent' and output == 'json':
+        if action in ['recent', 'search'] and output == 'json':
             json_str += ']\n}'
 
         if json_str is None:

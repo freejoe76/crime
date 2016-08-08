@@ -450,17 +450,26 @@ class Parse:
         # doing it this way keeps it correct.
         yearmonths = open('_input/last.txt').readlines()
 
+        if limit == []:
+            limit = 24
+
         while i < limit:
-            # We need the crimes, the counter, the empty dict, and the month.
             yearmonth = yearmonths[i].strip()
-            if location:
-                filename = 'location_%s-%s' % (self.location, yearmonth)
-            else:
-                #filename = '%imonthsago' % i 
-                filename = 'last24months'
-            crime_file = self.open_csv('_input/%s' % filename, self.diff)
-            i += 1
             crimes['counts'][yearmonth] = { 'count': 0, 'date': self.check_date('%s-01' % yearmonth) }
+
+            # We need the crimes, the counter, the empty dict, and the month.
+            # If we're filtering an existing set of crimes (self.crimes), then we take
+            # that instead of the crime file.
+            if self.crimes:
+                crime_file = self.crimes['crimes']
+            else:
+                if location:
+                    filename = 'location_%s-%s' % (self.location, yearmonth)
+                else:
+                    #filename = '%imonthsago' % i 
+                    filename = 'last24months'
+                crime_file = self.open_csv('_input/%s' % filename, self.diff)
+            i += 1
 
             if self.crime == None:
                 crimes['counts'][yearmonth]['count'] = len(crime_file)
@@ -716,6 +725,7 @@ if __name__ == '__main__':
     parser.add_option("-c", "--crime", dest="crime", default=None)
     parser.add_option("-g", "--grep", dest="grep", default=False, action="store_true")
     parser.add_option("-d", "--diff", dest="diff", default=False, action="store_true")
+    parser.add_option("-m", "--monthly", dest="monthly", default=False, action="store_true")
     parser.add_option("-u", "--unicode", dest="unicode", default=False, action="store_true")
     parser.add_option("-o", "--output", dest="output", default=None)
     parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default=False, action="store_true")
@@ -727,6 +737,7 @@ if __name__ == '__main__':
     output = options.output
     yearoveryear = options.yearoveryear
     silent = options.silent
+    monthly = options.monthly
 
     import doctest
     doctest.testmod(verbose=options.verbose)
@@ -783,6 +794,9 @@ if __name__ == '__main__':
         crimes = parse.get_specific_crime(*args)
     elif action == 'search':
         crimes = parse.search_addresses(args)
+        if monthly:
+            parse.crimes = crimes
+            crimes = parse.get_monthly(args)
     elif action == 'by-address':
         crimes = parse.get_addresses(args)
     else:
