@@ -460,7 +460,7 @@ class Parse:
             # We need the crimes, the counter, the empty dict, and the month.
             # If we're filtering an existing set of crimes (self.crimes), then we take
             # that instead of the crime file.
-            if self.crimes:
+            if 'crimes' in self:
                 crime_file = self.crimes['crimes']
             else:
                 if location:
