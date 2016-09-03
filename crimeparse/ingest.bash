@@ -73,9 +73,13 @@ fi
 # 1. Sort the downloaded CSV, new-unsorted.
 # 2. Run a diff between new-unsorted and the current (previous day's) csv, current.csv
 # 3. If there are differences btw the CSVs, run the rest of this script.
-cat head.csv > new.csv; tail -n +2 new-unsorted.csv | sort -r >> new.csv 
-diff new.csv current.csv > new.diff
-DIFFCOUNT=`cat new.diff | wc -l`
+if [[ $NODOWNLOAD -eq 0 ]]; then 
+    cat head.csv > new.csv; tail -n +2 new-unsorted.csv | sort -r >> new.csv 
+    diff new.csv current.csv > new.diff
+    DIFFCOUNT=`cat new.diff | wc -l`
+else:
+    DIFFCOUNT=1
+fi
 
 if [[ $TEST -eq 1 ]]; then
 	echo "# Number of diffs between new.csv and current.csv: $DIFFCOUNT"
