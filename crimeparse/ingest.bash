@@ -77,7 +77,7 @@ if [[ $NODOWNLOAD -eq 0 ]]; then
     cat head.csv > new.csv; tail -n +2 new-unsorted.csv | sort -r >> new.csv 
     diff new.csv current.csv > new.diff
     DIFFCOUNT=`cat new.diff | wc -l`
-else:
+else
     DIFFCOUNT=1
 fi
 

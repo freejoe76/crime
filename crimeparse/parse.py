@@ -428,6 +428,9 @@ class Parse:
         record = dict(zip(dicts.keys, self.crime_file[row]))
         return record
 
+    def __contains__(self, item):
+        return item in self.__dict__
+
     def get_monthly(self, limit=12):
         """ Loop through the monthly crime files, return frequency.
             Can filter by crime, location or both. 
@@ -460,7 +463,7 @@ class Parse:
             # We need the crimes, the counter, the empty dict, and the month.
             # If we're filtering an existing set of crimes (self.crimes), then we take
             # that instead of the crime file.
-            if 'crimes' in self:
+            if hasattr(self, 'crimes'):
                 crime_file = self.crimes['crimes']
             else:
                 if location:
