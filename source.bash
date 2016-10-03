@@ -7,8 +7,8 @@ alias gpa='git pull -a'
 
 alias setlocal='export DENVERCRIME_SETTINGS=/home/joe/crime/site/public/settings.cfg; echo "Python Environment: $DENVERCRIME_SETTINGS"'
 alias setprod='export DENVERCRIME_SETTINGS=/path/to/settings.cfg; echo "Python Environment: $DENVERCRIME_SETTINGS"'
+alias weekly='./weeklyreport.bash; ./yoyreport.bash; ./monthoverreport.bash'
 alias venv='. ~/crime/CRIME/bin/activate'
-alias sss="source source.bash"
 
 alias ra='./parse.py --action rankings --crime property --location capitol-hill'
 alias re='./parse.py --action recent --crime violent --location capitol-hill'
