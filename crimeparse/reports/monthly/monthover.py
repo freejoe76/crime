@@ -41,6 +41,9 @@ report_items = [
         { 'slug': 'prostitution', 'name': 'Prostitution',  'date_type': 'month', 'location': '', 'crime': 'prostitution', 'grep': True },
         { 'slug': 'public-fighting', 'name': 'Public Fighting',  'date_type': 'month', 'location': '', 'crime': 'public-fighting', 'grep': False },
         { 'slug': 'arson', 'name': 'Arson',  'date_type': 'month', 'location': '', 'crime': 'arson', 'grep': False },
+        { 'slug': 'drug', 'name': 'Drug',  'date_type': 'month', 'location': '', 'crime': 'drug', 'grep': True},
+        { 'slug': 'drug-alcohol', 'name': 'Drug and Alcohol',  'date_type': 'month', 'location': '', 'crime': 'drug-alcohol', 'grep': False},
+        { 'slug': 'larceny', 'name': 'Larceny',  'date_type': 'month', 'location': '', 'crime': 'larceny', 'grep': False},
 ]
 
 

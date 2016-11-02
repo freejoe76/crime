@@ -26,6 +26,8 @@ report_items = [
         { 'slug': 'public-fighting', 'name': 'Public Fighting',  'date_type': '', 'location': '', 'crime': 'public-fighting', 'grep': False },
         { 'slug': 'arson', 'name': 'Arson',  'date_type': '', 'location': '', 'crime': 'arson', 'grep': False },
         { 'slug': 'drug', 'name': 'Drug', 'report_type': '', '': '', 'location': '', 'crime': 'drug', 'grep': True},
+        { 'slug': 'drug-alcohol', 'name': 'Drug and Alcohol',  'date_type': '', 'location': '', 'crime': 'drug-alcohol', 'grep': False},
+        { 'slug': 'larceny', 'name': 'Larceny',  'date_type': '', 'location': '', 'crime': 'larceny', 'grep': False},
         #{ 'slug': 'drug-sell', 'name': 'Drug: Selling', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug*sell', 'grep': True},
         #{ 'slug': 'drug-possess', 'name': 'Drug: Possession', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'drug*possess', 'grep': True},
         { 'slug': 'auto-theft', 'name': 'Car Thefts', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'auto-theft', 'grep': False  },
