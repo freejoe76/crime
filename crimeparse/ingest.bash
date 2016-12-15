@@ -94,14 +94,16 @@ if [[ $TEST -eq 1 ]]; then
 	echo './matchline.py "'$THIS_MONTH'" current.csv > currentmonth.csv'
 
 elif [[ $DIFFCOUNT -gt 0 ]]; then
-	cp new.diff latest.diff
-	cp new.diff "archive-$DATE.diff"
-    ./processdiff.py new.diff > "archive-$DATE.csv"
-	mv current.csv old.csv
-	#sort new.csv -r > current.csv
-    mv new.csv current.csv
-    rm new-unsorted.csv
-    echo $DATE > ../latest
+    if [[ $NODOWNLOAD -eq 0 ]]; then
+        cp new.diff latest.diff
+        cp new.diff "archive-$DATE.diff"
+        ./processdiff.py new.diff > "archive-$DATE.csv"
+        mv current.csv old.csv
+        #sort new.csv -r > current.csv
+        mv new.csv current.csv
+        rm new-unsorted.csv
+        echo $DATE > ../latest
+    fi
 else
     echo "NO NEW CRIMES."
 fi
@@ -122,7 +124,7 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
         # So, if we're on MONTHNUM 12, NUMs 0-11 will be fine. 
         # If we're on MONTHNUM 1, only NUM 0 will be grepped.
         #
-        # Ex:
+        # Ex
         # January 2014.
         # First NUM loop: NUM = 0, TEMPNUM = 1, MONTHNUM { 0 } months ago = 0, grep 2014-01 current.csv >> last0months
         # Second NUM loop: NUM = 1, TEMPNUM = 2, MONTHNUM { 0 1 } months ago = 0 1, grep 2014-01 + 2013-12 current.csv >> last0 + 1monthsago
