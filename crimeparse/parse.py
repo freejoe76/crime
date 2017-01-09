@@ -716,6 +716,23 @@ class Parse:
             #outputs += ["    '%s': '%s'," % (item[0], item[0])]
         return outputs
 
+def main(args):
+    """ What we run when we run this from the command line.
+        >>> main(build_parser(None))
+        """
+    pass
+
+def build_parser(args):
+    """ A method to handle argparse.
+        >>> args = build_parser(None)
+        >>> print args.verbose
+        True
+        """
+    parser = argparse.ArgumentParser(usage='$ python parse.py',
+                                     description=''' ''',
+                                     epilog='')
+    parser.add_argument("-v", "--verbose", dest="verbose", default=False, action="store_true")
+    return parser.parse_args()
 
 if __name__ == '__main__':
     # Parse the arguments, pass 'em to the function

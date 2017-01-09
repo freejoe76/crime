@@ -67,8 +67,8 @@ class PrintCrimes:
             >>> result = parse.get_rankings()
             >>> printcrimes = PrintCrimes(result, 'specific')
             >>> neighborhoods = printcrimes.print_neighborhoods(result)
-            >>> print neighborhoods[0]
-                'wellshire': {'full': 'Wellshire'},
+            >>> print neighborhoods[0], len(neighborhoods)
+                'sun-valley': {'full': 'Sun Valley'}, 75
             """
         outputs = []
         for item in crimes['crimes']['percapita']:
@@ -176,7 +176,8 @@ class PrintCrimes:
                 # Sometimes these "\" get fat-fingered into the address field,
                 # which is a problem bc it's an escape character that breaks 
                 # python's json library.
-                crime['INCIDENT_ADDRESS'] = string.replace(crime['INCIDENT_ADDRESS'], '\\', '')
+                if '\\' in crime['INCIDENT_ADDRESS']:
+                    crime['INCIDENT_ADDRESS'] = string.replace(crime['INCIDENT_ADDRESS'], '\\', '')
 
                 # Include the weekday, and a boolean flag for whether it's a weekend day
                 d = crime['FIRST_OCCURRENCE_DATE'].split(' ')[0]
@@ -274,6 +275,16 @@ class PrintCrimes:
             return outputs
         return json_str
 
+def main(options, args):
+    """ We run this when we run this script from the command line.
+        >>> main(None, None)
+        """
+    parse = Parse('_input/test')
+    parse.crime = 'violent'
+    parse.grep = False
+    parse.location = 'capitol-hill'
+    result = parse.get_specific_crime()
+    printcrimes = PrintCrimes(result, 'specific')
 
 if __name__ == '__main__':
     parser = OptionParser()
@@ -282,12 +293,7 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
     import doctest
     doctest.testmod(verbose=options.verbose)
-    parse = Parse('_input/test')
-    parse.crime = 'violent'
-    parse.grep = False
-    parse.location = 'capitol-hill'
-    result = parse.get_specific_crime()
-    printcrimes = PrintCrimes(result, 'specific')
+    main(options, args)
     '''
     parse.set_grep(options.grep)
     limit = parse.set_limit(int(options.limit))
