@@ -72,7 +72,7 @@ if __name__ == '__main__':
         item['report_type'] = options.report_type
         year = today.year
         #for yearback in [0, 1, 2, 3]:
-        for yearback in [0, 1]:
+        for yearback in [0, 1, 2]:
             item['numago'] = yearback
             report = Report(*args, **item)
 
