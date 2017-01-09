@@ -200,7 +200,7 @@ class Parse:
         else:
             timespan = self.set_timespan(args)
         addresses = {}
-        for row in self.crime_file.items():
+        for row in self.crime_file:
             if len(row) < 5:
                 continue
             record = dict(zip(dicts.keys, row))
@@ -251,7 +251,7 @@ class Parse:
             """
         type_of = self.get_address_type()
         crimes = []
-        for row in self.crime_file.items():
+        for row in self.crime_file:
             if len(row) < 5:
                 continue
             record = dict(zip(dicts.keys, row))
@@ -342,7 +342,7 @@ class Parse:
             adds = 0
             removes = 0
 
-        for row in self.crime_file.items():
+        for row in self.crime_file:
             if len(row) < 5:
                 continue
             record = dict(zip(dicts.keys, row))
@@ -481,7 +481,7 @@ class Parse:
             if not crime_file:
                 continue
 
-            for row in crime_file.items():
+            for row in crime_file:
                 # These two outcomes depend on whether we're reading from a file
                 # or already have a dict of crimes that we got from another query.
                 record = dict(zip(dicts.keys, row))
@@ -548,7 +548,7 @@ class Parse:
 
         crime_type = self.get_crime_type()
 
-        for row in self.crime_file.items():
+        for row in self.crime_file:
             record = dict(zip(dicts.keys, row))
 
             # Sometimes this happens: A header row on the record.
@@ -640,7 +640,7 @@ class Parse:
             set(['OFFENSE_CATEGORY_ID', 'all-other-crimes', 'murder', 'arson', 'theft-from-motor-vehicle', 'auto-theft', 'sexual-assault', 'drug-alcohol', 'larceny', 'aggravated-assault', 'other-crimes-against-persons', 'robbery', 'burglary', 'white-collar-crime', 'public-disorder'])
             """
         values = []
-        for row in self.crime_file.items():
+        for row in self.crime_file:
             record = dict(zip(dicts.keys, row))
             values.append(record[field])
 
