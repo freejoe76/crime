@@ -12,6 +12,7 @@ from datetime import datetime, date, timedelta
 from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
 from printcrimes import *
+import argparse
 
 # The location-specific data
 import dicts
@@ -135,6 +136,9 @@ class Parse:
             >>> print test_date
             2014-01-08 06:05:04
             """
+        # Note: Sometimes timestamps look like 2017-02-08 01:38:00.000001
+        if '.' in value:
+            value = value.split('.')[0]
         try:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         except:
@@ -559,7 +563,9 @@ class Parse:
             if self.timespan:
                 ts = self.check_datetime(record[self.date_field])
                 if ts == False:
-                    print record[self.date_field]
+                    # NEED TO SEND THIS TO AN ERROR LOG, NOT STDOUT
+                    #print record[self.date_field]
+                    pass
                 if not self.timespan[0] <= datetime.date(ts) <= self.timespan[1]:
                     continue
 
@@ -763,8 +769,8 @@ if __name__ == '__main__':
     silent = options.silent
     monthly = options.monthly
 
-    import doctest
-    doctest.testmod(verbose=options.verbose)
+    #import doctest
+    #doctest.testmod(verbose=options.verbose)
     
     if options.diff == True:
         filename = 'latestdiff'

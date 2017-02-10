@@ -21,7 +21,7 @@ source local.bash
 
 TEST=0
 NODOWNLOAD=0
-URL='http://data.denvergov.org/download/gis/crime/csv/crime.csv'
+URL='https://www.denvergov.org/media/gis/DataCatalog/crime/csv/crime.csv'
 while [ "$1" != "" ]; do
 	case $1 in
 		-n | --nodl ) 
