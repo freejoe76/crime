@@ -13,48 +13,10 @@ from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
 from printcrimes import *
 import argparse
-
+import logging
 # The location-specific data
 import dicts
 
-
-def timeago(time=False):
-    """ Get a datetime object or a int() Epoch timestamp and return a
-        pretty string like 'an hour ago', 'Yesterday', '3 months ago',
-        'just now', etc
-        """
-    if time == None:
-        return "never"
-    
-    now = datetime.now()
-    if type(time) is int:
-        diff = now - datetime.fromtimestamp(time)
-    elif isinstance(time,datetime):
-        diff = now - time 
-    elif not time:
-        diff = now - now
-    second_diff = diff.seconds
-    day_diff = diff.days
-
-    if day_diff < 0:
-        return ''
-
-    if day_diff == 0:
-        if second_diff < 10:
-            return "just now"
-        if second_diff < 60:
-            return str(second_diff) + " seconds"
-        if second_diff < 120:
-            return  "a minute ago"
-        if second_diff < 3600:
-            return str( second_diff / 60 ) + " minutes"
-        if second_diff < 7200:
-            return "an hour ago"
-        if second_diff < 86400:
-            return str( second_diff / 3600 ) + " hours"
-    if day_diff == 1:
-        return "One day"
-    return str(day_diff) + " days"
 
 class Parse:
     """ class Parse is the lowest-level interface with the crime data CSVs.
@@ -71,14 +33,14 @@ class Parse:
         """
 
     def __init__(self, crime_filename, diff = False, options = None):
-        # Initialize the major vars
+        """ Initialize the primary vars.
+            """
         self.grep = False
         self.verbose = False
         self.diff = diff
         self.set_timespan(None)
         self.location = None
 
-        #self.date_field = 'REPORTED_DATE'
         self.date_field = 'FIRST_OCCURRENCE_DATE'
         self.crime_file = self.open_csv(crime_filename, diff)
         self.crime_filename = crime_filename
@@ -110,7 +72,7 @@ class Parse:
 
     def abstract_keys(self, key):
         """ Take a key, return its CSV equivalent.
-            Used so we can use this for more than just Denver crime csv.
+            Used so we can use this in more than just Denver crime csv.
             """
         pass
 
@@ -119,6 +81,44 @@ class Parse:
 
     def get_location_ranking(self, locations, crime_type):
         pass
+
+    def timeago(self, time=False):
+        """ Get a datetime object or a int() Epoch timestamp and return a
+            pretty string like 'an hour ago', 'Yesterday', '3 months ago',
+            'just now', etc
+            """
+        if time == None:
+            return "never"
+        
+        now = datetime.now()
+        if type(time) is int:
+            diff = now - datetime.fromtimestamp(time)
+        elif isinstance(time,datetime):
+            diff = now - time 
+        elif not time:
+            diff = now - now
+        second_diff = diff.seconds
+        day_diff = diff.days
+
+        if day_diff < 0:
+            return ''
+
+        if day_diff == 0:
+            if second_diff < 10:
+                return "just now"
+            if second_diff < 60:
+                return str(second_diff) + " seconds"
+            if second_diff < 120:
+                return  "a minute ago"
+            if second_diff < 3600:
+                return str( second_diff / 60 ) + " minutes"
+            if second_diff < 7200:
+                return "an hour ago"
+            if second_diff < 86400:
+                return str( second_diff / 3600 ) + " hours"
+        if day_diff == 1:
+            return "One day"
+        return str(day_diff) + " days"
 
     def check_date(self, value):
         """ Check a date to see if it's valid. If not, throw error.
@@ -165,7 +165,7 @@ class Parse:
             elif self.grep == True:
                 # Loop through the types of crimes 
                 # (the lowest-level crime taxonomy), 
-                # looking for a partial string match.
+                # looking to match a partial string.
                 if '*' in self.crime:
                     search_re = self.crime.replace('*', '.*')
                     if re.search(search_re, record['OFFENSE_TYPE_ID']) != None:
@@ -191,8 +191,8 @@ class Parse:
 
     def get_addresses(self, *args):
         """ Get all the unique addresses. Filterable by neighborhood.
-            Returns a dict of streets with unique addresses, and crimes for each
-            of the addresses, for a neighborhood or the city.
+            Returns a dict of streets with unique addresses, and crimes at each
+            of the addresses, in regards to a neighborhood or the city.
             >>> parse = Parse('_input/test')
             >>> parse.location = 'west-highland'
             >>> result = parse.get_addresses()
@@ -236,7 +236,7 @@ class Parse:
         return addresses
 
     def search_addresses(self, *args):
-        """ Searches crimes for those that happened at a particular address.
+        """ Find crimes that happened at a particular address.
             The goal here is to allow us to loop through a list of addresses w/
             business names and get a list of recent crimes at local businesses.
 
@@ -291,7 +291,7 @@ class Parse:
             $ ./parse.py --verbose --action specific --crime meth --grep True
             $ ./parse.py --verbose --action specific --crime cocaine --grep True
             
-            Returns frequency for csv specified.
+            Returns frequency in csv specified.
             Also returns the # of days since the last crime.
 
             Args, if they exist, should be two valid date or datetimes, and be
@@ -317,7 +317,7 @@ class Parse:
             else:
                 last_crime = self.check_datetime(crimes['crimes'][0][self.date_field])
 
-        return { 'count': count, 'last_crime': timeago(last_crime), 'crime': self.crime }
+        return { 'count': count, 'last_crime': self.timeago(last_crime), 'crime': self.crime }
 
     def get_recent_crimes(self, *args, **kwargs):
         """ Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
@@ -445,7 +445,7 @@ class Parse:
 
             # >>> result = parse.get_monthly()
             # >>> print result
-            # *** Will need a more robust selection of test data for this one.
+            # *** Will need a more robust selection of test data
             """
         i = 0
         crime_type = self.get_crime_type()
@@ -496,7 +496,7 @@ class Parse:
                     if self.does_crime_match(record, crime_type):
                         crimes['counts'][yearmonth]['count'] += 1
                 else:
-                    # We query a more general csv file for the no-location
+                    # We query a more general csv file in the no-location
                     # queries, so we have to filter it more.
                     if self.does_crime_match(record, crime_type):
                         if yearmonth in record['FIRST_OCCURRENCE_DATE']:
@@ -513,8 +513,8 @@ class Parse:
     def get_rankings(self, *args, **kwargs):
         """ Take a crime type or category and return a list of neighborhoods 
             ranked by frequency of that crime.
-            If no crime is passed, we just rank overall number of crimes
-            (and crimes per-capita) for that particular time period.
+            If no crime is passed, we rank overall number of crimes
+            (and crimes per-capita) in that particular time period.
             The time period defaults to the _input/currentyear.csv.
             Args, if they exist, should be two valid date or datetimes, and be
             the timespan's range.
@@ -667,7 +667,7 @@ class Parse:
         return None
         
     def open_csv(self, fn = '_input/currentyear', diff = False):
-        """ Open the crime CSV for parsing.
+        """ Open the crime CSV to parse it.
             It defaults to the current year's file.
             >>> parse = Parse('_input/test')
             >>> result = parse.open_csv('_input/test')
@@ -793,7 +793,7 @@ if __name__ == '__main__':
     if action == 'monthly':
         # Example:
         # $ ./parse.py --action monthly --location capitol-hill --crime violent
-        # The limit defaults to 0, but 23 is our go-to number for this report.
+        # The limit defaults to 0, but 23 is our go-to number in this report.
         if limit == 0:
             limit = 23
         crimes = parse.get_monthly(limit)
