@@ -679,8 +679,7 @@ class Parse:
         except:
             return False
 
-        # Sort the csv by the reported date (the 7th field, 6 on a 0-index,
-        # because that's the only one that's guaranteed to be in the record.)
+        # Sort the csv by the first occurrence (the 7th field, 6 on a 0-index)
         # Newest items go on top. It's possible we won't hard-code
         # this forever.
         if diff == False:
@@ -809,7 +808,6 @@ if __name__ == '__main__':
         if not location:
             crimes['crimes']['neighborhood'].reverse()
             crimes['crimes']['percapita'].reverse()
-        #print print_neighborhoods(crimes)
     elif action == 'recent':
         # Example:
         # $ ./parse.py --action recent --crime violent --location capitol-hill --output csv

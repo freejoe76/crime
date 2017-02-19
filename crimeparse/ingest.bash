@@ -66,6 +66,7 @@ if [[ $NODOWNLOAD -eq 0 ]]; then
         echo "Filesize: $FILESIZE"
         wget -O new-unsorted.csv $URL; 
         FILESIZE=$(du -b "new-unsorted.csv" | cut -f 1)
+        # TEST THIS FIRST *** cat new-unsorted.csv > sed -i -e 's#\.000001##g' > new-unsorted.csv
     done
 fi
 
