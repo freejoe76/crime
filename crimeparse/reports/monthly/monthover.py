@@ -89,19 +89,25 @@ if __name__ == '__main__':
                 # Compare each item in the current set to the set that follows.
                 # Make note of the difference in count and ranking.
                 for record in comparison[i][0]['crimes']['percapita']:
-                    diff = round(comparison[i][0]['crimes']['percapita'][record]['count'] - comparison[i+1][0]['crimes']['percapita'][record]['count'], 3)
-                    if diff != 0:
+                    #print record, "HI"
+                    #print comparison[i][0]['crimes']['percapita'][record]
+                    #print comparison[i+1][0]['crimes']['percapita'][record]
+                    try:
+                        diff = round(comparison[i][0]['crimes']['percapita'][record]['count'] - comparison[i+1][0]['crimes']['percapita'][record]['count'], 3)
+                        if diff != 0:
+                            if diff > 0:
+                                risers['count'][record] = diff
+                            else:
+                                fallers['count'][record] = diff
+                        if comparison[i][0]['crimes']['percapita'][record]['count'] == 0:
+                            continue
+                        diff = comparison[i][0]['crimes']['percapita'][record]['rank'] - comparison[i+1][0]['crimes']['percapita'][record]['rank']
                         if diff > 0:
-                            risers['count'][record] = diff
+                            risers['rank'][record] = diff
                         else:
-                            fallers['count'][record] = diff
-                    if comparison[i][0]['crimes']['percapita'][record]['count'] == 0:
+                            fallers['rank'][record] = diff
+                    except:
                         continue
-                    diff = comparison[i][0]['crimes']['percapita'][record]['rank'] - comparison[i+1][0]['crimes']['percapita'][record]['rank']
-                    if diff > 0:
-                        risers['rank'][record] = diff
-                    else:
-                        fallers['rank'][record] = diff
         risers['count'] = sorted(risers['count'].iteritems(), key=operator.itemgetter(1), reverse=True)
         risers['rank'] = sorted(risers['rank'].iteritems(), key=operator.itemgetter(1), reverse=True)
         fallers['count'] = sorted(fallers['count'].iteritems(), key=operator.itemgetter(1))
