@@ -459,31 +459,42 @@ class Parse:
 
         if limit == []:
             limit = 24
+        yearmonths = yearmonths[:limit]
 
+        # We need the crimes, the counter, the empty dict, and the month.
+        # If we're filtering an existing set of crimes (self.crimes), then we take
+        # that instead of the crime file.
+        if hasattr(self, 'crimes'):
+            crime_file = self.crimes['crimes']
+        else:
+            if limit > 24:
+                filename = 'current'
+            else:
+                filename = 'last24months'
+            crime_file = self.open_csv('_input/%s' % filename, self.diff)
+
+        # Initialize the dict we put the data in, run location search if we have one.
         while i < limit:
             yearmonth = yearmonths[i].strip()
             crimes['counts'][yearmonth] = { 'count': 0, 'date': self.check_date('%s-01' % yearmonth) }
 
-            # We need the crimes, the counter, the empty dict, and the month.
-            # If we're filtering an existing set of crimes (self.crimes), then we take
-            # that instead of the crime file.
-            if hasattr(self, 'crimes'):
-                crime_file = self.crimes['crimes']
-            else:
-                if location:
-                    filename = 'location_%s-%s' % (self.location, yearmonth)
-                else:
-                    #filename = '%imonthsago' % i 
-                    filename = 'last24months'
+            # Location-specific queries are handled a little different and
+            # require slightly different logic.
+            if location and not hasattr(self, 'crimes'):
+                filename = 'location_%s-%s' % (self.location, yearmonth)
                 crime_file = self.open_csv('_input/%s' % filename, self.diff)
+                if self.crime == None:
+                    crimes['counts'][yearmonth]['count'] = len(crime_file)
+                else:
+                    for row in crime_file:
+                        record = dict(zip(dicts.keys, row))
+                        if 'OFFENSE_CATEGORY_ID' in row:
+                            record = row
+                        if self.does_crime_match(record, crime_type):
+                            crimes['counts'][yearmonth]['count'] += 1
             i += 1
 
-            if self.crime == None:
-                crimes['counts'][yearmonth]['count'] = len(crime_file)
-                continue
-
-            if not crime_file:
-                continue
+        if not location:
 
             for row in crime_file:
                 # These two outcomes depend on whether we're reading from a file
@@ -491,16 +502,16 @@ class Parse:
                 record = dict(zip(dicts.keys, row))
                 if 'OFFENSE_CATEGORY_ID' in row:
                     record = row
+                    continue
 
-                if location:
-                    if self.does_crime_match(record, crime_type):
-                        crimes['counts'][yearmonth]['count'] += 1
-                else:
-                    # We query a more general csv file in the no-location
-                    # queries, so we have to filter it more.
-                    if self.does_crime_match(record, crime_type):
-                        if yearmonth in record['FIRST_OCCURRENCE_DATE']:
-                            crimes['counts'][yearmonth]['count'] += 1
+                # We query a more general csv file in the no-location
+                # queries, so we have to filter it more.
+                if self.does_crime_match(record, crime_type):
+                    for yearmonth in yearmonths:
+                        ym = yearmonth.strip()
+                        if ym in record['FIRST_OCCURRENCE_DATE']:
+                            crimes['counts'][ym]['count'] += 1
+                            break
                     
         # Update the max, sum and avg:
         for item in crimes['counts']:
