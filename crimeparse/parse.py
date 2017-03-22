@@ -495,14 +495,12 @@ class Parse:
             i += 1
 
         if not location:
-
             for row in crime_file:
                 # These two outcomes depend on whether we're reading from a file
                 # or already have a dict of crimes that we got from another query.
                 record = dict(zip(dicts.keys, row))
                 if 'OFFENSE_CATEGORY_ID' in row:
                     record = row
-                    continue
 
                 # We query a more general csv file in the no-location
                 # queries, so we have to filter it more.
@@ -614,7 +612,7 @@ class Parse:
 
         for item in percapita['neighborhood'].items():
             try:
-                item[1]['count'] = round( float(item[1]['count'])/float(dicts.populations[item[0]]) * 1000, 2)
+                item[1]['count'] = round( float(item[1]['count'])/float(dicts.populations[item[0]]['2015']) * 1000, 2)
             except:
                 #print "ERROR: ", item
                 pass
