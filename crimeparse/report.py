@@ -3,7 +3,7 @@
 # Publish json data suitable for a (month / year) report. A higher-level interface to parse.py
 #
 # Takes input (report date type, crime, location) and returns report in json
-# Example command (assumes report config file in ./reports/yoy/yoy.py:
+# Example command (assumes report config file in ./reports/yoy/yoy.py ):
 # $ python -m reports.yoy.yoy 2014-01-01 2014-07-31 --location capitol-hill
 from optparse import OptionParser
 from parse import Parse
@@ -14,7 +14,7 @@ class Report:
         crime queries ( crime_items ). Report takes a dict of crime_item definitions:
         { 
             'slug': '[[slug]]', 'name': '[[full-name]]', 
-            'date_type': 'month', 'numago': '0', 'report_type': 'rankings',
+            'date_type': 'monthly', 'numago': '0', 'report_type': 'rankings',
             'location': 'capitol-hill', 'crime': 'violent', 'grep': False 
         }
         """
@@ -48,13 +48,15 @@ class Report:
     def set_timespan(self, value, numago=0):
         """ Set the object's timespan var.
             numago defines the number of years previous to the initial timestamp.
-            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
+            >>> report = Report(**{'date_type': 'monthly', 'location': 'capitol-hill'})
             >>> timespan = report.set_timespan(['2013-01-08', '2013-11-27'])
             >>> print timespan
             [datetime.date(2013, 1, 8), datetime.date(2013, 11, 27)]
             """
         if self.date_type == 'month':
-            # Months only take one value: The date you want to start counting
+            # Monthly is for specific months.
+        if self.date_type == 'monthly':
+            # Monthly only takes one value: The date you want to start counting
             # backward to figure out the month from.
             # We're defining "month" here as "any 30 day period of time."
             time_to = datetime.strptime(value[0], '%Y-%m-%d').date()
@@ -64,7 +66,7 @@ class Report:
             time_to = datetime.strptime(value[1], '%Y-%m-%d').date()
 
         if numago > 0:
-            if self.date_type == 'month':
+            if self.date_type == 'monthly':
                 daysago = numago * 30
                 # The +1 makes sure that we're not counting the crimes on the
                 # border dates twice.
@@ -87,7 +89,7 @@ class Report:
 
     def set_report_type(self, value):
         """ Set the object's report_type var.
-            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
+            >>> report = Report(**{'date_type': 'monthly', 'location': 'capitol-hill'})
             >>> report_type = report.set_report_type('specific')
             >>> print report_type
             specific
@@ -100,7 +102,7 @@ class Report:
 
     def build_filename(self):
         """ Put together the pieces we need to get the filename we query.
-            >>> report = Report(**{'date_type': 'month', 'location': 'capitol-hill'})
+            >>> report = Report(**{'date_type': 'monthly', 'location': 'capitol-hill'})
             >>> filename = report.build_filename()
             >>> print filename
             last4months
@@ -110,7 +112,7 @@ class Report:
 
         if self.date_type == 'test':
             return 'test'
-        elif self.date_type == 'month':
+        elif self.date_type == 'monthly':
             # We would never query the current month, it's never complete.
             # That's why we offset all month-queries by one.
             self.numago += 4

@@ -8,15 +8,15 @@ from optparse import OptionParser
 from datetime import date
 
 report_items = [ 
-        { 'slug': 'assault', 'name': 'Assault', 'date_type': 'month', 'location': '', 'crime': 'assault', 'grep': True },
-        { 'slug': 'homicide', 'name': 'Homicide', 'date_type': 'month', 'location': '', 'crime': 'murder', 'grep': False  },
-        { 'slug': 'rape', 'name': 'Rape', 'date_type': 'month', 'location': '', 'crime': 'sex-aslt-rape', 'grep': False  },
-        { 'slug': 'violent', 'name': 'Violent',  'date_type': 'month', 'location': '', 'crime': 'violent', 'grep': False },
-        { 'slug': 'property', 'name': 'Property',  'date_type': 'month', 'location': '', 'crime': 'property', 'grep': False },
-        { 'slug': 'dv', 'name': 'Domestic Violence',  'date_type': 'month', 'location': '', 'crime': 'dv', 'grep': True },
-        { 'slug': 'robbery', 'name': 'Robbery',  'date_type': 'month', 'location': '', 'crime': 'robbery', 'grep': True },
-        { 'slug': 'theft_car', 'name': 'Car Theft',  'date_type': 'month', 'location': '', 'crime': 'theft-of-motor-vehicle', 'grep': False },
-        { 'slug': 'theft_bike', 'name': 'Bike Theft',  'date_type': 'month', 'location': '', 'crime': 'theft-bicycle', 'grep': False }
+        { 'slug': 'assault', 'name': 'Assault', 'date_type': 'monthly', 'location': '', 'crime': 'assault', 'grep': True },
+        { 'slug': 'homicide', 'name': 'Homicide', 'date_type': 'monthly', 'location': '', 'crime': 'murder', 'grep': False  },
+        { 'slug': 'rape', 'name': 'Rape', 'date_type': 'monthly', 'location': '', 'crime': 'sex-aslt-rape', 'grep': False  },
+        { 'slug': 'violent', 'name': 'Violent',  'date_type': 'monthly', 'location': '', 'crime': 'violent', 'grep': False },
+        { 'slug': 'property', 'name': 'Property',  'date_type': 'monthly', 'location': '', 'crime': 'property', 'grep': False },
+        { 'slug': 'dv', 'name': 'Domestic Violence',  'date_type': 'monthly', 'location': '', 'crime': 'dv', 'grep': True },
+        { 'slug': 'robbery', 'name': 'Robbery',  'date_type': 'monthly', 'location': '', 'crime': 'robbery', 'grep': True },
+        { 'slug': 'theft_car', 'name': 'Car Theft',  'date_type': 'monthly', 'location': '', 'crime': 'theft-of-motor-vehicle', 'grep': False },
+        { 'slug': 'theft_bike', 'name': 'Bike Theft',  'date_type': 'monthly', 'location': '', 'crime': 'theft-bicycle', 'grep': False }
         { 'slug': 'burglary-forced', 'name': 'Burglary: Forced',  'date_type': 'weekly', 'location': '', 'crime': 'by-force', 'grep': True },
         { 'slug': 'burglary-unforced', 'name': 'Burglary: Unforced',  'date_type': 'weekly', 'location': '', 'crime': 'no-force', 'grep': True },
         { 'slug': 'burglary-business-forced', 'name': 'Burglary: Business: Forced',  'date_type': 'weekly', 'location': '', 'crime': 'burglary-business-by-force', 'grep': True},
@@ -40,7 +40,7 @@ report_items = [
 if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-l", "--location", dest="location")
-    parser.add_option("-d", "--date_type", dest="date_type", default="month")
+    parser.add_option("-d", "--date_type", dest="date_type", default="monthly")
     parser.add_option("-r", "--report", dest="report_type", default="specific")
     #parser.add_option("-c", "--crime", dest="crime", default=None)
     parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False)
