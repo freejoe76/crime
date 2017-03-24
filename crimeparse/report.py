@@ -45,6 +45,17 @@ class Report:
         if args and args[0] != '':
             self.set_timespan(args, self.numago)
 
+    def last_day_of_a_month(self, d):
+        """ Return a date object of the last day of the month of the dat object
+            provided.
+            >>> report = Report(**{'date_type': 'monthly', 'location': 'capitol-hill'})
+            >>> d = date(2016, 8, 3)
+            >>> print report.last_day_of_a_month(d)
+            date(2016, 8, 31)
+            """
+        next_month = d.replace(day=28) + timedelta(days=4)
+        return next_month - datetime.timedelta(days=next_month.day)
+
     def set_timespan(self, value, numago=0):
         """ Set the object's timespan var.
             numago defines the number of years previous to the initial timestamp.
@@ -54,8 +65,12 @@ class Report:
             [datetime.date(2013, 1, 8), datetime.date(2013, 11, 27)]
             """
         if self.date_type == 'month':
-            # Monthly is for specific months.
-        if self.date_type == 'monthly':
+            # Monthly is for specific months. Start with current month
+            # and go from there.
+            d = date.today()
+            time_from = d.replace(day=1)
+            time_to = self.last_day_of_a_month(time_from)
+        elif self.date_type == 'monthly':
             # Monthly only takes one value: The date you want to start counting
             # backward to figure out the month from.
             # We're defining "month" here as "any 30 day period of time."
@@ -66,7 +81,20 @@ class Report:
             time_to = datetime.strptime(value[1], '%Y-%m-%d').date()
 
         if numago > 0:
-            if self.date_type == 'monthly':
+            if self.date_type == 'month':
+                # Calculate a previous month, based on numago, which is how
+                # many months back we go.
+                months = numago % 12
+                if months >= time_from.month:
+                    time_from = time_from.replace(year=time_from.year - 1)
+                    time_from = time_from.replace(month=12-(months - time_from.months))
+                else:
+                    time_from = time_from.replace(month=(time_from.months - months))
+                if numago - months > 0:
+                    years = int((numago-months)/12)
+                    time_from = time_from.replace(year=time_from.year - years)
+                time_to = self.last_day_of_a_month(time_from)
+            elif self.date_type == 'monthly':
                 daysago = numago * 30
                 # The +1 makes sure that we're not counting the crimes on the
                 # border dates twice.
@@ -112,6 +140,9 @@ class Report:
 
         if self.date_type == 'test':
             return 'test'
+        elif self.date_type == 'month':
+            return 'last12months'
+            return 'current'
         elif self.date_type == 'monthly':
             # We would never query the current month, it's never complete.
             # That's why we offset all month-queries by one.
