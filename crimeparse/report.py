@@ -54,7 +54,7 @@ class Report:
             date(2016, 8, 31)
             """
         next_month = d.replace(day=28) + timedelta(days=4)
-        return next_month - datetime.timedelta(days=next_month.day)
+        return next_month - timedelta(days=next_month.day)
 
     def set_timespan(self, value, numago=0):
         """ Set the object's timespan var.
@@ -87,9 +87,9 @@ class Report:
                 months = numago % 12
                 if months >= time_from.month:
                     time_from = time_from.replace(year=time_from.year - 1)
-                    time_from = time_from.replace(month=12-(months - time_from.months))
+                    time_from = time_from.replace(month=12-(months - time_from.month))
                 else:
-                    time_from = time_from.replace(month=(time_from.months - months))
+                    time_from = time_from.replace(month=(time_from.month - months))
                 if numago - months > 0:
                     years = int((numago-months)/12)
                     time_from = time_from.replace(year=time_from.year - years)
@@ -141,7 +141,7 @@ class Report:
         if self.date_type == 'test':
             return 'test'
         elif self.date_type == 'month':
-            return 'last12months'
+            #return 'last12months'
             return 'current'
         elif self.date_type == 'monthly':
             # We would never query the current month, it's never complete.
@@ -165,10 +165,8 @@ class Report:
         parse = Parse('_input/%s' % fn)
         parse.crime = self.crime
         parse.grep = self.grep
-        try:
+        if hasattr(self, 'location'):
             parse.location = self.location
-        except:
-            pass
         try:
             parse.set_timespan(self.timespan)
         except:
