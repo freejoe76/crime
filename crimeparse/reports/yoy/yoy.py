@@ -6,6 +6,7 @@ from datetime import date
 from optparse import OptionParser
 
 report_items = [ 
+        { 'slug': 'white-collar-crime', 'name': 'White Collar crime', 'date_type': '', 'location': '', 'crime': 'white-collar-crime', 'grep': False },
         { 'slug': 'weapon-fire', 'name': 'Weapon Fired', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'weapon-fire', 'grep': True },
         { 'slug': 'traffic-accident-hit-and-run', 'name': 'Hit and Runs', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'traffic-accident-hit-and-run', 'grep': False },
         { 'slug': 'traffic-accident-dui-duid', 'name': 'DUI', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'traffic-accident-dui-duid', 'grep': False },

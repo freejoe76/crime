@@ -156,6 +156,8 @@ class Parse:
             >>> print parse.does_crime_match(record, crime_type)
             True
             """
+        if  type(record) is not dict:
+            return False
         if crime_type == 'parent_category':
             if record['OFFENSE_CATEGORY_ID'] in dicts.crime_lookup_reverse[self.crime]:
                 return True

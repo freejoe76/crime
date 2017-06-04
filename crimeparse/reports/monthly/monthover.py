@@ -14,12 +14,14 @@ from optparse import OptionParser
 from datetime import date
 
 report_items = [ 
-        { 'slug': 'all', 'name': 'All Crime', 'date_type': 'monthly', 'location': '', 'crime': '*', 'grep': True},
+        { 'slug': 'white-collar-crime', 'name': 'White Collar crime', 'date_type': '', 'location': '', 'crime': 'white-collar-crime', 'grep': False },
+        { 'slug': 'weapon-fire', 'name': 'Weapon Fired', 'report_type': '', 'date_type': '', 'location': '', 'crime': 'weapon-fire', 'grep': True },
+        { 'slug': 'all', 'name': 'All Crime', 'date_type': 'monthly', 'location': '', 'crime': '*', 'grep': True },
         { 'slug': 'traffic-accident-hit-and-run', 'name': 'Hit and Runs',  'date_type': 'monthly', 'location': '', 'crime': 'traffic-accident-hit-and-run', 'grep': False },
         { 'slug': 'traffic-accident-dui-duid', 'name': 'DUI',  'date_type': 'monthly', 'location': '', 'crime': 'traffic-accident-dui-duid', 'grep': False },
         { 'slug': 'aggravated-assault', 'name': 'Serious Assault',  'date_type': 'monthly', 'location': '', 'crime': 'aggravated-assault' },
         { 'slug': 'assault', 'name': 'All Assaults', 'date_type': 'monthly', 'location': '', 'crime': 'assault', 'grep': True },
-        { 'slug': 'homicide', 'name': 'Homicide', 'date_type': 'monthly', 'location': '', 'crime': 'murder', 'grep': False  },
+        { 'slug': 'homicide', 'name': 'Homicide', 'date_type': 'monthly', 'location': '', 'crime': 'murder', 'grep': False },
         { 'slug': 'violent', 'name': 'Violent',  'date_type': 'monthly', 'location': '', 'crime': 'violent', 'grep': False },
         { 'slug': 'rape', 'name': 'Rape', 'date_type': 'monthly', 'location': '', 'crime': 'sex-aslt-rape', 'grep': False  },
         { 'slug': 'property', 'name': 'Property',  'date_type': 'monthly', 'location': '', 'crime': 'property', 'grep': False },
