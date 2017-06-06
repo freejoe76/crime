@@ -488,12 +488,15 @@ class Parse:
                 if self.crime == None:
                     crimes['counts'][yearmonth]['count'] = len(crime_file)
                 else:
-                    for row in crime_file:
-                        record = dict(zip(dicts.keys, row))
-                        if 'OFFENSE_CATEGORY_ID' in row:
-                            record = row
-                        if self.does_crime_match(record, crime_type):
-                            crimes['counts'][yearmonth]['count'] += 1
+                    if not crime_file:
+                        crimes['counts'][yearmonth]['count'] = 0
+                    else:
+                        for row in crime_file:
+                            record = dict(zip(dicts.keys, row))
+                            if 'OFFENSE_CATEGORY_ID' in row:
+                                record = row
+                            if self.does_crime_match(record, crime_type):
+                                crimes['counts'][yearmonth]['count'] += 1
             i += 1
 
         if not location:
