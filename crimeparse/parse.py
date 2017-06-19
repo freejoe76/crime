@@ -131,6 +131,7 @@ class Parse:
 
     def check_datetime(self, value):
         """ Check a datetime to see if it's valid. If not, return False.
+            Sometimes datestamps have dashes, sometimes they look completely different. 9/9/2016 9:55:00 AM
             >>> parse = Parse('_input/test')
             >>> test_date = parse.check_datetime('2014-01-08 06:05:04')
             >>> print test_date
@@ -142,6 +143,10 @@ class Parse:
         try:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         except:
+            try:
+                return datetime.strptime(value, '%m/%d/%Y %H:%M:%S %p')
+            except:
+                return False
             return False
 
     def does_crime_match(self, record, crime_type):
@@ -577,7 +582,7 @@ class Parse:
             if self.timespan:
                 ts = self.check_datetime(record[self.date_field])
                 if ts == False:
-                    # NEED TO SEND THIS TO AN ERROR LOG, NOT STDOUT
+                    # TODO NEED TO SEND THIS TO AN ERROR LOG, NOT STDOUT
                     #print record[self.date_field]
                     pass
                 if not self.timespan[0] <= datetime.date(ts) <= self.timespan[1]:
