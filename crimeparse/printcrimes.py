@@ -181,7 +181,8 @@ class PrintCrimes:
 
                 # Include the weekday, and a boolean flag for whether it's a weekend day
                 d = crime['FIRST_OCCURRENCE_DATE'].split(' ')[0]
-                weekday = datetime.strptime(d, '%Y-%M-%d').weekday()
+                #weekday = datetime.strptime(d, '%Y-%M-%d').weekday()
+                weekday = datetime.strptime(d, '%M/%d/%Y').weekday()
                 weekend = 0
                 if weekday == 0 or weekday == 6:
                     weekend = 1

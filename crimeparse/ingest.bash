@@ -54,8 +54,8 @@ THIS_YEAR=`date +'%Y'`
 LAST_YEAR=`expr $THIS_YEAR - 1`
 LAST_LAST_YEAR=`expr $THIS_YEAR - 2`
 
-THIS_MONTH=`date +'%Y-%m'`
-LAST_MONTH=`date +'%Y-%m' --date='month ago'`
+THIS_MONTH=`date +'%-m'`
+LAST_MONTH=`date +'%Y-%-m' --date='month ago'`
 
 touch current.csv
 
@@ -90,8 +90,8 @@ if [[ $TEST -eq 1 ]]; then
     echo './processdiff.py new.diff > "archive-$DATE.csv"'
 	echo 'mv current.csv old.csv'
 	echo 'mv new.csv current.csv'
-	echo './matchline.py "'$THIS_YEAR'-" current.csv > currentyear.csv'
-	echo './matchline.py "'$LAST_YEAR'-" current.csv > lastyear.csv'
+	echo './matchline.py "/'$THIS_YEAR'" current.csv > currentyear.csv'
+	echo './matchline.py "/'$LAST_YEAR'" current.csv > lastyear.csv'
 	echo './matchline.py "'$THIS_MONTH'" current.csv > currentmonth.csv'
 
 elif [[ $DIFFCOUNT -gt 0 ]]; then
@@ -111,10 +111,10 @@ fi
 
 # We run these operations if there are differences, or if we've set NODOWNLOAD.
 if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
-	./matchline.py "$THIS_YEAR-" current.csv > currentyear.csv &
-	./matchline.py "$THIS_YEAR-" current.csv > $THIS_YEAR.csv &
-	./matchline.py "$LAST_YEAR-" current.csv > lastyear.csv &
-	./matchline.py "$THIS_YEAR-$THIS_MONTH" current.csv > currentmonth.csv &
+	./matchline.py "/$THIS_YEAR" current.csv > currentyear.csv &
+	./matchline.py "/$THIS_YEAR" current.csv > $THIS_YEAR.csv &
+	./matchline.py "/$LAST_YEAR" current.csv > lastyear.csv &
+	./matchline.py "$THIS_MONTH/.*/$THIS_YEAR" current.csv > currentmonth.csv &
 
     # Build a csv of the crimes for the last 0-12 months
     for MONTHNUM in {0..12}; do > $MONTHNUM"monthsago.csv"; done
@@ -135,11 +135,11 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
             TEMPNUM=$(($NUM + 1))
             if [ $MONTHNUM -gt $TEMPNUM ]; then
                 echo $MONTHNUM
-                ./matchline.py `date +'%Y-%m' --date="$NUM months ago"` current.csv >> "last"$MONTHNUM"months.csv"
+                ./matchline.py `date +'%-m/.*/%Y' --date="$NUM months ago"` current.csv >> "last"$MONTHNUM"months.csv"
             fi
         done
         echo '======'
-        ./matchline.py `date +'%Y-%m' --date="$NUM months ago"` current.csv >> $NUM"monthsago.csv"
+        ./matchline.py `date +'%-m/.*/%Y' --date="$NUM months ago"` current.csv >> $NUM"monthsago.csv"
     done
 
     # Build a csv of the crimes for the last 24, 48, 60, 72 months
@@ -151,9 +151,10 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
     #for NUM in {0..23}; do
     for NUM in {0..59}; do
         YEARMONTH=`date +'%Y-%m' --date="$NUM months ago"`
+        YEARMONTH_SEARCH=`date +'%-m/.*/%Y' --date="$NUM months ago"`
         for MONTH in 24 36 48 60; do
             if [[ $NUM -lt $MONTH ]]; then
-                ./matchline.py $YEARMONTH current.csv >> last$MONTH"months.csv"
+                ./matchline.py $YEARMONTH_SEARCH current.csv >> last$MONTH"months.csv"
                 echo $YEARMONTH >> last$MONTH"months.txt"
             fi
         done
@@ -166,11 +167,12 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
     done
 
     for NUM in {0..23}; do
-        YEARMONTH=`date +'%Y-%m' --date="$NUM months ago"`
+        YEARMONTH=`date +'Y-%m' --date="$NUM months ago"`
+        YEARMONTH_SEARCH=`date +'%-m/.*/%Y' --date="$NUM months ago"`
         for HOOD in ${HOODS[@]}; do
             # We include the comma in the grep to distinguish btw, say,
             # north-capitol-hill and capitol-hill. It's a CSV, the comma's the delimiter.
-            ./matchline.py $YEARMONTH current.csv | grep ,$HOOD > location_$HOOD-$YEARMONTH.csv
+            ./matchline.py $YEARMONTH_SEARCH current.csv | grep ,$HOOD > location_$HOOD-$YEARMONTH.csv
         done
     done
 
