@@ -21,11 +21,15 @@ source local.bash
 
 TEST=0
 NODOWNLOAD=0
+DOWNLOADONLY=0
 URL='https://www.denvergov.org/media/gis/DataCatalog/crime/csv/crime.csv'
 while [ "$1" != "" ]; do
 	case $1 in
 		-n | --nodl ) 
 			NODOWNLOAD=1
+			;;
+		--dlonly ) 
+			DOWNLOADONLY=1
 			;;
 		-t | --test ) 
 			TEST=1
@@ -108,6 +112,8 @@ elif [[ $DIFFCOUNT -gt 0 ]]; then
 else
     echo "NO NEW CRIMES."
 fi
+
+if [[ $DOWNLOADONLY -eq 1 ]]; then exit 1; fi
 
 # We run these operations if there are differences, or if we've set NODOWNLOAD.
 if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
