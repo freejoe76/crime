@@ -137,9 +137,6 @@ class Parse:
             >>> print test_date
             2014-01-08 06:05:04
             """
-        # Note: Sometimes timestamps look like 2017-02-08 01:38:00.000001
-        if '.' in value:
-            value = value.split('.')[0]
         try:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         except:
