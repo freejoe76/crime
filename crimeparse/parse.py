@@ -514,7 +514,9 @@ class Parse:
                 if self.does_crime_match(record, crime_type):
                     for yearmonth in yearmonths:
                         ym = yearmonth.strip()
-                        if ym in record['FIRST_OCCURRENCE_DATE']:
+                        bits = ym.split('-')
+                        search = re.compile('%s/.*/%s' % (bits[1].lstrip('0'), bits[0]))
+                        if search.search(record['FIRST_OCCURRENCE_DATE']):
                             crimes['counts'][ym]['count'] += 1
                             break
                     
