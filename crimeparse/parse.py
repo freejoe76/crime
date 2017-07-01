@@ -142,7 +142,7 @@ class Parse:
         except:
             try:
                 # DATEFORMAT
-                return datetime.strptime(value, '%m/%d/%Y %H:%M:%S %p')
+                return datetime.strptime(value, '%m/%d/%Y %I:%M:%S %p')
             except:
                 return False
         return False
