@@ -72,6 +72,7 @@ if [[ $NODOWNLOAD -eq 0 ]]; then
         FILESIZE=$(du -b "new-unsorted.csv" | cut -f 1)
         # TEST THIS FIRST *** cat new-unsorted.csv > sed -i -e 's#\.000001##g' > new-unsorted.csv
     done
+    sed -i '/LAT:/d' new-unsorted.csv
 fi
 
 
@@ -158,6 +159,7 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
     for NUM in {0..59}; do
         YEARMONTH=`date +'%Y-%m' --date="$NUM months ago"`
         YEARMONTH_SEARCH=`date +'%-m/.*/%Y' --date="$NUM months ago"`
+        # TODO: Sometimes 3 months ago is the same month as 4 months ago, need to look out for that.
         for MONTH in 24 36 48 60; do
             if [[ $NUM -lt $MONTH ]]; then
                 ./matchline.py $YEARMONTH_SEARCH current.csv >> last$MONTH"months.csv"

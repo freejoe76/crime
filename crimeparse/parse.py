@@ -141,10 +141,11 @@ class Parse:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         except:
             try:
+                # DATEFORMAT
                 return datetime.strptime(value, '%m/%d/%Y %H:%M:%S %p')
             except:
                 return False
-            return False
+        return False
 
     def does_crime_match(self, record, crime_type):
         """ Compares the crime against the fields in the record to see if it matches.
@@ -786,8 +787,9 @@ if __name__ == '__main__':
     silent = options.silent
     monthly = options.monthly
 
-    #import doctest
-    #doctest.testmod(verbose=options.verbose)
+    if options.verbose:
+        import doctest
+        doctest.testmod(verbose=options.verbose)
     
     if options.diff == True:
         filename = 'latestdiff'
