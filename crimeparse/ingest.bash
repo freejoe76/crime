@@ -179,29 +179,30 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
         YEARMONTH_SEARCH=`date +'%-m/.*/%Y' --date="$NUM months ago"`
         for HOOD in ${HOODS[@]}; do
             # We include the comma in the grep to distinguish btw, say,
-            # north-capitol-hill and capitol-hill. It's a CSV, the comma's the delimiter.
-            ./matchline.py $YEARMONTH_SEARCH current.csv | grep ,$HOOD > location_$HOOD-$YEARMONTH.csv
+            # north-capitol-hill and capitol-hill. It's a CSV, the comma's the delimiter
+            # and now there are always quotes around each record.
+            ./matchline.py $YEARMONTH_SEARCH current.csv | grep ,\"$HOOD > location_$HOOD-$YEARMONTH.csv
         done
     done
 
     for HOOD in ${HOODS[@]}; do
-        ./matchline.py $THIS_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$THIS_YEAR.csv &
-        ./matchline.py $LAST_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$LAST_YEAR.csv
-        ./matchline.py $LAST_LAST_YEAR current.csv | grep ,$HOOD >> location_$HOOD-$LAST_LAST_YEAR.csv
+        ./matchline.py $THIS_YEAR current.csv | grep ,\"$HOOD >> location_$HOOD-$THIS_YEAR.csv &
+        ./matchline.py $LAST_YEAR current.csv | grep ,\"$HOOD >> location_$HOOD-$LAST_YEAR.csv
+        ./matchline.py $LAST_LAST_YEAR current.csv | grep ,\"$HOOD >> location_$HOOD-$LAST_LAST_YEAR.csv
 
         # Look for what's changed since the last time.
         # This saves all the changes that happened in a month in a month file,
         # as well as the most recent set of changes.
-        grep ,$HOOD archive-$DATE.csv >> location_$HOOD-archive-`date +'%Y-%m'`.csv
-        grep ,$HOOD archive-$DATE.csv > location_$HOOD-archive.csv
+        grep ,\"$HOOD archive-$DATE.csv >> location_$HOOD-archive-`date +'%Y-%m'`.csv
+        grep ,\"$HOOD archive-$DATE.csv > location_$HOOD-archive.csv
     done
 
     for CRIME in ${CRIMES[@]}; do
         # Look for what's changed since the last time.
         # This saves all the changes that happened in a month in a month file,
         # as well as the most recent set of changes.
-        grep ,$CRIME archive-$DATE.csv >> crime_$CRIME-archive-`date +'%Y-%m'`.csv
-        grep ,$CRIME archive-$DATE.csv > crime_$CRIME-archive.csv
+        grep ,\"$CRIME archive-$DATE.csv >> crime_$CRIME-archive-`date +'%Y-%m'`.csv
+        grep ,\"$CRIME archive-$DATE.csv > crime_$CRIME-archive.csv
     done
 
     # Just because we might need it: A text file of the last yearmonth pairs for the last ten years.
