@@ -189,9 +189,13 @@ class PrintCrimes:
                 if weekday == 0 or weekday == 6:
                     weekend = 1
 
-                # Include the hour
-                t = crime['FIRST_OCCURRENCE_DATE'].split(' ')[1]
-                hour = t.split(':')[0]
+                # Include the hour.
+                # Now that the datetime format's changed we have to account for PM's.
+                bits = crime['FIRST_OCCURRENCE_DATE'].split(' ')
+                hour = int(bits[1].split(':')[0])
+                if bits[2] in ['AM', 'PM']:
+                    if bits[2] == 'PM':
+                        hour += 12
 
                 if output == 'csv':
                     outputs += '%s,%s,%s,%s,%s,%s,%s,%s,%s\n' % (crime['INCIDENT_ID'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['NEIGHBORHOOD_ID'], crime['GEO_LAT'], crime['GEO_LON'])
@@ -213,7 +217,7 @@ class PrintCrimes:
     "neighborhood": "%s",
     "weekday": "%d",
     "weekend": "%d",
-    "hour": "%s"
+    "hour": "%d"
     %s
 """ % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['FIRST_OCCURRENCE_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], crime['NEIGHBORHOOD_ID'], weekday, weekend, hour, close_bracket)
                     continue
