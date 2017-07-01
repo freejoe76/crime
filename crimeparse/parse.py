@@ -29,7 +29,7 @@ class Parse:
         >>> parse.location = 'capitol-hill'
         >>> result = parse.get_specific_crime()
         >>> print result['count'], result['crime']
-        3 violent
+        1 violent
         """
 
     def __init__(self, crime_filename, diff = False, options = None):
@@ -153,7 +153,7 @@ class Parse:
             Used in get_recent and get_monthly.
             >>> parse = Parse('_input/test')
             >>> crime_type = 'parent_category'
-            >>> parse.crime = 'property'
+            >>> parse.crime = 'other'
             >>> parse.grep = False
             >>> record = parse.get_row()
             >>> print parse.does_crime_match(record, crime_type)
@@ -201,8 +201,8 @@ class Parse:
             >>> parse = Parse('_input/test')
             >>> parse.location = 'west-highland'
             >>> result = parse.get_addresses()
-            >>> print result['37TH AVE']['5030 W 37TH AVE'][0]['INCIDENT_ADDRESS']
-            5030 W 37TH AVE
+            >>> print result['35TH AVE']['4716 W 35TH AVE'][0]['INCIDENT_ADDRESS']
+            4716 W 35TH AVE
             """
         if not args or args[0] == []:
             timespan = False
@@ -256,7 +256,7 @@ class Parse:
             >>> parse.grep = False
             >>> result = parse.search_addresses()
             >>> print result['count'], result['crimes'][0]['OFFENSE_CATEGORY_ID']
-            1 public-disorder
+            1 all-other-crimes
             """
         type_of = self.get_address_type()
         crimes = []
@@ -306,7 +306,7 @@ class Parse:
             >>> parse.grep = False
             >>> result = parse.get_specific_crime()
             >>> print result['count'], result['crime']
-            43 violent
+            36 violent
             """
         if not args or args[0] == []:
             timespan = False
@@ -332,7 +332,7 @@ class Parse:
             >>> parse.crime = 'violent'
             >>> result = parse.get_recent_crimes()
             >>> print len(result['crimes'])
-            43
+            36
             """
 
         diffs = None
@@ -432,7 +432,7 @@ class Parse:
         """ Return a dict of a row from crime_file. Defaults to the first.
             >>> parse = Parse('_input/test')
             >>> print parse.get_row(1)
-            {'OFFENSE_CATEGORY_ID': 'theft-from-motor-vehicle', 'INCIDENT_ID': '2008237352.0', 'GEO_X': '3145301.0', 'REPORTED_DATE': '2008-12-23 07:51:59', 'OFFENSE_CODE': '2305', 'FIRST_OCCURRENCE_DATE': '2008-12-22 21:59:59', 'OFFENSE_CODE_EXTENSION': '0', 'DISTRICT_ID': '3', 'GEO_LAT': '39.7005626', 'LAST_OCCURRENCE_DATE': '2008-12-23 06:45:00', 'OFFENSE_TYPE_ID': 'theft-items-from-vehicle', 'PRECINCT_ID': '311', 'GEO_Y': '1680472.0', 'INCIDENT_ADDRESS': '876 S GRANT ST', 'OFFENSE_ID': '2008237352230500', 'GEO_LON': '-104.9836106', 'NEIGHBORHOOD_ID': 'washington-park-west'}
+            {'OFFENSE_CATEGORY_ID': 'public-disorder', 'INCIDENT_ID': '201796199', 'GEO_X': '3193674', 'REPORTED_DATE': '2/11/2017 11:25:00 AM', 'OFFENSE_CODE': '5309', 'FIRST_OCCURRENCE_DATE': '8/1/2016 7:00:00 AM', 'OFFENSE_CODE_EXTENSION': '0', 'DISTRICT_ID': '5', 'GEO_LAT': '39.77995290', 'LAST_OCCURRENCE_DATE': '2/11/2017 8:00:00 AM', 'OFFENSE_TYPE_ID': 'harassment', 'PRECINCT_ID': '512', 'GEO_Y': '1709713', 'INCIDENT_ADDRESS': '4861 N GRANBY WAY', 'OFFENSE_ID': '201796199530900', 'GEO_LON': '-104.810914', 'NEIGHBORHOOD_ID': 'montbello'}
             """
         record = dict(zip(dicts.keys, self.crime_file[row]))
         return record
@@ -545,9 +545,9 @@ class Parse:
             >>> parse.crime = 'violent'
             >>> result = parse.get_rankings()
             >>> print result['crimes']['neighborhood'][0]
-            ('cbd', {'count': 3, 'rank': 0})
+            ('union-station', {'count': 4, 'rank': 0})
             >>> print result['crimes']['percapita'][50]
-            ('harvey-park-south', {'count': 0.0, 'rank': 0})
+            ('city-park-west', {'count': 0.0, 'rank': 0})
             """
         rankings = { 
             'neighborhood': dict(),
@@ -662,7 +662,7 @@ class Parse:
             >>> parse = Parse('_input/test')
             >>> field = 'OFFENSE_CATEGORY_ID'
             >>> parse.get_uniques(field)
-            set(['OFFENSE_CATEGORY_ID', 'all-other-crimes', 'murder', 'arson', 'theft-from-motor-vehicle', 'auto-theft', 'sexual-assault', 'drug-alcohol', 'larceny', 'aggravated-assault', 'other-crimes-against-persons', 'robbery', 'burglary', 'white-collar-crime', 'public-disorder'])
+            set(['OFFENSE_CATEGORY_ID', 'all-other-crimes', 'auto-theft', 'theft-from-motor-vehicle', 'sexual-assault', 'drug-alcohol', 'larceny', 'aggravated-assault', 'other-crimes-against-persons', 'robbery', 'burglary', 'traffic-accident', 'white-collar-crime', 'public-disorder'])
             """
         values = []
         for row in self.crime_file:
@@ -732,7 +732,7 @@ class Parse:
             >>> crimes = parse.get_rankings()
             >>> result = parse.print_neighborhoods(crimes)
             >>> print result[0]
-                'sun-valley': {'full': 'Sun Valley'},
+                'union-station': {'full': 'Union Station'},
             """
         outputs = []
         for item in crimes['crimes']['percapita']:
