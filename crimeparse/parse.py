@@ -486,6 +486,7 @@ class Parse:
             # Location-specific queries are handled a little different and
             # require slightly different logic.
             if location and not hasattr(self, 'crimes'):
+                # Ingests files such as _input/location_capitol-hill-2015-06.csv
                 filename = 'location_%s-%s' % (self.location, yearmonth)
                 crime_file = self.open_csv('_input/%s' % filename, self.diff)
                 if self.crime == None:
