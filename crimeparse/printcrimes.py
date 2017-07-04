@@ -104,6 +104,89 @@ class PrintCrimes:
             return outputs
         return None
 
+    def _print_crimes_recent(self, crimes, output, limit):
+        """ Helper method for print_crimes().
+            """
+        outputs = ''
+        if output == 'csv':
+            outputs += 'id, category, type, date_occurred, date_reported, address, neighborhood, lat, lon\n'
+        elif output == 'json':
+            self.json_str = '{\n    "items": ['
+
+        # Make sure we're ordering crimes by the date field
+        try:
+            sorted_ = sorted(crimes['crimes'], key=lambda k: datetime.strptime(k['FIRST_OCCURRENCE_DATE'], '%m/%d/%Y %I:%M:%S %p'), reverse=True)
+        except:
+            sorted_ = crimes['crimes']
+        crimes_to_print = sorted_[:limit]
+        if limit == 0:
+            crimes_to_print = sorted_
+        length = len(crimes_to_print)
+
+        for i, crime in enumerate(crimes_to_print):
+            # Sometimes these "\" get fat-fingered into the address field,
+            # which is a problem bc it's an escape character that breaks 
+            # python's json library.
+            if '\\' in crime['INCIDENT_ADDRESS']:
+                crime['INCIDENT_ADDRESS'] = string.replace(crime['INCIDENT_ADDRESS'], '\\', '')
+
+            # Include the weekday, and a boolean flag for whether it's a weekend day
+            bits = crime['FIRST_OCCURRENCE_DATE'].split(' ')
+            d = bits[0]
+            try:
+                weekday = datetime.strptime(d, '%M/%d/%Y').weekday()
+            except:
+                weekday = datetime.strptime(d, '%Y-%M-%d').weekday()
+            weekend = 0
+            if weekday == 0 or weekday == 6:
+                weekend = 1
+
+            # Include the hour.
+            # Now that the datetime format's changed we have to account for PM's.
+            hour = int(bits[1].split(':')[0])
+            # NEWDATEFORMAT
+            if len(bits) == 3:
+                if bits[2] == 'PM':
+                    hour += 12
+
+            if output == 'csv':
+                outputs += '%s,%s,%s,%s,%s,%s,%s,%s,%s\n' % (crime['INCIDENT_ID'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['NEIGHBORHOOD_ID'], crime['GEO_LAT'], crime['GEO_LON'])
+                # outputs += '%s, %s, %s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_ID'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['NEIGHBORHOOD_ID'], crime['GEO_LAT'], crime['GEO_LON'])
+                continue
+            elif output == 'json':
+                close_bracket = '},'
+                if i == length:
+                    close_bracket = '}'
+
+                self.json_str += """  {
+"category": "%s",
+"type": "%s",
+"date_reported": "%s",
+"date_occurred": "%s",
+"address": "%s",
+"latitude": "%s",
+"longitude": "%s",
+"neighborhood": "%s",
+"weekday": "%d",
+"weekend": "%d",
+"hour": "%d"
+%s
+""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['FIRST_OCCURRENCE_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], crime['NEIGHBORHOOD_ID'], weekday, weekend, hour, close_bracket)
+                continue
+
+            if 'diff' not in crime:
+                crime['diff'] = ''
+
+            outputs += '''%i. %s %s: %s
+    Occurred: %s - %s
+    Reported: %s
+    %s\n\n''' % (i+1, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
+
+        # Tie up loose strings
+        if output == 'json':
+            self.json_str += ']\n}'
+        return outputs
+
     # def print_crimes(self, crimes, limit, action, loc=None, output=None, *args):
     def print_crimes(self, loc=None, output=None, *args):
         """ How do we want to display the crimes?
@@ -167,84 +250,7 @@ class PrintCrimes:
 
         elif action in ['recent', 'search']:
             # Lists, probably recents, with full crime record dicts
-            i = 0
-            if output == 'csv':
-                outputs += 'id, category, type, date_occurred, date_reported, address, neighborhood, lat, lon\n'
-            elif output == 'json':
-                self.json_str = '{\n    "items": ['
-
-            # Make sure we're ordering crimes by the date field
-            try:
-                sorted_ = sorted(crimes['crimes'], key=lambda k: datetime.strptime(k['FIRST_OCCURRENCE_DATE'], '%m/%d/%Y %I:%M:%S %p'), reverse=True)
-            except:
-                sorted_ = crimes['crimes']
-            crimes_to_print = sorted_[:limit]
-            if limit == 0:
-                crimes_to_print = sorted_
-            length = len(crimes_to_print)
-
-            for i, crime in enumerate(crimes_to_print):
-                # Sometimes these "\" get fat-fingered into the address field,
-                # which is a problem bc it's an escape character that breaks 
-                # python's json library.
-                if '\\' in crime['INCIDENT_ADDRESS']:
-                    crime['INCIDENT_ADDRESS'] = string.replace(crime['INCIDENT_ADDRESS'], '\\', '')
-
-                # Include the weekday, and a boolean flag for whether it's a weekend day
-                bits = crime['FIRST_OCCURRENCE_DATE'].split(' ')
-                d = bits[0]
-                try:
-                    weekday = datetime.strptime(d, '%M/%d/%Y').weekday()
-                except:
-                    weekday = datetime.strptime(d, '%Y-%M-%d').weekday()
-                weekend = 0
-                if weekday == 0 or weekday == 6:
-                    weekend = 1
-
-                # Include the hour.
-                # Now that the datetime format's changed we have to account for PM's.
-                hour = int(bits[1].split(':')[0])
-                # NEWDATEFORMAT
-                if len(bits) == 3:
-                    if bits[2] == 'PM':
-                        hour += 12
-
-                if output == 'csv':
-                    outputs += '%s,%s,%s,%s,%s,%s,%s,%s,%s\n' % (crime['INCIDENT_ID'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['NEIGHBORHOOD_ID'], crime['GEO_LAT'], crime['GEO_LON'])
-                    # outputs += '%s, %s, %s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_ID'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['NEIGHBORHOOD_ID'], crime['GEO_LAT'], crime['GEO_LON'])
-                    continue
-                elif output == 'json':
-                    close_bracket = '},'
-                    if i == length:
-                        close_bracket = '}'
-
-                    self.json_str += """  {
-    "category": "%s",
-    "type": "%s",
-    "date_reported": "%s",
-    "date_occurred": "%s",
-    "address": "%s",
-    "latitude": "%s",
-    "longitude": "%s",
-    "neighborhood": "%s",
-    "weekday": "%d",
-    "weekend": "%d",
-    "hour": "%d"
-    %s
-""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['FIRST_OCCURRENCE_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], crime['NEIGHBORHOOD_ID'], weekday, weekend, hour, close_bracket)
-                    continue
-
-                if 'diff' not in crime:
-                    crime['diff'] = ''
-
-                outputs += '''%i. %s %s: %s
-        Occurred: %s - %s
-        Reported: %s
-        %s\n\n''' % (i+1, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
-
-            # Tie up loose strings
-            if output == 'json':
-                self.json_str += ']\n}'
+            outputs = self._print_crimes_recent(crimes, output, limit)
 
 
         # No-location rankings get passed a list of neighborhoods and counts
@@ -290,9 +296,9 @@ class PrintCrimes:
             print "We did not have any crimes to handle"
             outputs = ''
 
-        if json_str is None:
+        if self.json_str is None:
             return outputs
-        return json_str
+        return self.json_str
 
 def main(options, args):
     """ We run this when we run this script from the command line.
