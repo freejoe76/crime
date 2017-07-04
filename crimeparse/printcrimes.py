@@ -165,9 +165,14 @@ class PrintCrimes:
             elif output == 'json':
                 json_str = '{\n    "items": ['
 
-            crimes_to_print = crimes['crimes'][:limit]
+            # Make sure we're ordering crimes by the date field
+            try:
+                sorted_ = sorted(crimes['crimes'], key=lambda k: datetime.strptime(k['FIRST_OCCURRENCE_DATE'], '%m/%d/%Y %I:%M:%S %p'), reverse=True)
+            except:
+                sorted_ = crimes['crimes']
+            crimes_to_print = sorted_[:limit]
             if limit == 0:
-                crimes_to_print = crimes['crimes']
+                crimes_to_print = sorted_
             length = len(crimes_to_print)
 
             for crime in crimes_to_print:
@@ -180,7 +185,8 @@ class PrintCrimes:
                     crime['INCIDENT_ADDRESS'] = string.replace(crime['INCIDENT_ADDRESS'], '\\', '')
 
                 # Include the weekday, and a boolean flag for whether it's a weekend day
-                d = crime['FIRST_OCCURRENCE_DATE'].split(' ')[0]
+                bits = crime['FIRST_OCCURRENCE_DATE'].split(' ')
+                d = bits[0]
                 try:
                     weekday = datetime.strptime(d, '%M/%d/%Y').weekday()
                 except:
@@ -191,9 +197,9 @@ class PrintCrimes:
 
                 # Include the hour.
                 # Now that the datetime format's changed we have to account for PM's.
-                bits = crime['FIRST_OCCURRENCE_DATE'].split(' ')
                 hour = int(bits[1].split(':')[0])
-                if bits[2] in ['AM', 'PM']:
+                # NEWDATEFORMAT
+                if len(bits) == 3:
                     if bits[2] == 'PM':
                         hour += 12
 
