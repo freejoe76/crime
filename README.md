@@ -1,12 +1,12 @@
 # Denver Crime
-A parser and logger for the City of Denver's crime CSV. Currently outputs to terminal. No database required.
+A parser and logger for the City of Denver's crime CSV. No database required. Outputs to terminal / CSV / json.
 
 ![CrimeParse Tests](https://api.travis-ci.org/freejoe76/crime.png)
 
 To get started with the first download and a view on a variety of reports:
-`    $ cd crimeparse
+```    $ cd crimeparse
     $ ./ingest.bash
-    $ ./report.bash --location capitol-hill`
+    $ ./report.bash --location capitol-hill```
 
 # Taxonomy
 There are three levels of crimes: 
@@ -16,7 +16,8 @@ There are three levels of crimes:
 3. Type (i.e. Drug: Cocaine Possession)
 
 # Usage
-Three major views exist:
+How to use the command-line client.
+
 ## Specific
 This publishes frequency and last-occurence info about a particular type of crime in a particular neighborhood (optional).
 ### Example usage
@@ -39,7 +40,7 @@ Publish a list of recent crimes of a particular type and/or category, or genre. 
 Publish per-capita and raw-number rankings for a crime type and/or category, or genre. Can filter by date.
 ### Example usage
     # Compare neighborhood violent crime rate in January:
-    $ ./parse.py --action rankings --crime violent --filename current '2013-01-01' '2013-02-01'
+    $ ./parse.py --action rankings --crime violent --filename current '2017-01-01' '2017-02-01'
 
 ## Search
 Look up all crimes at a particular address.
