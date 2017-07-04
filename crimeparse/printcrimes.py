@@ -31,7 +31,6 @@ class PrintCrimes:
         """
 
     def __init__(self, crimes, action, limit=15, diff=False, options=None):
-        # Initialize the major vars
         self.diff = diff
 
         self.crimes = crimes
@@ -47,6 +46,8 @@ class PrintCrimes:
             >>> printcrimes = PrintCrimes(result, 'specific')
             >>> printcrimes.clean_location('capitol-hill')
             'Capitol Hill'
+            >>> printcrimes.clean_location('cbd')
+            'CBD'
             """
         location = location.replace('-', ' ')
 
@@ -74,6 +75,34 @@ class PrintCrimes:
         for item in crimes['crimes']['percapita']:
             outputs += ["    '%s': {'full': '%s'}," % (item[0], self.clean_location(item[0]))]
         return outputs
+
+    def _print_crimes_monthly(self, crimes, output, *args):
+        """ A helper method for print_crimes, it populates the outputs var
+            used in the monthly report.
+            """
+        # We use the textbarchart here.
+        self.options = {'unicode': True}
+        options = {
+                    'type': None, 'font': 'monospace',
+                    'unicode': self.options['unicode']}
+        crime_dict = list(reversed(sorted(crimes['counts'].iteritems(),
+                          key=operator.itemgetter(0))))
+        if output == 'json':
+            length = len(crime_dict)
+            comma = ','
+            i = 0
+            self.json_str = '['
+            for item in crime_dict:
+                i += 1
+                if i == length:
+                    comma = ''
+                self.json_str += '\n {"count": "%s", "date": "%s"}%s' % (item[1]['count'], item[0], comma)
+            self.json_str += ']'
+        else:
+            bar = TextBarchart(options, crime_dict, crimes['max'])
+            outputs = bar.build_chart()
+            return outputs
+        return None
 
     # def print_crimes(self, crimes, limit, action, loc=None, output=None, *args):
     def print_crimes(self, loc=None, output=None, *args):
@@ -105,7 +134,7 @@ class PrintCrimes:
             #>>> print report
             #1.  aggravated-assault: aggravated-assault-dv
             """
-        outputs, json_str = '', None
+        outputs, self.json_str = '', None
         crimes = self.crimes
         try:
             limit = self.limit
@@ -117,14 +146,14 @@ class PrintCrimes:
             return False
 
         if action == 'by-address':
-            json_str = json.dumps(crimes)
+            self.json_str = json.dumps(crimes)
 
         elif action == 'specific':
             if output == 'json':
                 # print self.crime
                 # rank_add = self.get_rankings(self.crime, self.grep, loc)
                 # print rank_add
-                json_str = """{\n    "items": [
+                self.json_str = """{\n    "items": [
     {
     "count": "%(count)i",
     "crime": "%(crime)s",
@@ -134,28 +163,7 @@ class PrintCrimes:
                 outputs = '%(count)i %(crime)s crimes, last one %(last_crime)s ago' % crimes
 
         elif action == 'monthly' or self.monthly:
-
-            # We use the textbarchart here.
-            self.options = {'unicode': True}
-            options = {
-                        'type': None, 'font': 'monospace',
-                        'unicode': self.options['unicode']}
-            crime_dict = list(reversed(sorted(crimes['counts'].iteritems(),
-                              key=operator.itemgetter(0))))
-            if output == 'json':
-                length = len(crime_dict)
-                comma = ','
-                i = 0
-                json_str = '['
-                for item in crime_dict:
-                    i += 1
-                    if i == length:
-                        comma = ''
-                    json_str += '\n {"count": "%s", "date": "%s"}%s' % (item[1]['count'], item[0], comma)
-                json_str += ']'
-            else:
-                bar = TextBarchart(options, crime_dict, crimes['max'])
-                outputs = bar.build_chart()
+            outputs = self._print_crimes_monthly(crimes, output)
 
         elif action in ['recent', 'search']:
             # Lists, probably recents, with full crime record dicts
@@ -163,7 +171,7 @@ class PrintCrimes:
             if output == 'csv':
                 outputs += 'id, category, type, date_occurred, date_reported, address, neighborhood, lat, lon\n'
             elif output == 'json':
-                json_str = '{\n    "items": ['
+                self.json_str = '{\n    "items": ['
 
             # Make sure we're ordering crimes by the date field
             try:
@@ -175,9 +183,7 @@ class PrintCrimes:
                 crimes_to_print = sorted_
             length = len(crimes_to_print)
 
-            for crime in crimes_to_print:
-                i = i + 1
-
+            for i, crime in enumerate(crimes_to_print):
                 # Sometimes these "\" get fat-fingered into the address field,
                 # which is a problem bc it's an escape character that breaks 
                 # python's json library.
@@ -212,7 +218,7 @@ class PrintCrimes:
                     if i == length:
                         close_bracket = '}'
 
-                    json_str += """  {
+                    self.json_str += """  {
     "category": "%s",
     "type": "%s",
     "date_reported": "%s",
@@ -234,11 +240,11 @@ class PrintCrimes:
                 outputs += '''%i. %s %s: %s
         Occurred: %s - %s
         Reported: %s
-        %s\n\n''' % (i, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
+        %s\n\n''' % (i+1, crime['diff'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['FIRST_OCCURRENCE_DATE'], crime['LAST_OCCURRENCE_DATE'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'])
 
             # Tie up loose strings
             if output == 'json':
-                json_str += ']\n}'
+                self.json_str += ']\n}'
 
 
         # No-location rankings get passed a list of neighborhoods and counts
