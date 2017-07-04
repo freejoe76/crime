@@ -175,7 +175,7 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
     done
 
     for NUM in {0..23}; do
-        YEARMONTH=`date +'Y-%m' --date="$NUM months ago"`
+        YEARMONTH=`date +'%Y-%m' --date="$NUM months ago"`
         YEARMONTH_SEARCH=`date +'%-m/.*/%Y' --date="$NUM months ago"`
         for HOOD in ${HOODS[@]}; do
             # We include the comma in the grep to distinguish btw, say,
