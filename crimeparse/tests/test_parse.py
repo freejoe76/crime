@@ -28,5 +28,5 @@ def test_rankings():
     parse = Parse('crimeparse/_input/test')
     parse.crime = 'violent'
     result = parse.get_rankings()
-    assert result['crimes']['neighborhood'][0] == ('cbd', {'count': 3, 'rank': 0})
+    assert result['crimes']['neighborhood'][0] == ('union-station', {'count': 4, 'rank': 0})
     assert result['crimes']['percapita'][50] == ('harvey-park-south', {'count': 0.0, 'rank': 0})
