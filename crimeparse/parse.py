@@ -42,7 +42,7 @@ class Parse:
         self.crime_filename = crime_filename
         self.options = options
         self.logging = logging
-        fn = '%s-%s' % (options.action, datetime.strftime(datetime.now(), '%Y%m%d%H%M'))
+        fn = datetime.strftime(datetime.now(), '%Y%m%d%H%M')
         self.logging.basicConfig(filename='log/log_parse-%s' % fn, level=logging.DEBUG)
 
     def set_timespan(self, value):
