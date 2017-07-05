@@ -4,9 +4,11 @@ A parser and logger for the City of Denver's crime CSV. No database required. Ou
 ![CrimeParse Tests](https://api.travis-ci.org/freejoe76/crime.png)
 
 To get started with the first download and a view on a variety of reports:
-```    $ cd crimeparse
+```
+    $ cd crimeparse
     $ ./ingest.bash
-    $ ./report.bash --location capitol-hill```
+    $ ./parse.py --action recent --location capitol-hill
+```
 
 # Taxonomy
 There are three levels of crimes: 
