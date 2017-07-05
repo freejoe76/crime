@@ -17,7 +17,6 @@ except:
 
 divider = '\n=============================================================\n'
 
-
 class PrintCrimes:
     """ class PrintCrimes prints the results of a Parse.
         >>> parse = Parse('_input/test')

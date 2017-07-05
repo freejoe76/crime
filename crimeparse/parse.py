@@ -30,9 +30,7 @@ class Parse:
         1 violent
         """
 
-    def __init__(self, crime_filename, diff = False, options = None):
-        """ Initialize the primary vars.
-            """
+    def __init__(self, crime_filename, diff=False, options=None):
         self.grep = False
         self.verbose = False
         self.diff = diff
@@ -43,6 +41,9 @@ class Parse:
         self.crime_file = self.open_csv(crime_filename, diff)
         self.crime_filename = crime_filename
         self.options = options
+        self.logging = logging
+        fn = '%s-%s' % (options.action, datetime.strftime(datetime.now(), '%Y%m%d%H%M'))
+        self.logging.basicConfig(filename='log/log_parse-%s' % fn, level=logging.DEBUG)
 
     def set_timespan(self, value):
         """ Set the object's timespan, a tuple of dates.
@@ -602,8 +603,9 @@ class Parse:
                 rankings['genre'][crime_genre] += 1
 
             else:
-
-                if self.crime == dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or self.crime == record['OFFENSE_CATEGORY_ID'] or self.crime == record['OFFENSE_TYPE_ID']:
+                if self.crime == dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or \
+                    self.crime == record['OFFENSE_CATEGORY_ID'] or \
+                    self.crime == record['OFFENSE_TYPE_ID']:
                     rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                     percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                 elif self.grep == True:
@@ -615,7 +617,9 @@ class Parse:
                             rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                             percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                     else:
-                        if self.crime in dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or self.crime in record['OFFENSE_CATEGORY_ID'] or self.crime in record['OFFENSE_TYPE_ID']:
+                        if self.crime in dicts.crime_lookup[record['OFFENSE_CATEGORY_ID']] or \
+                            self.crime in record['OFFENSE_CATEGORY_ID'] or \
+                            self.crime in record['OFFENSE_TYPE_ID']:
                             rankings['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
                             percapita['neighborhood'][record['NEIGHBORHOOD_ID']]['count'] += 1
 
@@ -623,8 +627,7 @@ class Parse:
             try:
                 item[1]['count'] = round( float(item[1]['count'])/float(dicts.populations[item[0]]['2015']) * 1000, 2)
             except:
-                #print "ERROR: ", item
-                pass
+                self.logging.warning('Division error in get_rankings(), %s' % item)
 
         sorted_rankings = {
             'neighborhood': sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1), reverse=True),
@@ -695,6 +698,7 @@ class Parse:
         try:
             crime_file_raw = csv.reader(open('%s.csv' % fn, 'rb'), delimiter = ',')
         except:
+            self.logging.warning('Could not open %s.csv with csv.reader' % fn)
             return False
 
         # Sort the csv by the first occurrence (the 7th field, 6 on a 0-index)
