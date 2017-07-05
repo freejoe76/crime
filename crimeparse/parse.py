@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Run a query against the crime CSV's
-import os
 import csv
 import operator
-import math
 import re
 from collections import defaultdict, OrderedDict
 from optparse import OptionParser
@@ -518,7 +516,7 @@ class Parse:
                         ym = yearmonth.strip()
                         bits = ym.split('-')
                         search = re.compile('%s/.*/%s' % (bits[1].lstrip('0'), bits[0]))
-                        if search.search(record['FIRST_OCCURRENCE_DATE']):
+                        if search.search(record[self.date_field]):
                             crimes['counts'][ym]['count'] += 1
                             break
                     
