@@ -153,9 +153,9 @@ class PrintCrimes:
                 # outputs += '%s, %s, %s, %s, %s, %s, %s, %s\n' % (crime['OFFENSE_ID'], crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['INCIDENT_ADDRESS'], crime['NEIGHBORHOOD_ID'], crime['GEO_LAT'], crime['GEO_LON'])
                 continue
             elif output == 'json':
-                close_bracket = '},'
-                if i == length:
-                    close_bracket = '}'
+                comma = ','
+                if i+1 == length:
+                    comma = ''
 
                 self.json_str += """  {
 "category": "%s",
@@ -169,8 +169,8 @@ class PrintCrimes:
 "weekday": "%d",
 "weekend": "%d",
 "hour": "%d"
-%s
-""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['FIRST_OCCURRENCE_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], crime['NEIGHBORHOOD_ID'], weekday, weekend, hour, close_bracket)
+}%s
+""" % (crime['OFFENSE_CATEGORY_ID'], crime['OFFENSE_TYPE_ID'], crime['REPORTED_DATE'], crime['FIRST_OCCURRENCE_DATE'], crime['INCIDENT_ADDRESS'], crime['GEO_LAT'], crime['GEO_LON'], crime['NEIGHBORHOOD_ID'], weekday, weekend, hour, comma)
                 continue
 
             if 'diff' not in crime:

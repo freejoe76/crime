@@ -4,6 +4,7 @@
 from optparse import OptionParser
 import os.path
 import types
+import json
 
 def delete_comma(value):
     """ Returns a string without its final comma."""
@@ -19,11 +20,17 @@ if __name__ == '__main__':
         fn = open(args[0], 'r')
         content = fn.read()
         fn.close
-        fn = open(args[0], 'w')
-        if type(content) is not types.UnicodeType:
-            content = content.decode('utf-8', 'ignore')
-        content = delete_comma(content)
-        fn.write(content.encode('utf-8', 'ignore'))
-        fn.close
+        # Also check to make sure we're dealing with an invalid json string.
+        try:
+            json.loads(content)
+            #print "Everything in %s looked fine" % args[0]
+        except:
+            print "ooooh bad %s" % args[0]
+            fn = open(args[0], 'w')
+            if type(content) is not types.UnicodeType:
+                content = content.decode('utf-8', 'ignore')
+            content = delete_comma(content)
+            fn.write(content.encode('utf-8', 'ignore'))
+            fn.close
     else:
         print delete_comma(' '.join(args))
