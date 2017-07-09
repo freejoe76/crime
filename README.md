@@ -26,7 +26,7 @@ This publishes frequency and last-occurence info about a particular type of crim
     # Publish information about drug and alcohol crimes in the whole city:
     $ ./parse.py --action specific --crime drug-alcohol
     # Publish information about any crimes with "meth" in the name in the city:
-    $ ./parse.py --action specific --crime meth --grep True 
+    $ ./parse.py --action specific --crime meth --grep
     # Publish information about homicides in Capitol Hill
     $ ./parse.py --action specific --crime murder --location capitol-hill
 
