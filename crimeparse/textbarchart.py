@@ -98,7 +98,9 @@ class TextBarchart():
         # If the deviation-to-mean ratio is more than 50%, that means
         # most of the values are close to the mean and we don't really
         # need a barchart.
-        if float(self.deviation)/self.mean > .5:
+        if self.mean == 0:
+            barchar = ''
+        elif float(self.deviation)/self.mean > .5:
             barchar = ''
 
         # We would like the date monospaced.
