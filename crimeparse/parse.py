@@ -287,6 +287,13 @@ class Parse:
                 if lat in record['GEO_LAT'] and lon in record['GEO_LON']:
                     crimes.append(record)
 
+        if self.crime != None:
+            newcrimes = []
+            crime_type = self.get_crime_type()
+            for record in crimes:
+                if self.does_crime_match(record, crime_type):
+                    newcrimes.append(record)
+            crimes = newcrimes
         return { 'count': len(crimes), 'crimes': crimes }
 
     def get_specific_crime(self, *args):
