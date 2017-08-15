@@ -240,7 +240,8 @@ class PrintCrimes:
     {
     "count": "%(count)i",
     "crime": "%(crime)s",
-    "last_crime": "%(last_crime)s"
+    "last_crime": "%(last_crime)s",
+    "dt": "%(dt)s"
     }]\n}""" % crimes
             else:
                 outputs = '%(count)i %(crime)s crimes, last one %(last_crime)s ago' % crimes

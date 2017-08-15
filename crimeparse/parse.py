@@ -288,7 +288,7 @@ class Parse:
                 if lat in record['GEO_LAT'] and lon in record['GEO_LON']:
                     crimes.append(record)
 
-        if self.crime != None:
+        if hasattr(self, 'crime'):
             newcrimes = []
             crime_type = self.get_crime_type()
             for record in crimes:
@@ -329,7 +329,7 @@ class Parse:
             else:
                 last_crime = self.check_datetime(crimes['crimes'][0][self.date_field])
 
-        return { 'count': count, 'last_crime': self.timeago(last_crime), 'crime': self.crime }
+        return { 'count': count, 'last_crime': self.timeago(last_crime), 'crime': self.crime, 'dt': last_crime }
 
     def get_recent_crimes(self, *args, **kwargs):
         """ Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
@@ -800,6 +800,7 @@ if __name__ == '__main__':
     parser.add_option("-y", "--yearoveryear", dest="yearoveryear", default=False, action="store_true")
     parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
     parser.add_option("-s", "--silent", dest="silent", action="store_true")
+    parser.add_option("--test", dest="test", default=False, action="store_true")
     (options, args) = parser.parse_args()
     filename = options.filename
     action = options.action
@@ -808,11 +809,11 @@ if __name__ == '__main__':
     silent = options.silent
     monthly = options.monthly
 
-    if options.verbose:
+    if options.test:
         import doctest
         doctest.testmod(verbose=options.verbose)
     
-    if options.diff == True:
+    if options.diff:
         filename = 'latestdiff'
 
     parse = Parse("_input/%s" % filename, options.diff, options)
