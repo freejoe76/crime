@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Print output from a parsing of the crime CSVs
+#from __future__ import print_function
 from optparse import OptionParser
 from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
