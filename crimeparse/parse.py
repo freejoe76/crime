@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Run a query against the crime CSV's
+#from __future__ import print_function
 import csv
 import operator
 import re
@@ -516,6 +517,16 @@ class Parse:
                 record = dict(zip(dicts.keys, row))
                 if 'OFFENSE_CATEGORY_ID' in row:
                     record = row
+
+                if not self.crime:
+                    for yearmonth in yearmonths:
+                        ym = yearmonth.strip()
+                        bits = ym.split('-')
+                        search = re.compile('%s/.*/%s' % (bits[1].lstrip('0'), bits[0]))
+                        if search.search(record[self.date_field]):
+                            crimes['counts'][ym]['count'] += 1
+                            break
+                    continue
 
                 # We query a more general csv file in the no-location
                 # queries, so we have to filter it more.
