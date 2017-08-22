@@ -236,6 +236,8 @@ class PrintCrimes:
                 # print self.crime
                 # rank_add = self.get_rankings(self.crime, self.grep, loc)
                 # print rank_add
+                #if hasattr(crimes, 'dt'):
+                #    crimes.dt = crimes.dt.isoformat()
                 self.json_str = """{\n    "items": [
     {
     "count": "%(count)i",

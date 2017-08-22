@@ -171,11 +171,11 @@ class Parse:
                 # Loop through the types of crimes 
                 # (the lowest-level crime taxonomy), 
                 # looking to match a partial string.
-                if '*' in self.crime:
+                if self.crime and '*' in self.crime:
                     search_re = self.crime.replace('*', '.*')
                     if re.search(search_re, record['OFFENSE_TYPE_ID']) != None:
                         return True
-                elif self.crime in record['OFFENSE_TYPE_ID']:
+                elif self.crime and self.crime in record['OFFENSE_TYPE_ID']:
                     return True
 
         return False
@@ -299,9 +299,9 @@ class Parse:
 
     def get_specific_crime(self, *args):
         """ Indexes specific crime.
-            Example: Hey, among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
-            $ ./parse.py --verbose --action specific --crime meth --grep True
-            $ ./parse.py --verbose --action specific --crime cocaine --grep True
+            Example: Among Drug & Alcohol abuses in cap hill, is meth more popular than coke?
+            $ ./parse.py --verbose --action specific --crime meth --grep
+            $ ./parse.py --verbose --action specific --crime cocaine --grep
             
             Returns frequency in csv specified.
             Also returns the # of days since the last crime.
@@ -320,16 +320,19 @@ class Parse:
         else:
             timespan = self.set_timespan(args)
         crimes = self.get_recent_crimes()
+        sorted_ = sorted(crimes['crimes'], key=lambda k: datetime.strptime(k['FIRST_OCCURRENCE_DATE'], '%m/%d/%Y %I:%M:%S %p'), reverse=True)
         count = len(crimes['crimes'])
         last_crime = None
+        dt = None
         if count > 0:
             # We don't want the header row... it's possible we should take care of this in get_recent.
-            if crimes['crimes'][0]['FIRST_OCCURRENCE_DATE'] == 'FIRST_OCCURRENCE_DATE':
-                last_crime = self.check_datetime(crimes['crimes'][1][self.date_field])
+            if sorted_[0]['FIRST_OCCURRENCE_DATE'] == 'FIRST_OCCURRENCE_DATE':
+                last_crime = self.check_datetime(sorted_[1][self.date_field])
             else:
-                last_crime = self.check_datetime(crimes['crimes'][0][self.date_field])
+                last_crime = self.check_datetime(sorted_[0][self.date_field])
+            dt = last_crime.isoformat()
 
-        return { 'count': count, 'last_crime': self.timeago(last_crime), 'crime': self.crime, 'dt': last_crime }
+        return { 'count': count, 'last_crime': self.timeago(last_crime), 'crime': self.crime, 'dt': dt }
 
     def get_recent_crimes(self, *args, **kwargs):
         """ Given a crime genre / cat / type, a location or a timespan, return a list of crimes.
@@ -358,7 +361,7 @@ class Parse:
             adds = 0
             removes = 0
 
-        for row in self.crime_file:
+        for i, row in enumerate(self.crime_file):
             if len(row) < 5:
                 continue
             record = dict(zip(dicts.keys, row))
