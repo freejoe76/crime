@@ -320,7 +320,11 @@ class Parse:
         else:
             timespan = self.set_timespan(args)
         crimes = self.get_recent_crimes()
-        sorted_ = sorted(crimes['crimes'], key=lambda k: datetime.strptime(k['FIRST_OCCURRENCE_DATE'], '%m/%d/%Y %I:%M:%S %p'), reverse=True)
+        try:
+            sorted_ = sorted(crimes['crimes'], key=lambda k: datetime.strptime(k['FIRST_OCCURRENCE_DATE'], '%m/%d/%Y %I:%M:%S %p'), reverse=True)
+        except:
+            # For older, archival data with dates such as time '2015-12-24 01:25:59'
+            sorted_ = sorted(crimes['crimes'], key=lambda k: datetime.strptime(k['FIRST_OCCURRENCE_DATE'], '%Y-%m-%d %H:%M:%S'), reverse=True)
         count = len(crimes['crimes'])
         last_crime = None
         dt = None

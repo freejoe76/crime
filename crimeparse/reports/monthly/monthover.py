@@ -25,6 +25,7 @@ report_items = [
         { 'slug': 'violent', 'name': 'Violent',  'date_type': 'monthly', 'location': '', 'crime': 'violent', 'grep': False },
         { 'slug': 'rape', 'name': 'Rape', 'date_type': 'monthly', 'location': '', 'crime': 'sex-aslt-rape', 'grep': False  },
         { 'slug': 'property', 'name': 'Property',  'date_type': 'monthly', 'location': '', 'crime': 'property', 'grep': False },
+        { 'slug': 'other', 'name': 'Other',  'date_type': 'monthly', 'location': '', 'crime': 'property', 'grep': False },
         { 'slug': 'dv', 'name': 'Domestic Violence',  'date_type': 'monthly', 'location': '', 'crime': 'dv', 'grep': True },
         { 'slug': 'sexual-assault', 'name': 'Sexual Assault',  'date_type': 'monthly', 'location': '', 'crime': 'sexual-assault', 'grep': False },
         { 'slug': 'robbery', 'name': 'Robbery',  'date_type': 'monthly', 'location': '', 'crime': 'robbery', 'grep': True },
