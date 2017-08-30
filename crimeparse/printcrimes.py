@@ -134,7 +134,7 @@ class PrintCrimes:
             bits = crime['FIRST_OCCURRENCE_DATE'].split(' ')
             d = bits[0]
             try:
-                weekday = datetime.strptime(d, '%M/%d/%Y').weekday()
+                weekday = datetime.strptime(d, '%m/%d/%Y').weekday()
             except:
                 weekday = datetime.strptime(d, '%Y-%M-%d').weekday()
             weekend = 0
