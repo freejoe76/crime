@@ -3,7 +3,7 @@
 # Print output from a parsing of the crime CSVs
 #from __future__ import print_function
 from optparse import OptionParser
-from fancytext.fancytext import FancyText
+#from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
 from datetime import datetime
 import operator
@@ -26,7 +26,7 @@ class PrintCrimes:
         >>> result = parse.get_specific_crime()
         >>> printcrimes = PrintCrimes(result, 'specific')
         >>> report = printcrimes.print_crimes()
-        >>> print report.split(",")[0]
+        >>> print(report.split(",")[0])
         43 violent crimes
         """
 
@@ -68,7 +68,7 @@ class PrintCrimes:
             >>> result = parse.get_rankings()
             >>> printcrimes = PrintCrimes(result, 'specific')
             >>> neighborhoods = printcrimes.print_neighborhoods(result)
-            >>> print neighborhoods[0], len(neighborhoods)
+            >>> print(neighborhoods[0], len(neighborhoods))
                 'sun-valley': {'full': 'Sun Valley'}, 75
             """
         outputs = []
@@ -204,17 +204,17 @@ class PrintCrimes:
             >>> limit, action = 1, 'recent'
             >>> printcrimes = PrintCrimes(result, action, limit)
             >>> report = printcrimes.print_crimes()
-            >>> print report.split("\\n")[0]
+            >>> print(report.split("\\n")[0])
             1.  aggravated-assault: aggravated-assault-dv
             >>> result = parse.get_specific_crime()
             >>> printcrimes = PrintCrimes(result, 'specific')
             >>> report = printcrimes.print_crimes()
-            >>> print report.split(",")[0]
+            >>> print(report.split(",")[0])
             43 violent crimes
 
             #>>> crimes = parse.get_rankings('violent')
             #>>> report = parse.print_crimes(crimes, 15, 'rankings')
-            #>>> print report
+            #>>> print(report)
             #1.  aggravated-assault: aggravated-assault-dv
             """
         outputs, self.json_str = '', None
@@ -233,9 +233,9 @@ class PrintCrimes:
 
         elif action == 'specific':
             if output == 'json':
-                # print self.crime
+                # print(self.crime)
                 # rank_add = self.get_rankings(self.crime, self.grep, loc)
-                # print rank_add
+                # print(rank_add)
                 #if hasattr(crimes, 'dt'):
                 #    crimes.dt = crimes.dt.isoformat()
                 self.json_str = """{\n    "items": [
@@ -296,7 +296,7 @@ class PrintCrimes:
                 outputs += "%i. %s, %s\n" % (i+1, location, crimes['crimes']['neighborhood'][item[0]]['count'])
 
         else:
-            print "We did not have any crimes to handle"
+            print("We did not have any crimes to handle")
             outputs = ''
 
         if self.json_str is None:

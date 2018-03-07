@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import os
 import math
 from optparse import OptionParser
-from fancytext.fancytext import FancyText
+#from fancytext.fancytext import FancyText
 from datetime import datetime
 
 class TextBarchart():

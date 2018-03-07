@@ -8,7 +8,7 @@ import re
 from collections import defaultdict, OrderedDict
 from optparse import OptionParser
 from datetime import datetime, date, timedelta
-from fancytext.fancytext import FancyText
+#from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
 from printcrimes import *
 import argparse
@@ -27,7 +27,7 @@ class Parse:
         >>> parse.grep = False
         >>> parse.location = 'capitol-hill'
         >>> result = parse.get_specific_crime()
-        >>> print result['count'], result['crime']
+        >>> print(result['count'], result['crime'])
         1 violent
         """
 
@@ -50,7 +50,7 @@ class Parse:
         """ Set the object's timespan, a tuple of dates.
             >>> parse = Parse('_input/test')
             >>> timespan = parse.set_timespan(['2013-01-08', '2013-11-27'])
-            >>> print timespan
+            >>> print(timespan)
             (datetime.date(2013, 1, 8), datetime.date(2013, 11, 27))
             """
         if value == None:
@@ -66,7 +66,7 @@ class Parse:
         except:
             timespan = value
         if self.verbose:
-            print "Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month )
+            print("Publishing crimes from %s to %s" % ( timespan[0].month, timespan[1].month ))
         self.timespan = timespan
         return self.timespan
 
@@ -124,7 +124,7 @@ class Parse:
         """ Check a date to see if it's valid. If not, throw error.
             >>> parse = Parse('_input/test')
             >>> test_date = parse.check_date('2014-01-08')
-            >>> print test_date
+            >>> print(test_date)
             2014-01-08 00:00:00
             """
         return datetime.strptime(value, '%Y-%m-%d')
@@ -134,7 +134,7 @@ class Parse:
             Sometimes datestamps have dashes, sometimes they look completely different. 9/9/2016 9:55:00 AM
             >>> parse = Parse('_input/test')
             >>> test_date = parse.check_datetime('2014-01-08 06:05:04')
-            >>> print test_date
+            >>> print(test_date)
             2014-01-08 06:05:04
             """
         try:
@@ -156,7 +156,7 @@ class Parse:
             >>> parse.crime = 'other'
             >>> parse.grep = False
             >>> record = parse.get_row()
-            >>> print parse.does_crime_match(record, crime_type)
+            >>> print(parse.does_crime_match(record, crime_type))
             True
             """
         if  type(record) is not dict:
@@ -185,7 +185,7 @@ class Parse:
             Street address, a street block, or a lat/lon.
             >>> parse = Parse('_input/test')
             >>> parse.address = '39.23,24.00'
-            >>> print parse.get_address_type()
+            >>> print(parse.get_address_type())
             lat/lon
             """
         if ',' in self.address:
@@ -201,7 +201,7 @@ class Parse:
             >>> parse = Parse('_input/test')
             >>> parse.location = 'west-highland'
             >>> result = parse.get_addresses()
-            >>> print result['35TH AVE']['4716 W 35TH AVE'][0]['INCIDENT_ADDRESS']
+            >>> print(result['35TH AVE']['4716 W 35TH AVE'][0]['INCIDENT_ADDRESS'])
             4716 W 35TH AVE
             """
         if not args or args[0] == []:
@@ -255,7 +255,7 @@ class Parse:
             >>> parse.address = '1999 N BROADWAY ST'
             >>> parse.grep = False
             >>> result = parse.search_addresses()
-            >>> print result['count'], result['crimes'][0]['OFFENSE_CATEGORY_ID']
+            >>> print(result['count'], result['crimes'][0]['OFFENSE_CATEGORY_ID'])
             1 all-other-crimes
             """
         type_of = self.get_address_type()
@@ -312,7 +312,7 @@ class Parse:
             >>> parse.crime = 'violent'
             >>> parse.grep = False
             >>> result = parse.get_specific_crime()
-            >>> print result['count'], result['crime']
+            >>> print(result['count'], result['crime'])
             36 violent
             """
         if not args or args[0] == []:
@@ -345,7 +345,7 @@ class Parse:
             >>> parse = Parse('_input/test')
             >>> parse.crime = 'violent'
             >>> result = parse.get_recent_crimes()
-            >>> print len(result['crimes'])
+            >>> print(len(result['crimes']))
             36
             """
 
@@ -359,7 +359,7 @@ class Parse:
             timespan = self.set_timespan(args)
 
         if self.verbose:
-            print "Timespan: %s, location: %s, crime: %s" % (self.timespan, location, crime)
+            print("Timespan: %s, location: %s, crime: %s" % (self.timespan, location, crime))
 
         if self.diff == True:
             adds = 0
@@ -431,7 +431,7 @@ class Parse:
             >>> parse = Parse('_input/test')
             >>> parse.crime = 'violent'
             >>> result = parse.get_crime_type()
-            >>> print result
+            >>> print(result)
             parent_category
             """
         crime_type = 'OFFENSE_TYPE_ID'
@@ -445,7 +445,7 @@ class Parse:
     def get_row(self, row=1):
         """ Return a dict of a row from crime_file. Defaults to the first.
             >>> parse = Parse('_input/test')
-            >>> print parse.get_row(1)
+            >>> print(parse.get_row(1))
             {'OFFENSE_CATEGORY_ID': 'public-disorder', 'INCIDENT_ID': '201796199', 'GEO_X': '3193674', 'REPORTED_DATE': '2/11/2017 11:25:00 AM', 'OFFENSE_CODE': '5309', 'FIRST_OCCURRENCE_DATE': '8/1/2016 7:00:00 AM', 'OFFENSE_CODE_EXTENSION': '0', 'DISTRICT_ID': '5', 'GEO_LAT': '39.77995290', 'LAST_OCCURRENCE_DATE': '2/11/2017 8:00:00 AM', 'OFFENSE_TYPE_ID': 'harassment', 'PRECINCT_ID': '512', 'GEO_Y': '1709713', 'INCIDENT_ADDRESS': '4861 N GRANBY WAY', 'OFFENSE_ID': '201796199530900', 'GEO_LON': '-104.810914', 'NEIGHBORHOOD_ID': 'montbello'}
             """
         record = dict(zip(dicts.keys, self.crime_file[row]))
@@ -463,7 +463,7 @@ class Parse:
             >>> crime = 'violent'
 
             # >>> result = parse.get_monthly()
-            # >>> print result
+            # >>> print(result)
             # *** Will need a more robust selection of test data
             """
         i = 0
@@ -569,9 +569,9 @@ class Parse:
             >>> parse = Parse('_input/test')
             >>> parse.crime = 'violent'
             >>> result = parse.get_rankings()
-            >>> print result['crimes']['neighborhood'][0]
+            >>> print(result['crimes']['neighborhood'][0])
             ('union-station', {'count': 4, 'rank': 0})
-            >>> print result['crimes']['percapita'][50]
+            >>> print(result['crimes']['percapita'][50])
             ('city-park-west', {'count': 0.0, 'rank': 0})
             """
         rankings = { 
@@ -697,7 +697,7 @@ class Parse:
             values.append(record[field])
 
         if print_it is True:
-            print set(values)
+            print(set(values))
         return set(values)
 
     def get_neighborhood(self, location):
@@ -717,7 +717,7 @@ class Parse:
             It defaults to the current year's file.
             >>> parse = Parse('_input/test')
             >>> result = parse.open_csv('_input/test')
-            >>> print result[0][0]
+            >>> print(result[0][0])
             INCIDENT_ID
             """
         try:
@@ -759,7 +759,7 @@ class Parse:
             >>> parse.crime = 'violent'
             >>> crimes = parse.get_rankings()
             >>> result = parse.print_neighborhoods(crimes)
-            >>> print result[0]
+            >>> print(result[0])
                 'union-station': {'full': 'Union Station'},
             """
         outputs = []
@@ -777,7 +777,7 @@ def main(args):
 def build_parser(args):
     """ A method to handle argparse.
         >>> args = build_parser(None)
-        >>> print args.verbose
+        >>> print(args.verbose)
         True
         """
     parser = argparse.ArgumentParser(usage='$ python parse.py',
@@ -846,14 +846,14 @@ if __name__ == '__main__':
             limit = 23
         crimes = parse.get_monthly(limit)
         if verbose:
-            print crimes
+            print(crimes)
     elif action == 'rankings':
         # Example:
         # $ ./parse.py --action rankings --crime violent --file 2013 '2013-01-01' '2013-02-01'
         # $ ./parse.py --action rankings --crime dv --grep --file 2013 '2013-01-01' '2013-08-01'
         crimes = parse.get_rankings(args)
         if verbose:
-            print crimes
+            print(crimes)
         if not location:
             crimes['crimes']['neighborhood'].reverse()
             crimes['crimes']['percapita'].reverse()
@@ -877,7 +877,7 @@ if __name__ == '__main__':
     elif action == 'by-address':
         crimes = parse.get_addresses(args)
     else:
-        print "You must specify one of these actions: monthly, rankings, recent, specific, search, by-address."
+        print("You must specify one of these actions: monthly, rankings, recent, specific, search, by-address.")
     if not silent:
         from printcrimes import *
         printjob = PrintCrimes(crimes, action, parse.crime_filename, limit)
@@ -885,4 +885,4 @@ if __name__ == '__main__':
             printjob.monthly = True
         if action == 'search':
             printjob.address = options.address
-        print printjob.print_crimes(location, output)
+        print(printjob.print_crimes(location, output))
