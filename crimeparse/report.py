@@ -177,6 +177,8 @@ class Report:
             result = parse.get_rankings()
         elif self.report_type == 'specific':
             result = parse.get_specific_crime()
+            if result['count'] is None:
+                result['count'] = 0
         return result
 
 if __name__ == '__main__':
