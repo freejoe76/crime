@@ -59,7 +59,7 @@ LAST_YEAR=`expr $THIS_YEAR - 1`
 LAST_LAST_YEAR=`expr $THIS_YEAR - 2`
 
 THIS_MONTH=`date +'%-m'`
-LAST_MONTH=`date -v -1m +'%Y-%-m'`
+LAST_MONTH=`date +'%Y-%-m' --date='month ago'`
 
 touch current.csv
 
@@ -142,11 +142,11 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
             TEMPNUM=$(($NUM + 1))
             if [ $MONTHNUM -gt $TEMPNUM ]; then
                 echo $MONTHNUM
-                ./matchline.py `date -v -"$NUM"m +'%-m/.*/%Y'` current.csv >> "last"$MONTHNUM"months.csv"
+                ./matchline.py `date +'%-m/.*/%Y' --date="$NUM months ago"` current.csv >> "last"$MONTHNUM"months.csv"
             fi
         done
         echo '======'
-        ./matchline.py `date -v -"$NUM"m +'%-m/.*/%Y'` current.csv >> $NUM"monthsago.csv"
+        ./matchline.py `date +'%-m/.*/%Y' --date="$NUM months ago"` current.csv >> $NUM"monthsago.csv"
     done
 
     # Build a csv of the crimes for the last 24, 48, 60, 72 months
@@ -157,8 +157,8 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
 
     #for NUM in {0..23}; do
     for NUM in {0..59}; do
-        YEARMONTH=`date -v -"$NUM"m +'%Y-%m'`
-        YEARMONTH_SEARCH=`date -v -"$NUM"m +'%-m/.*/%Y'`
+        YEARMONTH=`date +'%Y-%m' --date="$NUM months ago"`
+        YEARMONTH_SEARCH=`date +'%-m/.*/%Y' --date="$NUM months ago"`
         # TODO: Sometimes 3 months ago is the same month as 4 months ago, need to look out for that.
         for MONTH in 24 36 48 60; do
             if [[ $NUM -lt $MONTH ]]; then
@@ -175,8 +175,8 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
     done
 
     for NUM in {0..23}; do
-        YEARMONTH=`date -v -"$NUM"m +'%Y-%m'`
-        YEARMONTH_SEARCH=`date -v -"$NUM"m +'%-m/.*/%Y'`
+        YEARMONTH=`date +'%Y-%m' --date="$NUM months ago"`
+        YEARMONTH_SEARCH=`date +'%-m/.*/%Y' --date="$NUM months ago"`
         for HOOD in ${HOODS[@]}; do
             # We include the comma in the grep to distinguish btw, say,
             # north-capitol-hill and capitol-hill. It's a CSV, the comma's the delimiter
@@ -213,7 +213,7 @@ if [[ $DIFFCOUNT -gt 0 || $NODOWNLOAD -eq 1 ]]; then
     > last.txt
     for NUM in {0..120}
     do
-        date -v -"$NUM"m +'%Y-%m' >> last.txt
+        date +'%Y-%m' --date="$NUM months ago" >> last.txt
     done
 fi
 
