@@ -72,7 +72,9 @@ if [[ $NODOWNLOAD -eq 0 ]]; then
         FILESIZE=$(du -b "new-unsorted.csv" | cut -f 1)
         # TEST THIS FIRST *** cat new-unsorted.csv > sed -i .bak -e 's#\.000001##g' > new-unsorted.csv
     done
-    sed -i .bak '/LAT:/d' new-unsorted.csv
+    sed -i .bak 's/LAT:.*LONG.*""//g' new-unsorted.csv
+    #sed 's/LAT:.*LONG.*""//g' < current.csv > tmp
+    #sed -i .bak '/LAT:/d' new-unsorted.csv
 fi
 
 
