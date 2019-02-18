@@ -327,7 +327,7 @@ class Parse:
             sorted_ = sorted(crimes['crimes'], key=lambda k: datetime.strptime(k['FIRST_OCCURRENCE_DATE'], '%Y-%m-%d %H:%M:%S'), reverse=True)
         count = len(crimes['crimes'])
         last_crime = None
-        dt = None
+        dt = ''
         if count > 0:
             # We don't want the header row... it's possible we should take care of this in get_recent.
             if sorted_[0]['FIRST_OCCURRENCE_DATE'] == 'FIRST_OCCURRENCE_DATE':
@@ -402,6 +402,9 @@ class Parse:
                 continue
 
             if self.location != None:
+                #if 'NEIGHBORHOOD_ID' not in record:
+                #    #print record
+                #    continue
                 if record['NEIGHBORHOOD_ID'] != self.location:
                     continue
 
