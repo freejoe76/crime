@@ -1,7 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Run a query against the crime CSV's
-#from __future__ import print_function
 import csv
 import operator
 import re

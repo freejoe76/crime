@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Publish json data suitable for a (month / year) report. A higher-level interface to parse.py
 #

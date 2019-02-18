@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # Run a query against the crime CSV's
 import os
 import re
@@ -18,7 +18,7 @@ def get_uniques(field):
         record = dict(zip(keys, row))
         values.append(record[field])
 
-    print set(values)
+    print(set(values))
 
 def open_csv(fn = '_input/census_neighborhood_demographics_2010.csv'):
     # Open the crime file for parsing.
@@ -35,7 +35,7 @@ def slugify(value):
 
 def build_custom_dict(field, value, key, csv):
     # Take a field column and a value column and return a dict
-    print field, value
+    print(field, value)
     stats_list = []
     for row in csv:
         record = dict(zip(key, row))
@@ -70,5 +70,5 @@ if __name__ == '__main__':
          fn = '_input/census_neighborhood_demographics_2010.csv'
     crime_file = open_csv(fn)
     key = crime_file.next()
-    print build_dict(crime_file)
+    print(build_dict(crime_file))
     #build_custom_dict(key[1], key[2], key, crime_file)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Deletes the last comma from a string.
 # We don't know if the comma will be at the end or near the end of a string.
 from optparse import OptionParser
@@ -23,9 +23,8 @@ if __name__ == '__main__':
         # Also check to make sure we're dealing with an invalid json string.
         try:
             json.loads(content)
-            #print "Everything in %s looked fine" % args[0]
         except:
-            print "ooooh bad %s" % args[0]
+            print("ooooh bad %s" % args[0])
             fn = open(args[0], 'w')
             if type(content) is not types.UnicodeType:
                 content = content.decode('utf-8', 'ignore')
@@ -33,4 +32,4 @@ if __name__ == '__main__':
             fn.write(content.encode('utf-8', 'ignore'))
             fn.close
     else:
-        print delete_comma(' '.join(args))
+        print(delete_comma(' '.join(args)))

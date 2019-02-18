@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Some information about how this all was put together would be useful.
 environ = 'DEV'
 crime_genres = ['violent', 'property', 'other']
