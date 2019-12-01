@@ -28,7 +28,7 @@ class PrintCrimes:
         >>> printcrimes = PrintCrimes(result, 'specific')
         >>> report = printcrimes.print_crimes()
         >>> print(report.split(",")[0])
-        43 violent crimes
+        36 violent crimes
         """
 
     def __init__(self, crimes, action, limit=15, diff=False, options=None):
@@ -70,7 +70,7 @@ class PrintCrimes:
             >>> printcrimes = PrintCrimes(result, 'specific')
             >>> neighborhoods = printcrimes.print_neighborhoods(result)
             >>> print(neighborhoods[0], len(neighborhoods))
-                'sun-valley': {'full': 'Sun Valley'}, 75
+                'montbello': {'full': 'Montbello'}, 71
             """
         outputs = []
         for item in crimes['crimes']['percapita']:
@@ -206,12 +206,12 @@ class PrintCrimes:
             >>> printcrimes = PrintCrimes(result, action, limit)
             >>> report = printcrimes.print_crimes()
             >>> print(report.split("\\n")[0])
-            1.  aggravated-assault: aggravated-assault-dv
+            1.  robbery: robbery-street
             >>> result = parse.get_specific_crime()
             >>> printcrimes = PrintCrimes(result, 'specific')
             >>> report = printcrimes.print_crimes()
             >>> print(report.split(",")[0])
-            43 violent crimes
+            36 violent crimes
 
             #>>> crimes = parse.get_rankings('violent')
             #>>> report = parse.print_crimes(crimes, 15, 'rankings')
