@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Config file for running a month-over-month report.
 # Pass it a date param -- months are defined as 30 days, the month will 
@@ -112,10 +112,10 @@ if __name__ == '__main__':
                             fallers['rank'][record] = diff
                     except:
                         continue
-        risers['count'] = sorted(risers['count'].iteritems(), key=operator.itemgetter(1), reverse=True)
-        risers['rank'] = sorted(risers['rank'].iteritems(), key=operator.itemgetter(1), reverse=True)
-        fallers['count'] = sorted(fallers['count'].iteritems(), key=operator.itemgetter(1))
-        fallers['rank'] = sorted(fallers['rank'].iteritems(), key=operator.itemgetter(1))
+        risers['count'] = sorted(risers['count'].items(), key=operator.itemgetter(1), reverse=True)
+        risers['rank'] = sorted(risers['rank'].items(), key=operator.itemgetter(1), reverse=True)
+        fallers['count'] = sorted(fallers['count'].items(), key=operator.itemgetter(1))
+        fallers['rank'] = sorted(fallers['rank'].items(), key=operator.itemgetter(1))
         
         print '"%s__%d__risers": ' % ( item['slug'], i) 
         print json.dumps(risers), ","

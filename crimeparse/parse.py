@@ -657,11 +657,11 @@ class Parse:
                 self.logging.warning('Division error in get_rankings(), %s' % item)
 
         sorted_rankings = {
-            'neighborhood': sorted(rankings['neighborhood'].iteritems(), key=operator.itemgetter(1), reverse=True),
-            'percapita': sorted(percapita['neighborhood'].iteritems(), key=operator.itemgetter(1), reverse=True),
-            'genre': sorted(rankings['genre'].iteritems(), key=operator.itemgetter(1)),
-            'category': sorted(rankings['category'].iteritems(), key=operator.itemgetter(1)),
-            'type': sorted(rankings['type'].iteritems(), key=operator.itemgetter(1))
+            'neighborhood': sorted(rankings['neighborhood'].items(), key=operator.itemgetter(1), reverse=True),
+            'percapita': sorted(percapita['neighborhood'].items(), key=operator.itemgetter(1), reverse=True),
+            'genre': sorted(rankings['genre'].items(), key=operator.itemgetter(1)),
+            'category': sorted(rankings['category'].items(), key=operator.itemgetter(1)),
+            'type': sorted(rankings['type'].items(), key=operator.itemgetter(1))
         }
 
         if self.location is None:
@@ -723,7 +723,7 @@ class Parse:
             INCIDENT_ID
             """
         try:
-            crime_file_raw = csv.reader(open('%s.csv' % fn, 'rb'), delimiter = ',')
+            crime_file_raw = csv.reader(open('%s.csv' % fn), delimiter = ',')
         except:
             self.logging.warning('Could not open %s.csv with csv.reader' % fn)
             return False

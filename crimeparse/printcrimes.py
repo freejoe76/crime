@@ -9,6 +9,7 @@ from datetime import datetime
 import operator
 import string
 import json
+import doctest
 
 # We only want this module once.
 try:
@@ -85,7 +86,7 @@ class PrintCrimes:
         options = {
                     'type': None, 'font': 'monospace',
                     'unicode': self.options['unicode']}
-        crime_dict = list(reversed(sorted(crimes['counts'].iteritems(),
+        crime_dict = list(reversed(sorted(crimes['counts'].items(),
                           key=operator.itemgetter(0))))
         if output == 'json':
             length = len(crime_dict)
@@ -274,7 +275,7 @@ class PrintCrimes:
         elif action == 'rankings':
             outputs += "%sDenver crimes, per-capita:%s\n" % (divider, divider)
 
-            for i, item in enumerate(reversed(sorted(crimes['crimes']['percapita'].iteritems(), key=operator.itemgetter(1)))):
+            for i, item in enumerate(reversed(sorted(crimes['crimes']['percapita'].items(), key=operator.itemgetter(1)))):
                 if loc == item[0]:
                     location = '***%s***' % self.clean_location(item[0])
                 else:
@@ -285,7 +286,7 @@ class PrintCrimes:
                 outputs += "%i. %s, %s\n" % (i+1, location, crimes['crimes']['percapita'][item[0]]['count'])
 
             outputs += "%sDenver crimes, raw:%s\n" % (divider, divider)
-            for i, item in enumerate(reversed(sorted(crimes['crimes']['neighborhood'].iteritems(), key=operator.itemgetter(1)))):
+            for i, item in enumerate(reversed(sorted(crimes['crimes']['neighborhood'].items(), key=operator.itemgetter(1)))):
                 if loc == item[0]:
                     location = '***%s***' % self.clean_location(item[0])
                 else:
@@ -319,7 +320,6 @@ if __name__ == '__main__':
     parser.add_option("-v", "--verbose", dest="verbose",
                       action="store_true", default=True)
     (options, args) = parser.parse_args()
-    import doctest
     doctest.testmod(verbose=options.verbose)
     main(options, args)
     '''

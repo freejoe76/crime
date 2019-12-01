@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Run a query against the crime CSV's
+# 
 import os
 import re
 import csv

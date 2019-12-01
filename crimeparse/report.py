@@ -25,7 +25,7 @@ class Report:
             """
         self.grep = False
         self.set_report_type('rankings')
-        for key, value in kwargs.iteritems():
+        for key, value in kwargs.items():
             if key == 'date_type':
                 self.date_type = value
             elif key == 'location' and value != '':
