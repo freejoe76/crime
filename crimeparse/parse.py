@@ -7,7 +7,7 @@ import re
 from collections import defaultdict, OrderedDict
 from optparse import OptionParser
 from datetime import datetime, date, timedelta
-#from fancytext.fancytext import FancyText
+from fancytext.fancytext import FancyText
 from textbarchart import TextBarchart
 from printcrimes import *
 import argparse
