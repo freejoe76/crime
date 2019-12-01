@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import os
 import math
 from optparse import OptionParser
+#import argparse
 from fancytext.fancytext import FancyText
 from datetime import datetime
 
@@ -80,7 +81,7 @@ class TextBarchart():
         return int(math.sqrt(self.variance))
 
     def build_chart(self, the_dict = None):
-        """ Hey.
+        """ 
             """
         if the_dict == None:
             the_dict = self.the_dict

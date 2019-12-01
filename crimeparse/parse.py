@@ -448,7 +448,7 @@ class Parse:
         """ Return a dict of a row from crime_file. Defaults to the first.
             >>> parse = Parse('_input/test')
             >>> print(parse.get_row(1))
-            {'OFFENSE_CATEGORY_ID': 'public-disorder', 'INCIDENT_ID': '201796199', 'GEO_X': '3193674', 'REPORTED_DATE': '2/11/2017 11:25:00 AM', 'OFFENSE_CODE': '5309', 'FIRST_OCCURRENCE_DATE': '8/1/2016 7:00:00 AM', 'OFFENSE_CODE_EXTENSION': '0', 'DISTRICT_ID': '5', 'GEO_LAT': '39.77995290', 'LAST_OCCURRENCE_DATE': '2/11/2017 8:00:00 AM', 'OFFENSE_TYPE_ID': 'harassment', 'PRECINCT_ID': '512', 'GEO_Y': '1709713', 'INCIDENT_ADDRESS': '4861 N GRANBY WAY', 'OFFENSE_ID': '201796199530900', 'GEO_LON': '-104.810914', 'NEIGHBORHOOD_ID': 'montbello'}
+            {'INCIDENT_ID': '201796199', 'OFFENSE_ID': '201796199530900', 'OFFENSE_CODE': '5309', 'OFFENSE_CODE_EXTENSION': '0', 'OFFENSE_TYPE_ID': 'harassment', 'OFFENSE_CATEGORY_ID': 'public-disorder', 'FIRST_OCCURRENCE_DATE': '8/1/2016 7:00:00 AM', 'LAST_OCCURRENCE_DATE': '2/11/2017 8:00:00 AM', 'REPORTED_DATE': '2/11/2017 11:25:00 AM', 'INCIDENT_ADDRESS': '4861 N GRANBY WAY', 'GEO_X': '3193674', 'GEO_Y': '1709713', 'GEO_LON': '-104.810914', 'GEO_LAT': '39.77995290', 'DISTRICT_ID': '5', 'PRECINCT_ID': '512', 'NEIGHBORHOOD_ID': 'montbello'}
             """
         record = dict(zip(dicts.keys, self.crime_file[row]))
         return record
@@ -572,9 +572,9 @@ class Parse:
             >>> parse.crime = 'violent'
             >>> result = parse.get_rankings()
             >>> print(result['crimes']['neighborhood'][0])
-            ('union-station', {'count': 4, 'rank': 0})
+            ('montbello', {'count': 2, 'rank': 0})
             >>> print(result['crimes']['percapita'][50])
-            ('city-park-west', {'count': 0.0, 'rank': 0})
+            ('regis', {'count': 0.0, 'rank': 0})
             """
         rankings = { 
             'neighborhood': dict(),
@@ -691,7 +691,7 @@ class Parse:
             >>> parse = Parse('_input/test')
             >>> field = 'OFFENSE_CATEGORY_ID'
             >>> parse.get_uniques(field)
-            set(['OFFENSE_CATEGORY_ID', 'all-other-crimes', 'auto-theft', 'theft-from-motor-vehicle', 'sexual-assault', 'drug-alcohol', 'larceny', 'aggravated-assault', 'other-crimes-against-persons', 'robbery', 'burglary', 'traffic-accident', 'white-collar-crime', 'public-disorder'])
+            {'sexual-assault', 'aggravated-assault', 'OFFENSE_CATEGORY_ID', 'other-crimes-against-persons', 'public-disorder', 'theft-from-motor-vehicle', 'robbery', 'all-other-crimes', 'drug-alcohol', 'larceny', 'burglary', 'white-collar-crime', 'traffic-accident', 'auto-theft'}
             """
         values = []
         for row in self.crime_file:
@@ -762,7 +762,7 @@ class Parse:
             >>> crimes = parse.get_rankings()
             >>> result = parse.print_neighborhoods(crimes)
             >>> print(result[0])
-                'union-station': {'full': 'Union Station'},
+                'montbello': {'full': 'Montbello'},
             """
         outputs = []
         for item in crimes['crimes']['percapita']:
