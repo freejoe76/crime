@@ -657,11 +657,11 @@ class Parse:
                 self.logging.warning('Division error in get_rankings(), %s' % item)
 
         sorted_rankings = {
-            'neighborhood': sorted(rankings['neighborhood'].items(), key=operator.itemgetter(1), reverse=True),
-            'percapita': sorted(percapita['neighborhood'].items(), key=operator.itemgetter(1), reverse=True),
-            'genre': sorted(rankings['genre'].items(), key=operator.itemgetter(1)),
-            'category': sorted(rankings['category'].items(), key=operator.itemgetter(1)),
-            'type': sorted(rankings['type'].items(), key=operator.itemgetter(1))
+            'neighborhood': sorted(rankings['neighborhood'].items(), key=lambda el: el[1]['rank'], reverse=True),
+            'percapita': sorted(percapita['neighborhood'].items(), key=lambda el: el[1]['rank'], reverse=True),
+            'genre': sorted(rankings['genre'].items(), key=lambda el: el[1]['rank']),
+            'category': sorted(rankings['category'].items(), key=lambda el: el[1]['rank']),
+            'type': sorted(rankings['type'].items(), key=lambda el: el[1]['rank'])
         }
 
         if self.location is None:
