@@ -18,7 +18,7 @@ class PyTest(Command):
 
 setup(
     name='CrimeParse',
-    version='0.1',
+    version='0.2',
     description='A crime parser for the City of Denver crime CSV.',
     license='Apache',
     url='https://github.com/freejoe76/crime',
