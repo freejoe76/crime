@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Loop through the diff file and pull out the lines that were added.
 # Note: Because of the way we diff it, "deleted" lines are the lines
 # that are actually added.
@@ -18,6 +18,7 @@
 2885c2880
 """
 from optparse import OptionParser
+#import argparse
 
 if __name__ == '__main__':
     parser = OptionParser()
@@ -40,4 +41,4 @@ if __name__ == '__main__':
         elif command == 'change':
             continue
         elif command == 'delete':
-            print line[2:].rstrip()
+            print(line[2:].rstrip())

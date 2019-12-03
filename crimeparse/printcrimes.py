@@ -129,7 +129,7 @@ class PrintCrimes:
             # which is a problem bc it's an escape character that breaks 
             # python's json library.
             if '\\' in crime['INCIDENT_ADDRESS']:
-                crime['INCIDENT_ADDRESS'] = string.replace(crime['INCIDENT_ADDRESS'], '\\', '')
+                crime['INCIDENT_ADDRESS'] = crime['INCIDENT_ADDRESS'].replace('\\', '')
 
             # Include the weekday, and a boolean flag for whether it's a weekend day
             bits = crime['FIRST_OCCURRENCE_DATE'].split(' ')

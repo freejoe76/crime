@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
     for item in report_items:
         if options.verbose == True:
-            print item['name']
+            print(item['name'])
         item['date_type'] = options.date_type
         item['location'] = options.location
         item['report_type'] = options.report_type
@@ -78,10 +78,10 @@ if __name__ == '__main__':
             if item['report_type'] == 'rankings':
                 crime_item = report.get_crime_item(),
                 comparison.append(crime_item)
-                print '"%s__%d": ' % ( item['slug'], ago ) 
-                print crime_item[0], ","
+                print('"%s__%d": ' % ( item['slug'], ago ))
+                print("%s," % crime_item[0])
             else:
-                print report.get_crime_item()
+                print(report.get_crime_item())
 
         risers = {'count': {}, 'rank': {}}
         fallers = {'count': {}, 'rank': {}}
@@ -117,7 +117,7 @@ if __name__ == '__main__':
         fallers['count'] = sorted(fallers['count'].items(), key=operator.itemgetter(1))
         fallers['rank'] = sorted(fallers['rank'].items(), key=operator.itemgetter(1))
         
-        print '"%s__%d__risers": ' % ( item['slug'], i) 
-        print json.dumps(risers), ","
-        print '"%s__%d__fallers": ' % ( item['slug'], i) 
-        print json.dumps(fallers), ","
+        print('"%s__%d__risers": ' % ( item['slug'], i))
+        print("%s," % json.dumps(risers))
+        print('"%s__%d__fallers": ' % ( item['slug'], i))
+        print("%s," % json.dumps(fallers))

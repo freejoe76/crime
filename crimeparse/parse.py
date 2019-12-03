@@ -226,7 +226,7 @@ class Parse:
 
             # Clean up street name
             if 'BLK' in record['INCIDENT_ADDRESS']:
-                record['INCIDENT_ADDRESS'] = string.replace(record['INCIDENT_ADDRESS'], 'BLK', 'BLOCK')
+                record['INCIDENT_ADDRESS'] = record['INCIDENT_ADDRESS'].replace('BLK', 'BLOCK')
 
             # We build a dict based on street name.
             # Street name will be the last two words in the address.

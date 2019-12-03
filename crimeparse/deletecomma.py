@@ -26,10 +26,11 @@ if __name__ == '__main__':
         except:
             print("ooooh bad %s" % args[0])
             fn = open(args[0], 'w')
-            if type(content) is not types.UnicodeType:
-                content = content.decode('utf-8', 'ignore')
+            #if type(content) is not types.UnicodeType:
+            #    content = content.decode('utf-8', 'ignore')
             content = delete_comma(content)
-            fn.write(content.encode('utf-8', 'ignore'))
+            fn.write(content)
+            #fn.write(content.encode('utf-8', 'ignore'))
             fn.close
     else:
         print(delete_comma(' '.join(args)))

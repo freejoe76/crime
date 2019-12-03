@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Config file for running a year-over-year report.
 from report import Report
@@ -67,8 +67,8 @@ if __name__ == '__main__':
 
     for item in report_items:
         if options.verbose == True:
-            print item['name']
-            print args
+            print(item['name'])
+            print(args)
         item['date_type'] = options.date_type
         item['location'] = options.location
         item['report_type'] = options.report_type
@@ -85,8 +85,7 @@ if __name__ == '__main__':
             if item['report_type'] in ['rankings', 'specific']:
                 if today.month == 1 and today.day < 21:
                     yearback += 1
-                print '"%s__%d": ' % ( item['slug'], year - yearback ) 
-                print report.get_crime_item(),
-                print ","
+                print('"%s__%d": ' % ( item['slug'], year - yearback ))
+                print("%s," % report.get_crime_item())
             else:
-                print report.get_crime_item()
+                print(report.get_crime_item())

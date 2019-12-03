@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # If the seventh field in the input contains the date string that we're looking for, 
 # output the entire line to stdout.
 # The seventh field is FIRST_OCCURRENCE_DATE
@@ -18,4 +18,4 @@ if __name__ == '__main__':
         if search.search(cells[6]):
             if '\\' in line:
                 line.replace('\\', '')
-            print line.rstrip()
+            print(line.rstrip())
